@@ -105,8 +105,16 @@
 --  2014-March
 --      v0.80       - Followers sets lights and beacon-lights as what the leader has them set to.
 --  2014-June
---      1.0.81      - Due to other versioning scheme, removed hack for ShowWorkersOnPDA v0.96.
---
+--      v1.0.81     - Due to other versioning scheme, removed hack for ShowWorkersOnPDA v0.96.
+--  2014-November
+--      v2.0.0      - Begun upgrading to FS15
+--  2014-December
+--      v2.0.1      - Added map-icon for vehicle when in Follow mode. Inspired by CoursePlay.
+--      v2.0.2      - Minor code-cleanup.
+--      v2.0.4      - Now using individual localization (l10n) XML-files.
+--      v2.0.5      - Default keep-back distance now 10 (was 0).
+--      v2.0.6      - Fix for searching, where it should ignore 'steerables' that are not 'drivables'.
+--                  - Updated Russian translations, by Gonimy_Vetrom.
 --
 
 --[[
@@ -127,8 +135,9 @@ local modItem = ModsUtil.findModItemByModName(g_currentModName);
 FollowMe.version = (modItem and modItem.version) and modItem.version or "?.?.?";
 --
 
-FollowMe.logLevel = 1; -- 1=Seldom occuring logs, 2=Event occuring logs, 3=Often occuring logs, 4=VeryOften occuring logs
 FollowMe.debugDraw = {}
+FollowMe.mapIconFile = Utils.getFilename('mapMarker.DDS', g_currentModDirectory);
+
 
 FollowMe.cMinDistanceBetweenDrops        =   5;   -- TODO, make configurable
 FollowMe.cBreadcrumbsMaxEntries          = 100;   -- TODO, make configurable
@@ -142,16 +151,21 @@ FollowMe.STATE_START     = 2;
 FollowMe.STATE_STOP      = 3;
 
 
-function FollowMe:log(logLevel, txt)
-  if (FollowMe.logLevel >= logLevel) then
-    print(string.format("%7ums FollowMe(%s) ", g_currentMission.time, tostring(networkGetObjectId(self))) .. txt);
-  end;
+-- For debugging
+local function log(...)
+    if true then
+        local txt = ""
+        for idx = 1,select("#", ...) do
+            txt = txt .. tostring(select(idx, ...))
+        end
+        print(string.format("%7ums FollowMe.LUA ", (g_currentMission ~= nil and g_currentMission.time or 0)) .. txt);
+    end
 end;
 
 
 -- Support-function, that I would like to see be added to InputBinding class.
 -- Maybe it is, I just do not know what its called.
-function getKeyIdOfModifier(binding)
+local function getKeyIdOfModifier(binding)
     if InputBinding.actions[binding] == nil then
         return nil;  -- Unknown input-binding.
     end;
@@ -165,7 +179,7 @@ function getKeyIdOfModifier(binding)
     return nil;
 end
 
-function removeFromString(src, toRemove)
+local function removeFromString(src, toRemove)
     local srcArr = Utils.splitString(" ", src);
     local remArr = Utils.splitString(" ", toRemove);
     local result = "";
@@ -202,7 +216,7 @@ function FollowMe.initialize()
     or  FollowMe.keyModifier_FollowMeMy ~= getKeyIdOfModifier(InputBinding.FollowMeMyOffsInc)
     ) then
         -- warning!
-        FollowMe:log(0, "WARNING: Not all action-keys(1) use the same modifier-key!");
+        log("WARNING: Not all action-keys(1) use the same modifier-key!");
     end;
 
     -- Build a string, that is much shorter than what InputBinding.getKeyNamesOfDigitalAction() returns
@@ -223,7 +237,7 @@ function FollowMe.initialize()
     or  FollowMe.keyModifier_FollowMeFl ~= getKeyIdOfModifier(InputBinding.FollowMeFlOffsInc)
     ) then
         -- warning!
-        FollowMe:log(0, "WARNING: Not all action-keys(2) use the same modifier-key!");
+        log("WARNING: Not all action-keys(2) use the same modifier-key!");
     end;
 
     -- Build a string, that is much shorter than what InputBinding.getKeyNamesOfDigitalAction() returns
@@ -243,7 +257,6 @@ end;
 --
 
 function FollowMe.load(self, xmlFile)
-    --
     FollowMe.initialize();
 
     -- A simple attempt at making a "namespace" for 'Follow Me' variables.
@@ -261,7 +274,7 @@ function FollowMe.load(self, xmlFile)
     self.modFM.FollowVehicleObj = nil;  -- What vehicle is this one following (if any)
     self.modFM.FollowCurrentIndex = 0;
     --self.modFM.lastZeroSpeedIndex = self.modFM.FollowCurrentIndex;
-    self.modFM.FollowKeepBack = 0;
+    self.modFM.FollowKeepBack = 10;
     self.modFM.FollowXOffset = 0;
     --
     self.modFM.reduceSpeedTime = 0;
@@ -282,19 +295,6 @@ function FollowMe.load(self, xmlFile)
     if self.isServer then
         -- Copied from FS2011-Hirable, for the mods that do not include that specialization in their vehicle-type.
         self.modFM.PricePerMS = Utils.getNoNil(getXMLFloat(xmlFile, "vehicle.pricePerHour"), 2000)/60/60/1000;
-        --
----- FS2013
---        -- TODO: Await FS2013-scripts, so proper traffic-collision can be put in.
---        --if self.addCollisionTrigger == nil then
---        --    self.modFM.FollowKeepBack = 2;
---        --    FollowMe:log(1, "WARNING: Seems there are no vehicle-collision-trigger(s) for this vehicle-type: ".. tostring(self.typeName));
---        --end;
---        if not (SpecializationUtil.hasSpecialization(AITractor, self.specializations)
---             or SpecializationUtil.hasSpecialization(AICombine, self.specializations)) then
---            self.modFM.FollowKeepBack = 2;
---            FollowMe:log(1, "WARNING: Seems there are no vehicle-collision-trigger(s) for this vehicle-type: ".. tostring(self.typeName));
---        end;
-----]]
 
         -- Drop one "crumb", to get it started...
         local wx,wy,wz = getWorldTranslation(self.components[1].node);
@@ -311,8 +311,6 @@ function FollowMe.delete(self)
         -- Stop ourself
         FollowMe.stopFollowMe(self, true);
     end;
-    --
-    --FollowMe.isInitialized = false;
 end;
 
 function FollowMe.sharedWriteStream(serverToClients, streamId, vehObj, followsObj, stalkedByObj, state, keepBackDistance, xOffset, warnTxt)
@@ -452,7 +450,7 @@ function FollowMe.copyDrop(self, crumb, targetXYZ)
             trans = targetXYZ,
             rot = crumb.rot,
             avgSpeed = crumb.avgSpeed,
-            realGroundSpeed = crumb.realGroundSpeed -- MoreRealistic - DURAL : add the speed information to the "crumb"
+            --realGroundSpeed = crumb.realGroundSpeed -- MoreRealistic - DURAL : add the speed information to the "crumb"
         };
     end;
 end;
@@ -468,11 +466,11 @@ function FollowMe.addDrop(self, wx,wy,wz, avgSpeed)
         trans = {wx,wy,wz},
         rot = {rx,ry,rz},
         avgSpeed = avgSpeed,
-        -- MoreRealistic - DURAL : add the speed information to the "crumb"
-        realGroundSpeed = self.realGroundSpeed
+        ---- MoreRealistic - DURAL : add the speed information to the "crumb"
+        --realGroundSpeed = self.realGroundSpeed
     };
 
-    --FollowMe:log(3, string.format("Crumb #%d(%d): trans=%f/%f/%f, rot=%f/%f/%f, avgSpeed=%f, movTime=%f", FollowMe.gBreadcrumbsCurrentDropIndex,dropIndex, wx,wy,wz, rx,ry,rz, avgSpeed, self.modFM.movingTime));
+    --log(string.format("Crumb #%d(%d): trans=%f/%f/%f, rot=%f/%f/%f, avgSpeed=%f, movTime=%f", FollowMe.gBreadcrumbsCurrentDropIndex,dropIndex, wx,wy,wz, rx,ry,rz, avgSpeed, self.modFM.movingTime));
 end;
 
 function FollowMe.changeDistance(self, newKeepBack, noSendEvent)
@@ -528,6 +526,10 @@ end;
 
 --
 function FollowMe.update(self, dt)
+    if self.motor == nil then  -- Due to FS15 Steerable without Motorized.
+        return;
+    end
+
     if self:getIsActiveForInput(false) then
         if InputBinding.hasEvent(InputBinding.FollowMeMyToggle) then
             FollowMe.toggleFollowMe(self);
@@ -584,6 +586,10 @@ function FollowMe.update(self, dt)
 end;
 
 function FollowMe.updateTick(self, dt)
+    if self.motor == nil then  -- Due to FS15 Steerable without Motorized.
+        return;
+    end
+
   if self.isServer then
     --
     if (self.modFM ~= nil) and self.modFM.IsInstalled then
@@ -596,14 +602,14 @@ function FollowMe.updateTick(self, dt)
         --
         -- Copied from FS2011-Hirable
         local difficultyMultiplier = Utils.lerp(0.6, 1, (g_currentMission.missionStats.difficulty-1)/2) -- range from 0.6 (easy)  to  1 (hard)
-        g_currentMission:addSharedMoney(-dt * difficultyMultiplier * self.modFM.PricePerMS);
+        g_currentMission:addSharedMoney(-dt * difficultyMultiplier * self.modFM.PricePerMS, "wagePayment");
       elseif self.modFM.FollowState == 2 then -- BrakeForDisengage
         FollowMe.updateFollowDisengage(self, dt)
       elseif (self.movingDirection > 0) then  -- Must drive forward to drop crumbs
         self.modFM.sumSpeed = self.modFM.sumSpeed + self.lastSpeed;
         self.modFM.sumCount = self.modFM.sumCount + 1;
         --
-        local wx,wy,wz = unpack(self.lastPosition); --getWorldTranslation(self.components[1].node); -- current position
+        local wx,wy,wz = getWorldTranslation(self.components[1].node); --unpack(self.lastPosition); --getWorldTranslation(self.components[1].node); -- current position
         local pwx,pwy,pwz = unpack(self.modFM.DropperCircularArray[1+((self.modFM.DropperCurrentIndex-1) % FollowMe.cBreadcrumbsMaxEntries)].trans); -- previous position
         local distancePrevDrop = Utils.vector2Length(pwx-wx, pwz-wz);
         if distancePrevDrop >= FollowMe.cMinDistanceBetweenDrops then
@@ -690,43 +696,43 @@ function FollowMe.updateFollowDisengage(self, dt)
     local allowedToDrive = false;
     local lx,lz = 0,1;
     
-    if AIVehicleUtil.mrDriveInDirection and self.isRealistic then
-        -- MoreRealistic
-        AIVehicleUtil.mrDriveInDirection(self, dt, acceleration, allowedToDrive, true, lx,lz, 4, false, true);
-        
-        if (self.realGroundSpeed*3.6 < 2) then
-            FollowMe.stoppedFollowMe(self)
-        end
-    else
+    --if AIVehicleUtil.mrDriveInDirection and self.isRealistic then
+    --    -- MoreRealistic
+    --    AIVehicleUtil.mrDriveInDirection(self, dt, acceleration, allowedToDrive, true, lx,lz, 4, false, true);
+    --    
+    --    if (self.realGroundSpeed*3.6 < 2) then
+    --        FollowMe.stoppedFollowMe(self)
+    --    end
+    --else
         -- Vanilla
         AIVehicleUtil.driveInDirection(self, dt, 30, acceleration, (acceleration * 0.7), 30, allowedToDrive, true, lx,lz, nil, 1);
         
         if (self.lastSpeedReal*3600 < 2) then
             FollowMe.stoppedFollowMe(self)
         end
-    end;
+    --end;
 end
 
 function FollowMe.checkBaler(attachedTool)
     local allowedToDrive
     local hasCollision
-        if attachedTool.balerUnloadingState == Baler.UNLOADING_CLOSED then
-            if attachedTool.fillLevel >= attachedTool.capacity then
-                allowedToDrive = false
-                hasCollision = true -- Stop faster
-                if (table.getn(attachedTool.bales) > 0) and attachedTool:isUnloadingAllowed() then
-                    -- Activate the bale unloading (server-side only!)
-                    attachedTool:setIsUnloadingBale(true); 
-                end
-            end
-        else
+    if attachedTool.balerUnloadingState == Baler.UNLOADING_CLOSED then
+        if attachedTool.fillLevel >= attachedTool.capacity then
             allowedToDrive = false
-            hasCollision = true
-            if attachedTool.balerUnloadingState == Baler.UNLOADING_OPEN then
-                -- Activate closing (server-side only!)
-                attachedTool:setIsUnloadingBale(false); 
+            hasCollision = true -- Stop faster
+            if (table.getn(attachedTool.bales) > 0) and attachedTool:isUnloadingAllowed() then
+                -- Activate the bale unloading (server-side only!)
+                attachedTool:setIsUnloadingBale(true); 
             end
         end
+    else
+        allowedToDrive = false
+        hasCollision = true
+        if attachedTool.balerUnloadingState == Baler.UNLOADING_OPEN then
+            -- Activate closing (server-side only!)
+            attachedTool:setIsUnloadingBale(false); 
+        end
+    end
     return allowedToDrive, hasCollision;
 end
 
@@ -759,7 +765,6 @@ function FollowMe.updateFollowMovement(self, dt)
     if self.numCollidingVehicles ~= nil then
         for _,numCollisions in pairs(self.numCollidingVehicles) do
             if numCollisions > 0 then
-                --allowedToDrive = false;
                 hasCollision = true; -- Collision imminent! Brake! Brake!
                 break;
             end;
@@ -777,16 +782,16 @@ function FollowMe.updateFollowMovement(self, dt)
                     -- Found (Round)Baler.LUA
                     attachedTool = { tool.object, FollowMe.checkBaler };
                     break
-                --elseif SpecializationUtil.hasSpecialization(getfenv(0)[tool.object.customEnvironment].VariableChamberBaler, tool.object.specializations) then
-                elseif tool.object.netBaleAnimation ~= nil and tool.object.setShouldNet ~= nil and tool.object.nettingAnimation ~= nil then
-                    -- Probably found VariableChamberBaler.LUA
-                    attachedTool = { tool.object, FollowMe.checkBaler };
-                    break
+                ----elseif SpecializationUtil.hasSpecialization(getfenv(0)[tool.object.customEnvironment].VariableChamberBaler, tool.object.specializations) then
+                --elseif tool.object.netBaleAnimation ~= nil and tool.object.setShouldNet ~= nil and tool.object.nettingAnimation ~= nil then
+                --    -- Probably found VariableChamberBaler.LUA
+                --    attachedTool = { tool.object, FollowMe.checkBaler };
+                --    break
                 end
             end
             
             if tool.object.baleWrapperState ~= nil then
-                if (pdlc_ursusAddon ~= nil) and SpecializationUtil.hasSpecialization(pdlc_ursusAddon.BaleWrapper, tool.object.specializations) then
+                if SpecializationUtil.hasSpecialization(BaleWrapper, tool.object.specializations) then
                     -- Found BaleWrapper
                     attachedTool = { tool.object, FollowMe.checkBaleWrapper };
                     break
@@ -841,7 +846,7 @@ function FollowMe.updateFollowMovement(self, dt)
         -- Following crumbs...
         if crumbIndexDiff >= FollowMe.cBreadcrumbsMaxEntries then
             -- circular-array have "circled" once, and this follower did not move fast enough.
-            --DEBUG FollowMe:log(2, "Much too far behind. Stopping auto-follow.");
+            --DEBUG log("Much too far behind. Stopping auto-follow.");
             FollowMe.setWarning(self, "FollowMeTooFarBehind");
             FollowMe.stopFollowMe(self);
             return;        
@@ -897,33 +902,33 @@ if Vehicle.debugRendering then
 end;    
 --DEBUG]]    
             --
-            if AIVehicleUtil.mrDriveInDirection and self.isRealistic then
-                if crumbT.realGroundSpeed ~= nil then
-                    tMRRealSpd = math.max(1.1 * crumbT.realGroundSpeed * 3.6, 5); -- 10% quicker to "chase" the followed
-                else
-                    tMRRealSpd = math.max(1.1 * crumbAvgSpeed * 3600, 5);
-                end;
-                
-                if keepInFrontMeters > 0 then
-                    if distMeters > 20 then
-                      tMRRealSpd = math.max(tMRRealSpd, 25) -- 25km/h or more...
-                    elseif distMeters > 5 and tMRRealSpd < 10 then
-                      tMRRealSpd = tMRRealSpd * (1.2 + ((distMeters - 5) / 15)); -- 20% or more faster speed to "catch up"
-                    elseif distMeters > 2 then
-                      tMRRealSpd = tMRRealSpd * 1.1 -- 10% faster speed than leader to "follow"
-                    end
-                end;
-                
-                if (self.realGroundSpeed*3.6) > (tMRRealSpd * 1.00) then
-                    -- Going too fast!
-                    allowedToDrive = false;
-                    
-                    if (self.realGroundSpeed*3.6) > (tMRRealSpd * 1.05) then
-                        -- Going way much too fast!
-                        hasCollision = true; -- apply brakes
-                    end
-                end;
-            else
+            --if AIVehicleUtil.mrDriveInDirection and self.isRealistic then
+            --    if crumbT.realGroundSpeed ~= nil then
+            --        tMRRealSpd = math.max(1.1 * crumbT.realGroundSpeed * 3.6, 5); -- 10% quicker to "chase" the followed
+            --    else
+            --        tMRRealSpd = math.max(1.1 * crumbAvgSpeed * 3600, 5);
+            --    end;
+            --    
+            --    if keepInFrontMeters > 0 then
+            --        if distMeters > 20 then
+            --          tMRRealSpd = math.max(tMRRealSpd, 25) -- 25km/h or more...
+            --        elseif distMeters > 5 and tMRRealSpd < 10 then
+            --          tMRRealSpd = tMRRealSpd * (1.2 + ((distMeters - 5) / 15)); -- 20% or more faster speed to "catch up"
+            --        elseif distMeters > 2 then
+            --          tMRRealSpd = tMRRealSpd * 1.1 -- 10% faster speed than leader to "follow"
+            --        end
+            --    end;
+            --    
+            --    if (self.realGroundSpeed*3.6) > (tMRRealSpd * 1.00) then
+            --        -- Going too fast!
+            --        allowedToDrive = false;
+            --        
+            --        if (self.realGroundSpeed*3.6) > (tMRRealSpd * 1.05) then
+            --            -- Going way much too fast!
+            --            hasCollision = true; -- apply brakes
+            --        end
+            --    end;
+            --else
                 --local mySpeedDiff = (math.max(0, self.lastSpeedReal) - math.max(0,self.modFM.lastLastSpeedReal)) / dt;
                 --local mySpeedDiffPct = (mySpeedDiff / math.max(0.00001,self.modFM.lastLastSpeedReal)) - 1;
                 local mySpeedDiffPct = (math.max(0, self.lastSpeedReal) / math.max(0.00001,self.modFM.lastLastSpeedReal)) - 1;
@@ -944,7 +949,7 @@ if Vehicle.debugRendering then
     tMRRealSpd = crumbAvgSpeed*3600;
 end;    
 --DEBUG]]                
-            end
+            --end
         end;
     end;
     --
@@ -968,33 +973,33 @@ end;
         
         -- Leader-vehicle can be vanilla or MoreRealistic. Get speed from the proper one.
         local leaderLastSpeedKMH = math.max(0, leader.lastSpeedReal) * 3600; -- only consider forward movement.
-        if leader.isRealistic then
-            leaderLastSpeedKMH = leader.realGroundSpeed * 3.6;
-        end
+        --if leader.isRealistic then
+        --    leaderLastSpeedKMH = leader.realGroundSpeed * 3.6;
+        --end
 
-        if AIVehicleUtil.mrDriveInDirection and self.isRealistic then
-            local minSpeed = (leaderLastSpeedKMH < 1.0) and 5 or 0; -- if leader is basically stopped, set stalker's minimum speed to 5km/h
-            tMRRealSpd = math.max(leaderLastSpeedKMH, minSpeed);
-
-            if distMetersDiff > 2 then
-                if distMetersDiff > 15 then
-                  tMRRealSpd = math.max(tMRRealSpd * 1.75, 25) -- 25km/h or more...
-                elseif distMetersDiff > 10 then
-                  tMRRealSpd = math.max(tMRRealSpd * 1.5, 17) -- 17km/h or more...
-                elseif distMetersDiff > 5 then
-                  tMRRealSpd = math.max(tMRRealSpd * 1.25, 10) -- 10km/h or more...
-                else
-                  tMRRealSpd = tMRRealSpd * 1.1 -- 10% faster speed than leader to "follow"
-                end
-            elseif distMetersDiff < 1 then
-                tMRRealSpd = tMRRealSpd * 0.9; -- Try to attempt not going too fast, and thereby doing "drive-stop-drive-stop-..."
-            end;
-            
-            if (self.realGroundSpeed*3.6) > (tMRRealSpd + 10) then
-                -- Going too fast!
-                allowedToDrive = false;
-            end;
-        else
+        --if AIVehicleUtil.mrDriveInDirection and self.isRealistic then
+        --    local minSpeed = (leaderLastSpeedKMH < 1.0) and 5 or 0; -- if leader is basically stopped, set stalker's minimum speed to 5km/h
+        --    tMRRealSpd = math.max(leaderLastSpeedKMH, minSpeed);
+        --
+        --    if distMetersDiff > 2 then
+        --        if distMetersDiff > 15 then
+        --          tMRRealSpd = math.max(tMRRealSpd * 1.75, 25) -- 25km/h or more...
+        --        elseif distMetersDiff > 10 then
+        --          tMRRealSpd = math.max(tMRRealSpd * 1.5, 17) -- 17km/h or more...
+        --        elseif distMetersDiff > 5 then
+        --          tMRRealSpd = math.max(tMRRealSpd * 1.25, 10) -- 10km/h or more...
+        --        else
+        --          tMRRealSpd = tMRRealSpd * 1.1 -- 10% faster speed than leader to "follow"
+        --        end
+        --    elseif distMetersDiff < 1 then
+        --        tMRRealSpd = tMRRealSpd * 0.9; -- Try to attempt not going too fast, and thereby doing "drive-stop-drive-stop-..."
+        --    end;
+        --    
+        --    if (self.realGroundSpeed*3.6) > (tMRRealSpd + 10) then
+        --        -- Going too fast!
+        --        allowedToDrive = false;
+        --    end;
+        --else
             local mySpeedDiffPct = (math.max(0, self.lastSpeedReal) / math.max(0.00001,self.modFM.lastLastSpeedReal)) - 1;
             
             local leaderLastSpeedReal = leaderLastSpeedKMH / 3600;
@@ -1019,7 +1024,7 @@ if Vehicle.debugRendering then
     tMRRealSpd = leaderLastSpeedKMH;
 end;    
 --DEBUG]]                
-        end;
+        --end;
     end;
     --
 --  DEBUG
@@ -1030,10 +1035,10 @@ end;
 
     -- Reduce speed if "attack angle" against target is more than 45degrees.
     if self.modFM.reduceSpeedTime > g_currentMission.time then
-        tMRRealSpd = tMRRealSpd * 0.5
+        --tMRRealSpd = tMRRealSpd * 0.5
         acceleration = acceleration * 0.5;
     elseif (self.lastSpeed*3600 > 10) and (math.abs(math.atan2(lx,lz)) > (math.pi/4)) then
-        tMRRealSpd = tMRRealSpd * 0.5
+        --tMRRealSpd = tMRRealSpd * 0.5
         acceleration = acceleration * 0.5;
         self.modFM.reduceSpeedTime = g_currentMission.time + 250; -- For the next 250ms, keep speed reduced.
     end;
@@ -1051,25 +1056,25 @@ end;
         acceleration = (hasCollision and (self.lastSpeedReal * 3600 > 5)) and -1 or 0; -- colliding and speed more than 5km/h, then negative acceleration (brake?)
         lx,lz = 0,1
 
-        if AIVehicleUtil.mrDriveInDirection and self.isRealistic then
-            -- MoreRealistic
-            self.motor.realSpeedLevelsAI[1] = 0.0;
-            AIVehicleUtil.mrDriveInDirection(self, dt, acceleration, allowedToDrive, true, lx,lz, 1, false, true);
-        else
+        --if AIVehicleUtil.mrDriveInDirection and self.isRealistic then
+        --    -- MoreRealistic
+        --    self.motor.realSpeedLevelsAI[1] = 0.0;
+        --    AIVehicleUtil.mrDriveInDirection(self, dt, acceleration, allowedToDrive, true, lx,lz, 1, false, true);
+        --else
             -- Vanilla
             AIVehicleUtil.driveInDirection(self, dt, 30, acceleration, (acceleration * 0.7), 30, allowedToDrive, moveForwards, lx,lz, nil, 1);
-        end;
+        --end;
     else
-        if AIVehicleUtil.mrDriveInDirection and self.isRealistic then
-            -- MoreRealistic
-            self.motor.realSpeedLevelsAI[4] = tMRRealSpd;
-            AIVehicleUtil.mrDriveInDirection(self, dt, 1, allowedToDrive, true, lx,lz, 4, false, true);
-        else
+        --if AIVehicleUtil.mrDriveInDirection and self.isRealistic then
+        --    -- MoreRealistic
+        --    self.motor.realSpeedLevelsAI[4] = tMRRealSpd;
+        --    AIVehicleUtil.mrDriveInDirection(self, dt, 1, allowedToDrive, true, lx,lz, 4, false, true);
+        --else
             -- Vanilla
             -- self.turnStage = -1; -- MoreRealistic v1.0 - Make MR think that we are not "working in line", so the steeringSpeed will be faster.
-            self.motor.maxRpmOverride = nil;
+            --self.motor.maxRpmOverride = nil;
             AIVehicleUtil.driveInDirection(self, dt, 30, acceleration, (acceleration * 0.7), 30, allowedToDrive, moveForwards, lx,lz, nil, 1);
-        end
+        --end
     end;
 
     -- v0.76
@@ -1123,8 +1128,8 @@ function FollowMe.setStateFollowStalker(self, followsObj, stalkedByObj)
         self.deactivateOnLeave = false;
         self.disableCharacterOnLeave = false;
 
-        -- MoreRealistic - DURAL
-        self.realForceAiDriven = true;
+        ---- MoreRealistic - DURAL
+        --self.realForceAiDriven = true;
     else
         self.forceIsActive = false;
         self.stopMotorOnLeave = true;
@@ -1137,8 +1142,8 @@ function FollowMe.setStateFollowStalker(self, followsObj, stalkedByObj)
             end;
         end;
 
-        -- MoreRealistic - DURAL
-        self.realForceAiDriven = false;
+        ---- MoreRealistic - DURAL
+        --self.realForceAiDriven = false;
     end;
 end;
 
@@ -1162,13 +1167,14 @@ function FollowMe.startFollowMe(self, noEventSend)
     local rotDeg = math.deg(math.atan2(rx/rlength,rz/rlength));
     local rotRad = Utils.degToRad(rotDeg-45.0);
     local rotRad = Utils.degToRad(rotDeg-45.0);
-    --FollowMe:log(2, string.format("getWorldTranslation:%f/%f/%f - localDirectionToWorld:%f/%f/%f - rDeg:%f - rRad:%f", wx,wy,wz, rx,ry,rz, rotDeg, rotRad));
+    --log(string.format("getWorldTranslation:%f/%f/%f - localDirectionToWorld:%f/%f/%f - rDeg:%f - rRad:%f", wx,wy,wz, rx,ry,rz, rotDeg, rotRad));
 
     -- Find closest vehicle, that is in front of self.
     local closestDistance = 50;
     local closestVehicle = nil;
     for _,vehicleObj in pairs(g_currentMission.steerables) do
-        if vehicleObj.modFM.DropperCircularArray ~= nil -- Make sure other vehicle has circular array
+        if vehicleObj.modFM ~= nil -- (v2.0.6) Make sure its a vehicle that has the FollowMe specialization added.
+        and vehicleObj.modFM.DropperCircularArray ~= nil -- Make sure other vehicle has circular array
         and vehicleObj.modFM.StalkerVehicleObj == nil then -- and is not already stalked by something.
             local vx,vy,vz = getWorldTranslation(vehicleObj.components[1].node);
             local dx,dz = vx-wx, vz-wz;
@@ -1201,13 +1207,13 @@ function FollowMe.startFollowMe(self, noEventSend)
             local dx,dz = x-wx, z-wz;
             local dist = Utils.vector2Length(dx,dz);
             --local r = Utils.getYRotationFromDirection(dx,dz);
-            --FollowMe:log(3, string.format("#%d - xz:%f/%f - dxdz:%f/%f - r:%f - dist:%f", i, x,z, dx,dz, r, dist));
+            --log(string.format("#%d - xz:%f/%f - dxdz:%f/%f - r:%f - dist:%f", i, x,z, dx,dz, r, dist));
             if (dist > 2) and (dist < closestDistance) then
                 -- Rotate to see if the point is "in front of us"
                 local nx = dx * math.cos(rotRad) - dz * math.sin(rotRad);
                 local nz = dx * math.sin(rotRad) + dz * math.cos(rotRad);
                 if (nx > 0) and (nz > 0) then
-                    --FollowMe:log(3, string.format("#%d - xz:%f/%f - dxdz:%f/%f - dist:%f - nxnz:%f/%f", i, x,z, dx,dz, dist, nx,nz));
+                    --log(string.format("#%d - xz:%f/%f - dxdz:%f/%f - dist:%f - nxnz:%f/%f", i, x,z, dx,dz, dist, nx,nz));
                     closestDistance = dist;
                     self.modFM.FollowCurrentIndex = i;
                 end;
@@ -1219,7 +1225,7 @@ function FollowMe.startFollowMe(self, noEventSend)
             end;
         end;
     end;
-    --FollowMe:log(2, string.format("ClosestDist:%f, index:%d", closestDistance, self.modFM.FollowCurrentIndex));
+    --log(string.format("ClosestDist:%f, index:%d", closestDistance, self.modFM.FollowCurrentIndex));
     --
     if self.modFM.FollowCurrentIndex == 0 then
         self.modFM.FollowVehicleObj = nil;
@@ -1249,22 +1255,39 @@ function FollowMe.startFollowMe(self, noEventSend)
     self.deactivateOnLeave = false;
     self.disableCharacterOnLeave = false;
 
-    -- moreRealistic vv
-    if AIVehicleUtil.mrDriveInDirection ~= nil then
-        -- MoreRealistic - DURAL
-        self.realForceAiDriven = true;
-    --else
-    --    if self.motor.isRealistic then
-    --        -- MoreRealistic v1.0
-    --        -- Due to moreRealistic's driveInDirection(), which sets speedLevel=2 in a "hardcoded" manner,
-    --        -- I'm here switching the realSpeedLevels 2 and 4 - these are then switched again, when FollowMe is stopped.
-    --        local temp = self.motor.realSpeedLevels[2];
-    --        self.motor.realSpeedLevels[2] = self.motor.realSpeedLevels[4];
-    --        self.motor.realSpeedLevels[4] = temp;
-    --    end
-    end;
-    -- moreRealistic ^^
+    ---- moreRealistic vv
+    --if AIVehicleUtil.mrDriveInDirection ~= nil then
+    --    -- MoreRealistic - DURAL
+    --    self.realForceAiDriven = true;
+    ----else
+    ----    if self.motor.isRealistic then
+    ----        -- MoreRealistic v1.0
+    ----        -- Due to moreRealistic's driveInDirection(), which sets speedLevel=2 in a "hardcoded" manner,
+    ----        -- I'm here switching the realSpeedLevels 2 and 4 - these are then switched again, when FollowMe is stopped.
+    ----        local temp = self.motor.realSpeedLevels[2];
+    ----        self.motor.realSpeedLevels[2] = self.motor.realSpeedLevels[4];
+    ----        self.motor.realSpeedLevels[4] = temp;
+    ----    end
+    --end;
+    ---- moreRealistic ^^
 
+    ----FS2015 - TODO, make visible on clients too!
+    local iconWidth = math.floor(0.015 * g_screenWidth) / g_screenWidth;
+    local iconHeight = iconWidth * g_screenAspectRatio;
+    
+    self.modFM.mapIcon = g_currentMission.ingameMap:createMapHotspot(
+        "fm", 
+        FollowMe.mapIconFile, 
+        0,0, 
+        iconWidth,iconHeight,
+        false, 
+        false, 
+        false, 
+        self.rootNode,
+        false,
+        false
+    );
+    
     self.modFM.isDirty = true;
 end;
 
@@ -1298,6 +1321,11 @@ function FollowMe.stoppedFollowMe(self, noSendEvent)
 
     -- Set Disengaged state
     self.modFM.FollowState = 0;
+
+    ----FS2015
+    --if self.dismiss then
+    --  self:dismiss()
+    --end
     
     -- Copied from FS2011-Hirable, for the mods that do not include that specialization in their vehicle-type.
     self.forceIsActive = false;
@@ -1315,40 +1343,101 @@ function FollowMe.stoppedFollowMe(self, noSendEvent)
     self.lastAcceleration = 0;
 
     -- Vanilla
-    self.motor:setSpeedLevel(0, false);
-    self.motor.maxRpmOverride = nil;
+    --self.motor:setSpeedLevel(0, false);
+    --self.motor.maxRpmOverride = nil;
 
-    -- moreRealistic vv
-    if AIVehicleUtil.mrDriveInDirection ~= nil then
-        -- MoreRealistic - DURAL
-        self.realForceAiDriven = false;
-        
-        --Steerable.realDesactivateVehicle(self);
-    --else
-    --    if self.motor.isRealistic then
-    --        -- MoreRealistic v1.0
-    --        local temp = self.motor.realSpeedLevels[2];
-    --        self.motor.realSpeedLevels[2] = self.motor.realSpeedLevels[4];
-    --        self.motor.realSpeedLevels[4] = temp;
-    --    end
-    end;
-    -- moreRealistic ^^
+    ---- moreRealistic vv
+    --if AIVehicleUtil.mrDriveInDirection ~= nil then
+    --    -- MoreRealistic - DURAL
+    --    self.realForceAiDriven = false;
+    --    
+    --    --Steerable.realDesactivateVehicle(self);
+    ----else
+    ----    if self.motor.isRealistic then
+    ----        -- MoreRealistic v1.0
+    ----        local temp = self.motor.realSpeedLevels[2];
+    ----        self.motor.realSpeedLevels[2] = self.motor.realSpeedLevels[4];
+    ----        self.motor.realSpeedLevels[4] = temp;
+    ----    end
+    --end;
+    ---- moreRealistic ^^
 
     WheelsUtil.updateWheelsPhysics(self, 0, self.lastSpeed, 0, true, self.requiredDriveMode); -- doHandBrake
-    
+
+    -- FS2015
+    if self.modFM.mapIcon ~= nil then
+        g_currentMission.ingameMap:deleteMapHotspot(self.modFM.mapIcon);
+        self.modFM.mapIcon = nil;
+    end
     --
     self.modFM.isDirty = true;
 end;
 
+function FollowMe.getWorldToScreen(nodeId)
+    local tx,ty,tz = getWorldTranslation(nodeId);
+    --ty = ty + self.displayYoffset;
+    local sx,sy,sz = project(tx,ty,tz);
+    if  sx<1 and sx>0  -- When "inside" screen
+    and sy<1 and sy>0  -- When "inside" screen
+    and          sz<1  -- Only draw when "in front of" camera
+    then
+        return sx,sy
+    end
+    return nil,nil
+end
+
+function FollowMe.renderShadedTextCenter(sx,sy, txt)
+    setTextAlignment(RenderText.ALIGN_CENTER);
+    setTextBold(true)
+    setTextColor(0,0,0,1);
+    renderText(sx+0.001, sy-0.001, 0.015, txt);
+    setTextColor(1,1,1,1);
+    renderText(sx, sy, 0.015, txt);
+end
+
 function FollowMe.draw(self)
     if self.modFM.ShowWarningTime > g_currentMission.time then
-        g_currentMission:addWarning(g_i18n:getText(self.modFM.ShowWarningText), 0.07+0.022, 0.019+0.029);
+        g_currentMission:addWarning(g_i18n:getText(self.modFM.ShowWarningText)) --, 0.07+0.022, 0.019+0.029);
     end;
+    --
+    local showFollowMeMy = FollowMe.keyModifier_FollowMeMy == nil or (FollowMe.keyModifier_FollowMeMy ~= nil and Input.isKeyPressed(FollowMe.keyModifier_FollowMeMy));
+    local showFollowMeFl = FollowMe.keyModifier_FollowMeFl == nil or (FollowMe.keyModifier_FollowMeFl ~= nil and Input.isKeyPressed(FollowMe.keyModifier_FollowMeFl));
+    --
+    if showFollowMeMy and self.modFM.FollowVehicleObj ~= nil then
+        local sx,sy = FollowMe.getWorldToScreen(self.modFM.FollowVehicleObj.components[1].node)
+        if sx~=nil then
+            local txt = g_i18n:getText("FollowMeLeader")
+            local dist = self.modFM.FollowKeepBack
+            if (dist ~= 0) then
+                txt = txt .. "\n" .. (g_i18n:getText((dist > 0) and "FollowMeDistAhead" or "FollowMeDistBehind")):format(math.abs(dist))
+            end
+            local offs = self.modFM.FollowXOffset;
+            if (offs ~= 0) then
+                txt = txt .. "\n" .. (g_i18n:getText((offs > 0) and "FollowMeOffLft" or "FollowMeOffRgt")):format(math.abs(offs))
+            end
+            FollowMe.renderShadedTextCenter(sx,sy, txt)
+        end
+    end
+    --
+    if showFollowMeFl and self.modFM.StalkerVehicleObj ~= nil then
+        local sx,sy = FollowMe.getWorldToScreen(self.modFM.StalkerVehicleObj.components[1].node)
+        if sx~=nil then
+            local txt = g_i18n:getText("FollowMeFollower")
+            local dist = self.modFM.StalkerVehicleObj.modFM.FollowKeepBack
+            if (dist ~= 0) then
+                txt = txt .. "\n" .. (g_i18n:getText((dist > 0) and "FollowMeDistBehind" or "FollowMeDistAhead")):format(math.abs(dist))
+            end
+            local offs = self.modFM.StalkerVehicleObj.modFM.FollowXOffset;
+            if (offs ~= 0) then
+                txt = txt .. "\n" .. (g_i18n:getText((offs > 0) and "FollowMeOffRgt" or "FollowMeOffLft")):format(math.abs(offs))
+            end
+            FollowMe.renderShadedTextCenter(sx,sy, txt)
+        end
+    end
     --
     if g_currentMission.showHelpText then
         if self.modFM.FollowVehicleObj ~= nil
-        or FollowMe.keyModifier_FollowMeMyToggle == nil
-        or (FollowMe.keyModifier_FollowMeMyToggle ~= nil and Input.isKeyPressed(FollowMe.keyModifier_FollowMeMyToggle)) then
+        or showFollowMeMy then
             g_currentMission:addHelpButtonText(g_i18n:getText("FollowMeMyToggle"), InputBinding.FollowMeMyToggle);
         end;
         --
@@ -1434,6 +1523,10 @@ function FollowMe.draw(self)
         end;
     end
 --DEBUG]]
+
+    setTextAlignment(RenderText.ALIGN_LEFT);
+    setTextBold(false);
+    setTextColor(1,1,1,1);
 end;
 
 ----  DEBUG
@@ -1507,7 +1600,7 @@ function FollowMeEvent:new(vehicle, stateId)
 end;
 
 function FollowMeEvent:writeStream(streamId, connection)
---FollowMe.log(self.vehicle, 2, "FollowMeEvent:writeStream()");
+--log("FollowMeEvent:writeStream()");
     FollowMe.sharedWriteStream(
         g_server ~= nil,
         streamId,
@@ -1532,7 +1625,7 @@ function FollowMeEvent:readStream(streamId, connection)
     warnTxt         = FollowMe.sharedReadStream(g_server == nil, streamId);
     --
     if vehObj ~= nil then
---FollowMe.log(vehObj, 2, "FollowMeEvent:readStream()");
+--log("FollowMeEvent:readStream()");
         FollowMe.recvUpdate(vehObj, stateId, keepBackDist, xOffset, followsObj, stalkedByObj, warnTxt);
     end;
 end;
@@ -1540,21 +1633,14 @@ end;
 function FollowMeEvent.sendEvent(vehicle, stateId, noEventSend)
     if noEventSend == nil or noEventSend == false then
         if g_server ~= nil then
---FollowMe.log(vehicle, 2, "g_server:broadcastEvent");
+--log("g_server:broadcastEvent");
             g_server:broadcastEvent(FollowMeEvent:new(vehicle, stateId), nil, nil, vehicle);
         else
---FollowMe.log(vehicle, 2, "g_client:getServerConnection():sendEvent()");
+--log("g_client:getServerConnection():sendEvent()");
             g_client:getServerConnection():sendEvent(FollowMeEvent:new(vehicle, stateId));
         end;
     end;
 end;
-
----- HACK to make ShowWorkersOnPDA v0.96 actually show this FollowMe, due to changed ZIP filename.
---if ShowHiredWorkersOnPDAMap ~= nil and ShowHiredWorkersOnPDAMap.ShowWorkersOnPDA ~= nil and ShowHiredWorkersOnPDAMap.ShowWorkersOnPDA.version <= 0.96 then
---    local g = getfenv(0)    
---    g["FollowMe2013"] = {FollowMe=FollowMe};
---    print(string.format("INFO: FollowMe(v%s) Fix for 'ShowHiredWorkersOnPDAMap v0.96' applied.", FollowMe.version));
---end
     
 --
 print(string.format("Script loaded: FollowMe.lua (v%s)", FollowMe.version));

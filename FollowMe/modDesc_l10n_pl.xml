@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<l10n>
+    <texts>
+        <text name="FollowMeMissingTrafficCollisionTrigger" text="Niestety ten pojazd nie może działać jako pojazd 'podążający'. Brak elementu o nazwie 'aiTrafficCollisionTrigger'." />
+        <text name="FollowMeNotAvailable"                   text="Niestety ten pojazd nie może działać jako pojazd 'podążający'." />
+
+        <text name="FollowMeStartEngine"        text="W pierwszej kolejności odpal silnik." />
+        <text name="FollowMeTooFarBehind"       text="Zgubiono 'ścieżkę' pojazdu prowadzącego. Zatrzymywanie." />
+        <text name="FollowMeDropperNotFound"    text="Nie można zlokalizować 'ścieżki' w zasięgu zakresu jej wyszukiwania. Zbliż się do pojazdu prowadzącego." />
+        
+        <text name="FollowMeKeysMyself"         text="%s - Odstęp aktywnego pojazdu/Offset" />
+        <text name="FollowMeKeysBehind"         text="%s - Odstęp z tyłu/Offset" />
+        
+        <text name="FollowMeMyToggle"           text="FollowMe: Przełączanie wł/wył" />
+        <text name="FollowMeMyDistDec"          text="FollowMe: Odstęp aktywnego pojazdu -" />
+        <text name="FollowMeMyDistInc"          text="FollowMe: Odstęp aktywnego pojazdu +" />
+        <text name="FollowMeMyOffsDec"          text="FollowMe: Przesunięcie aktywnego pojazdu w lewo" />
+        <text name="FollowMeMyOffsInc"          text="FollowMe: Przesunięcie aktywnego pojazdu w prawo" />
+        <text name="FollowMeFlStop"             text="FollowMe: Podąrzające pojazdy - STOP" />
+        <text name="FollowMeFlDistDec"          text="FollowMe: Odstęp z tyłu -" />
+        <text name="FollowMeFlDistInc"          text="FollowMe: Odstęp z tyłu +" />
+        <text name="FollowMeFlOffsDec"          text="FollowMe: Odstęp z tyłu w lewo" />
+        <text name="FollowMeFlOffsInc"          text="FollowMe: Odstęp z tyłu w prawo" />
+                
+    <!-- needs translation -->
+        <text name="FollowMeLeader"             text="Leader" />
+        <text name="FollowMeFollower"           text="Follower" />
+        <text name="FollowMeOffLft"             text="%.1f Left-offs." />
+        <text name="FollowMeOffRgt"             text="Right-offs. %.1f" />
+        <text name="FollowMeDistBehind"         text="Behind-dist. %.1f" />
+        <text name="FollowMeDistAhead"          text="Ahead-dist. %.1f" />
+    </texts>
+</l10n>

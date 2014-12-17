@@ -1,0 +1,32 @@
+﻿﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<l10n>
+    <texts>
+        <text name="FollowMeMissingTrafficCollisionTrigger" text="Malheureusement, ce véhicule n'est pas capable d'agir comme un 'suiveur'. Il manque une partie appelée 'aiTrafficCollisionTrigger'." />
+        <text name="FollowMeNotAvailable"                   text="Malheureusement, ce véhicule n'est pas capable d'agir comme un 'suiveur'." />
+ 
+        <text name="FollowMeStartEngine"        text="Démarrer d'abord le moteur." />
+        <text name="FollowMeTooFarBehind"       text="Suiveur trop éloigné. Arrêt." />
+        <text name="FollowMeDropperNotFound"    text="Impossible de trouver un leader. Rapprochez-vous de la voiture de tête." />
+         
+        <text name="FollowMeKeysMyself"         text="%s - Leader Écart/Décalage" />
+        <text name="FollowMeKeysBehind"         text="%s - Suiveur Écart/Décalage" />
+             
+        <text name="FollowMeMyToggle"           text="FollowMe: Activer/Désactiver" />
+        <text name="FollowMeMyDistDec"          text="FollowMe: Leader Écart -" />
+        <text name="FollowMeMyDistInc"          text="FollowMe: Leader Écart +" />
+        <text name="FollowMeMyOffsDec"          text="FollowMe: Leader décalage gauche" />
+        <text name="FollowMeMyOffsInc"          text="FollowMe: Leader décalage droite" />
+        <text name="FollowMeFlStop"             text="FollowMe: Stopper le suiveur" />
+        <text name="FollowMeFlDistDec"          text="FollowMe: Suiveur Écart -" />
+        <text name="FollowMeFlDistInc"          text="FollowMe: Suiveur Écart +" />
+        <text name="FollowMeFlOffsDec"          text="FollowMe: Suiveur décalage gauche" />
+        <text name="FollowMeFlOffsInc"          text="FollowMe: Suiveur décalage droite" />
+             
+        <text name="FollowMeLeader"             text="Leader" />
+        <text name="FollowMeFollower"           text="Suiveur" />
+        <text name="FollowMeOffLft"             text="%.1f Décal. gauche" />
+        <text name="FollowMeOffRgt"             text="Décal. droite %.1f" />
+        <text name="FollowMeDistBehind"         text="Dist. suiveur. %.1f" />
+        <text name="FollowMeDistAhead"          text="Dist. leader %.1f" />
+    </texts>
+</l10n>

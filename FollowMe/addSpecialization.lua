@@ -67,7 +67,7 @@ function addSpecialization:add()
         local correctLocation = false;
         for i = 1, table.maxn(v.specializations) do
             local vs = v.specializations[i];
-            if vs ~= nil and vs == SpecializationUtil.getSpecialization("steerable") then
+            if vs ~= nil and vs == SpecializationUtil.getSpecialization("drivable") then    -- FS15
                 correctLocation = true;
                 break;
             end;
@@ -77,19 +77,9 @@ function addSpecialization:add()
             table.insert(v.specializations, SpecializationUtil.getSpecialization("FollowMe"));
         end;
     end;
-    
 
     -- Copy this mod's localization texts to global table - and hope they are unique enough, so not overwriting existing ones.
-    local xmlFile = loadXMLFile("modDesc", addSpecialization.g_currentModDirectory .. "ModDesc.XML");
-    local i=0
-    while true do
-        local xmlTag = string.format("modDesc.l10n.text(%d)", i);
-        local textName = getXMLString(xmlFile, xmlTag .. "#name");
-        if nil == textName then
-            break
-        end
-        g_i18n.globalI18N.texts[textName] = g_i18n:getText(textName);
-        i=i+1
+    for textName,textValue in pairs(g_i18n.texts) do
+        g_i18n.globalI18N.texts[textName] = textValue
     end
-    delete(xmlFile);
 end;
