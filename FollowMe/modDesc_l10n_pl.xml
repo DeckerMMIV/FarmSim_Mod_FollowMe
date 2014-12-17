@@ -1,5 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
+    <description>
+<![CDATA[Czy kiedykolwiek chciałeś by niektóre pojazdy podążały za tobą po mapie?
+Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz.)
+
+
+Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
+    </description>
+
     <texts>
         <text name="FollowMeMissingTrafficCollisionTrigger" text="Niestety ten pojazd nie może działać jako pojazd 'podążający'. Brak elementu o nazwie 'aiTrafficCollisionTrigger'." />
         <text name="FollowMeNotAvailable"                   text="Niestety ten pojazd nie może działać jako pojazd 'podążający'." />

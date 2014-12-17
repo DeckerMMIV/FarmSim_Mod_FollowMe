@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="21">
     <author>Freelance Modding Crew</author>
+    <version>2.0.7</version>
     <contributors>DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89</contributors>
 
     <title>
@@ -10,10 +11,6 @@
         <fr>Follow Me</fr>
         <ru>Follow Me</ru>
     </title>
-
-    <version>2.0.7</version>
-
-    <multiplayer supported="true"/>
 
     <description>
         <en>
@@ -51,10 +48,10 @@ Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
 
 Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         </ru>
-
     </description>
 
     <iconFilename>store_FollowMe.dds</iconFilename>
+    <multiplayer supported="true"/>
 
     <extraSourceFiles>
         <sourceFile filename="addSpecialization.lua" />

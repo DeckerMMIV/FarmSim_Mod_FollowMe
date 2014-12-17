@@ -1,5 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
+    <description>
+<![CDATA[Ever wanted to have some vehicles follow you around the map?
+With "Follow Me" you can (though not backwards driving.)
+
+
+Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
+    </description>
+
     <texts>
         <text name="FollowMeMissingTrafficCollisionTrigger" text="Unfortunately this vehicle is not able to act as a 'follower'. It is missing a part called 'aiTrafficCollisionTrigger'." />
         <text name="FollowMeNotAvailable"                   text="Unfortunately this vehicle is not able to act as a 'follower'." />

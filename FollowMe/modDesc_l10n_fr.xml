@@ -1,5 +1,13 @@
 ﻿﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
+    <description>
+<![CDATA[Vous avez toujours voulu avoir quelques véhicules que vous suivez dans la carte?
+Avec "Follow Me", vous pouvez (mais pas en arrière de conduire.)
+
+
+Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
+    </description>
+    
     <texts>
         <text name="FollowMeMissingTrafficCollisionTrigger" text="Malheureusement, ce véhicule n'est pas capable d'agir comme un 'suiveur'. Il manque une partie appelée 'aiTrafficCollisionTrigger'." />
         <text name="FollowMeNotAvailable"                   text="Malheureusement, ce véhicule n'est pas capable d'agir comme un 'suiveur'." />

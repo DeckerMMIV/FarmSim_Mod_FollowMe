@@ -1,5 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
+    <description>
+<![CDATA[Была ли у Вас необходимость в том что-бы какие-либо ТС
+двигались следом за вами? С "Follow Me" это возможно! 
+
+
+Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
+    </description>
+
     <texts>
         <text name="FollowMeMissingTrafficCollisionTrigger" text="К сожалению это ТС не может быть ведомым. У него отсутствует деталь, называемая 'aiTrafficCollisionTrigger'." />
         <text name="FollowMeNotAvailable"                   text="К сожалению это транспортное средство не может быть ведомым." />
