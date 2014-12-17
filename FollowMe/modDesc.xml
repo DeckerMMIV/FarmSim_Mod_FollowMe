@@ -1,209 +1,265 @@
-<?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="4">
-    <author>Decker</author>
-    <version>0.53(beta)</version>
+﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<modDesc descVersion="13">
+    <author>Freelance Modding Crew</author>
+
+    <version>1.0.81</version>
 
     <title>
-        <en>"Follow Me / Convoy" [SinglePlayer]</en>
-        <de>"Follow Me / Convoy" [SinglePlayer]</de>
-        <pl>"Follow Me / Convoy" [SinglePlayer]</pl>
-        <fr>"Follow Me / Convoy" [SinglePlayer]</fr>
+        <en>Follow Me</en>
+        <de>Follow Me</de>
+        <pl>Follow Me</pl>
+        <fr>Follow Me</fr>
     </title>
+
+    <multiplayer supported="true"/>
 
     <description>
         <en>
 <![CDATA[Ever wanted to have some vehicles follow you around the map?
-With "Follow Me / Convoy" you can set a leading-vehicle, and activate other
-vehicles which will then follow it (though not backwards driving.)
-ls-uk.info, Decker_MMIV   - http://www.youtube.com/watch?v=P5XGvNpWXqA&t=2995]]>
+With "Follow Me" you can (though not backwards driving.)
+
+Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         </en>
-        <de>
-<![CDATA[Wollten Sie schon immer Fahrzeuge haben, die Ihnen auf der ganze Karte folgen?
-Mit "Follow Me / Convoy" können Sie ein führendes Fahrzeug bestimmen. Anschließend bestimmen Sie noch
-andere Fahrzeuge, die Ihnen dann folgen (Außer wenn sie rückwärts fahren.)
-ls-uk.info, Decker_MMIV   - (Übersetzung von fendtfreek)]]>
+        <de> <!-- translation by DrUptown -->
+<![CDATA[Wollten Sie schon immer haben, dass einige Fahrzeuge Sie folgen rund um die Karte?
+Mit "Follow Me" kann man dass (aber nicht beim rückwärts fahren.)
+
+Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         </de>
-        <pl> <!-- http://translate.google.com -->
-<![CDATA[Czy kiedykolwiek chciałeś mieć niektóre pojazdy za tobą po mapie?
-Z "Follow Me / Convoy" można ustawić wiodącą-pojazd i włączyć inne
-pojazdy, które będą następnie wykonaj go (choć nie do tyłu jazdy.)
-ls-uk.info, Decker_MMIV   - Used translate.google.com]]>
+        <pl> <!-- translation by spinah -->
+<![CDATA[Czy kiedykolwiek chciałeś by niektóre pojazdy podążały za tobą po mapie?
+Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz.)
+
+Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         </pl>
-        <fr> <!-- http://translate.google.com -->
+        <fr> <!-- needs proper translation to French -->
 <![CDATA[Vous avez toujours voulu avoir quelques véhicules que vous suivez dans la carte?
-Avec "Follow Me / Convoy" vous pouvez définir un premier véhicule, et d'activer d'autres
-véhicules qui le suivent ensuite (mais pas en arrière de conduire.)
-ls-uk.info, Decker_MMIV   - Used translate.google.com]]>
+Avec "Follow Me", vous pouvez (mais pas en arrière de conduire.)
+
+Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         </fr>
     </description>
 
-    <iconFilename>store.png</iconFilename>
-    <multiplayer supported="false"/>
+    <iconFilename>store_FollowMe.dds</iconFilename>
 
-    <!-- 
-    Translations:
-        English - Decker
-        German  - fendtfreek
-        Polish  - http://translate.google.com  (English to Polish)
-        French  - http://translate.google.com  (English to French)
-    -->
+    <extraSourceFiles>
+        <sourceFile filename="addSpecialization.lua" />
+        <!-- <sourceFile filename="FollowMe.lua" /> -->
+    </extraSourceFiles>
+
     <l10n>
-        <text name="AutoFollowActiveDrops">
-            <en>Leading vehicle - %d following</en>
-            <de>Führendes Fahrzeug - %d folgende</de>
-            <pl>Prowadząc pojazd - %d dodaje</pl>
-            <fr>Véhicule de tête - %d ci-dessous</fr>
-        </text>
-        <text name="AutoFollowActiveFollowing">
-            <en>Following vehicle</en>
-            <de>Nachfolgendes Fahrzeugs</de>
-            <pl>Po pojazd</pl>
-            <fr>Suite véhicule</fr>
-        </text>
+<!-- -->
+        <text name="FollowMeTooFarBehind">
+            <en>
+<![CDATA[Lost the 'trail' of
+leading vehicle.
 
-        <text name="AutoFollowAlreadyDropping">
-            <en>
-<![CDATA[This vehicle is currently
-acting as the 'leader' for
-other vehicles to follow.]]>
+Stopping.]]>
             </en>
-            <de>
-<![CDATA[Dieses Fahrzeug ist derzeit
-das führende Fahrzeug,
-andere folgen.]]>
+            <de> <!-- translation by DrUptown -->
+<![CDATA['trail' des
+führenden Fahrzeug verloren.
+
+Stoppen.]]>
             </de>
-            <pl>
-<![CDATA[Ten pojazd jest obecnie
-działając jako "przywódca" dla
-inne pojazdy do naśladowania.]]>
+            <pl> <!-- translation by spinah -->
+<![CDATA[Zgubiono 'ścieżkę'
+pojazdu prowadzącego.
+
+Zatrzymywanie.]]>
             </pl>
-            <fr>
-<![CDATA[Ce véhicule est actuellement
-agissant en tant que «chef de file» pour
-autres véhicules à suivre.]]>
+            <fr> <!-- translation by DrUptown -->
+<![CDATA['sentier' de
+conduisant véhicule perdu.
+
+Arrêt.]]>
             </fr>
         </text>
-        <text name="AutoFollowAlreadyFollowing">
-            <en>
-<![CDATA[
-This vehicle is currently following
-the trail of the 'leader'.]]>
-            </en>
-            <de>
-<![CDATA[
-Dieses Fahrzeug folgt der 
-Spur des führenden Farzeuges.]]>
-            </de>
-            <pl>
-<![CDATA[
-Ten pojazd jest obecnie po
-Szlak o "lidera".]]>
-            </pl>
-            <fr>
-<![CDATA[
-Ce véhicule est actuellement la suite
-le sentier du «leader».]]>
-            </fr>
-        </text>
-        <text name="AutoFollowAlreadyActive">
-            <en>
-<![CDATA[
-Another vehicle is already
-set as the 'leader'!]]>
-            </en>
-            <de>
-<![CDATA[
-Ein weiteres Fahrzeug ist bereits
-als "Führer" bestimmt worden!]]>
-            </de>
-            <pl>
-<![CDATA[
-Inny pojazd jest już
-ustawiony jako "przywódca"!]]>
-            </pl>
-            <fr>
-<![CDATA[
-Un autre véhicule est déjà
-défini comme le «leader»!]]>
-            </fr>
-        </text>
-        <text name="AutoFollowNoDropper">
-            <en>
-<![CDATA[
-No active leading vehicle found.]]>
-            </en>
-            <de>
-<![CDATA[
-Keine führenden Fahrzeuge gefunden.]]>
-            </de>
-            <pl>
-<![CDATA[
-Brak aktywnego czołowym pojazd znaleziono.]]>
-            </pl>
-            <fr>
-<![CDATA[
-Aucun véhicule de tête actif trouvé.]]>
-            </fr>
-        </text>
-        <text name="AutoFollowDropperNotFound">
+<!-- -->
+        <text name="FollowMeDropperNotFound">
             <en>
 <![CDATA[Unable to locate a nearby 'trail'
 within viewing-range to follow.
 Move closer to the leading vehicle.]]>
             </en>
-            <de>
-<![CDATA[Kann in der Nähe keine Spur finden, 
+            <de> <!-- translation by fendtfreek -->
+<![CDATA[Kann in der Nähe keine Spur finden,
 der ich folgen könnte.
 Nähern sie sich dem führenden Fahrzeug.]]>
             </de>
-            <pl>
-<![CDATA[Nie można zlokalizować w pobliżu "szlakiem"
-w ciągu oglądania gamie do naśladowania.
+            <pl> <!-- translation by spinah -->
+<![CDATA[Nie można zlokalizować 'ścieżki'
+w zasięgu zakresu jej wyszukiwania.
 Zbliż się do pojazdu prowadzącego.]]>
             </pl>
-            <fr>
-<![CDATA[Impossible de trouver un voisin «piste»
+            <fr> <!-- needs proper translation to French -->
+<![CDATA[Impossible de trouver un voisin 'piste'
 au sein de visualisation de gamme à suivre.
 Rapprochez-vous de la voiture de tête.]]>
             </fr>
         </text>
-        <text name="AutoFollowMissingTrafficCollisionTrigger">
+<!-- -->
+        <text name="FollowMeNotAvailable">
+            <en>
+<![CDATA[Unfortunately this vehicle is not
+able to act as a 'follower'.]]>
+            </en>
+            <de> <!-- translation by fendtfreek -->
+<![CDATA[Leider kann dieses Fahrzeug nicht
+als "Nachfolger" eingesetzt werden.]]>
+            </de>
+            <pl> <!-- translation by spinah -->
+<![CDATA[Niestety ten pojazd nie
+może działać jako pojazd 'podążający'.]]>
+            </pl>
+            <fr> <!-- needs proper translation to French -->
+<![CDATA[Malheureusement, ce véhicule n'est pas
+capable d'agir comme un 'suiveur'.]]>
+            </fr>
+        </text>
+<!-- -->
+        <text name="FollowMeMissingTrafficCollisionTrigger">
             <en>
 <![CDATA[Unfortunately this vehicle is not
 able to act as a 'follower'.
 It is missing a part called
 'aiTrafficCollisionTrigger'.]]>
             </en>
-            <de>
+            <de> <!-- translation by fendtfreek -->
 <![CDATA[Leider kann dieses Fahrzeug nicht
 als "Nachfolger" eingesetzt werden.
 Es fehlt ein Teil namens
 'aiTrafficCollisionTrigger'.]]>
             </de>
-            <pl>
-<![CDATA[Niestety ten pojazd nie jest
-mogą działać jako "obserwator".
-Go brakuje części o nazwie
-"aiTrafficCollisionTrigger".]]>
+            <pl> <!-- translation by spinah -->
+<![CDATA[Niestety ten pojazd nie
+może działać jako pojazd 'podążający'.
+Brak elementu o nazwie
+'aiTrafficCollisionTrigger'.]]>
             </pl>
-            <fr>
+            <fr> <!-- needs proper translation to French -->
 <![CDATA[Malheureusement, ce véhicule n'est pas
 capable d'agir comme un «suiveur».
 Il manque une partie appelée
 'aiTrafficCollisionTrigger'.]]>
             </fr>
         </text>
-
-        <text name="AutoFollowLead"> <en>FollowMe:Leader  </en><de>FollowMe:Leader  </de><pl>FollowMe:Lider      </pl><fr>FollowMe:Leader  </fr></text>
-        <text name="AutoFollowDrive"><en>FollowMe:Follower</en><de>FollowMe:Folgende</de><pl>FollowMe:Następujący</pl><fr>FollowMe:Disciple</fr></text>
+<!-- -->
+        <text name="FollowMeStartEngine">
+            <en>
+<![CDATA[Start engine first.]]>
+            </en>
+            <de> <!-- needs proper translation to German -->
+<![CDATA[Start engine first.]]>
+            </de>
+            <pl> <!-- translation by spinah -->
+<![CDATA[W pierwszej kolejności odpal silnik.]]>
+            </pl>
+            <fr> <!-- needs proper translation to French -->
+<![CDATA[Start engine first.]]>
+            </fr>
+        </text>
+<!-- -->
+        <text name="FollowMeKeysMyself">
+            <en>%s - Myself Distance:%.0f, Offset:%.1f          </en>
+            <de>%s - Selbst Abstand:%.0f, Offset:%.1f           </de> <!-- needs proper translation to German -->
+            <pl>%s - Odstęp aktywnego pojazdu:%.0f, Offset:%.1f </pl> <!-- translation by spinah -->
+            <fr>%s - Moi-même Écart:%.0f, Offset:%.1f           </fr> <!-- needs proper translation to French -->
+        </text>
+<!-- -->
+        <text name="FollowMeKeysBehind">
+            <en>%s - Behind Distance:%.0f, Offset:%.1f  </en>
+            <de>%s - Hinter Abstand:%.0f, Offset:%.1f   </de> <!-- needs proper translation to German -->
+            <pl>%s - Odstęp z tyłu:%.0f, Offset:%.1f    </pl> <!-- translation by spinah -->
+            <fr>%s - Derrière Écart:%.0f, Offset:%.1f   </fr> <!-- needs proper translation to French -->
+        </text>
+<!-- -->
+        <text name="FollowMeMyToggle">
+            <en>FollowMe: Toggle on/off         </en>
+            <de>FollowMe: Umzuschalten on/off   </de> <!-- needs proper translation to German -->
+            <pl>FollowMe: Przełączanie wł/wył   </pl> <!-- translation by spinah -->
+            <fr>FollowMe: Activer/Désactiver    </fr> <!-- needs proper translation to French -->
+        </text>
+<!-- -->
+        <text name="FollowMeMyDistDec">
+            <en>FollowMe: Myself Distance -             </en>
+            <de>FollowMe: Selbst Abstand -              </de> <!-- needs proper translation to German -->
+            <pl>FollowMe: Odstęp aktywnego pojazdu -    </pl> <!-- translation by spinah -->
+            <fr>FollowMe: Moi-même Écart -              </fr> <!-- needs proper translation to French -->
+        </text>
+<!-- -->
+        <text name="FollowMeMyDistInc">
+            <en>FollowMe: Myself Distance +             </en>
+            <de>FollowMe: Selbst Abstand +              </de> <!-- needs proper translation to German -->
+            <pl>FollowMe: Odstęp aktywnego pojazdu +    </pl> <!-- translation by spinah -->
+            <fr>FollowMe: Moi-même Écart +              </fr> <!-- needs proper translation to French -->
+        </text>
+<!-- -->
+        <text name="FollowMeMyOffsDec">
+            <en>FollowMe: Myself Offset left                    </en>
+            <de>FollowMe: Selbst Offset links                   </de> <!-- needs proper translation to German -->
+            <pl>FollowMe: Przesunięcie aktywnego pojazdu w lewo </pl> <!-- translation by spinah -->
+            <fr>FollowMe: Moi-même Offset gauche                </fr> <!-- needs proper translation to French -->
+        </text>
+<!-- -->
+        <text name="FollowMeMyOffsInc">
+            <en>FollowMe: Myself Offset right                    </en>
+            <de>FollowMe: Selbst Offset rechts                   </de> <!-- needs proper translation to German -->
+            <pl>FollowMe: Przesunięcie aktywnego pojazdu w prawo </pl> <!-- translation by spinah -->
+            <fr>FollowMe: Moi-même Offset droit                  </fr> <!-- needs proper translation to French -->
+        </text>
+<!-- -->
+        <text name="FollowMeFlStop">
+            <en>FollowMe: Behind Stop                </en>
+            <de>FollowMe: Hinter Aufhalten           </de> <!-- needs proper translation to German -->
+            <pl>FollowMe: Podąrzające pojazdy - STOP </pl> <!-- translation by spinah -->
+            <fr>FollowMe: Derrière Arrêter           </fr> <!-- needs proper translation to French -->
+        </text>
+<!-- -->
+        <text name="FollowMeFlDistDec">
+            <en>FollowMe: Behind Distance -     </en>
+            <de>FollowMe: Hinter Abstand -      </de> <!-- needs proper translation to German -->
+            <pl>FollowMe: Odstęp z tyłu -       </pl> <!-- translation by spinah -->
+            <fr>FollowMe: Derrière Écart -      </fr> <!-- needs proper translation to French -->
+        </text>
+<!-- -->
+        <text name="FollowMeFlDistInc">
+            <en>FollowMe: Behind Distance +     </en>
+            <de>FollowMe: Hinter Abstand +      </de> <!-- needs proper translation to German -->
+            <pl>FollowMe: Odstęp z tyłu +       </pl> <!-- translation by spinah -->
+            <fr>FollowMe: Derrière Écart +      </fr> <!-- needs proper translation to French -->
+        </text>
+<!-- -->
+        <text name="FollowMeFlOffsDec">
+            <en>FollowMe: Behind Offset left    </en>
+            <de>FollowMe: Hinter Offset links   </de> <!-- needs proper translation to German -->
+            <pl>FollowMe: Odstęp z tyłu w lewo  </pl> <!-- translation by spinah -->
+            <fr>FollowMe: Derrière Offset gauche</fr> <!-- needs proper translation to French -->
+        </text>
+<!-- -->
+        <text name="FollowMeFlOffsInc">
+            <en>FollowMe: Behind Offset right   </en>
+            <de>FollowMe: Hinter Offset rechts  </de> <!-- needs proper translation to German -->
+            <pl>FollowMe: Odstęp z tyłu w prawo </pl> <!-- translation by spinah -->
+            <fr>FollowMe: Derrière Offset droit </fr> <!-- needs proper translation to French -->
+        </text>
+<!-- -->
     </l10n>
 
-    <extraSourceFiles>
-        <sourceFile filename="Scripts/AutoFollow.lua" />
-    </extraSourceFiles>
-
     <inputBindings>
-        <input name="AutoFollowLead"    category="VEHICLE" key1="KEY_rctrl KEY_l" key2="" button="" device="0" mouse="" />
-        <input name="AutoFollowDrive"   category="VEHICLE" key1="KEY_rctrl KEY_f" key2="" button="" device="0" mouse="" />
+<!-- -->
+        <input name="FollowMeMyToggle"  category="VEHICLE" key1="KEY_rctrl KEY_f" key2="" button="" device="0" mouse="" />
+<!-- These four 'FollowMeMy...' must use the same modifier-key! -->
+        <input name="FollowMeMyDistDec" category="VEHICLE" key1="KEY_rctrl KEY_w" key2="" button="" device="0" mouse="" />
+        <input name="FollowMeMyDistInc" category="VEHICLE" key1="KEY_rctrl KEY_s" key2="" button="" device="0" mouse="" />
+        <input name="FollowMeMyOffsDec" category="VEHICLE" key1="KEY_rctrl KEY_a" key2="" button="" device="0" mouse="" />
+        <input name="FollowMeMyOffsInc" category="VEHICLE" key1="KEY_rctrl KEY_d" key2="" button="" device="0" mouse="" />
+<!-- -->        
+        <input name="FollowMeFlStop"    category="VEHICLE" key1="KEY_rshift KEY_f" key2="" button="" device="0" mouse="" />
+<!-- These four 'FollowMeFl...' must use the same modifier-key! -->
+        <input name="FollowMeFlDistDec" category="VEHICLE" key1="KEY_rshift KEY_w" key2="" button="" device="0" mouse="" />
+        <input name="FollowMeFlDistInc" category="VEHICLE" key1="KEY_rshift KEY_s" key2="" button="" device="0" mouse="" />
+        <input name="FollowMeFlOffsDec" category="VEHICLE" key1="KEY_rshift KEY_a" key2="" button="" device="0" mouse="" />
+        <input name="FollowMeFlOffsInc" category="VEHICLE" key1="KEY_rshift KEY_d" key2="" button="" device="0" mouse="" />
     </inputBindings>
 </modDesc>
