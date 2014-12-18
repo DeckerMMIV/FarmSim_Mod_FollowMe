@@ -1333,10 +1333,14 @@ function FollowMe.stoppedFollowMe(self, noSendEvent)
     self.steeringEnabled = true;
     self.deactivateOnLeave = true;
     self.disableCharacterOnLeave = true;
+    
     if not self.isEntered and not self.isControlled then
         if self.characterNode ~= nil then
             setVisibility(self.characterNode, false);
         end;
+
+        -- Stop engine, as there is no player in the vehicle.
+        self:stopMotor(noSendEvent);
     end;
 
     -- Copied from Steerable:onLeave, in attempt at making the vehicle brake/stop.
@@ -1397,7 +1401,7 @@ end
 
 function FollowMe.draw(self)
     if self.modFM.ShowWarningTime > g_currentMission.time then
-        g_currentMission:addWarning(g_i18n:getText(self.modFM.ShowWarningText)) --, 0.07+0.022, 0.019+0.029);
+        g_currentMission:addWarning(g_i18n:getText(self.modFM.ShowWarningText))
     end;
     --
     local showFollowMeMy = FollowMe.keyModifier_FollowMeMy == nil or (FollowMe.keyModifier_FollowMeMy ~= nil and Input.isKeyPressed(FollowMe.keyModifier_FollowMeMy));
