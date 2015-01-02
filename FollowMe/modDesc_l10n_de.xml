@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<l10n>
+    <description>
+<![CDATA[Wollten Sie schon immer haben, dass einige Fahrzeuge Sie folgen rund um die Karte?
+Mit "Follow Me" kann man dass (aber nicht beim rückwärts fahren.)
+
+
+Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
+    </description>
+
+    <texts>
+        <text name="FollowMeMissingTrafficCollisionTrigger" text="Leider kann dieses Fahrzeug nicht als 'Nachfolger' eingesetzt werden. Es fehlt ein Teil namens 'aiTrafficCollisionTrigger'." />
+        <text name="FollowMeNotAvailable"                   text="Leider kann dieses Fahrzeug nicht als 'Nachfolger' eingesetzt werden." />
+
+        <text name="FollowMeStartEngine"        text="Start engine first." />
+        <text name="FollowMeTooFarBehind"       text="'trail' des führenden Fahrzeug verloren. Stoppen." />
+        <text name="FollowMeDropperNotFound"    text="Kann in der Nähe keine Spur finden, der ich folgen könnte. Nähern sie sich dem führenden Fahrzeug." />
+        
+        <text name="FollowMeKeysMyself"         text="%s - Selbst Abstand/Offset" />
+        <text name="FollowMeKeysBehind"         text="%s - Hinter Abstand/Offset" />
+            
+        <text name="FollowMeMyToggle"           text="FollowMe: Umzuschalten on/off" />
+        <text name="FollowMeMyDistDec"          text="FollowMe: Selbst Abstand -" />
+        <text name="FollowMeMyDistInc"          text="FollowMe: Selbst Abstand +" />
+        <text name="FollowMeMyOffsDec"          text="FollowMe: Selbst Offset links" />
+        <text name="FollowMeMyOffsInc"          text="FollowMe: Selbst Offset rechts" />
+        <text name="FollowMeFlStop"             text="FollowMe: Hinter Aufhalten" />
+        <text name="FollowMeFlDistDec"          text="FollowMe: Hinter Abstand -" />
+        <text name="FollowMeFlDistInc"          text="FollowMe: Hinter Abstand +" />
+        <text name="FollowMeFlOffsDec"          text="FollowMe: Hinter Offset links" />
+        <text name="FollowMeFlOffsInc"          text="FollowMe: Hinter Offset rechts" />
+            
+    <!-- needs translation -->
+        <text name="FollowMeLeader"             text="Leader" />
+        <text name="FollowMeFollower"           text="Follower" />
+        <text name="FollowMeOffLft"             text="%.1f Left-offs." />
+        <text name="FollowMeOffRgt"             text="Right-offs. %.1f" />
+        <text name="FollowMeDistBehind"         text="Behind-dist. %.1f" />
+        <text name="FollowMeDistAhead"          text="Ahead-dist. %.1f" />
+    </texts>
+</l10n>

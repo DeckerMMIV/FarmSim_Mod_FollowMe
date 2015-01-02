@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<modDesc descVersion="21">
+    <author>Freelance Modding Crew</author>
+    <version>2.0.10</version>
+    <contributors>DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion</contributors>
+
+    <title>
+        <en>Follow Me</en>
+        <de>Follow Me</de>
+        <pl>Follow Me</pl>
+        <fr>Follow Me</fr>
+        <ru>Follow Me</ru>
+        <it>Follow Me</it>
+    </title>
+
+    <description>
+        <en>
+<![CDATA[Ever wanted to have some vehicles follow you around the map?
+With "Follow Me" you can (though not backwards driving.)
+
+
+Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
+        </en>
+        <de> <!-- translation by DrUptown -->
+<![CDATA[Wollten Sie schon immer haben, dass einige Fahrzeuge Sie folgen rund um die Karte?
+Mit "Follow Me" kann man dass (aber nicht beim rückwärts fahren.)
+
+
+Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
+        </de>
+        <pl> <!-- translation by spinah -->
+<![CDATA[Czy kiedykolwiek chciałeś by niektóre pojazdy podążały za tobą po mapie?
+Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz.)
+
+
+Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
+        </pl>
+        <fr> <!-- needs proper translation to French -->
+<![CDATA[Vous avez toujours voulu avoir quelques véhicules que vous suivez dans la carte?
+Avec "Follow Me", vous pouvez (mais pas en arrière de conduire.)
+
+
+Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
+        </fr>
+        <ru> <!-- translation by Gonimy_Vetrom -->
+<![CDATA[Была ли у Вас необходимость в том что-бы какие-либо ТС
+двигались следом за вами? С "Follow Me" это возможно! 
+
+
+Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
+        </ru>
+        <it> <!-- translation by DD ModPassion -->
+<![CDATA[Hai mai voluto avere alcuni veicoli che ti seguono per la mappa?
+Con "Follow Me", è possibile (non solo inseguirti dietro).
+
+
+Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
+        </it>
+    </description>
+
+    <iconFilename>store_FollowMe.dds</iconFilename>
+    <multiplayer supported="true"/>
+
+    <extraSourceFiles>
+        <sourceFile filename="addSpecialization.lua" />
+    </extraSourceFiles>
+
+    <l10n filenamePrefix="modDesc_l10n" /> <!-- Load the corresponding modDesc_l10n_<language>.XML file, or revert to 'en'/'de'. -->
+
+    <inputBindings>
+<!-- -->
+        <input name="FollowMeMyToggle"  category="VEHICLE" key1="KEY_rctrl KEY_f" key2="" button="" device="0" mouse="" />
+<!-- These four 'FollowMeMy...' must use the same modifier-key! -->
+        <input name="FollowMeMyDistDec" category="VEHICLE" key1="KEY_rctrl KEY_w" key2="" button="" device="0" mouse="" />
+        <input name="FollowMeMyDistInc" category="VEHICLE" key1="KEY_rctrl KEY_s" key2="" button="" device="0" mouse="" />
+        <input name="FollowMeMyOffsDec" category="VEHICLE" key1="KEY_rctrl KEY_a" key2="" button="" device="0" mouse="" />
+        <input name="FollowMeMyOffsInc" category="VEHICLE" key1="KEY_rctrl KEY_d" key2="" button="" device="0" mouse="" />
+<!-- -->        
+        <input name="FollowMeFlStop"    category="VEHICLE" key1="KEY_rshift KEY_f" key2="" button="" device="0" mouse="" />
+<!-- These four 'FollowMeFl...' must use the same modifier-key! -->
+        <input name="FollowMeFlDistDec" category="VEHICLE" key1="KEY_rshift KEY_w" key2="" button="" device="0" mouse="" />
+        <input name="FollowMeFlDistInc" category="VEHICLE" key1="KEY_rshift KEY_s" key2="" button="" device="0" mouse="" />
+        <input name="FollowMeFlOffsDec" category="VEHICLE" key1="KEY_rshift KEY_a" key2="" button="" device="0" mouse="" />
+        <input name="FollowMeFlOffsInc" category="VEHICLE" key1="KEY_rshift KEY_d" key2="" button="" device="0" mouse="" />
+    </inputBindings>
+</modDesc>
