@@ -716,6 +716,7 @@ end
 function FollowMe.checkBaler(attachedTool)
     local allowedToDrive
     local hasCollision
+    local reduceSpeed
     if attachedTool.balerUnloadingState == Baler.UNLOADING_CLOSED then
         if attachedTool.fillLevel >= attachedTool.capacity then
             allowedToDrive = false
@@ -724,6 +725,9 @@ function FollowMe.checkBaler(attachedTool)
                 -- Activate the bale unloading (server-side only!)
                 attachedTool:setIsUnloadingBale(true); 
             end
+        else
+            -- When baler is more than 95% full, then reduce speed in an attempt at not leaving spots of straw.
+            reduceSpeed = attachedTool.fillLevel >= (attachedTool.capacity * 0.95)
         end
     else
         allowedToDrive = false
@@ -733,7 +737,7 @@ function FollowMe.checkBaler(attachedTool)
             attachedTool:setIsUnloadingBale(false); 
         end
     end
-    return allowedToDrive, hasCollision;
+    return allowedToDrive, hasCollision, reduceSpeed;
 end
 
 function FollowMe.checkBaleWrapper(attachedTool)
@@ -803,9 +807,13 @@ function FollowMe.updateFollowMovement(self, dt)
     if attachedTool ~= nil then
         local setAllowedToDrive
         local setHasCollision
-        setAllowedToDrive, setHasCollision = attachedTool[2](attachedTool[1]);
+        local setReduceSpeed
+        setAllowedToDrive, setHasCollision, setReduceSpeed = attachedTool[2](attachedTool[1]);
         allowedToDrive = setAllowedToDrive~=nil and setAllowedToDrive or allowedToDrive;
         hasCollision   = setHasCollision~=nil   and setHasCollision   or hasCollision;
+        if (setReduceSpeed == true) then
+            self.modFM.reduceSpeedTime = g_currentMission.time + 250
+        end
     end
 
 --  DEBUG
