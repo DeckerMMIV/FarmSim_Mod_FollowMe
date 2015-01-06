@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="21">
     <author>Freelance Modding Crew</author>
-    <version>2.0.10</version>
-    <contributors>DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion</contributors>
+    <version>2.0.11</version>
+    <contributors>DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers</contributors>
 
     <title>
         <en>Follow Me</en>
@@ -11,6 +11,7 @@
         <fr>Follow Me</fr>
         <ru>Follow Me</ru>
         <it>Follow Me</it>
+        <hu>Follow Me</hu>
     </title>
 
     <description>
@@ -56,6 +57,14 @@ Con "Follow Me", è possibile (non solo inseguirti dietro).
 
 Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         </it>
+
+        <hu>
+<![CDATA[Mindig is szeretted volna, hogy a járművek kövessenek bármerre is mész a térképen?
+A "Follow Me"-vel most megteheted (csak ne tolass).
+
+
+Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
+        </hu>
     </description>
 
     <iconFilename>store_FollowMe.dds</iconFilename>
