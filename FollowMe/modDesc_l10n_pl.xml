@@ -35,10 +35,10 @@ Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         
         <text name="FollowMeLeader"             text="Prowadzący" />
         <text name="FollowMeFollower"           text="Podążający" />
-        <text name="FollowMePaused"             text=" (Oczekiwanie)"
+        <text name="FollowMePaused"             text=" (Oczekiwanie)" />
         <text name="FollowMeOffLft"             text="Odstęp w lewo %.1f" />
         <text name="FollowMeOffRgt"             text="Odstęp w prawo %.1f" />
-        <text name="FollowMeDistBehind"         text="Dystans-za %.1f" />
-        <text name="FollowMeDistAhead"          text="Dystans-przed %.1f" />
+        <text name="FollowMeDistBehind"         text="Dystans za %.1f" />
+        <text name="FollowMeDistAhead"          text="Dystans przed %.1f" />
     </texts>
 </l10n>
