@@ -24,6 +24,13 @@ function addSpecialization:loadMap(name)
     if false == addSpecialization.isLoaded then
         addSpecialization.isLoaded = true;
         addSpecialization:add();
+        -- ... removeModEventListener ... (This mod has no need for calling update/draw/etc., after the very first initialization.)
+        for i,listener in ipairs(g_modEventListeners) do
+            if listener == addSpecialization then
+                g_modEventListeners[i] = nil;
+                break;
+            end;
+        end;
     end;
 end;
 
@@ -46,7 +53,14 @@ function addSpecialization:add()
     local searchTable = {
         "FollowMe",
         };
-    
+
+    -- Make code work for both FS2013 and FS15.
+    local requiredSpecialization = "steerable" -- FS2013
+    if SpecializationUtil.getSpecialization("drivable") ~= nil then
+        requiredSpecialization = "drivable" -- FS15
+    end
+
+    --
     for k, v in pairs(VehicleTypeUtil.vehicleTypes) do
         local modName = string.match(k, "([^.]+)");
         
@@ -66,7 +80,7 @@ function addSpecialization:add()
         local correctLocation = false;
         for i = 1, table.maxn(v.specializations) do
             local vs = v.specializations[i];
-            if vs ~= nil and vs == SpecializationUtil.getSpecialization("drivable") then    -- FS15
+            if vs ~= nil and vs == SpecializationUtil.getSpecialization(requiredSpecialization) then
                 correctLocation = true;
                 break;
             end;
