@@ -21,13 +21,13 @@ Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         <text name="FollowMeKeysBehind"         text="%s - Дистанция за предыдущим/Смещение" />
             
         <text name="FollowMeMyToggle"           text="FollowMe: ВКЛ/ВЫКЛ" />
-        <text name="FollowMeMyPause"            text="FollowMe: Wait/resume"            />  <!-- needs translation -->
+        <text name="FollowMeMyPause"            text="FollowMe: Ожидать/продолжить"            />  <!-- needs translation -->
         <text name="FollowMeMyDistDec"          text="FollowMe: Собственная дистанция -" />
         <text name="FollowMeMyDistInc"          text="FollowMe: Собственная дистанция +" />
         <text name="FollowMeMyOffsDec"          text="FollowMe: Собственное смещение влево" />
         <text name="FollowMeMyOffsInc"          text="FollowMe: Собственное смещение вправо" />
         <text name="FollowMeFlStop"             text="FollowMe: Остановится за мной" />
-        <text name="FollowMeFlPause"            text="FollowMe: Behind wait/resume"     />  <!-- needs translation -->
+        <text name="FollowMeFlPause"            text="FollowMe: За мной ожидать/продолжить"     />  <!-- needs translation -->
         <text name="FollowMeFlDistDec"          text="FollowMe: За мной дистанция -" />
         <text name="FollowMeFlDistInc"          text="FollowMe: За мной дистанция +" />
         <text name="FollowMeFlOffsDec"          text="FollowMe: За мной смещение влево" />
@@ -35,7 +35,7 @@ Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
             
         <text name="FollowMeLeader"             text="Ведущий" />
         <text name="FollowMeFollower"           text="Ведомый" />
-        <text name="FollowMePaused"             text=" (Waiting)"           />  <!-- needs translation -->
+        <text name="FollowMePaused"             text=" (Ожидает)"           />  <!-- needs translation -->
         <text name="FollowMeOffLft"             text="%.1f смещение влево" />
         <text name="FollowMeOffRgt"             text="смещение вправо %.1f" />
         <text name="FollowMeDistBehind"         text="за мной дистанция %.1f" />
