@@ -28,7 +28,6 @@ function addSpecialization:loadMap(name)
 end;
 
 function addSpecialization:deleteMap()
-    addSpecialization.isLoaded = false;
 end;
 
 function addSpecialization:mouseEvent(posX, posY, isDown, isUp, button)

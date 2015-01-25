@@ -20,11 +20,13 @@ Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         <text name="FollowMeKeysBehind"         text="%s - Suiveur Écart/Décalage" />
              
         <text name="FollowMeMyToggle"           text="FollowMe: Activer/Désactiver" />
+        <text name="FollowMeMyPause"            text="FollowMe: Wait/resume"            />  <!-- needs translation -->
         <text name="FollowMeMyDistDec"          text="FollowMe: Leader Écart -" />
         <text name="FollowMeMyDistInc"          text="FollowMe: Leader Écart +" />
         <text name="FollowMeMyOffsDec"          text="FollowMe: Leader décalage gauche" />
         <text name="FollowMeMyOffsInc"          text="FollowMe: Leader décalage droite" />
         <text name="FollowMeFlStop"             text="FollowMe: Stopper le suiveur" />
+        <text name="FollowMeFlPause"            text="FollowMe: Behind wait/resume"     />  <!-- needs translation -->
         <text name="FollowMeFlDistDec"          text="FollowMe: Suiveur Écart -" />
         <text name="FollowMeFlDistInc"          text="FollowMe: Suiveur Écart +" />
         <text name="FollowMeFlOffsDec"          text="FollowMe: Suiveur décalage gauche" />
@@ -32,6 +34,7 @@ Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
              
         <text name="FollowMeLeader"             text="Leader" />
         <text name="FollowMeFollower"           text="Suiveur" />
+        <text name="FollowMePaused"             text=" (Waiting)"           />  <!-- needs translation -->
         <text name="FollowMeOffLft"             text="%.1f Décal. gauche" />
         <text name="FollowMeOffRgt"             text="Décal. droite %.1f" />
         <text name="FollowMeDistBehind"         text="Dist. suiveur. %.1f" />

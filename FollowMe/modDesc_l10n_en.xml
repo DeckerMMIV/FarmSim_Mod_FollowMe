@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
+    <!-- Note that 'description' is only here for easier translations. It needs to be manually copied to ModDesc.XML later. -->
     <description>
 <![CDATA[Ever wanted to have some vehicles follow you around the map?
 With "Follow Me" you can (though not backwards driving.)
@@ -20,11 +21,13 @@ Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         <text name="FollowMeKeysBehind"         text="%s - Behind Distance/Offset"      />
             
         <text name="FollowMeMyToggle"           text="FollowMe: Toggle on/off"          />
+        <text name="FollowMeMyPause"            text="FollowMe: Wait/resume"            />
         <text name="FollowMeMyDistDec"          text="FollowMe: Myself Distance -"      />
         <text name="FollowMeMyDistInc"          text="FollowMe: Myself Distance +"      />
         <text name="FollowMeMyOffsDec"          text="FollowMe: Myself Offset left"     />
         <text name="FollowMeMyOffsInc"          text="FollowMe: Myself Offset right"    />
         <text name="FollowMeFlStop"             text="FollowMe: Behind Stop"            />
+        <text name="FollowMeFlPause"            text="FollowMe: Behind wait/resume"     />
         <text name="FollowMeFlDistDec"          text="FollowMe: Behind Distance -"      />
         <text name="FollowMeFlDistInc"          text="FollowMe: Behind Distance +"      />
         <text name="FollowMeFlOffsDec"          text="FollowMe: Behind Offset left"     />
@@ -32,6 +35,7 @@ Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
             
         <text name="FollowMeLeader"             text="Leader"               />
         <text name="FollowMeFollower"           text="Follower"             />
+        <text name="FollowMePaused"             text=" (Waiting)"           />
         <text name="FollowMeOffLft"             text="%.1f Left-offs."      />
         <text name="FollowMeOffRgt"             text="Right-offs. %.1f"     />
         <text name="FollowMeDistBehind"         text="Behind-dist. %.1f"    />
