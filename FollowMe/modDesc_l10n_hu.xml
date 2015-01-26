@@ -21,13 +21,13 @@ Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         <text name="FollowMeKeysBehind"         text="%s - Követő távolsága/eltolása"   />
             
         <text name="FollowMeMyToggle"           text="FollowMe: Ki/Be"                  />
-        <text name="FollowMeMyPause"            text="FollowMe: Wait/resume"            />  <!-- needs translation -->
+        <text name="FollowMeMyPause"            text="FollowMe: Várakozok/Követem"      />
         <text name="FollowMeMyDistDec"          text="FollowMe: Követési távolság -"    />
         <text name="FollowMeMyDistInc"          text="FollowMe: Követési távolság +"    />
         <text name="FollowMeMyOffsDec"          text="FollowMe: Eltolás balra"          />
         <text name="FollowMeMyOffsInc"          text="FollowMe: Eltolás jobbra"         />
         <text name="FollowMeFlStop"             text="FollowMe: Követés kikapcsolása"   />
-        <text name="FollowMeFlPause"            text="FollowMe: Behind wait/resume"     />  <!-- needs translation -->
+        <text name="FollowMeFlPause"            text="FollowMe: Várjon/Kövessen"        />
         <text name="FollowMeFlDistDec"          text="FollowMe: Követési távolság -"    />
         <text name="FollowMeFlDistInc"          text="FollowMe: Követési távolság +"    />
         <text name="FollowMeFlOffsDec"          text="FollowMe: Eltolás balra"          />
@@ -35,7 +35,7 @@ Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
             
         <text name="FollowMeLeader"             text="Vezető"               />
         <text name="FollowMeFollower"           text="Követő"               />
-        <text name="FollowMePaused"             text=" (Waiting)"           />  <!-- needs translation -->
+        <text name="FollowMePaused"             text=" (Várakozik)"         />
         <text name="FollowMeOffLft"             text="%.1f Eltolás balra"   />
         <text name="FollowMeOffRgt"             text="Eltolás jobbra %.1f"  />
         <text name="FollowMeDistBehind"         text="Követési táv %.1f"    />
