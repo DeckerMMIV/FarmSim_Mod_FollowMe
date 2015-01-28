@@ -52,7 +52,7 @@ end;
 function addSpecialization:add()
     local searchTable = {
         "FollowMe",
-        };
+    };
 
     -- Make code work for both FS2013 and FS15.
     local requiredSpecialization = "steerable" -- FS2013

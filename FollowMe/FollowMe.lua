@@ -836,12 +836,17 @@ function FollowMe.updateFollowMovement(self, dt)
     if crumbIndexDiff >= FollowMe.cBreadcrumbsMaxEntries then
         -- circular-array have "circled" once, and this follower did not move fast enough.
         --DEBUG log("Much too far behind. Stopping auto-follow.");
-        FollowMe.setWarning(self, "FollowMeTooFarBehind");
-        FollowMe.stopFollowMe(self);
+        if self.modFM.FollowState ~= FollowMe.STATE_STOPPING then
+            FollowMe.setWarning(self, "FollowMeTooFarBehind");
+            FollowMe.stopFollowMe(self);
+        end
         hasCollision = true
         allowedToDrive = false
         acceleration = 0.0
-        tx,ty,tz = cx,cy,cz
+        -- Set target 2 meters straight ahead of vehicle.
+        tx = cx + crx * 2;
+        ty = cy;
+        tz = cz + crz * 2;
     elseif crumbIndexDiff > 0 then
         -- Following crumbs...
         --

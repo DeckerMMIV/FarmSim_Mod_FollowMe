@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="21" descVersionFS2013="9" descVersionFS15="21">
+<modDesc descVersion="21">    <!-- To make it work in FS2013 use:  descVersion="12"   -->
     <author>Freelance Modding Crew</author>
-    <version>2.0.17</version>
-    <contributors>DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers</contributors>
+    <version>2.1.0</version>
+    <contributors>DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers, KITT3000</contributors>
 
     <title>
         <en>Follow Me</en>
@@ -22,14 +22,14 @@ With "Follow Me" you can (though not backwards driving.)
 
 Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         </en>
-        <de> <!-- translation by DrUptown -->
+        <de>
 <![CDATA[Wollten Sie schon immer haben, dass einige Fahrzeuge Sie folgen rund um die Karte?
 Mit "Follow Me" kann man dass (aber nicht beim rückwärts fahren.)
 
 
 Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         </de>
-        <pl> <!-- translation by spinah -->
+        <pl>
 <![CDATA[Czy kiedykolwiek chciałeś by niektóre pojazdy podążały za tobą po mapie?
 Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz.)
 
@@ -43,21 +43,20 @@ Avec "Follow Me", c'est possible (sauf en marche arrière.)
 
 Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         </fr>
-        <ru> <!-- translation by Gonimy_Vetrom -->
+        <ru>
 <![CDATA[Была ли у Вас необходимость в том что-бы какие-либо ТС
 двигались следом за вами? С "Follow Me" это возможно! 
 
 
 Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         </ru>
-        <it> <!-- translation by DD ModPassion -->
+        <it>
 <![CDATA[Hai mai voluto avere alcuni veicoli che ti seguono per la mappa?
 Con "Follow Me", è possibile (non solo inseguirti dietro).
 
 
 Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         </it>
-
         <hu>
 <![CDATA[Mindig is szeretted volna, hogy a járművek kövessenek bármerre is mész a térképen?
 A "Follow Me"-vel most megteheted (csak ne tolass).
