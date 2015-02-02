@@ -2,43 +2,43 @@
 <l10n>
     <!-- Note that 'description' is only here for easier translations. It needs to be manually copied to ModDesc.XML later. -->
     <description>
-<![CDATA[Ever wanted to have some vehicles follow you around the map?
-With "Follow Me" you can (though not backwards driving.)
+<![CDATA[Zou het makkelijk om sommige voertuigen te laten volgen door de map?
+Met "Follow Me" kan dat (alleen niet tijdens achteruit rijden.)
 
 
 Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
     </description>
 
     <texts>
-        <text name="FollowMeMissingTrafficCollisionTrigger" text="Unfortunately this vehicle is not able to act as a 'follower'. It is missing a part called 'aiTrafficCollisionTrigger'." />
-        <text name="FollowMeNotAvailable"                   text="Unfortunately this vehicle is not able to act as a 'follower'." />
+        <text name="FollowMeMissingTrafficCollisionTrigger" text="Helaas, dit voertuig kan niet gebruikt worden als 'volger'. Het mist het gedeelte 'aiTrafficCollisionTrigger'." />
+        <text name="FollowMeNotAvailable"                   text="Helaas, dit voertuig kan niet gebruikt worden als 'volger'." />
 
-        <text name="FollowMeStartEngine"        text="Start engine first." />
-        <text name="FollowMeTooFarBehind"       text="Lost the 'trail' of leading vehicle. Stopping." />
-        <text name="FollowMeDropperNotFound"    text="Unable to locate a nearby 'trail' within viewing-range to follow. Move closer to the leading vehicle." />
+        <text name="FollowMeStartEngine"        text="Eerst motor starten." />
+        <text name="FollowMeTooFarBehind"       text="Voertuig heeft het 'spoor' van de voorganger verloren, Stopt." />
+        <text name="FollowMeDropperNotFound"    text="Geen 'spoor'van te volgen voertuig gevonden. Ga dichter bij voorganger." />
         
-        <text name="FollowMeKeysMyself"         text="%s - Myself Distance/Offset"      />
-        <text name="FollowMeKeysBehind"         text="%s - Behind Distance/Offset"      />
+        <text name="FollowMeKeysMyself"         text="%s - Eigen afstand/Uit lijn"      />
+        <text name="FollowMeKeysBehind"         text="%s - Volger afstand/Uit lijn"      />
             
-        <text name="FollowMeMyToggle"           text="FollowMe: Toggle on/off"          />
-        <text name="FollowMeMyPause"            text="FollowMe: Wait/resume"            />
-        <text name="FollowMeMyDistDec"          text="FollowMe: Myself Distance -"      />
-        <text name="FollowMeMyDistInc"          text="FollowMe: Myself Distance +"      />
-        <text name="FollowMeMyOffsDec"          text="FollowMe: Myself Offset left"     />
-        <text name="FollowMeMyOffsInc"          text="FollowMe: Myself Offset right"    />
-        <text name="FollowMeFlStop"             text="FollowMe: Behind Stop"            />
-        <text name="FollowMeFlPause"            text="FollowMe: Behind wait/resume"     />
-        <text name="FollowMeFlDistDec"          text="FollowMe: Behind Distance -"      />
-        <text name="FollowMeFlDistInc"          text="FollowMe: Behind Distance +"      />
-        <text name="FollowMeFlOffsDec"          text="FollowMe: Behind Offset left"     />
-        <text name="FollowMeFlOffsInc"          text="FollowMe: Behind Offset right"    />
+        <text name="FollowMeMyToggle"           text="FollowMe: Follow me aan/uit"          />
+        <text name="FollowMeMyPause"            text="FollowMe: Wacht/vervolg"            />
+        <text name="FollowMeMyDistDec"          text="FollowMe: Eigen afstand -"      />
+        <text name="FollowMeMyDistInc"          text="FollowMe: Eigen afstand +"      />
+        <text name="FollowMeMyOffsDec"          text="FollowMe: Eigen uitlijning links"     />
+        <text name="FollowMeMyOffsInc"          text="FollowMe: Eigen uitlijning rechts"    />
+        <text name="FollowMeFlStop"             text="FollowMe: Volger Stop"            />
+        <text name="FollowMeFlPause"            text="FollowMe: Volger Wacht/vervolgen"     />
+        <text name="FollowMeFlDistDec"          text="FollowMe: Volger afstand -"      />
+        <text name="FollowMeFlDistInc"          text="FollowMe: Volger afstand +"      />
+        <text name="FollowMeFlOffsDec"          text="FollowMe: Volger uitlijning links"     />
+        <text name="FollowMeFlOffsInc"          text="FollowMe: Volger uitlijning rechts"    />
             
-        <text name="FollowMeLeader"             text="Leader"               />
-        <text name="FollowMeFollower"           text="Follower"             />
-        <text name="FollowMePaused"             text=" (Waiting)"           />
-        <text name="FollowMeOffLft"             text="%.1f Left-offs."      />
-        <text name="FollowMeOffRgt"             text="Right-offs. %.1f"     />
-        <text name="FollowMeDistBehind"         text="Behind-dist. %.1f"    />
-        <text name="FollowMeDistAhead"          text="Ahead-dist. %.1f"     />
+        <text name="FollowMeLeader"             text="Voorganger"               />
+        <text name="FollowMeFollower"           text="Volger"             />
+        <text name="FollowMePaused"             text=" (Wachtend)"           />
+        <text name="FollowMeOffLft"             text="%.1f Links-uitl."      />
+        <text name="FollowMeOffRgt"             text="Rechts-uitl. %.1f"     />
+        <text name="FollowMeDistBehind"         text="Volger-afst. %.1f"    />
+        <text name="FollowMeDistAhead"          text="Voor-afst. %.1f"     />
     </texts>
 </l10n>
