@@ -2,7 +2,7 @@
 <modDesc descVersion="21">    <!-- To make it work in FS2013 use:  descVersion="12"   -->
     <author>Freelance Modding Crew</author>
     <version>2.1.0</version>
-    <contributors>DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers, KITT3000</contributors>
+    <contributors>DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers, Ziuta, pewemo</contributors>
 
     <title>
         <en>Follow Me</en>
@@ -12,6 +12,7 @@
         <ru>Follow Me</ru>
         <it>Follow Me</it>
         <hu>Follow Me</hu>
+        <nl>Follow Me</nl>
     </title>
 
     <description>
@@ -64,6 +65,13 @@ A "Follow Me"-vel most megteheted (csak ne tolass).
 
 Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         </hu>
+        <nl>
+<![CDATA[Zou je willen dat sommige voertuigen je volgen over de map?
+Met "Follow Me" kan dat (alleen niet bij achteruit rijden.)
+
+
+Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
+        </nl>
     </description>
 
     <iconFilename>store_FollowMe.dds</iconFilename>
