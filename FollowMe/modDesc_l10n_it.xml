@@ -3,7 +3,7 @@
     <!-- Note that 'description' is only here for easier translations. It needs to be manually copied to ModDesc.XML later. -->
     <description>
 <![CDATA[Hai mai voluto avere alcuni veicoli che ti seguono per la mappa?
-Con "Follow Me", è possibile (non solo inseguirti dietro).
+Con "Follow Me", è possibile (non solo seguirti).
 
 
 Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
@@ -17,28 +17,28 @@ Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         <text name="FollowMeTooFarBehind"       text="Persa la 'scia' del veicolo che ti precede. Fermato." />
         <text name="FollowMeDropperNotFound"    text="Impossibile trovare una 'scia' vicina nel campo visivo da seguire. Vai più vicino al mezzo che ti precede." />
         
-        <text name="FollowMeKeysMyself"         text="%s - Mia distanza/Mio scostamento laterale"      />
-        <text name="FollowMeKeysBehind"         text="%s - Distanza dietro"      />
+        <text name="FollowMeKeysMyself"         text="%s - Mia distanza/Mio scostamento laterale" />
+        <text name="FollowMeKeysBehind"         text="%s - Distanza dietro" />
             
-        <text name="FollowMeMyToggle"           text="FollowMe: Attiva on/off"          />
-        <text name="FollowMeMyPause"            text="FollowMe: Wait/resume"            />  <!-- needs translation -->
-        <text name="FollowMeMyDistDec"          text="FollowMe: Mia distanza -"      />
-        <text name="FollowMeMyDistInc"          text="FollowMe: Mia distanza +"      />
-        <text name="FollowMeMyOffsDec"          text="FollowMe: Mio scostamento laterale sinistro"     />
-        <text name="FollowMeMyOffsInc"          text="FollowMe: Mio scostamento laterale destro"    />
-        <text name="FollowMeFlStop"             text="FollowMe: Ferma il seguente"            />
-        <text name="FollowMeFlPause"            text="FollowMe: Behind wait/resume"     />  <!-- needs translation -->
-        <text name="FollowMeFlDistDec"          text="FollowMe: Distanza dell'inseguitore -"      />
-        <text name="FollowMeFlDistInc"          text="FollowMe: Distanza dell'inseguitore +"      />
-        <text name="FollowMeFlOffsDec"          text="FollowMe: scostamento laterale dell'inseguitore a sinistra"     />
-        <text name="FollowMeFlOffsInc"          text="FollowMe: scostamento laterale dell'inseguitore a destra"    />
+        <text name="FollowMeMyToggle"           text="FollowMe: Attiva on/off" />
+        <text name="FollowMeMyPause"            text="FollowMe: Aspetta/Riparti" />
+        <text name="FollowMeMyDistDec"          text="FollowMe: Mia distanza -" />
+        <text name="FollowMeMyDistInc"          text="FollowMe: Mia distanza +" />
+        <text name="FollowMeMyOffsDec"          text="FollowMe: Mio scostamento laterale sx" />
+        <text name="FollowMeMyOffsInc"          text="FollowMe: Mio scostamento laterale dx" />
+        <text name="FollowMeFlStop"             text="FollowMe: Ferma l'inseguitore"  />
+        <text name="FollowMeFlPause"            text="FollowMe: Inseguitore in attesa" />
+        <text name="FollowMeFlDistDec"          text="FollowMe: Distanza dell'inseguitore -" />
+        <text name="FollowMeFlDistInc"          text="FollowMe: Distanza dell'inseguitore +" />
+        <text name="FollowMeFlOffsDec"          text="FollowMe: scostamento dell'inseguitore a sx" />
+        <text name="FollowMeFlOffsInc"          text="FollowMe: scostamento dell'inseguitore a dx" />
             
-        <text name="FollowMeLeader"             text="Leader"               />
-        <text name="FollowMeFollower"           text="Follower"             />
-        <text name="FollowMePaused"             text=" (Waiting)"           />  <!-- needs translation -->
-        <text name="FollowMeOffLft"             text="scostamento laterale a sinistra %.1f"      />
-        <text name="FollowMeOffRgt"             text="scostamento laterale a destra %.1f"     />
-        <text name="FollowMeDistBehind"         text="Distanza dietro %.1f"    />
-        <text name="FollowMeDistAhead"          text="Distanza davanti %.1f"     />
+        <text name="FollowMeLeader"             text="Leader" />
+        <text name="FollowMeFollower"           text="Follower" />
+        <text name="FollowMePaused"             text=" (In attesa)" />
+        <text name="FollowMeOffLft"             text="scostamento laterale a sx %.1f" />
+        <text name="FollowMeOffRgt"             text="scostamento laterale a dx %.1f" />
+        <text name="FollowMeDistBehind"         text="Distanza dietro %.1f" />
+        <text name="FollowMeDistAhead"          text="Distanza davanti %.1f" />
     </texts>
 </l10n>
