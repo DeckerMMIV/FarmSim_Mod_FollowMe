@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="21">    <!-- To make it work in FS2013 use:  descVersion="12"   -->
     <author>Freelance Modding Crew</author>
-    <version>2.1.1</version>
-    <contributors>DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers, Ziuta, pewemo</contributors>
+    <version>2.1.2</version>
+    <contributors>DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers, Ziuta, pewemo, Alfredo Prieto</contributors>
 
     <title>
         <en>Follow Me</en>
@@ -13,6 +13,7 @@
         <it>Follow Me</it>
         <hu>Follow Me</hu>
         <nl>Follow Me</nl>
+        <es>Follow Me</es>
     </title>
 
     <description>
@@ -72,6 +73,13 @@ Met "Follow Me" kan dat (alleen niet bij achteruit rijden.)
 
 Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         </nl>
+        <es>
+<![CDATA[¿Quieres conseguir que te sigan algunos de tus vehículos alrededor del mapa?
+Con "Follow Me" se puede conseguir.(No funciona con marcha atrás.)
+
+
+Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
+        </es>
     </description>
 
     <iconFilename>store_FollowMe.dds</iconFilename>
