@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<l10n>
+    <!-- Note that 'description' is only here for easier translations. It needs to be manually copied to ModDesc.XML later. -->
+    <description>
+<![CDATA[¿Quieres conseguir que te sigan algunos de tus vehículos alrededor del mapa?
+Con "Follow Me" se puede conseguir.(No funciona con marcha atrás.)
+
+
+Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
+    </description>
+
+    <texts>
+        <text name="FollowMeMissingTrafficCollisionTrigger" text="Este vehículo no es capaz de actuar como seguidor. No se encuentra 'aiTrafficCollisionTrigger'." />
+        <text name="FollowMeNotAvailable"                   text="Este vehículo no es capaz de actuar como 'follwer'." />
+
+        <text name="FollowMeStartEngine"        text="Arranca el motor primero." />
+        <text name="FollowMeTooFarBehind"       text="Perdimos el rastro del vehículo guía. Nos paramos." />
+        <text name="FollowMeDropperNotFound"    text="Incapaz de localizar un vehículo guía en el rango de visión. Acérquese más a la cabeza tractora." />
+        
+        <text name="FollowMeKeysMyself"         text="%s -  Distancia/Offset Propio"      />
+        <text name="FollowMeKeysBehind"         text="%s -  Distancia/Offset del follower"      />
+            
+        <text name="FollowMeMyToggle"           text="FollowMe: Activar  on/off"          />
+        <text name="FollowMeMyPause"            text="FollowMe: Pausa/reinicio"            />
+        <text name="FollowMeMyDistDec"          text="FollowMe: Distancia Propia -"      />
+        <text name="FollowMeMyDistInc"          text="FollowMe: Distancia Propia +"      />
+        <text name="FollowMeMyOffsDec"          text="FollowMe: Offset propio Izquieda"     />
+        <text name="FollowMeMyOffsInc"          text="FollowMe: Offset propio derecho"    />
+        <text name="FollowMeFlStop"             text="FollowMe: Detener follower"            />
+        <text name="FollowMeFlPause"            text="FollowMe: pausar/reiniciar follower"     />
+        <text name="FollowMeFlDistDec"          text="FollowMe: Distancia follower -"      />
+        <text name="FollowMeFlDistInc"          text="FollowMe: Distancia follower +"      />
+        <text name="FollowMeFlOffsDec"          text="FollowMe: Offset follower izquierda"     />
+        <text name="FollowMeFlOffsInc"          text="FollowMe: offset Offset follower derecha"    />
+            
+        <text name="FollowMeLeader"             text="Guía"               />
+        <text name="FollowMeFollower"           text="Follower"             />
+        <text name="FollowMePaused"             text=" (En espera)"           />
+        <text name="FollowMeOffLft"             text="%.1f izda-offset"      />
+        <text name="FollowMeOffRgt"             text="Dcha-offset %.1f"     />
+        <text name="FollowMeDistBehind"         text="Atrás-dist. %.1f"    />
+        <text name="FollowMeDistAhead"          text="Adelante-dist. %.1f"     />
+    </texts>
+</l10n>
