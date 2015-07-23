@@ -218,6 +218,7 @@ function FollowMe.initialize()
     if (FollowMe.keyModifier_FollowMeMy ~= getKeyIdOfModifier(InputBinding.FollowMeMyDistInc)
     or  FollowMe.keyModifier_FollowMeMy ~= getKeyIdOfModifier(InputBinding.FollowMeMyOffsDec)
     or  FollowMe.keyModifier_FollowMeMy ~= getKeyIdOfModifier(InputBinding.FollowMeMyOffsInc)
+    or  FollowMe.keyModifier_FollowMeMy ~= getKeyIdOfModifier(InputBinding.FollowMeMyOffsTgl)
     ) then
         -- warning!
         log("WARNING: Not all action-keys(1) use the same modifier-key!");
@@ -228,9 +229,10 @@ function FollowMe.initialize()
     FollowMe.keys_FollowMeMy = FollowMe.keys_FollowMeMy:upper();
 
     local shortKeys = removeFromString(InputBinding.getKeyNamesOfDigitalAction(InputBinding.FollowMeMyDistDec), FollowMe.keys_FollowMeMy)
-            .. "," .. removeFromString(InputBinding.getKeyNamesOfDigitalAction(InputBinding.FollowMeMyDistInc), FollowMe.keys_FollowMeMy)
+            .. "/" .. removeFromString(InputBinding.getKeyNamesOfDigitalAction(InputBinding.FollowMeMyDistInc), FollowMe.keys_FollowMeMy)
             .. "," .. removeFromString(InputBinding.getKeyNamesOfDigitalAction(InputBinding.FollowMeMyOffsDec), FollowMe.keys_FollowMeMy)
-            .. "," .. removeFromString(InputBinding.getKeyNamesOfDigitalAction(InputBinding.FollowMeMyOffsInc), FollowMe.keys_FollowMeMy);
+            .. "/" .. removeFromString(InputBinding.getKeyNamesOfDigitalAction(InputBinding.FollowMeMyOffsInc), FollowMe.keys_FollowMeMy)
+            .. "," .. removeFromString(InputBinding.getKeyNamesOfDigitalAction(InputBinding.FollowMeMyOffsTgl), FollowMe.keys_FollowMeMy);
 
     FollowMe.keys_FollowMeMy = FollowMe.keys_FollowMeMy .. " " .. shortKeys;
 
@@ -239,6 +241,7 @@ function FollowMe.initialize()
     if (FollowMe.keyModifier_FollowMeFl ~= getKeyIdOfModifier(InputBinding.FollowMeFlDistInc)
     or  FollowMe.keyModifier_FollowMeFl ~= getKeyIdOfModifier(InputBinding.FollowMeFlOffsDec)
     or  FollowMe.keyModifier_FollowMeFl ~= getKeyIdOfModifier(InputBinding.FollowMeFlOffsInc)
+    or  FollowMe.keyModifier_FollowMeFl ~= getKeyIdOfModifier(InputBinding.FollowMeFlOffsTgl)
     ) then
         -- warning!
         log("WARNING: Not all action-keys(2) use the same modifier-key!");
@@ -249,9 +252,10 @@ function FollowMe.initialize()
     FollowMe.keys_FollowMeFl = FollowMe.keys_FollowMeFl:upper();
 
     local shortKeys = removeFromString(InputBinding.getKeyNamesOfDigitalAction(InputBinding.FollowMeFlDistDec), FollowMe.keys_FollowMeFl)
-            .. "," .. removeFromString(InputBinding.getKeyNamesOfDigitalAction(InputBinding.FollowMeFlDistInc), FollowMe.keys_FollowMeFl)
+            .. "/" .. removeFromString(InputBinding.getKeyNamesOfDigitalAction(InputBinding.FollowMeFlDistInc), FollowMe.keys_FollowMeFl)
             .. "," .. removeFromString(InputBinding.getKeyNamesOfDigitalAction(InputBinding.FollowMeFlOffsDec), FollowMe.keys_FollowMeFl)
-            .. "," .. removeFromString(InputBinding.getKeyNamesOfDigitalAction(InputBinding.FollowMeFlOffsInc), FollowMe.keys_FollowMeFl);
+            .. "/" .. removeFromString(InputBinding.getKeyNamesOfDigitalAction(InputBinding.FollowMeFlOffsInc), FollowMe.keys_FollowMeFl)
+            .. "," .. removeFromString(InputBinding.getKeyNamesOfDigitalAction(InputBinding.FollowMeFlOffsTgl), FollowMe.keys_FollowMeFl);
 
     FollowMe.keys_FollowMeFl = FollowMe.keys_FollowMeFl .. " " .. shortKeys;
 end;
@@ -280,6 +284,7 @@ function FollowMe.load(self, xmlFile)
     --self.modFM.lastZeroSpeedIndex = self.modFM.FollowCurrentIndex;
     self.modFM.FollowKeepBack = 10;
     self.modFM.FollowXOffset = 0;
+    self.modFM.ToggleXOffset = 0;
     --
     self.modFM.reduceSpeedTime = 0;
     self.modFM.lastAcceleration  = 0;
@@ -492,6 +497,22 @@ function FollowMe.changeXOffset(self, newXOffset, noSendEvent)
     end;
 end;
 
+function FollowMe.toggleXOffset(self, noSendEvent)
+    if self.modFM.FollowXOffset == 0 and self.modFM.ToggleXOffset ~= 0 then
+        self.modFM.FollowXOffset = self.modFM.ToggleXOffset
+        self.modFM.ToggleXOffset = 0;
+        if not noSendEvent then
+            self.modFM.delayDirty = g_currentMission.time + 500;
+        end;
+    elseif self.modFM.FollowXOffset ~= 0 then
+        self.modFM.ToggleXOffset = self.modFM.FollowXOffset
+        self.modFM.FollowXOffset = 0;
+        if not noSendEvent then
+            self.modFM.delayDirty = g_currentMission.time + 500;
+        end;
+    end
+end
+
 --
 FollowMe.InputEvents = {}
 FollowMe.INPUTEVENT_MILLISECONDS = 500
@@ -519,6 +540,9 @@ function FollowMe.hasEventShortLong(inBinding, repeatIntervalMS)
         return FollowMe.INPUTEVENT_NONE; -- It was probably a long event, which has already been processed.
     elseif timeDiff > FollowMe.INPUTEVENT_MILLISECONDS then
         FollowMe.InputEvents[inBinding] = g_currentMission.time + 10000000;
+        if repeatIntervalMS ~= nil then
+            return FollowMe.INPUTEVENT_REPEAT; -- Long-and-repeating press
+        end
         return FollowMe.INPUTEVENT_LONG; -- Long press
     elseif timeDiff < 0 then
         if repeatIntervalMS ~= nil and (timeDiff + 10000000) > repeatIntervalMS then
@@ -549,17 +573,24 @@ function FollowMe.update(self, dt)
             -- Due to three functions per InputBinding; press-and-release (short), press-and-hold (long), and press-and-hold-longer (repeat)
             local  myDistDec = FollowMe.hasEventShortLong(InputBinding.FollowMeMyDistDec, 500);
             local  myDistInc = FollowMe.hasEventShortLong(InputBinding.FollowMeMyDistInc, 500);
-            local  myOffsDec = FollowMe.hasEventShortLong(InputBinding.FollowMeMyOffsDec);
-            local  myOffsInc = FollowMe.hasEventShortLong(InputBinding.FollowMeMyOffsInc);
+            local  myOffsDec = FollowMe.hasEventShortLong(InputBinding.FollowMeMyOffsDec, 250);
+            local  myOffsInc = FollowMe.hasEventShortLong(InputBinding.FollowMeMyOffsInc, 250);
+            local  myOffsTgl = FollowMe.hasEventShortLong(InputBinding.FollowMeMyOffsTgl);
 
             if     myDistDec == FollowMe.INPUTEVENT_SHORT  then FollowMe.changeDistance(self, self.modFM.FollowKeepBack - 5);
             elseif myDistDec == FollowMe.INPUTEVENT_REPEAT then FollowMe.changeDistance(self, self.modFM.FollowKeepBack - 1);
+            
             elseif myDistInc == FollowMe.INPUTEVENT_SHORT  then FollowMe.changeDistance(self, self.modFM.FollowKeepBack + 5);
             elseif myDistInc == FollowMe.INPUTEVENT_REPEAT then FollowMe.changeDistance(self, self.modFM.FollowKeepBack + 1);
-            elseif myOffsDec == FollowMe.INPUTEVENT_SHORT  then FollowMe.changeXOffset(self, self.modFM.FollowXOffset - .5);
-            elseif myOffsDec == FollowMe.INPUTEVENT_LONG   then FollowMe.changeXOffset(self, -self.modFM.FollowXOffset); -- Invert offset
-            elseif myOffsInc == FollowMe.INPUTEVENT_SHORT  then FollowMe.changeXOffset(self, self.modFM.FollowXOffset + .5);
-            elseif myOffsInc == FollowMe.INPUTEVENT_LONG   then FollowMe.changeXOffset(self, -self.modFM.FollowXOffset); -- Invert offset
+            
+            elseif myOffsDec == FollowMe.INPUTEVENT_SHORT  
+                or myOffsDec == FollowMe.INPUTEVENT_REPEAT then FollowMe.changeXOffset(self, self.modFM.FollowXOffset - .5);
+            
+            elseif myOffsInc == FollowMe.INPUTEVENT_SHORT  
+                or myOffsInc == FollowMe.INPUTEVENT_REPEAT then FollowMe.changeXOffset(self, self.modFM.FollowXOffset + .5);
+            
+            elseif myOffsTgl == FollowMe.INPUTEVENT_SHORT  then FollowMe.toggleXOffset(self); -- Toggle between 'zero' and 'offset'
+            elseif myOffsTgl == FollowMe.INPUTEVENT_LONG   then FollowMe.changeXOffset(self, -self.modFM.FollowXOffset); -- Invert offset
             end
         end;
 
@@ -574,17 +605,24 @@ function FollowMe.update(self, dt)
             -- Due to three functions per InputBinding; press-and-release (short), press-and-hold (long), and press-and-hold-longer (repeat)
             local  flDistDec = FollowMe.hasEventShortLong(InputBinding.FollowMeFlDistDec, 500);
             local  flDistInc = FollowMe.hasEventShortLong(InputBinding.FollowMeFlDistInc, 500);
-            local  flOffsDec = FollowMe.hasEventShortLong(InputBinding.FollowMeFlOffsDec);
-            local  flOffsInc = FollowMe.hasEventShortLong(InputBinding.FollowMeFlOffsInc);
+            local  flOffsDec = FollowMe.hasEventShortLong(InputBinding.FollowMeFlOffsDec, 250);
+            local  flOffsInc = FollowMe.hasEventShortLong(InputBinding.FollowMeFlOffsInc, 250);
+            local  flOffsTgl = FollowMe.hasEventShortLong(InputBinding.FollowMeFlOffsTgl);
 
             if     flDistDec == FollowMe.INPUTEVENT_SHORT  then FollowMe.changeDistance(stalker, stalker.modFM.FollowKeepBack - 5);
             elseif flDistDec == FollowMe.INPUTEVENT_REPEAT then FollowMe.changeDistance(stalker, stalker.modFM.FollowKeepBack - 1);
+            
             elseif flDistInc == FollowMe.INPUTEVENT_SHORT  then FollowMe.changeDistance(stalker, stalker.modFM.FollowKeepBack + 5);
             elseif flDistInc == FollowMe.INPUTEVENT_REPEAT then FollowMe.changeDistance(stalker, stalker.modFM.FollowKeepBack + 1);
-            elseif flOffsDec == FollowMe.INPUTEVENT_SHORT  then FollowMe.changeXOffset(stalker, stalker.modFM.FollowXOffset - .5);
-            elseif flOffsDec == FollowMe.INPUTEVENT_LONG   then FollowMe.changeXOffset(stalker, -stalker.modFM.FollowXOffset); -- Invert offset
-            elseif flOffsInc == FollowMe.INPUTEVENT_SHORT  then FollowMe.changeXOffset(stalker, stalker.modFM.FollowXOffset + .5);
-            elseif flOffsInc == FollowMe.INPUTEVENT_LONG   then FollowMe.changeXOffset(stalker, -stalker.modFM.FollowXOffset); -- Invert offset
+            
+            elseif flOffsDec == FollowMe.INPUTEVENT_SHORT  
+                or flOffsDec == FollowMe.INPUTEVENT_REPEAT then FollowMe.changeXOffset(stalker, stalker.modFM.FollowXOffset - .5);
+            
+            elseif flOffsInc == FollowMe.INPUTEVENT_SHORT  
+                or flOffsInc == FollowMe.INPUTEVENT_REPEAT then FollowMe.changeXOffset(stalker, stalker.modFM.FollowXOffset + .5);
+
+            elseif flOffsTgl == FollowMe.INPUTEVENT_SHORT  then FollowMe.toggleXOffset(stalker); -- Toggle between 'zero' and 'offset'
+            elseif flOffsTgl == FollowMe.INPUTEVENT_LONG   then FollowMe.changeXOffset(stalker, -stalker.modFM.FollowXOffset); -- Invert offset
             end
         end;
     end;

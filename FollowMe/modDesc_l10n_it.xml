@@ -2,11 +2,8 @@
 <l10n>
     <!-- Note that 'description' is only here for easier translations. It needs to be manually copied to ModDesc.XML later. -->
     <description>
-<![CDATA[Hai mai voluto avere alcuni veicoli che ti seguono per la mappa?
+Hai mai voluto avere alcuni veicoli che ti seguono per la mappa?
 Con "Follow Me", è possibile (non solo seguirti).
-
-
-Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
     </description>
 
     <texts>
@@ -26,13 +23,16 @@ Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         <text name="FollowMeMyDistInc"          text="FollowMe: Mia distanza +" />
         <text name="FollowMeMyOffsDec"          text="FollowMe: Mio scostamento laterale sx" />
         <text name="FollowMeMyOffsInc"          text="FollowMe: Mio scostamento laterale dx" />
+        <text name="FollowMeMyOffsTgl"          text="FollowMe: Myself Offset invert"   />  <!-- needs translation -->
+
         <text name="FollowMeFlStop"             text="FollowMe: Ferma l'inseguitore"  />
         <text name="FollowMeFlPause"            text="FollowMe: Inseguitore in attesa" />
         <text name="FollowMeFlDistDec"          text="FollowMe: Distanza dell'inseguitore -" />
         <text name="FollowMeFlDistInc"          text="FollowMe: Distanza dell'inseguitore +" />
         <text name="FollowMeFlOffsDec"          text="FollowMe: scostamento dell'inseguitore a sx" />
         <text name="FollowMeFlOffsInc"          text="FollowMe: scostamento dell'inseguitore a dx" />
-            
+        <text name="FollowMeFlOffsTgl"          text="FollowMe: Behind Offset invert"   />  <!-- needs translation -->
+
         <text name="FollowMeLeader"             text="Leader" />
         <text name="FollowMeFollower"           text="Follower" />
         <text name="FollowMePaused"             text=" (In attesa)" />

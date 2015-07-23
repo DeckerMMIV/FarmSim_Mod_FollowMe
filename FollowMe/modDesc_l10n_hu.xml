@@ -2,11 +2,8 @@
 <l10n>
     <!-- Note that 'description' is only here for easier translations. It needs to be manually copied to ModDesc.XML later. -->
     <description>
-<![CDATA[Mindig is szeretted volna, hogy a járművek kövessenek bármerre is mész a térképen?
+Mindig is szeretted volna, hogy a járművek kövessenek bármerre is mész a térképen?
 A "Follow Me"-vel most megteheted (csak ne tolass).
-
-
-Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
     </description>
     
     <texts>
@@ -26,13 +23,16 @@ Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         <text name="FollowMeMyDistInc"          text="FollowMe: Követési távolság +"    />
         <text name="FollowMeMyOffsDec"          text="FollowMe: Eltolás balra"          />
         <text name="FollowMeMyOffsInc"          text="FollowMe: Eltolás jobbra"         />
+        <text name="FollowMeMyOffsTgl"          text="FollowMe: Myself Offset invert"   />  <!-- needs translation -->
+
         <text name="FollowMeFlStop"             text="FollowMe: Követés kikapcsolása"   />
         <text name="FollowMeFlPause"            text="FollowMe: Várjon/Kövessen"        />
         <text name="FollowMeFlDistDec"          text="FollowMe: Követési távolság -"    />
         <text name="FollowMeFlDistInc"          text="FollowMe: Követési távolság +"    />
         <text name="FollowMeFlOffsDec"          text="FollowMe: Eltolás balra"          />
         <text name="FollowMeFlOffsInc"          text="FollowMe: Eltolás jobbra"         />
-            
+        <text name="FollowMeFlOffsTgl"          text="FollowMe: Behind Offset invert"   />  <!-- needs translation -->
+
         <text name="FollowMeLeader"             text="Vezető"               />
         <text name="FollowMeFollower"           text="Követő"               />
         <text name="FollowMePaused"             text=" (Várakozik)"         />

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="21">    <!-- To make it work in FS2013 use:  descVersion="12"   -->
     <author>Freelance Modding Crew</author>
-    <version>2.1.2</version>
+    <version>2.2.0</version>
     <contributors>DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers, Ziuta, pewemo, Alfredo Prieto</contributors>
 
     <title>
@@ -100,6 +100,7 @@ Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         <input name="FollowMeMyDistInc" category="VEHICLE" key1="KEY_rctrl KEY_s" key2="" button="" device="0" mouse="" />
         <input name="FollowMeMyOffsDec" category="VEHICLE" key1="KEY_rctrl KEY_a" key2="" button="" device="0" mouse="" />
         <input name="FollowMeMyOffsInc" category="VEHICLE" key1="KEY_rctrl KEY_d" key2="" button="" device="0" mouse="" />
+        <input name="FollowMeMyOffsTgl" category="VEHICLE" key1="KEY_rctrl KEY_x" key2="" button="" device="0" mouse="" />
 <!-- -->        
         <input name="FollowMeFlStop"    category="VEHICLE" key1="KEY_rshift KEY_f" key2="" button="" device="0" mouse="" />
         <input name="FollowMeFlPause"   category="VEHICLE" key1="KEY_rshift KEY_h" key2="" button="" device="0" mouse="" />
@@ -108,5 +109,6 @@ Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         <input name="FollowMeFlDistInc" category="VEHICLE" key1="KEY_rshift KEY_s" key2="" button="" device="0" mouse="" />
         <input name="FollowMeFlOffsDec" category="VEHICLE" key1="KEY_rshift KEY_a" key2="" button="" device="0" mouse="" />
         <input name="FollowMeFlOffsInc" category="VEHICLE" key1="KEY_rshift KEY_d" key2="" button="" device="0" mouse="" />
+        <input name="FollowMeFlOffsTgl" category="VEHICLE" key1="KEY_rshift KEY_x" key2="" button="" device="0" mouse="" />
     </inputBindings>
 </modDesc>
