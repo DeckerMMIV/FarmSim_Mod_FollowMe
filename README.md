@@ -6,6 +6,10 @@ To read more about this mod, find it on http://fs-uk.com - http://fs-uk.com/mods
 
 ### Change-log
 
+2.2.1
+- Polish translation updated by Dzi4d3k.
+- Minor fixes for the other translations too.
+
 2.2.0
 - Added ability to toggle offset between 'current offset' and zero.
 - Changed input-bindings/actions to the following default keys:

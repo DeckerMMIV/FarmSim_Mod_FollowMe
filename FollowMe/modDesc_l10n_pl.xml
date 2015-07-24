@@ -3,7 +3,7 @@
     <!-- Note that 'description' is only here for easier translations. It needs to be manually copied to ModDesc.XML later. -->
     <description>
 Czy kiedykolwiek chciałeś by niektóre pojazdy podążały za tobą po mapie?
-Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz). <!-- dot should be after bracket in all languages, comment for removal-->
+Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz).
     </description>
 
     <texts>
@@ -25,8 +25,8 @@ Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz). <!--
         <text name="FollowMeMyOffsInc"          text="FollowMe: Przesunięcie aktywnego pojazdu w prawo" />
         <text name="FollowMeMyOffsTgl"          text="FollowMe: Przesunięcie aktywnego pojazdu wył/wznów"   />
 
-        <text name="FollowMeFlStop"             text="FollowMe: Podążające pojazdy - STOP" /> <!-- spelling error, comment for removal -->
-        <text name="FollowMeFlPause"            text="FollowMe: Czekaj z tyłu/wznów"/> <!-- typo, comment for removal -->
+        <text name="FollowMeFlStop"             text="FollowMe: Podążające pojazdy - STOP" />
+        <text name="FollowMeFlPause"            text="FollowMe: Czekaj z tyłu/wznów"/>
         <text name="FollowMeFlDistDec"          text="FollowMe: Odstęp z tyłu -" />
         <text name="FollowMeFlDistInc"          text="FollowMe: Odstęp z tyłu +" />
         <text name="FollowMeFlOffsDec"          text="FollowMe: Odstęp z tyłu w lewo" />

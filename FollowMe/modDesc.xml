@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="21">    <!-- To make it work in FS2013 use:  descVersion="12"   -->
     <author>Freelance Modding Crew</author>
-    <version>2.2.0</version>
+    <version>2.2.1</version>
     <contributors>DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers, Ziuta, pewemo, Alfredo Prieto</contributors>
 
     <title>
@@ -19,28 +19,28 @@
     <description>
         <en>
 <![CDATA[Ever wanted to have some vehicles follow you around the map?
-With "Follow Me" you can (though not backwards driving.)
+With "Follow Me" you can (though not backwards driving).
 
 
 Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         </en>
         <de>
 <![CDATA[Wollten Sie schon immer haben, dass einige Fahrzeuge Sie folgen rund um die Karte?
-Mit "Follow Me" kann man dass (aber nicht beim rückwärts fahren.)
+Mit "Follow Me" kann man dass (aber nicht beim rückwärts fahren).
 
 
 Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         </de>
         <pl>
 <![CDATA[Czy kiedykolwiek chciałeś by niektóre pojazdy podążały za tobą po mapie?
-Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz.)
+Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz).
 
 
 Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         </pl>
         <fr> 
 <![CDATA[Vous avez toujours souhaité que certains véhicules puissent vous suivre?
-Avec "Follow Me", c'est possible (sauf en marche arrière.)
+Avec "Follow Me", c'est possible (sauf en marche arrière).
 
 
 Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
@@ -68,14 +68,14 @@ Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         </hu>
         <nl>
 <![CDATA[Zou je willen dat sommige voertuigen je volgen over de map?
-Met "Follow Me" kan dat (alleen niet bij achteruit rijden.)
+Met "Follow Me" kan dat (alleen niet bij achteruit rijden).
 
 
 Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         </nl>
         <es>
 <![CDATA[¿Quieres conseguir que te sigan algunos de tus vehículos alrededor del mapa?
-Con "Follow Me" se puede conseguir.(No funciona con marcha atrás.)
+Con "Follow Me" se puede conseguir.(No funciona con marcha atrás).
 
 
 Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
