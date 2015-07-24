@@ -3,7 +3,7 @@
     <!-- Note that 'description' is only here for easier translations. It needs to be manually copied to ModDesc.XML later. -->
     <description>
 Czy kiedykolwiek chciałeś by niektóre pojazdy podążały za tobą po mapie?
-Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz.)
+Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz). <!-- dot should be after bracket in all languages, comment for removal-->
     </description>
 
     <texts>
@@ -23,15 +23,15 @@ Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz.)
         <text name="FollowMeMyDistInc"          text="FollowMe: Odstęp aktywnego pojazdu +" />
         <text name="FollowMeMyOffsDec"          text="FollowMe: Przesunięcie aktywnego pojazdu w lewo" />
         <text name="FollowMeMyOffsInc"          text="FollowMe: Przesunięcie aktywnego pojazdu w prawo" />
-        <text name="FollowMeMyOffsTgl"          text="FollowMe: Myself Offset invert"   />  <!-- needs translation -->
+        <text name="FollowMeMyOffsTgl"          text="FollowMe: Przesunięcie aktywnego pojazdu wył/wznów"   />
 
-        <text name="FollowMeFlStop"             text="FollowMe: Podąrzające pojazdy - STOP" />
-        <text name="FollowMeFlPause"            text="FollowMe: Czekaj z tyłu/zwnów"/>
+        <text name="FollowMeFlStop"             text="FollowMe: Podążające pojazdy - STOP" /> <!-- spelling error, comment for removal -->
+        <text name="FollowMeFlPause"            text="FollowMe: Czekaj z tyłu/wznów"/> <!-- typo, comment for removal -->
         <text name="FollowMeFlDistDec"          text="FollowMe: Odstęp z tyłu -" />
         <text name="FollowMeFlDistInc"          text="FollowMe: Odstęp z tyłu +" />
         <text name="FollowMeFlOffsDec"          text="FollowMe: Odstęp z tyłu w lewo" />
         <text name="FollowMeFlOffsInc"          text="FollowMe: Odstęp z tyłu w prawo" />
-        <text name="FollowMeFlOffsTgl"          text="FollowMe: Behind Offset invert"   />  <!-- needs translation -->
+        <text name="FollowMeFlOffsTgl"          text="FollowMe: Przesunięcie podążającego pojazdu wył/wznów"   />
         
         <text name="FollowMeLeader"             text="Prowadzący" />
         <text name="FollowMeFollower"           text="Podążający" />
