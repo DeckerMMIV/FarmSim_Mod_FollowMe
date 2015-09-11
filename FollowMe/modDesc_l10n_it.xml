@@ -15,7 +15,7 @@ Con "Follow Me", è possibile (non solo seguirti).
         <text name="FollowMeDropperNotFound"    text="Impossibile trovare una 'scia' vicina nel campo visivo da seguire. Vai più vicino al mezzo che ti precede." />
         
         <text name="FollowMeKeysMyself"         text="%s - Mia distanza/Mio scostamento laterale" />
-        <text name="FollowMeKeysBehind"         text="%s - Distanza dietro" />
+        <text name="FollowMeKeysBehind"         text="%s - Inseguitore Distanza/scostamento" />
             
         <text name="FollowMeMyToggle"           text="FollowMe: Attiva on/off" />
         <text name="FollowMeMyPause"            text="FollowMe: Aspetta/Riparti" />
@@ -23,15 +23,15 @@ Con "Follow Me", è possibile (non solo seguirti).
         <text name="FollowMeMyDistInc"          text="FollowMe: Mia distanza +" />
         <text name="FollowMeMyOffsDec"          text="FollowMe: Mio scostamento laterale sx" />
         <text name="FollowMeMyOffsInc"          text="FollowMe: Mio scostamento laterale dx" />
-        <text name="FollowMeMyOffsTgl"          text="FollowMe: Myself Offset invert"   />  <!-- needs translation -->
+        <text name="FollowMeMyOffsTgl"          text="FollowMe: inverti il mio scostamento"  /> 
 
         <text name="FollowMeFlStop"             text="FollowMe: Ferma l'inseguitore"  />
-        <text name="FollowMeFlPause"            text="FollowMe: Inseguitore in attesa" />
+        <text name="FollowMeFlPause"            text="FollowMe: Inseguitore Aspetta/Riparti" />
         <text name="FollowMeFlDistDec"          text="FollowMe: Distanza dell'inseguitore -" />
         <text name="FollowMeFlDistInc"          text="FollowMe: Distanza dell'inseguitore +" />
         <text name="FollowMeFlOffsDec"          text="FollowMe: scostamento dell'inseguitore a sx" />
         <text name="FollowMeFlOffsInc"          text="FollowMe: scostamento dell'inseguitore a dx" />
-        <text name="FollowMeFlOffsTgl"          text="FollowMe: Behind Offset invert"   />  <!-- needs translation -->
+        <text name="FollowMeFlOffsTgl"          text="FollowMe: Inverti scostamento dell'inseguitore"   /> 
 
         <text name="FollowMeLeader"             text="Leader" />
         <text name="FollowMeFollower"           text="Follower" />
