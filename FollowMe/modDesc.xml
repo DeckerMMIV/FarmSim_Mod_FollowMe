@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="21">    <!-- To make it work in FS2013 use:  descVersion="12"   -->
     <author>Freelance Modding Crew</author>
-    <version>2.2.1</version>
-    <contributors>DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers, Ziuta, pewemo, Alfredo Prieto</contributors>
+    <version>2.2.2</version>
+    <contributors>DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers, Ziuta, pewemo, Alfredo Prieto, xno</contributors>
 
     <title>
         <en>Follow Me</en>

@@ -10,122 +10,14 @@
 -- Modifikationen erst nach Rücksprache
 -- Do not edit without my permission
 --
--- @history
---      v0.5(beta)  - Beta-release for internal FMC testing/criticism/suggestions
---      v0.51(beta) - Managed to get followers to use speed-throttle (well, not good enough), so they do
---                     not always drive as fast as possible.
---                  - Fixed problem of "circling a breadcrumb that vehicle can never reach", by calculating if
---                     vehicle is "in front of" the breadcrumb, which in that case it will go to the next one instead.
---      v0.52(beta) - Changed so the functions are appended to Steerable specialization, instead of Hirable, as there
---                     may be many "Truck"-mods that do not have Hirable.
---                  - Resets breadcrumb trail at every start. Previous version kept the trail "alive".
---      v0.53(beta) - TextBold=false, TextColor=white.
---  2012-November
---      v0.54       - Lots of changes. Attempt at FS2011 & FS2013 code.
---      v0.55       - Preliminary multiplayer support added.
---  2012-December
---      v0.56       - Misc. cleanup.
---                  - Added offset-left/right ability for follower (default keys: RIGHT CTRL + A / D)
---                  - Added keep back distance ability for follower (default keys: RIGHT CTRL + W / S)
---      v0.57       - Ability for the leading vehicle to "control" offset and keep-back on the follower,
---                    and only the _one_ following, _not_ the entire "chain".
---                      (default keys: RIGHT SHIFT + W / S and RIGHT SHIFT + A / D)
---      v0.58       - Read/write network stream functions changed.
---                  - Checks for existance of beaconlight, before attempting to turn on/off.
---      v0.59       - The 'steeringAngleLimit' for AIVehicleUtil.driveInDirection() should NOT be larger.
---      v0.60       - Misc. tweaks.
---                  - Attempt at translations to German, Polish & French.
---      v0.61       - If motor is not started, do not allow auto-follow. (Bug discovered by DrUptown)
---                  - Added ability to stop follower (default keys: RIGHT SHIFT + F)
---      v0.62       - Renamed input-binding to 'AutoFollowMeToggle', from 'AutoFollowDrive'.
---                  - Found that ESLimiter causes problems, due to its usage of self.isHired and setting speed-level.
---      v0.63       - Put all 'Follow Me' variables into a self.modFM, to reduce potential clashes with other mods/specializations.
---                  - Renamed/prefixed everything to 'FollowMe', instead of 'AutoFollow'.
---      v0.64       - More tweaking of the follower's speed.
---  2012-Xmas
---      v0.65       - Followers now duplicate the leader's dropped "crumbs", and will not make their own.
---                    This is to fix an "increasing amplitude" problem, when having a "convoy of vehicles".
---                    However, this also causes the "annoyance", that from a fresh loaded savegame each vehicle in
---                    a convoy must be driven a little distance first _before_ activating the FollowMe, so the
---                    vehicle behind it can "discover/locate" the trail.
---                  - For clients, added setStateFollowStalker() which hopefully will make the wheels turn etc.
---                    when vehicle is in follow-mode (i.e. hired).
---                  - More tweaking of the follower's speed (this never ends).
---  2013-January
---      v0.66       - Changed some functionality with regards to network-messages between server and clients.
---      v0.67       - Changed minimum-distance-between-drops to 5 (from 10), and max-entries to 100 (from 50).
---  2013-February
---      v0.68       - Misc. cleanup.
---                  - Made some preliminary documentation for the mod.
---  2013-September
---      v0.69       - Patch 1.4.0.x required.
---                  - Attempt at supporting "MR" MoreRealistic v1.0.3
---                      - Changed ZIP name to "zzz_FollowMe2013.zip", so this mod loads _after_ MoreRealistic.ZIP.
---                      - Added "self.turnStage=-1" to force faster steeringSpeed in [Override]AIVehicleUtil.driveInDirection().
---                          - When starting/stopping FollowMe, switching MR's realSpeedLevels[2] <-> [4],
---                            due to driveInDirection() sets/hardcoded speedLevel=2 when turnStage!=0.
---                      //- Confused about the "MR"-vehicles not starts driving automatically, when FollowMe is activated,
---                      //  but first does it when a player has entered, and must do so every time the "MR"-vehicle is
---                      //  blocked and pauses. Thinking it might be something about the "MR" clutch or brake variables
---                      //  in [Override]WheelsUtil.updateWheelsPhysics().
---                      - Ah! RealisticVehicle:update() overrules self.forceIsActive, and that then causes self.isActive to be
---                        false, which then causes RealisticSteerable:update() to not run any of the MR functions.
---                      - "Fixing" this problem, by overwriting Vehicle:getIsActive() to return true, if vehicle is a
---                        MR-vehicle and has FollowMe active.
---      v0.70       - MoreRealistic v1.0.5 changes. Thank you DURAL for your code additions.
---                  - Added negative "keep back distance", i.e. the follower can now drive beside or in front of leading vehicle.
---                  - Changed keep-back/front distance to meters, instead of unit-of-crumbs.
---                  - More naive tweaks regarding vanilla acceleration.
---      v0.71       - Now requires patch 2.0.0.7 or higher
---                  - Changed distance increments to +/-5 when press-and-release, and +/-1 when using press-and-hold,
---                    due to more often than not I needed bigger distance changes than small ones.
---                  - Little tweaks regarding "catch up" to in-front-of.
---  2013-October
---      v0.72       - More tweaks for vanilla "catch up" to in-front-of.
---                  - Fix for 'in-front-of' getting leader's speed, for a MR following a Vanilla.
---                  - Tested/works with MoreRealistic v1.1.
---  2013-November
---      v0.73       - Side-offset now in steps of 0.5 (Requested by Napalm)
---                  - Changed <title> name, to ensure this mod gets loaded _after_ MoreRealistic on dedicated-server.
---  2013-December
---      v0.74       - Faster stopping, when Follow Me is disengaged. Particular noticeable on MoreRealistic vehicles (Discovered by DrUptown)
---      v0.75       - Preliminar support for the vanilla (Round)Baler script, making it unload bale when full.
---      v0.76       - Polish translations by spinah.
---                  - Added BJR-Modding's John Deere 864 Premium v1.0 to auto-unload too. Pickup-choke is not handled though!
---                  - Using AIVehicleUtil.setCollisionDirection() to set aiTrafficCollisionTrigger towards steering direction.
---      v0.77       - Hmm, apparently relying on the file- or <title> name alphabetically being after moreRealistic still does NOT work.
---                    The load-order of mods in multiplayer is very non-deterministic in FS2013, which is very annoying!
---                    So a solution was to use Xentro's addSpecialization.LUA script, instead of overwriting the Steerable-functions.
---  2014-January
---      v0.78       - If getting further ahead more than one 'crumb', then apply brakes.
---                    If MoreRealistic vehicle, and driving 10% faster than what 'crumb' specifies, then apply brakes.
---                    This to stop gaining speed, when driving down hill without actually accelerating. Problem discovered by DrUptown.
---      v0.79       - Tweaked MoreRealistic, if driving 5% faster then apply brakes.
---                  - Remember 'keep back distance' and 'side offset' when saving game-session.
---  2014-March
---      v0.80       - Followers sets lights and beacon-lights as what the leader has them set to.
---  2014-June
---      v1.0.81     - Due to other versioning scheme, removed hack for ShowWorkersOnPDA v0.96.
---  2014-November
---      v2.0.0      - Begun upgrading to FS15
---  2014-December
---      v2.0.1      - Added map-icon for vehicle when in Follow mode. Inspired by CoursePlay.
---      v2.0.2      - Minor code-cleanup.
---      v2.0.4      - Now using individual localization (l10n) XML-files.
---      v2.0.5      - Default keep-back distance now 10 (was 0).
---      v2.0.6      - Fix for searching, where it should ignore 'steerables' that are not 'drivables'.
---                  - Updated Russian translations, by Gonimy_Vetrom.
---
 
 --[[
 Suggestions:
     MR vehicle - the more weight/load, increase keepback distance.
 
-
 Tonoppa - http://fs-uk.com/forum/index.php?topic=151431.msg1080633#msg1080633
     Just wondering would it be how difficult thing to add somehow a speedlimit for following vehicles? I'm playing with moreRealistic, let's clear that. My issue; I often drive myself tractor with mowers and set something to follow me with swather/rake/thingy and even though I try to keep my mower speed way under 14 kph what Dural have set for rakes, following tractor often exceeds that speed when coming downhill and leaving non-swathed bits behind.
-
-]]
+--]]
 
 --
 
@@ -315,10 +207,13 @@ function FollowMe.delete(self)
     if self.isServer then
         if self.modFM.StalkerVehicleObj ~= nil then
             -- Stop the stalker-vehicle
-            FollowMe.stopFollowMe(self.modFM.StalkerVehicleObj, true);
+            FollowMe.stopFollowMe(self.modFM.StalkerVehicleObj);
         end;
         -- Stop ourself
-        FollowMe.stopFollowMe(self, true);
+        FollowMe.stopFollowMe(self);
+    --else
+    --    self.modFM.FollowVehicleObj  = nil;
+    --    self.modFM.StalkerVehicleObj = nil;    
     end;
 end;
 

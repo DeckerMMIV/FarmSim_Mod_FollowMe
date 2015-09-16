@@ -6,6 +6,10 @@ To read more about this mod, find it on http://fs-uk.com - http://fs-uk.com/mods
 
 ### Change-log
 
+2.2.2
+- Italian translation update by xno.
+- Russian translation updated by Gonimy-Vetrom.
+
 2.2.1
 - Polish translation updated by Dzi4d3k.
 - Minor fixes for the other translations too.
