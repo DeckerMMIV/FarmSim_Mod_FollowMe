@@ -1,24 +1,9 @@
 ﻿--
--- "Follow Me" - AutoFollow a Breadcrumb-trail
+-- Follow Me
 --
--- @team    Freelance Modding Crew (FMC)
--- @author  Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com
--- @date    2011-02-01
---          2012-08-29 (resumed)
---          2013-09-xx (resumed)
---
--- Modifikationen erst nach Rücksprache
--- Do not edit without my permission
---
-
---[[
-Suggestions:
-    MR vehicle - the more weight/load, increase keepback distance.
-
-Tonoppa - http://fs-uk.com/forum/index.php?topic=151431.msg1080633#msg1080633
-    Just wondering would it be how difficult thing to add somehow a speedlimit for following vehicles? I'm playing with moreRealistic, let's clear that. My issue; I often drive myself tractor with mowers and set something to follow me with swather/rake/thingy and even though I try to keep my mower speed way under 14 kph what Dural have set for rakes, following tractor often exceeds that speed when coming downhill and leaving non-swathed bits behind.
---]]
-
+-- @author  Decker_MMIV (DCK)
+-- @contact fs-uk.com, modcentral.co.uk, forum.farming-simulator.com
+-- @date    2016-11-xx
 --
 
 FollowMe = {};
@@ -76,8 +61,16 @@ local function getKeyIdOfModifier(binding)
 end
 
 local function removeFromString(src, toRemove)
-    local srcArr = Utils.splitString(" ", src);
-    local remArr = Utils.splitString(" ", toRemove);
+    if (type(src)==type({})) then
+        local tmp = ""
+        for _,s in pairs(src) do
+            tmp = tmp.." "..tostring(s)
+        end
+        src = tmp
+    end
+
+    local srcArr = Utils.splitString(" ", src:upper());
+    local remArr = Utils.splitString(" ", toRemove:upper());
     local result = "";
     for i,p in ipairs(srcArr) do
         if i>1 then
@@ -106,12 +99,14 @@ function FollowMe.initialize()
     FollowMe.keyModifier_FollowMeMyToggle = getKeyIdOfModifier(InputBinding.FollowMeMyToggle);
 
     -- Test that these four use the same modifier-key
-        FollowMe.keyModifier_FollowMeMy  = getKeyIdOfModifier(InputBinding.FollowMeMyDistDec);
-    if (FollowMe.keyModifier_FollowMeMy ~= getKeyIdOfModifier(InputBinding.FollowMeMyDistInc)
-    or  FollowMe.keyModifier_FollowMeMy ~= getKeyIdOfModifier(InputBinding.FollowMeMyOffsDec)
-    or  FollowMe.keyModifier_FollowMeMy ~= getKeyIdOfModifier(InputBinding.FollowMeMyOffsInc)
-    or  FollowMe.keyModifier_FollowMeMy ~= getKeyIdOfModifier(InputBinding.FollowMeMyOffsTgl)
-    ) then
+       FollowMe.keyModifier_FollowMeMy  = getKeyIdOfModifier(InputBinding.FollowMeMyToggle )
+    if FollowMe.keyModifier_FollowMeMy ~= getKeyIdOfModifier(InputBinding.FollowMeMyPause  )
+    or FollowMe.keyModifier_FollowMeMy ~= getKeyIdOfModifier(InputBinding.FollowMeMyDistDec)
+    or FollowMe.keyModifier_FollowMeMy ~= getKeyIdOfModifier(InputBinding.FollowMeMyDistInc)
+    or FollowMe.keyModifier_FollowMeMy ~= getKeyIdOfModifier(InputBinding.FollowMeMyOffsDec)
+    or FollowMe.keyModifier_FollowMeMy ~= getKeyIdOfModifier(InputBinding.FollowMeMyOffsInc)
+    or FollowMe.keyModifier_FollowMeMy ~= getKeyIdOfModifier(InputBinding.FollowMeMyOffsTgl)
+    then
         -- warning!
         log("WARNING: Not all action-keys(1) use the same modifier-key!");
     end;
@@ -119,22 +114,24 @@ function FollowMe.initialize()
     -- Build a string, that is much shorter than what InputBinding.getKeyNamesOfDigitalAction() returns
     FollowMe.keys_FollowMeMy = FollowMe.keyModifier_FollowMeMy ~= nil and getKeyName(FollowMe.keyModifier_FollowMeMy) or "";
     FollowMe.keys_FollowMeMy = FollowMe.keys_FollowMeMy:upper();
-
-    local shortKeys = removeFromString(InputBinding.getKeyNamesOfDigitalAction(InputBinding.FollowMeMyDistDec), FollowMe.keys_FollowMeMy)
-            .. "/" .. removeFromString(InputBinding.getKeyNamesOfDigitalAction(InputBinding.FollowMeMyDistInc), FollowMe.keys_FollowMeMy)
-            .. "," .. removeFromString(InputBinding.getKeyNamesOfDigitalAction(InputBinding.FollowMeMyOffsDec), FollowMe.keys_FollowMeMy)
-            .. "/" .. removeFromString(InputBinding.getKeyNamesOfDigitalAction(InputBinding.FollowMeMyOffsInc), FollowMe.keys_FollowMeMy)
-            .. "," .. removeFromString(InputBinding.getKeyNamesOfDigitalAction(InputBinding.FollowMeMyOffsTgl), FollowMe.keys_FollowMeMy);
-
+    local shortKeys = removeFromString(InputBinding.getRawKeyNamesOfDigitalAction(InputBinding.FollowMeMyToggle ), FollowMe.keys_FollowMeMy)
+            .. "," .. removeFromString(InputBinding.getRawKeyNamesOfDigitalAction(InputBinding.FollowMeMyPause  ), FollowMe.keys_FollowMeMy)
+            .. "," .. removeFromString(InputBinding.getRawKeyNamesOfDigitalAction(InputBinding.FollowMeMyDistDec), FollowMe.keys_FollowMeMy)
+            .. "/" .. removeFromString(InputBinding.getRawKeyNamesOfDigitalAction(InputBinding.FollowMeMyDistInc), FollowMe.keys_FollowMeMy)
+            .. "," .. removeFromString(InputBinding.getRawKeyNamesOfDigitalAction(InputBinding.FollowMeMyOffsDec), FollowMe.keys_FollowMeMy)
+            .. "/" .. removeFromString(InputBinding.getRawKeyNamesOfDigitalAction(InputBinding.FollowMeMyOffsInc), FollowMe.keys_FollowMeMy)
+            .. "," .. removeFromString(InputBinding.getRawKeyNamesOfDigitalAction(InputBinding.FollowMeMyOffsTgl), FollowMe.keys_FollowMeMy);
     FollowMe.keys_FollowMeMy = FollowMe.keys_FollowMeMy .. " " .. shortKeys;
-
+    
     -- Test that these four use the same modifier-key
-        FollowMe.keyModifier_FollowMeFl  = getKeyIdOfModifier(InputBinding.FollowMeFlDistDec);
-    if (FollowMe.keyModifier_FollowMeFl ~= getKeyIdOfModifier(InputBinding.FollowMeFlDistInc)
-    or  FollowMe.keyModifier_FollowMeFl ~= getKeyIdOfModifier(InputBinding.FollowMeFlOffsDec)
-    or  FollowMe.keyModifier_FollowMeFl ~= getKeyIdOfModifier(InputBinding.FollowMeFlOffsInc)
-    or  FollowMe.keyModifier_FollowMeFl ~= getKeyIdOfModifier(InputBinding.FollowMeFlOffsTgl)
-    ) then
+       FollowMe.keyModifier_FollowMeFl  = getKeyIdOfModifier(InputBinding.FollowMeFlStop);
+    if FollowMe.keyModifier_FollowMeFl ~= getKeyIdOfModifier(InputBinding.FollowMeFlPause  )
+    or FollowMe.keyModifier_FollowMeFl ~= getKeyIdOfModifier(InputBinding.FollowMeFlDistDec)
+    or FollowMe.keyModifier_FollowMeFl ~= getKeyIdOfModifier(InputBinding.FollowMeFlDistInc)
+    or FollowMe.keyModifier_FollowMeFl ~= getKeyIdOfModifier(InputBinding.FollowMeFlOffsDec)
+    or FollowMe.keyModifier_FollowMeFl ~= getKeyIdOfModifier(InputBinding.FollowMeFlOffsInc)
+    or FollowMe.keyModifier_FollowMeFl ~= getKeyIdOfModifier(InputBinding.FollowMeFlOffsTgl)
+    then
         -- warning!
         log("WARNING: Not all action-keys(2) use the same modifier-key!");
     end;
@@ -143,11 +140,13 @@ function FollowMe.initialize()
     FollowMe.keys_FollowMeFl = FollowMe.keyModifier_FollowMeFl ~= nil and getKeyName(FollowMe.keyModifier_FollowMeFl) or "";
     FollowMe.keys_FollowMeFl = FollowMe.keys_FollowMeFl:upper();
 
-    local shortKeys = removeFromString(InputBinding.getKeyNamesOfDigitalAction(InputBinding.FollowMeFlDistDec), FollowMe.keys_FollowMeFl)
-            .. "/" .. removeFromString(InputBinding.getKeyNamesOfDigitalAction(InputBinding.FollowMeFlDistInc), FollowMe.keys_FollowMeFl)
-            .. "," .. removeFromString(InputBinding.getKeyNamesOfDigitalAction(InputBinding.FollowMeFlOffsDec), FollowMe.keys_FollowMeFl)
-            .. "/" .. removeFromString(InputBinding.getKeyNamesOfDigitalAction(InputBinding.FollowMeFlOffsInc), FollowMe.keys_FollowMeFl)
-            .. "," .. removeFromString(InputBinding.getKeyNamesOfDigitalAction(InputBinding.FollowMeFlOffsTgl), FollowMe.keys_FollowMeFl);
+    local shortKeys = removeFromString(InputBinding.getRawKeyNamesOfDigitalAction(InputBinding.FollowMeFlStop   ), FollowMe.keys_FollowMeFl)
+            .. "," .. removeFromString(InputBinding.getRawKeyNamesOfDigitalAction(InputBinding.FollowMeFlPause  ), FollowMe.keys_FollowMeFl)
+            .. "," .. removeFromString(InputBinding.getRawKeyNamesOfDigitalAction(InputBinding.FollowMeFlDistDec), FollowMe.keys_FollowMeFl)
+            .. "/" .. removeFromString(InputBinding.getRawKeyNamesOfDigitalAction(InputBinding.FollowMeFlDistInc), FollowMe.keys_FollowMeFl)
+            .. "," .. removeFromString(InputBinding.getRawKeyNamesOfDigitalAction(InputBinding.FollowMeFlOffsDec), FollowMe.keys_FollowMeFl)
+            .. "/" .. removeFromString(InputBinding.getRawKeyNamesOfDigitalAction(InputBinding.FollowMeFlOffsInc), FollowMe.keys_FollowMeFl)
+            .. "," .. removeFromString(InputBinding.getRawKeyNamesOfDigitalAction(InputBinding.FollowMeFlOffsTgl), FollowMe.keys_FollowMeFl);
 
     FollowMe.keys_FollowMeFl = FollowMe.keys_FollowMeFl .. " " .. shortKeys;
 end;
@@ -156,7 +155,7 @@ end;
 --
 --
 
-function FollowMe.load(self, xmlFile)
+function FollowMe.load(self, savegame)
     FollowMe.initialize();
 
     -- A simple attempt at making a "namespace" for 'Follow Me' variables.
@@ -194,23 +193,40 @@ function FollowMe.load(self, xmlFile)
     self.modFM.delayDirty = nil;
     --
     if self.isServer then
-        -- Copied from FS2011-Hirable, for the mods that do not include that specialization in their vehicle-type.
-        self.modFM.PricePerMS = Utils.getNoNil(getXMLFloat(xmlFile, "vehicle.pricePerHour"), 2000)/60/60/1000;
+        ---- Copied from FS2011-Hirable, for the mods that do not include that specialization in their vehicle-type.
+        --self.modFM.PricePerMS = Utils.getNoNil(getXMLFloat(xmlFile, "vehicle.pricePerHour"), 2000)/60/60/1000;
 
+        if self.pricePerMS == nil then
+            self.pricePerMS = Utils.getNoNil(getXMLFloat(self.xmlFile, "vehicle.ai.pricePerHour"), 2000)/60/60/1000;
+        end
+        
         -- Drop one "crumb", to get it started...
         local wx,wy,wz = getWorldTranslation(self.components[1].node);
         FollowMe.addDrop(self, wx,wy,wz, 30/3600);
     end;
+
+    if savegame ~= nil and not savegame.resetVehicles then
+        local value = getXMLString(savegame.xmlFile, savegame.key .. "#followMe")
+        local keepBack, offset = Utils.getVectorFromString(value);
+        if keepBack ~= nil then
+            FollowMe.changeDistance(self, keepBack);
+        end
+        if offset ~= nil then
+            FollowMe.changeXOffset(self, offset);
+        end
+    end
 end;
 
 function FollowMe.delete(self)
     if self.isServer then
         if self.modFM.StalkerVehicleObj ~= nil then
             -- Stop the stalker-vehicle
-            FollowMe.stopFollowMe(self.modFM.StalkerVehicleObj);
+            --FollowMe.stopFollowMe(self.modFM.StalkerVehicleObj);
+            FollowMe.stoppedFollowMe(self.modFM.StalkerVehicleObj);
         end;
         -- Stop ourself
-        FollowMe.stopFollowMe(self);
+        --FollowMe.stopFollowMe(self);
+        FollowMe.stoppedFollowMe(self);
     --else
     --    self.modFM.FollowVehicleObj  = nil;
     --    self.modFM.StalkerVehicleObj = nil;    
@@ -299,18 +315,18 @@ function FollowMe.readStream(self, streamId, connection)
     dummyWarnTxt                = FollowMe.sharedReadStream(true, streamId); -- 'true' = server to clients
 end;
 
-function FollowMe.loadFromAttributesAndNodes(self, xmlFile, key, resetVehicles)
-    if (not resetVehicles) and (self.modFM ~= nil) then
-        local keepBack, offset = Utils.getVectorFromString(getXMLString(xmlFile, key.."#followMe"));
-        if keepBack ~= nil then
-            FollowMe.changeDistance(self, keepBack);
-        end
-        if offset ~= nil then
-            FollowMe.changeXOffset(self, offset);
-        end
-    end
-    return BaseMission.VEHICLE_LOAD_OK;
-end;
+--function FollowMe.loadFromAttributesAndNodes(self, xmlFile, key, resetVehicles)
+--    if (not resetVehicles) and (self.modFM ~= nil) then
+--        local keepBack, offset = Utils.getVectorFromString(getXMLString(xmlFile, key.."#followMe"));
+--        if keepBack ~= nil then
+--            FollowMe.changeDistance(self, keepBack);
+--        end
+--        if offset ~= nil then
+--            FollowMe.changeXOffset(self, offset);
+--        end
+--    end
+--    return BaseMission.VEHICLE_LOAD_OK;
+--end;
 
 function FollowMe.getSaveAttributesAndNodes(self, nodeIdent)
     local attributes = nil
@@ -530,15 +546,19 @@ function FollowMe.updateTick(self, dt)
 
       if self.modFM.FollowVehicleObj ~= nil then -- Have leading vehicle to follow.
         -- Simon Says: Lights!
-        self:setLightsTypesMask(       self.modFM.FollowVehicleObj.lightsTypesMask);
-        self:setBeaconLightsVisibility(self.modFM.FollowVehicleObj.beaconLightsActive);
+        --self:setLightsTypesMask(       self.modFM.FollowVehicleObj.lightsTypesMask);
+        --self:setBeaconLightsVisibility(self.modFM.FollowVehicleObj.beaconLightsActive);
         --
         FollowMe.updateFollowMovement(self, dt);
         --
-        -- Copied from FS2011-Hirable
-        local difficultyMultiplier = Utils.lerp(0.6, 1, (g_currentMission.missionStats.difficulty-1)/2) -- range from 0.6 (easy)  to  1 (hard)
-        g_currentMission:addSharedMoney(-dt * difficultyMultiplier * self.modFM.PricePerMS, "wagePayment");
-      elseif (self.movingDirection > 0) then  -- Must drive forward to drop crumbs
+        --local difficultyMultiplier = Utils.lerp(0.6, 1, (g_currentMission.missionStats.difficulty-1)/2) -- range from 0.6 (easy)  to  1 (hard)
+        --g_currentMission:addSharedMoney(-dt * difficultyMultiplier * self.modFM.PricePerMS, "wagePayment");
+        
+        local difficultyMultiplier = g_currentMission.missionInfo.buyPriceMultiplier;
+        g_currentMission:addSharedMoney(-dt * difficultyMultiplier * self.pricePerMS, "wagePayment");
+        g_currentMission:addMoneyChange(-dt * difficultyMultiplier * self.pricePerMS, FSBaseMission.MONEY_TYPE_AI)        
+        
+      elseif (self.reverserDirection * self.movingDirection > 0) then  -- Must drive forward to drop crumbs
         self.modFM.sumSpeed = self.modFM.sumSpeed + self.lastSpeed;
         self.modFM.sumCount = self.modFM.sumCount + 1;
         --
@@ -628,24 +648,29 @@ function FollowMe.checkBaler(attachedTool)
     local allowedToDrive
     local hasCollision
     local pctSpeedReduction
-    if attachedTool.balerUnloadingState == Baler.UNLOADING_CLOSED then
-        if attachedTool.fillLevel >= attachedTool.capacity then
-            allowedToDrive = false
-            hasCollision = true -- Stop faster
-            if (table.getn(attachedTool.bales) > 0) and attachedTool:isUnloadingAllowed() then
-                -- Activate the bale unloading (server-side only!)
-                attachedTool:setIsUnloadingBale(true);
+    if attachedTool:getIsTurnedOn() then
+        if attachedTool.baler.unloadingState == Baler.UNLOADING_CLOSED then
+            --if attachedTool.fillLevel >= attachedTool.capacity then
+            local unitFillLevel = attachedTool:getUnitFillLevel(self.baler.fillUnitIndex) 
+            local unitCapacity  = attachedTool:getUnitCapacity(self.baler.fillUnitIndex)
+            if unitFillLevel >= unitCapacity then
+                allowedToDrive = false
+                hasCollision = true -- Stop faster
+                if (table.getn(attachedTool.baler.bales) > 0) and attachedTool:isUnloadingAllowed() then
+                    -- Activate the bale unloading (server-side only!)
+                    attachedTool:setIsUnloadingBale(true);
+                end
+            else
+                -- When baler is more than 95% full, then reduce speed in an attempt at not leaving spots of straw.
+                pctSpeedReduction = Utils.lerp(0.0, 0.75, math.max((unitFillLevel / unitCapacity) - 0.95, 0))
             end
         else
-            -- When baler is more than 95% full, then reduce speed in an attempt at not leaving spots of straw.
-            pctSpeedReduction = Utils.lerp(0.0, 0.75, math.max((attachedTool.fillLevel / attachedTool.capacity) - 0.95, 0))
-        end
-    else
-        allowedToDrive = false
-        hasCollision = true
-        if attachedTool.balerUnloadingState == Baler.UNLOADING_OPEN then
-            -- Activate closing (server-side only!)
-            attachedTool:setIsUnloadingBale(false);
+            allowedToDrive = false
+            hasCollision = true
+            if attachedTool.baler.unloadingState == Baler.UNLOADING_OPEN then
+                -- Activate closing (server-side only!)
+                attachedTool:setIsUnloadingBale(false);
+            end
         end
     end
     return allowedToDrive, hasCollision, pctSpeedReduction;
@@ -654,11 +679,11 @@ end
 function FollowMe.checkBaleWrapper(attachedTool)
     local allowedToDrive
     local hasCollision
-    if attachedTool.baleWrapperState == 4 then
+    if attachedTool.baleWrapperState == BaleWrapper.STATE_WRAPPER_FINISHED then -- '4'
         allowedToDrive = false
         -- Activate the bale unloading (server-side only!)
-        attachedTool:doStateChange(5);
-    elseif attachedTool.baleWrapperState > 4 then
+        attachedTool:doStateChange(BaleWrapper.CHANGE_WRAPPER_START_DROP_BALE);  -- '5'
+    elseif attachedTool.baleWrapperState > BaleWrapper.STATE_WRAPPER_FINISHED then -- '4'
         allowedToDrive = false
     end
     return allowedToDrive, hasCollision;
@@ -671,14 +696,14 @@ function FollowMe.updateFollowMovement(self, dt)
     local hasCollision = false;
     local moveForwards = true;
     --
-    if allowedToDrive and self.numCollidingVehicles ~= nil then
-        for _,numCollisions in pairs(self.numCollidingVehicles) do
-            if numCollisions > 0 then
-                hasCollision = true; -- Collision imminent! Brake! Brake!
-                break;
-            end;
-        end;
-    end
+    --if allowedToDrive and self.numCollidingVehicles ~= nil then
+    --    for _,numCollisions in pairs(self.numCollidingVehicles) do
+    --        if numCollisions > 0 then
+    --            hasCollision = true; -- Collision imminent! Brake! Brake!
+    --            break;
+    --        end;
+    --    end;
+    --end
 
     -- Attempt at automatically unloading of round-bales
     local attachedTool = nil;
@@ -686,33 +711,21 @@ function FollowMe.updateFollowMovement(self, dt)
     -- TODO - Try to figure out if this can be moved elsewhere, so its NOT executed so often.
     for _,tool in pairs(self.attachedImplements) do
         if tool.object ~= nil then
-
-            if tool.object.isTurnedOn then
-                if (tool.object.baleUnloadAnimationName ~= nil)  -- Seems RoundBalers are the only ones which have set the 'baleUnloadAnimationName'
-                   and SpecializationUtil.hasSpecialization(Baler, tool.object.specializations) then
-                    -- Found (Round)Baler.LUA
-                    attachedTool = { tool.object, FollowMe.checkBaler };
-                    break
---  FS2013
-                elseif tool.object.netBaleAnimation ~= nil and tool.object.setShouldNet ~= nil and tool.object.nettingAnimation ~= nil then
-                    -- Probably found VariableChamberBaler.LUA
-                    attachedTool = { tool.object, FollowMe.checkBaler };
-                    break
---FS2013]]
-                end
+            if  tool.object.baler ~= nil
+            and tool.object.baler.baleUnloadAnimationName ~= nil  -- Seems RoundBalers are the only ones which have set the 'baleUnloadAnimationName'
+            and SpecializationUtil.hasSpecialization(Baler, tool.object.specializations)
+            then
+                -- Found (Round)Baler.LUA
+                attachedTool = { tool.object, FollowMe.checkBaler };
+                break
             end
 
-            if tool.object.baleWrapperState ~= nil then
-                if
---  FS2013 DLC Ursus
-                    ((pdlc_ursusAddon ~= nil) and SpecializationUtil.hasSpecialization(pdlc_ursusAddon.BaleWrapper, tool.object.specializations))
---FS2013 DLC Ursus]]
-                    or SpecializationUtil.hasSpecialization(BaleWrapper, tool.object.specializations)
-                then
-                    -- Found BaleWrapper
-                    attachedTool = { tool.object, FollowMe.checkBaleWrapper };
-                    break
-                end
+            if tool.object.baleWrapperState ~= nil
+            and SpecializationUtil.hasSpecialization(BaleWrapper, tool.object.specializations)
+            then
+                -- Found BaleWrapper
+                attachedTool = { tool.object, FollowMe.checkBaleWrapper };
+                break
             end
         end
     end
@@ -833,6 +846,7 @@ if Vehicle.debugRendering then
 end;
 --DEBUG]]
             --
+--[[            
             if AIVehicleUtil.mrDriveInDirection and self.isRealistic then
 --  MoreRealistic
                 if crumbT.realGroundSpeed ~= nil then
@@ -860,8 +874,9 @@ end;
                         hasCollision = true; -- apply brakes
                     end
                 end;
---MoreRealistic]]
+--MoreRealistic] ]
             else
+--]]            
                 local mySpeedDiffPct = (math.max(0, self.lastSpeedReal) / math.max(0.00001,self.modFM.lastLastSpeedReal)) - 1;
 
                 local targetSpeedDiffPct = Utils.clamp(((math.max(5/3600, crumbAvgSpeed) - math.max(0,self.lastSpeedReal))*3600) / math.max(1,crumbAvgSpeed*3600), -1, 1);
@@ -880,7 +895,9 @@ if Vehicle.debugRendering then
     tMRRealSpd = crumbAvgSpeed*3600;
 end;
 --DEBUG]]
+--[[
             end
+--]]            
         end;
     end;
     --
@@ -904,12 +921,12 @@ end;
 
         -- Leader-vehicle can be vanilla or MoreRealistic. Get speed from the proper one.
         local leaderLastSpeedKMH = math.max(0, leader.lastSpeedReal) * 3600; -- only consider forward movement.
---  MoreRealistic
+--[[MoreRealistic
         if leader.isRealistic then
             leaderLastSpeedKMH = leader.realGroundSpeed * 3.6;
         end
 --MoreRealistic]]
-
+--[[
         if AIVehicleUtil.mrDriveInDirection and self.isRealistic then
 --  MoreRealistic
             local minSpeed = (leaderLastSpeedKMH < 1.0) and 5 or 0; -- if leader is basically stopped, set stalker's minimum speed to 5km/h
@@ -933,8 +950,9 @@ end;
                 -- Going too fast!
                 allowedToDrive = false;
             end;
---MoreRealistic]]
+--MoreRealistic] ]
         else
+--]]        
             local mySpeedDiffPct = (math.max(0, self.lastSpeedReal) / math.max(0.00001,self.modFM.lastLastSpeedReal)) - 1;
 
             local leaderLastSpeedReal = leaderLastSpeedKMH / 3600;
@@ -959,7 +977,9 @@ if Vehicle.debugRendering then
     tMRRealSpd = leaderLastSpeedKMH;
 end;
 --DEBUG]]
+--[[
         end;
+--]]
     end;
     --
 --[[DEBUG
@@ -970,12 +990,12 @@ end;
 
     -- Reduce speed if "attack angle" against target is more than 45degrees.
     if self.modFM.reduceSpeedTime > g_currentMission.time then
---  MoreRealistic
+--[[MoreRealistic
         tMRRealSpd = tMRRealSpd * 0.5
 --MoreRealistic]]
         acceleration = acceleration * 0.5;
     elseif (self.lastSpeed*3600 > 10) and (math.abs(math.atan2(lx,lz)) > (math.pi/4)) then
---  MoreRealistic
+--[[MoreRealistic
         tMRRealSpd = tMRRealSpd * 0.5
 --MoreRealistic]]
         acceleration = acceleration * 0.5;
@@ -994,16 +1014,19 @@ end;
     if hasCollision or not allowedToDrive then
         acceleration = (hasCollision and (self.lastSpeedReal * 3600 > 5)) and -1 or 0; -- colliding and speed more than 5km/h, then negative acceleration (brake?)
         lx,lz = 0,1
-
+--[[
         if AIVehicleUtil.mrDriveInDirection and self.isRealistic then
 --  MoreRealistic
             self.motor.realSpeedLevelsAI[1] = 0.0;
             AIVehicleUtil.mrDriveInDirection(self, dt, acceleration, allowedToDrive, true, lx,lz, 1, false, true);
---MoreRealistic]]
+--MoreRealistic] ]
         else
+--]]        
             -- Vanilla
             AIVehicleUtil.driveInDirection(self, dt, 30, acceleration, (acceleration * 0.7), 30, allowedToDrive, moveForwards, lx,lz, nil, 1);
+--[[            
         end;
+--]]
 
         if self.modFM.FollowState == FollowMe.STATE_STOPPING then
             if (self.lastSpeedReal*3600 < 2) then
@@ -1011,21 +1034,26 @@ end;
             end
         end
     else
+--[[    
         if AIVehicleUtil.mrDriveInDirection and self.isRealistic then
 --  MoreRealistic
             self.motor.realSpeedLevelsAI[4] = tMRRealSpd;
             AIVehicleUtil.mrDriveInDirection(self, dt, 1, allowedToDrive, true, lx,lz, 4, false, true);
---MoreRealistic]]
+--MoreRealistic] ]
         else
+--]]        
             -- Vanilla
             --self.motor.maxRpmOverride = nil;
             AIVehicleUtil.driveInDirection(self, dt, 30, acceleration, (acceleration * 0.7), 30, allowedToDrive, moveForwards, lx,lz, nil, 1);
+--[[            
         end
-
+--]]        
+--[[
         if self.aiTrafficCollisionTrigger ~= nil then
             -- Attempt to rotate the traffic-collision-trigger in direction of steering
             AIVehicleUtil.setCollisionDirection(getParent(self.aiTrafficCollisionTrigger), self.aiTrafficCollisionTrigger, lx,lz);
         end
+--]]        
     end;
 
 
@@ -1218,7 +1246,7 @@ function FollowMe.startFollowMe(self, noEventSend)
     end;
 --MoreRealistic]]
 
---  FS2015
+--[[FS2015
     if g_currentMission.ingameMap ~= nil and g_currentMission.ingameMap.createMapHotspot ~= nil then
         -- TODO, make visible on clients too!
         local iconWidth = math.floor(0.015 * g_screenWidth) / g_screenWidth;
@@ -1323,7 +1351,7 @@ function FollowMe.stoppedFollowMe(self, noSendEvent)
 
     WheelsUtil.updateWheelsPhysics(self, 0, self.lastSpeed, 0, true, self.requiredDriveMode); -- doHandBrake
 
---  FS2015
+--[[FS2015
     if self.modFM.mapIcon ~= nil then
         g_currentMission.ingameMap:deleteMapHotspot(self.modFM.mapIcon);
         self.modFM.mapIcon = nil;
@@ -1359,7 +1387,7 @@ end
 
 function FollowMe.draw(self)
     if self.modFM.ShowWarningTime > g_currentMission.time then
-        g_currentMission:addWarning(g_i18n:getText(self.modFM.ShowWarningText))
+        g_currentMission:showBlinkingWarning(g_i18n:getText(self.modFM.ShowWarningText))
     end;
     --
     local showFollowMeMy = FollowMe.keyModifier_FollowMeMy == nil or (FollowMe.keyModifier_FollowMeMy ~= nil and Input.isKeyPressed(FollowMe.keyModifier_FollowMeMy));
@@ -1406,21 +1434,18 @@ function FollowMe.draw(self)
         end
     end
     --
-    if g_currentMission.showHelpText then
+    if g_currentMission.missionInfo.showHelpMenu then
         if self.modFM.FollowVehicleObj ~= nil
         or showFollowMeMy then
-            g_currentMission:addHelpButtonText(g_i18n:getText("FollowMeMyToggle"), InputBinding.FollowMeMyToggle);
+            g_currentMission:addHelpButtonText(g_i18n:getText("FollowMeMyToggle"), InputBinding.FollowMeMyToggle, nil, GS_PRIO_NORMAL);
         end;
         --
         if self.modFM.FollowVehicleObj ~= nil then
-            g_currentMission:addHelpButtonText(g_i18n:getText("FollowMeMyPause"), InputBinding.FollowMeMyPause);
-            g_currentMission:addExtraPrintText(string.format(g_i18n:getText("FollowMeKeysMyself"),FollowMe.keys_FollowMeMy));
+            g_currentMission:addExtraPrintText(string.format(g_i18n:getText("FollowMeKeysMyself"),FollowMe.keys_FollowMeMy), nil, GS_PRIO_NORMAL);
         end;
         --
         if self.modFM.StalkerVehicleObj ~= nil then
-            g_currentMission:addHelpButtonText(g_i18n:getText("FollowMeFlPause"), InputBinding.FollowMeFlPause);
-            g_currentMission:addHelpButtonText(g_i18n:getText("FollowMeFlStop"), InputBinding.FollowMeFlStop);
-            g_currentMission:addExtraPrintText(string.format(g_i18n:getText("FollowMeKeysBehind"),FollowMe.keys_FollowMeFl));
+            g_currentMission:addExtraPrintText(string.format(g_i18n:getText("FollowMeKeysBehind"),FollowMe.keys_FollowMeFl), nil, GS_PRIO_NORMAL);
         end;
 --[[DEBUG
     else

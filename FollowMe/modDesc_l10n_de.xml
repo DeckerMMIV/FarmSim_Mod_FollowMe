@@ -22,34 +22,37 @@ Mit "Follow Me" kann man dass (aber nicht beim rückwärts fahren).
 
         <text name="FollowMeStartEngine"        text="Start engine first." />
         <text name="FollowMeTooFarBehind"       text="'trail' des führenden Fahrzeug verloren. Stoppen." />
-        <text name="FollowMeDropperNotFound"    text="Kann in der Nähe keine Spur finden, der ich folgen könnte. Nähern sie sich dem führenden Fahrzeug." />
         
-        <text name="FollowMeKeysMyself"         text="%s - Selbst Abstand/Offset" />
-        <text name="FollowMeKeysBehind"         text="%s - Hinter Abstand/Offset" />
-            
-        <text name="FollowMeMyToggle"           text="FollowMe: Umzuschalten on/off" />
-        <text name="FollowMeMyPause"            text="FollowMe: Wait/resume"            />  <!-- needs translation -->
-        <text name="FollowMeMyDistDec"          text="FollowMe: Selbst Abstand -" />
-        <text name="FollowMeMyDistInc"          text="FollowMe: Selbst Abstand +" />
-        <text name="FollowMeMyOffsDec"          text="FollowMe: Selbst Offset links" />
-        <text name="FollowMeMyOffsInc"          text="FollowMe: Selbst Offset rechts" />
-        <text name="FollowMeMyOffsTgl"          text="FollowMe: Myself Offset invert"   />  <!-- needs translation -->
+        <text name="FollowMeDropperNotFound"    text="Kann in der Nähe keine Spur finden, der ich folgen könnte.
+Nähern sie sich dem führenden Fahrzeug." />
+        
+        <text name="FollowMeKeysMyself"         text="%s - Myself control actions"  />  <!-- needs translation -->
+        <text name="FollowMeKeysBehind"         text="%s - Behind control actions"  />  <!-- needs translation -->
+        <text name="FollowMeMyToggle"           text="FollowMe: Toggle on/off"      />  <!-- needs translation -->
+        
+        <text name="input_FollowMeMyToggle"     text="FollowMe: Umzuschalten on/off" />
+        <text name="input_FollowMeMyPause"      text="FollowMe: Wait/resume"            />  <!-- needs translation -->
+        <text name="input_FollowMeMyDistDec"    text="FollowMe: Selbst Abstand -" />
+        <text name="input_FollowMeMyDistInc"    text="FollowMe: Selbst Abstand +" />
+        <text name="input_FollowMeMyOffsDec"    text="FollowMe: Selbst Offset links" />
+        <text name="input_FollowMeMyOffsInc"    text="FollowMe: Selbst Offset rechts" />
+        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Myself Offset invert"   />  <!-- needs translation -->
 
-        <text name="FollowMeFlStop"             text="FollowMe: Hinter Aufhalten" />
-        <text name="FollowMeFlPause"            text="FollowMe: Behind wait/resume"     />  <!-- needs translation -->
-        <text name="FollowMeFlDistDec"          text="FollowMe: Hinter Abstand -" />
-        <text name="FollowMeFlDistInc"          text="FollowMe: Hinter Abstand +" />
-        <text name="FollowMeFlOffsDec"          text="FollowMe: Hinter Offset links" />
-        <text name="FollowMeFlOffsInc"          text="FollowMe: Hinter Offset rechts" />
-        <text name="FollowMeFlOffsTgl"          text="FollowMe: Behind Offset invert"   />  <!-- needs translation -->
+        <text name="input_FollowMeFlStop"       text="FollowMe: Hinter Aufhalten" />
+        <text name="input_FollowMeFlPause"      text="FollowMe: Behind wait/resume"     />  <!-- needs translation -->
+        <text name="input_FollowMeFlDistDec"    text="FollowMe: Hinter Abstand -" />
+        <text name="input_FollowMeFlDistInc"    text="FollowMe: Hinter Abstand +" />
+        <text name="input_FollowMeFlOffsDec"    text="FollowMe: Hinter Offset links" />
+        <text name="input_FollowMeFlOffsInc"    text="FollowMe: Hinter Offset rechts" />
+        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Behind Offset invert"   />  <!-- needs translation -->
 
-    <!-- needs translation -->
-        <text name="FollowMeLeader"             text="Leader" />
-        <text name="FollowMeFollower"           text="Follower" />
-        <text name="FollowMePaused"             text=" (Waiting)"           />  <!-- needs translation -->
-        <text name="FollowMeOffLft"             text="%.1f Left-offs." />
-        <text name="FollowMeOffRgt"             text="Right-offs. %.1f" />
-        <text name="FollowMeDistBehind"         text="Behind-dist. %.1f" />
-        <text name="FollowMeDistAhead"          text="Ahead-dist. %.1f" />
+    
+        <text name="FollowMeLeader"             text="Leader"            /> <!-- needs translation --> 
+        <text name="FollowMeFollower"           text="Follower"          /> <!-- needs translation -->
+        <text name="FollowMePaused"             text=" (Waiting)"        /> <!-- needs translation -->
+        <text name="FollowMeOffLft"             text="%.1f Left-offs."   /> <!-- needs translation -->
+        <text name="FollowMeOffRgt"             text="Right-offs. %.1f"  /> <!-- needs translation -->
+        <text name="FollowMeDistBehind"         text="Behind-dist. %.1f" /> <!-- needs translation -->
+        <text name="FollowMeDistAhead"          text="Ahead-dist. %.1f"  /> <!-- needs translation -->
     </texts>
 </l10n>

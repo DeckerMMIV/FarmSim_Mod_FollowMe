@@ -22,26 +22,29 @@ Avec "Follow Me", c'est possible (sauf en marche arrière).
  
         <text name="FollowMeStartEngine"        text="Démarrer d'abord le moteur." />
         <text name="FollowMeTooFarBehind"       text="Suiveur trop éloigné. Arrêt." />
-        <text name="FollowMeDropperNotFound"    text="Impossible de trouver un leader. Rapprochez-vous de la voiture de tête." />
-         
-        <text name="FollowMeKeysMyself"         text="%s - Leader Écart/Décalage" />
-        <text name="FollowMeKeysBehind"         text="%s - Suiveur Écart/Décalage" />
-             
-        <text name="FollowMeMyToggle"           text="FollowMe: Activer/Désactiver" />
-        <text name="FollowMeMyPause"            text="FollowMe: Attendre/Redémarrer"  />  
-        <text name="FollowMeMyDistDec"          text="FollowMe: Leader Écart -" />
-        <text name="FollowMeMyDistInc"          text="FollowMe: Leader Écart +" />
-        <text name="FollowMeMyOffsDec"          text="FollowMe: Leader décalage gauche" />
-        <text name="FollowMeMyOffsInc"          text="FollowMe: Leader décalage droite" />
-        <text name="FollowMeMyOffsTgl"          text="FollowMe: Myself Offset invert"   />  <!-- needs translation -->
 
-        <text name="FollowMeFlStop"             text="FollowMe: Stopper le suiveur" />
-        <text name="FollowMeFlPause"            text="FollowMe: Suiveur Attendre/Redémarrer" />
-        <text name="FollowMeFlDistDec"          text="FollowMe: Suiveur Écart -" />
-        <text name="FollowMeFlDistInc"          text="FollowMe: Suiveur Écart +" />
-        <text name="FollowMeFlOffsDec"          text="FollowMe: Suiveur décalage gauche" />
-        <text name="FollowMeFlOffsInc"          text="FollowMe: Suiveur décalage droite" />
-        <text name="FollowMeFlOffsTgl"          text="FollowMe: Behind Offset invert"   />  <!-- needs translation -->
+        <text name="FollowMeDropperNotFound"    text="Impossible de trouver un leader.
+Rapprochez-vous de la voiture de tête." />
+
+        <text name="FollowMeKeysMyself"         text="%s - Myself control actions"  />  <!-- needs translation -->
+        <text name="FollowMeKeysBehind"         text="%s - Behind control actions"  />  <!-- needs translation -->
+        <text name="FollowMeMyToggle"           text="FollowMe: Toggle on/off"      />  <!-- needs translation -->
+        
+        <text name="input_FollowMeMyToggle"     text="FollowMe: Activer/Désactiver" />
+        <text name="input_FollowMeMyPause"      text="FollowMe: Attendre/Redémarrer"  />  
+        <text name="input_FollowMeMyDistDec"    text="FollowMe: Leader Écart -" />
+        <text name="input_FollowMeMyDistInc"    text="FollowMe: Leader Écart +" />
+        <text name="input_FollowMeMyOffsDec"    text="FollowMe: Leader décalage gauche" />
+        <text name="input_FollowMeMyOffsInc"    text="FollowMe: Leader décalage droite" />
+        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Myself Offset invert"   />  <!-- needs translation -->
+
+        <text name="input_FollowMeFlStop"       text="FollowMe: Stopper le suiveur" />
+        <text name="input_FollowMeFlPause"      text="FollowMe: Suiveur Attendre/Redémarrer" />
+        <text name="input_FollowMeFlDistDec"    text="FollowMe: Suiveur Écart -" />
+        <text name="input_FollowMeFlDistInc"    text="FollowMe: Suiveur Écart +" />
+        <text name="input_FollowMeFlOffsDec"    text="FollowMe: Suiveur décalage gauche" />
+        <text name="input_FollowMeFlOffsInc"    text="FollowMe: Suiveur décalage droite" />
+        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Behind Offset invert"   />  <!-- needs translation -->
 
         <text name="FollowMeLeader"             text="Leader" />
         <text name="FollowMeFollower"           text="Suiveur" />

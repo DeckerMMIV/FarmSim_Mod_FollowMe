@@ -22,27 +22,30 @@ With "Follow Me" you can (though not backwards driving).
 
         <text name="FollowMeStartEngine"        text="Start engine first." />
         <text name="FollowMeTooFarBehind"       text="Lost the 'trail' of leading vehicle. Stopping." />
-        <text name="FollowMeDropperNotFound"    text="Unable to locate a nearby 'trail' within viewing-range to follow. Move closer to the leading vehicle." />
-        
-        <text name="FollowMeKeysMyself"         text="%s - Myself Distance/Offset"      />
-        <text name="FollowMeKeysBehind"         text="%s - Behind Distance/Offset"      />
-            
-        <text name="FollowMeMyToggle"           text="FollowMe: Toggle on/off"          />
-        <text name="FollowMeMyPause"            text="FollowMe: Wait/resume"            />
-        <text name="FollowMeMyDistDec"          text="FollowMe: Myself Distance -"      />
-        <text name="FollowMeMyDistInc"          text="FollowMe: Myself Distance +"      />
-        <text name="FollowMeMyOffsDec"          text="FollowMe: Myself Offset left"     />
-        <text name="FollowMeMyOffsInc"          text="FollowMe: Myself Offset right"    />
-        <text name="FollowMeMyOffsTgl"          text="FollowMe: Myself Offset invert"   />
 
-        <text name="FollowMeFlStop"             text="FollowMe: Behind Stop"            />
-        <text name="FollowMeFlPause"            text="FollowMe: Behind wait/resume"     />
-        <text name="FollowMeFlDistDec"          text="FollowMe: Behind Distance -"      />
-        <text name="FollowMeFlDistInc"          text="FollowMe: Behind Distance +"      />
-        <text name="FollowMeFlOffsDec"          text="FollowMe: Behind Offset left"     />
-        <text name="FollowMeFlOffsInc"          text="FollowMe: Behind Offset right"    />
-        <text name="FollowMeFlOffsTgl"          text="FollowMe: Behind Offset invert"   />
-            
+        <text name="FollowMeDropperNotFound"    text="Unable to locate a nearby 'trail' within viewing-range to follow.
+Move closer to the leading vehicle." />
+
+        <text name="FollowMeKeysMyself"         text="%s - Myself control actions"  />
+        <text name="FollowMeKeysBehind"         text="%s - Behind control actions"  />
+        <text name="FollowMeMyToggle"           text="FollowMe: Toggle on/off"      />
+        
+        <text name="input_FollowMeMyToggle"     text="FollowMe: Toggle on/off"              />
+        <text name="input_FollowMeMyPause"      text="FollowMe: Myself Wait/Resume"         />
+        <text name="input_FollowMeMyDistDec"    text="FollowMe: Myself Distance -"          />
+        <text name="input_FollowMeMyDistInc"    text="FollowMe: Myself Distance +"          />
+        <text name="input_FollowMeMyOffsDec"    text="FollowMe: Myself Offset left"         />
+        <text name="input_FollowMeMyOffsInc"    text="FollowMe: Myself Offset right"        />
+        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Myself Offset invert/reset" />
+
+        <text name="input_FollowMeFlStop"       text="FollowMe: Behind Disengage"           />
+        <text name="input_FollowMeFlPause"      text="FollowMe: Behind Wait/Resume"         />
+        <text name="input_FollowMeFlDistDec"    text="FollowMe: Behind Distance -"          />
+        <text name="input_FollowMeFlDistInc"    text="FollowMe: Behind Distance +"          />
+        <text name="input_FollowMeFlOffsDec"    text="FollowMe: Behind Offset left"         />
+        <text name="input_FollowMeFlOffsInc"    text="FollowMe: Behind Offset right"        />
+        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Behind Offset invert/reset" />
+
         <text name="FollowMeLeader"             text="Leader"               />
         <text name="FollowMeFollower"           text="Follower"             />
         <text name="FollowMePaused"             text=" (Waiting)"           />

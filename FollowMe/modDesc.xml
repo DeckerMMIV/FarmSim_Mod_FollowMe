@@ -1,10 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="25">    <!-- To make it work in FS2013 use:  descVersion="12"   -->
-    <author>Decker_MMIV</author>
+<modDesc descVersion="32">
+    <author>Decker_MMIV (DCK)</author>
+    <authorContact>fs-uk.com, modcentral.co.uk, forum.farming-simulator.com</authorContact>
     
     <contributors>DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers, Ziuta, pewemo, Alfredo Prieto, xno</contributors>
 
-    <version>2.2.3</version>
+    <version>1.0.0.17</version>
 
     <title>
         <en>Follow Me</en>
@@ -23,55 +24,62 @@
 <![CDATA[Ever wanted to have some vehicles follow you around the map?
 With "Follow Me" you can (though not backwards driving).
 
-Decker_MMIV - fs-uk.com, modcentral.co.uk, forum.farming-simulator.com, modhoster.com]]>
+Default control keys:
+
+'Myself' the current vehicle
+  RIGHT-CTRL F   = Toggle 'FollowMe' on/off
+  RIGHT-CTRL H   = Wait/Resume
+  RIGHT-CTRL W/S = Distance increase/decrease
+  RIGHT-CTRL A/D = Offset left/right adjust
+  RIGHT-CTRL X   = Offset reset or hold for invert
+  
+'Behind' the followed vehicle  
+  RIGHT-SHIFT F   = Disengage 'FollowMe'
+  RIGHT-SHIFT H   = Wait/Resume
+  RIGHT-SHIFT W/S = Distance increase/decrease
+  RIGHT-SHIFT A/D = Offset left/right adjust
+  RIGHT-SHIFT X   = Offset reset or hold for invert
+]]>
         </en>
         <de>
 <![CDATA[Wollten Sie schon immer haben, dass einige Fahrzeuge Sie folgen rund um die Karte?
 Mit "Follow Me" kann man dass (aber nicht beim rückwärts fahren).
-
-Decker_MMIV - fs-uk.com, modcentral.co.uk, forum.farming-simulator.com, modhoster.com]]>
+]]>
         </de>
         <pl>
 <![CDATA[Czy kiedykolwiek chciałeś by niektóre pojazdy podążały za tobą po mapie?
 Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz).
-
-Decker_MMIV - fs-uk.com, modcentral.co.uk, forum.farming-simulator.com, modhoster.com]]>
+]]>
         </pl>
         <fr> 
 <![CDATA[Vous avez toujours souhaité que certains véhicules puissent vous suivre?
 Avec "Follow Me", c'est possible (sauf en marche arrière).
-
-Decker_MMIV - fs-uk.com, modcentral.co.uk, forum.farming-simulator.com, modhoster.com]]>
+]]>
         </fr>
         <ru>
 <![CDATA[Была ли у Вас необходимость в том что-бы какие-либо ТС
 двигались следом за вами? С "Follow Me" это возможно! 
-
-Decker_MMIV - fs-uk.com, modcentral.co.uk, forum.farming-simulator.com, modhoster.com]]>
+]]>
         </ru>
         <it>
 <![CDATA[Hai mai voluto avere alcuni veicoli che ti seguono per la mappa?
 Con "Follow Me", è possibile (non solo seguirti).
-
-Decker_MMIV - fs-uk.com, modcentral.co.uk, forum.farming-simulator.com, modhoster.com]]>
+]]>
         </it>
         <hu>
 <![CDATA[Mindig is szeretted volna, hogy a járművek kövessenek bármerre is mész a térképen?
 A "Follow Me"-vel most megteheted (csak ne tolass).
-
-Decker_MMIV - fs-uk.com, modcentral.co.uk, forum.farming-simulator.com, modhoster.com]]>
+]]>
         </hu>
         <nl>
 <![CDATA[Zou je willen dat sommige voertuigen je volgen over de map?
 Met "Follow Me" kan dat (alleen niet bij achteruit rijden).
-
-Decker_MMIV - fs-uk.com, modcentral.co.uk, forum.farming-simulator.com, modhoster.com]]>
+]]>
         </nl>
         <es>
 <![CDATA[¿Quieres conseguir que te sigan algunos de tus vehículos alrededor del mapa?
 Con "Follow Me" se puede conseguir.(No funciona con marcha atrás).
-
-Decker_MMIV - fs-uk.com, modcentral.co.uk, forum.farming-simulator.com, modhoster.com]]>
+]]>
         </es>
     </description>
 
@@ -79,29 +87,28 @@ Decker_MMIV - fs-uk.com, modcentral.co.uk, forum.farming-simulator.com, modhoste
     <multiplayer supported="true"/>
 
     <extraSourceFiles>
-        <sourceFile filename="addSpecialization.lua" />
+        <sourceFile filename="register.lua" />
     </extraSourceFiles>
 
     <l10n filenamePrefix="modDesc_l10n" /> <!-- Load the corresponding modDesc_l10n_<language>.XML file, or revert to 'en'/'de'. -->
 
     <inputBindings>
-<!-- -->
-        <input name="FollowMeMyToggle"  category="VEHICLE" key1="KEY_rctrl KEY_f" key2="" button="" device="0" mouse="" />
-        <input name="FollowMeMyPause"   category="VEHICLE" key1="KEY_rctrl KEY_h" key2="" button="" device="0" mouse="" />
-<!-- These four 'FollowMeMy...' must use the same modifier-key! -->
-        <input name="FollowMeMyDistDec" category="VEHICLE" key1="KEY_rctrl KEY_w" key2="" button="" device="0" mouse="" />
-        <input name="FollowMeMyDistInc" category="VEHICLE" key1="KEY_rctrl KEY_s" key2="" button="" device="0" mouse="" />
-        <input name="FollowMeMyOffsDec" category="VEHICLE" key1="KEY_rctrl KEY_a" key2="" button="" device="0" mouse="" />
-        <input name="FollowMeMyOffsInc" category="VEHICLE" key1="KEY_rctrl KEY_d" key2="" button="" device="0" mouse="" />
-        <input name="FollowMeMyOffsTgl" category="VEHICLE" key1="KEY_rctrl KEY_x" key2="" button="" device="0" mouse="" />
-<!-- -->        
-        <input name="FollowMeFlStop"    category="VEHICLE" key1="KEY_rshift KEY_f" key2="" button="" device="0" mouse="" />
-        <input name="FollowMeFlPause"   category="VEHICLE" key1="KEY_rshift KEY_h" key2="" button="" device="0" mouse="" />
-<!-- These four 'FollowMeFl...' must use the same modifier-key! -->
-        <input name="FollowMeFlDistDec" category="VEHICLE" key1="KEY_rshift KEY_w" key2="" button="" device="0" mouse="" />
-        <input name="FollowMeFlDistInc" category="VEHICLE" key1="KEY_rshift KEY_s" key2="" button="" device="0" mouse="" />
-        <input name="FollowMeFlOffsDec" category="VEHICLE" key1="KEY_rshift KEY_a" key2="" button="" device="0" mouse="" />
-        <input name="FollowMeFlOffsInc" category="VEHICLE" key1="KEY_rshift KEY_d" key2="" button="" device="0" mouse="" />
-        <input name="FollowMeFlOffsTgl" category="VEHICLE" key1="KEY_rshift KEY_x" key2="" button="" device="0" mouse="" />
+        <!-- IMPORTANT! These 'FollowMeMy...' must use the same modifier-key! -->                               
+        <input visible="true" name="FollowMeMyToggle"  category="VEHICLE" key1="KEY_rctrl KEY_f"  />
+        <input visible="true" name="FollowMeMyPause"   category="VEHICLE" key1="KEY_rctrl KEY_h"  />
+        <input visible="true" name="FollowMeMyDistDec" category="VEHICLE" key1="KEY_rctrl KEY_w"  />
+        <input visible="true" name="FollowMeMyDistInc" category="VEHICLE" key1="KEY_rctrl KEY_s"  />
+        <input visible="true" name="FollowMeMyOffsDec" category="VEHICLE" key1="KEY_rctrl KEY_a"  />
+        <input visible="true" name="FollowMeMyOffsInc" category="VEHICLE" key1="KEY_rctrl KEY_d"  />
+        <input visible="true" name="FollowMeMyOffsTgl" category="VEHICLE" key1="KEY_rctrl KEY_x"  />
+
+        <!-- IMPORTANT! These 'FollowMeFl...' must use the same modifier-key! And MUST BE different from the 'FollowMeMy...' set -->
+        <input visible="true" name="FollowMeFlStop"    category="VEHICLE" key1="KEY_rshift KEY_f" />
+        <input visible="true" name="FollowMeFlPause"   category="VEHICLE" key1="KEY_rshift KEY_h" />
+        <input visible="true" name="FollowMeFlDistDec" category="VEHICLE" key1="KEY_rshift KEY_w" />
+        <input visible="true" name="FollowMeFlDistInc" category="VEHICLE" key1="KEY_rshift KEY_s" />
+        <input visible="true" name="FollowMeFlOffsDec" category="VEHICLE" key1="KEY_rshift KEY_a" />
+        <input visible="true" name="FollowMeFlOffsInc" category="VEHICLE" key1="KEY_rshift KEY_d" />
+        <input visible="true" name="FollowMeFlOffsTgl" category="VEHICLE" key1="KEY_rshift KEY_x" />
     </inputBindings>
 </modDesc>

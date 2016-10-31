@@ -22,26 +22,29 @@ A "Follow Me"-vel most megteheted (csak ne tolass).
 
         <text name="FollowMeStartEngine"        text="Először indítsd be a motort." />
         <text name="FollowMeTooFarBehind"       text="Nagyon lemaradt, elvesztette az útvonalat, ezért megállt." />
-        <text name="FollowMeDropperNotFound"    text="Keresési tartományban nincs követhető jármű. Menj közelebb a követendő járműhöz." />
-        
-        <text name="FollowMeKeysMyself"         text="%s - Követési távolság/eltolás"   />
-        <text name="FollowMeKeysBehind"         text="%s - Követő távolsága/eltolása"   />
-            
-        <text name="FollowMeMyToggle"           text="FollowMe: Ki/Be"                  />
-        <text name="FollowMeMyPause"            text="FollowMe: Várakozok/Követem"      />
-        <text name="FollowMeMyDistDec"          text="FollowMe: Követési távolság -"    />
-        <text name="FollowMeMyDistInc"          text="FollowMe: Követési távolság +"    />
-        <text name="FollowMeMyOffsDec"          text="FollowMe: Eltolás balra"          />
-        <text name="FollowMeMyOffsInc"          text="FollowMe: Eltolás jobbra"         />
-        <text name="FollowMeMyOffsTgl"          text="FollowMe: Myself Offset invert"   />  <!-- needs translation -->
 
-        <text name="FollowMeFlStop"             text="FollowMe: Követés kikapcsolása"   />
-        <text name="FollowMeFlPause"            text="FollowMe: Várjon/Kövessen"        />
-        <text name="FollowMeFlDistDec"          text="FollowMe: Követési távolság -"    />
-        <text name="FollowMeFlDistInc"          text="FollowMe: Követési távolság +"    />
-        <text name="FollowMeFlOffsDec"          text="FollowMe: Eltolás balra"          />
-        <text name="FollowMeFlOffsInc"          text="FollowMe: Eltolás jobbra"         />
-        <text name="FollowMeFlOffsTgl"          text="FollowMe: Behind Offset invert"   />  <!-- needs translation -->
+        <text name="FollowMeDropperNotFound"    text="Keresési tartományban nincs követhető jármű.
+Menj közelebb a követendő járműhöz." />
+        
+        <text name="FollowMeKeysMyself"         text="%s - Myself control actions"  />  <!-- needs translation -->
+        <text name="FollowMeKeysBehind"         text="%s - Behind control actions"  />  <!-- needs translation -->
+        <text name="FollowMeMyToggle"           text="FollowMe: Toggle on/off"      />  <!-- needs translation -->
+        
+        <text name="input_FollowMeMyToggle"     text="FollowMe: Ki/Be"                  />
+        <text name="input_FollowMeMyPause"      text="FollowMe: Várakozok/Követem"      />
+        <text name="input_FollowMeMyDistDec"    text="FollowMe: Követési távolság -"    />
+        <text name="input_FollowMeMyDistInc"    text="FollowMe: Követési távolság +"    />
+        <text name="input_FollowMeMyOffsDec"    text="FollowMe: Eltolás balra"          />
+        <text name="input_FollowMeMyOffsInc"    text="FollowMe: Eltolás jobbra"         />
+        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Myself Offset invert"   />  <!-- needs translation -->
+
+        <text name="input_FollowMeFlStop"       text="FollowMe: Követés kikapcsolása"   />
+        <text name="input_FollowMeFlPause"      text="FollowMe: Várjon/Kövessen"        />
+        <text name="input_FollowMeFlDistDec"    text="FollowMe: Követési távolság -"    />
+        <text name="input_FollowMeFlDistInc"    text="FollowMe: Követési távolság +"    />
+        <text name="input_FollowMeFlOffsDec"    text="FollowMe: Eltolás balra"          />
+        <text name="input_FollowMeFlOffsInc"    text="FollowMe: Eltolás jobbra"         />
+        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Behind Offset invert"   />  <!-- needs translation -->
 
         <text name="FollowMeLeader"             text="Vezető"               />
         <text name="FollowMeFollower"           text="Követő"               />

@@ -23,26 +23,29 @@ Con "Follow Me", è possibile (non solo seguirti).
 
         <text name="FollowMeStartEngine"        text="Accendi il motore prima." />
         <text name="FollowMeTooFarBehind"       text="Persa la 'scia' del veicolo che ti precede. Fermato." />
-        <text name="FollowMeDropperNotFound"    text="Impossibile trovare una 'scia' vicina nel campo visivo da seguire. Vai più vicino al mezzo che ti precede." />
-        
-        <text name="FollowMeKeysMyself"         text="%s - Mia distanza/Mio scostamento laterale" />
-        <text name="FollowMeKeysBehind"         text="%s - Inseguitore Distanza/scostamento" />
-            
-        <text name="FollowMeMyToggle"           text="FollowMe: Attiva on/off" />
-        <text name="FollowMeMyPause"            text="FollowMe: Aspetta/Riparti" />
-        <text name="FollowMeMyDistDec"          text="FollowMe: Mia distanza -" />
-        <text name="FollowMeMyDistInc"          text="FollowMe: Mia distanza +" />
-        <text name="FollowMeMyOffsDec"          text="FollowMe: Mio scostamento laterale sx" />
-        <text name="FollowMeMyOffsInc"          text="FollowMe: Mio scostamento laterale dx" />
-        <text name="FollowMeMyOffsTgl"          text="FollowMe: inverti il mio scostamento"  /> 
 
-        <text name="FollowMeFlStop"             text="FollowMe: Ferma l'inseguitore"  />
-        <text name="FollowMeFlPause"            text="FollowMe: Inseguitore Aspetta/Riparti" />
-        <text name="FollowMeFlDistDec"          text="FollowMe: Distanza dell'inseguitore -" />
-        <text name="FollowMeFlDistInc"          text="FollowMe: Distanza dell'inseguitore +" />
-        <text name="FollowMeFlOffsDec"          text="FollowMe: scostamento dell'inseguitore a sx" />
-        <text name="FollowMeFlOffsInc"          text="FollowMe: scostamento dell'inseguitore a dx" />
-        <text name="FollowMeFlOffsTgl"          text="FollowMe: Inverti scostamento dell'inseguitore"   /> 
+        <text name="FollowMeDropperNotFound"    text="Impossibile trovare una 'scia' vicina nel campo visivo da seguire.
+Vai più vicino al mezzo che ti precede." />
+        
+        <text name="FollowMeKeysMyself"         text="%s - Myself control actions"  />  <!-- needs translation -->
+        <text name="FollowMeKeysBehind"         text="%s - Behind control actions"  />  <!-- needs translation -->
+        <text name="FollowMeMyToggle"           text="FollowMe: Toggle on/off"      />  <!-- needs translation -->
+        
+        <text name="input_FollowMeMyToggle"     text="FollowMe: Attiva on/off" />
+        <text name="input_FollowMeMyPause"      text="FollowMe: Aspetta/Riparti" />
+        <text name="input_FollowMeMyDistDec"    text="FollowMe: Mia distanza -" />
+        <text name="input_FollowMeMyDistInc"    text="FollowMe: Mia distanza +" />
+        <text name="input_FollowMeMyOffsDec"    text="FollowMe: Mio scostamento laterale sx" />
+        <text name="input_FollowMeMyOffsInc"    text="FollowMe: Mio scostamento laterale dx" />
+        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: inverti il mio scostamento"  /> 
+
+        <text name="input_FollowMeFlStop"       text="FollowMe: Ferma l'inseguitore"  />
+        <text name="input_FollowMeFlPause"      text="FollowMe: Inseguitore Aspetta/Riparti" />
+        <text name="input_FollowMeFlDistDec"    text="FollowMe: Distanza dell'inseguitore -" />
+        <text name="input_FollowMeFlDistInc"    text="FollowMe: Distanza dell'inseguitore +" />
+        <text name="input_FollowMeFlOffsDec"    text="FollowMe: scostamento dell'inseguitore a sx" />
+        <text name="input_FollowMeFlOffsInc"    text="FollowMe: scostamento dell'inseguitore a dx" />
+        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Inverti scostamento dell'inseguitore"   /> 
 
         <text name="FollowMeLeader"             text="Leader" />
         <text name="FollowMeFollower"           text="Follower" />
