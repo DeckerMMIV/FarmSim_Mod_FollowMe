@@ -13,7 +13,7 @@ FollowMe.version = (modItem and modItem.version) and modItem.version or "?.?.?";
 --
 
 FollowMe.debugDraw = {}
-FollowMe.mapIconFile = Utils.getFilename('mapMarker.DDS', g_currentModDirectory);
+--FollowMe.mapIconFile = Utils.getFilename('mapMarker.DDS', g_currentModDirectory);
 
 
 FollowMe.cMinDistanceBetweenDrops        =   5;   -- TODO, make configurable
@@ -233,7 +233,7 @@ function FollowMe.delete(self)
     end;
 end;
 
-function FollowMe.sharedWriteStream(serverToClients, streamId, vehObj, followsObj, stalkedByObj, state, keepBackDistance, xOffset, warnTxt)
+function FollowMe.sharedWriteStream(serverToClients, streamId, vehObj, followsObj, stalkedByObj, state, keepBackDistance, xOffset, warnTxt, helperIndex)
     streamWriteInt32(streamId, Utils.getNoNil(networkGetObjectId(vehObj), 0));
     streamWriteInt8( streamId, Utils.getNoNil(keepBackDistance, 0));
     streamWriteInt8( streamId, Utils.getNoNil(xOffset, 0) * 2);
@@ -243,6 +243,7 @@ function FollowMe.sharedWriteStream(serverToClients, streamId, vehObj, followsOb
         streamWriteInt32( streamId, Utils.getNoNil(networkGetObjectId(followsObj)  , 0));
         streamWriteInt32( streamId, Utils.getNoNil(networkGetObjectId(stalkedByObj), 0));
         streamWriteUInt8( streamId, Utils.getNoNil(state, FollowMe.STATE_NONE));
+        streamWriteUInt8( streamId, Utils.getNoNil(helperIndex, 0));
         streamWriteString(streamId, Utils.getNoNil(warnTxt, ""));
     else
         -- client to server
@@ -255,6 +256,7 @@ function FollowMe.sharedReadStream(serverToClients, streamId)
     local warnTxt;
     local followsObj;
     local stalkedByObj;
+    local helperIndex;
 
     local vehId            = streamReadInt32(streamId);
     local keepBackDistance = streamReadInt8( streamId);
@@ -268,6 +270,7 @@ function FollowMe.sharedReadStream(serverToClients, streamId)
         followsId    = streamReadInt32( streamId);
         stalkedById  = streamReadInt32( streamId);
         state        = streamReadUInt8( streamId);
+        helperIndex  = streamReadUInt8( streamId);
         warnTxt      = streamReadString(streamId);
 
         followsObj   = (followsId   ~= 0 and networkGetObject(followsId)   or nil);
@@ -286,7 +289,8 @@ function FollowMe.sharedReadStream(serverToClients, streamId)
         state,
         keepBackDistance,
         xOffset,
-        warnTxt;
+        warnTxt,
+        helperIndex;
 end;
 
 function FollowMe.writeStream(self, streamId, connection)
@@ -299,7 +303,8 @@ function FollowMe.writeStream(self, streamId, connection)
         self.modFM.FollowState,
         self.modFM.FollowKeepBack,
         self.modFM.FollowXOffset,
-        self.modFM.ShowWarningText
+        self.modFM.ShowWarningText,
+        self.modFM.helperIndex
     );
 end;
 
@@ -312,7 +317,8 @@ function FollowMe.readStream(self, streamId, connection)
     self.modFM.FollowState,
     self.modFM.FollowKeepBack,
     self.modFM.FollowXOffset,
-    dummyWarnTxt                = FollowMe.sharedReadStream(true, streamId); -- 'true' = server to clients
+    dummyWarnTxt,
+    self.modFM.helperIndex  = FollowMe.sharedReadStream(true, streamId); -- 'true' = server to clients
 end;
 
 --function FollowMe.loadFromAttributesAndNodes(self, xmlFile, key, resetVehicles)
@@ -331,7 +337,7 @@ end;
 function FollowMe.getSaveAttributesAndNodes(self, nodeIdent)
     local attributes = nil
     if self.modFM ~= nil then
-        attributes = string.format('followMe="%.0f %.1f"', self.modFM.FollowKeepBack, self.modFM.FollowXOffset);
+        attributes = ('followMe="%.0f %.1f"'):format(self.modFM.FollowKeepBack, self.modFM.FollowXOffset)
     end
     return attributes, nil;
 end;
@@ -466,7 +472,7 @@ end;
 
 --
 function FollowMe.update(self, dt)
-    if self:getIsActiveForInput(false) then
+    if not self.isConveyorBelt and self:getIsActiveForInput(false) then
         if InputBinding.hasEvent(InputBinding.FollowMeMyToggle) then
             FollowMe.commandFollowMe(self, FollowMe.STATE_TOGGLE);
         elseif InputBinding.hasEvent(InputBinding.FollowMeMyPause) then
@@ -474,13 +480,14 @@ function FollowMe.update(self, dt)
         end;
 
         if self.modFM.FollowVehicleObj ~= nil then
+--[[        
             -- Show "activity" on clients also
             self.forceIsActive = true;
             self.stopMotorOnLeave = false;
             self.steeringEnabled = false;
             self.deactivateOnLeave = false;
             self.disableCharacterOnLeave = false;
-
+--]]
             -- Due to three functions per InputBinding; press-and-release (short), press-and-hold (long), and press-and-hold-longer (repeat)
             local  myDistDec = FollowMe.hasEventShortLong(InputBinding.FollowMeMyDistDec, 500);
             local  myDistInc = FollowMe.hasEventShortLong(InputBinding.FollowMeMyDistInc, 500);
@@ -544,20 +551,20 @@ function FollowMe.updateTick(self, dt)
     --
     if (self.modFM ~= nil) and self.modFM.IsInstalled then
 
-      if self.modFM.FollowVehicleObj ~= nil then -- Have leading vehicle to follow.
-        -- Simon Says: Lights!
-        --self:setLightsTypesMask(       self.modFM.FollowVehicleObj.lightsTypesMask);
-        --self:setBeaconLightsVisibility(self.modFM.FollowVehicleObj.beaconLightsActive);
-        --
+      if self.modFM.FollowVehicleObj ~= nil then 
+        -- Have leading vehicle to follow.
+
+        if self.setBeaconLightsVisibility ~= nil then
+            -- Simon Says: Lights!
+            self:setLightsTypesMask(       self.modFM.FollowVehicleObj.lightsTypesMask or 0);
+            self:setBeaconLightsVisibility(self.modFM.FollowVehicleObj.beaconLightsActive or false);
+        end
+
         FollowMe.updateFollowMovement(self, dt);
-        --
-        --local difficultyMultiplier = Utils.lerp(0.6, 1, (g_currentMission.missionStats.difficulty-1)/2) -- range from 0.6 (easy)  to  1 (hard)
-        --g_currentMission:addSharedMoney(-dt * difficultyMultiplier * self.modFM.PricePerMS, "wagePayment");
-        
-        local difficultyMultiplier = g_currentMission.missionInfo.buyPriceMultiplier;
-        g_currentMission:addSharedMoney(-dt * difficultyMultiplier * self.pricePerMS, "wagePayment");
-        g_currentMission:addMoneyChange(-dt * difficultyMultiplier * self.pricePerMS, FSBaseMission.MONEY_TYPE_AI)        
-        
+
+        local wage = (dt * self.pricePerMS * g_currentMission.missionInfo.buyPriceMultiplier) / 5
+        g_currentMission:addSharedMoney(-wage, "wagePayment");
+        g_currentMission:addMoneyChange(-wage, FSBaseMission.MONEY_TYPE_AI)        
       elseif (self.reverserDirection * self.movingDirection > 0) then  -- Must drive forward to drop crumbs
         self.modFM.sumSpeed = self.modFM.sumSpeed + self.lastSpeed;
         self.modFM.sumCount = self.modFM.sumCount + 1;
@@ -601,7 +608,7 @@ function FollowMe:sendUpdate(stateId)
   end;
 end;
 
-function FollowMe:recvUpdate(stateId, keepBackDist, xOffset, followsObj, stalkedByObj, warnTxt)
+function FollowMe:recvUpdate(stateId, keepBackDist, xOffset, followsObj, stalkedByObj, warnTxt, helperIndex)
   if self.isServer then
     -- Received a client's action-commands. Set and mark dirty to broadcast to clients.
     FollowMe.changeDistance(self, keepBackDist, false);
@@ -623,7 +630,7 @@ function FollowMe:recvUpdate(stateId, keepBackDist, xOffset, followsObj, stalked
     if warnTxt ~= nil and warnTxt ~= "" then
       FollowMe.setWarning(self, warnTxt, true)
     end;
-    FollowMe.setStateFollowStalker(self, followsObj, stalkedByObj);
+    FollowMe.setStateLeaderStalker(self, followsObj, stalkedByObj, helperIndex);
 
     self.modFM.isDirty = prevDirty;
   end;
@@ -1070,6 +1077,11 @@ function FollowMe.commandFollowMe(self, stateId, noSendEvent)
     if not self.modFM.IsInstalled then
         FollowMe.setWarning(self, "FollowMeNotAvailable");
     elseif self.isServer then
+        if self.isHired then
+            -- Already an AI controlling this vehicle.
+            return
+        end
+        
         if stateId == FollowMe.STATE_TOGGLE then
             local toggleStates = {
                 [FollowMe.STATE_NONE     ] = FollowMe.STATE_START,
@@ -1082,54 +1094,70 @@ function FollowMe.commandFollowMe(self, stateId, noSendEvent)
         --
         if stateId == FollowMe.STATE_START then
             FollowMe.startFollowMe(self, noSendEvent);
-        elseif stateId == FollowMe.STATE_PAUSE then
-            FollowMe.togglePauseFollowMe(self, noSendEvent);
         elseif stateId == FollowMe.STATE_STOP then
             FollowMe.stopFollowMe(self, noSendEvent);
+        elseif stateId == FollowMe.STATE_PAUSE then
+            --FollowMe.togglePauseFollowMe(self, noSendEvent);
+            if self.modFM.FollowState == FollowMe.STATE_FOLLOWING then
+                self.modFM.FollowState = FollowMe.STATE_WAITING
+                self.modFM.isDirty = true;
+            elseif self.modFM.FollowState == FollowMe.STATE_WAITING then
+                self.modFM.FollowState = FollowMe.STATE_FOLLOWING
+                self.modFM.isDirty = true;
+            end
         end
     else
         FollowMe.sendUpdate(self, stateId);
     end;
 end;
 
-function FollowMe.setStalker(self, stalkerVeh, noSendEvent)
-    self.modFM.StalkerVehicleObj = stalkerVeh;
+function FollowMe.setStalker(self, stalkedByObj, noSendEvent)
+    self.modFM.StalkerVehicleObj = stalkedByObj;
     self.modFM.isDirty = self.isServer and true or self.modFM.isDirty;
 end;
 
-function FollowMe.setStateFollowStalker(self, followsObj, stalkedByObj)
-    assert(g_server == nil);    -- Only for clients
-    --
-    self.modFM.FollowVehicleObj  = followsObj;
-    self.modFM.StalkerVehicleObj = stalkedByObj;
-    --
+function FollowMe.setStateLeaderStalker(self, leaderObj, stalkedByObj, helperIndex)
     -- Try to fix the problem of clients not seeing wheel-rotation and the "farmer-in-the-seat".
-    if (self.modFM.FollowVehicleObj ~= nil) then
+    if leaderObj ~= nil and leaderObj ~= self.modFM.FollowVehicleObj then
         self.forceIsActive = true;
         self.stopMotorOnLeave = false;
         self.steeringEnabled = false;
-        self.deactivateOnLeave = false;
+        self.deactivateOnLeave = false;  -- ???
         self.disableCharacterOnLeave = false;
-
---  MoreRealistic
-        self.realForceAiDriven = true;
---MoreRealistic]]
-    else
+        
+        if self.vehicleCharacter ~= nil then
+            self.vehicleCharacter:delete()
+            
+            if helperIndex ~= nil then
+                helperIndex = Utils.clamp(helperIndex, 1, table.getn(HelperUtil.helperIndexToDesc))
+                
+                self.currentHelper = HelperUtil.helperIndexToDesc[helperIndex]
+                HelperUtil.useHelper(self.currentHelper)
+                self.vehicleCharacter:loadCharacter(self.currentHelper.xmlFilename, getUserRandomizedMpColor(self.currentHelper.name))
+                if self.isEntered then
+                    self.vehicleCharacter:setCharacterVisibility(false)
+                end
+            end
+        end
+    elseif nil ~= self.modFM.FollowVehicleObj then
         self.forceIsActive = false;
         self.stopMotorOnLeave = true;
         self.steeringEnabled = true;
-        self.deactivateOnLeave = true;
+        --self.deactivateOnLeave = true;
         self.disableCharacterOnLeave = true;
-        if not self.isEntered and not self.isControlled then
-            if self.characterNode ~= nil then
-                setVisibility(self.characterNode, false);
-            end;
-        end;
-
---  MoreRealistic
-        self.realForceAiDriven = false;
---MoreRealistic]]
+        
+        if self.vehicleCharacter ~= nil then
+            self.vehicleCharacter:delete()
+        end        
+        
+        if self.currentHelper ~= nil then
+            HelperUtil.releaseHelper(self.currentHelper)
+        end
     end;
+
+    self.modFM.FollowVehicleObj  = leaderObj
+    self.modFM.StalkerVehicleObj = stalkedByObj
+    self.modFM.helperIndex       = helperIndex
 end;
 
 function FollowMe.startFollowMe(self, noEventSend)
@@ -1219,11 +1247,13 @@ function FollowMe.startFollowMe(self, noEventSend)
     end;
 
     -- Chain with leading vehicle.
-    self.modFM.FollowVehicleObj = closestVehicle;
+    FollowMe.setStateLeaderStalker(self, closestVehicle, self.modFM.StalkerVehicleObj, helperIndex)
     FollowMe.setStalker(self.modFM.FollowVehicleObj, self);
+    
     -- Set engaged state
     self.modFM.FollowState = FollowMe.STATE_FOLLOWING;
 
+--[[    
     --
     if SpecializationUtil.hasSpecialization(AITractor, self.specializations) then
         AITractor.addCollisionTrigger(self, self);
@@ -1232,15 +1262,18 @@ function FollowMe.startFollowMe(self, noEventSend)
     else
         -- TODO - Display warning!
     end;
+--]]
 
+--[[    
     -- Copied from FS2011-Hirable, for the mods that do not include that specialization in their vehicle-type.
     self.forceIsActive = true;
     self.stopMotorOnLeave = false;
     self.steeringEnabled = false;
     self.deactivateOnLeave = false;
     self.disableCharacterOnLeave = false;
+--]]
 
---  MoreRealistic
+--[[MoreRealistic
     if AIVehicleUtil.mrDriveInDirection ~= nil then
         self.realForceAiDriven = true;
     end;
@@ -1271,21 +1304,21 @@ function FollowMe.startFollowMe(self, noEventSend)
     self.modFM.isDirty = true;
 end;
 
-function FollowMe.togglePauseFollowMe(self, noEventSend)
-    assert(g_server ~= nil);
-
-    if self.modFM.FollowVehicleObj == nil then
-        return;
-    end;
-
-    if self.modFM.FollowState == FollowMe.STATE_FOLLOWING then
-        self.modFM.FollowState = FollowMe.STATE_WAITING
-        self.modFM.isDirty = true;
-    elseif self.modFM.FollowState == FollowMe.STATE_WAITING then
-        self.modFM.FollowState = FollowMe.STATE_FOLLOWING
-        self.modFM.isDirty = true;
-    end
-end
+--function FollowMe.togglePauseFollowMe(self, noEventSend)
+--    assert(g_server ~= nil);
+--
+--    if self.modFM.FollowVehicleObj == nil then
+--        return;
+--    end;
+--
+--    if self.modFM.FollowState == FollowMe.STATE_FOLLOWING then
+--        self.modFM.FollowState = FollowMe.STATE_WAITING
+--        self.modFM.isDirty = true;
+--    elseif self.modFM.FollowState == FollowMe.STATE_WAITING then
+--        self.modFM.FollowState = FollowMe.STATE_FOLLOWING
+--        self.modFM.isDirty = true;
+--    end
+--end
 
 
 function FollowMe.stopFollowMe(self, noSendEvent)
@@ -1296,7 +1329,6 @@ function FollowMe.stopFollowMe(self, noSendEvent)
     end;
 
     self.modFM.FollowState = FollowMe.STATE_STOPPING;
-    --
     self.modFM.isDirty = true;
 end;
 
@@ -1313,52 +1345,26 @@ function FollowMe.stoppedFollowMe(self, noSendEvent)
     -- Unchain with leading vehicle.
     assert(self.modFM.FollowVehicleObj.modFM.StalkerVehicleObj == self);
     FollowMe.setStalker(self.modFM.FollowVehicleObj, nil);
+    FollowMe.setStateLeaderStalker(self, nil, self.modFM.StalkerVehicleObj, 0)
     --
-    self.modFM.FollowVehicleObj = nil;
     self.modFM.FollowCurrentIndex = 0;
+    self.modFM.isDirty = true;
 
     --
-    if SpecializationUtil.hasSpecialization(AITractor, self.specializations) then
-        AITractor.removeCollisionTrigger(self, self);
-    elseif SpecializationUtil.hasSpecialization(AICombine, self.specializations) then
-        AICombine.removeCollisionTrigger(self, self);
-    end;
-
-    -- Copied from FS2011-Hirable, for the mods that do not include that specialization in their vehicle-type.
-    self.forceIsActive = false;
-    self.stopMotorOnLeave = true;
-    self.steeringEnabled = true;
-    self.deactivateOnLeave = true;
-    self.disableCharacterOnLeave = true;
-
-    if not self.isEntered and not self.isControlled then
-        if self.characterNode ~= nil then
-            setVisibility(self.characterNode, false);
-        end;
-
-        -- Stop engine, as there is no player in the vehicle.
-        self:stopMotor(noSendEvent);
-    end;
-
-    -- Copied from Steerable:onLeave, in attempt at making the vehicle brake/stop.
-    self.lastAcceleration = 0;
-
---  MoreRealistic
-    if AIVehicleUtil.mrDriveInDirection ~= nil then
-        self.realForceAiDriven = false;
-    end;
---MoreRealistic]]
-
-    WheelsUtil.updateWheelsPhysics(self, 0, self.lastSpeed, 0, true, self.requiredDriveMode); -- doHandBrake
-
---[[FS2015
-    if self.modFM.mapIcon ~= nil then
-        g_currentMission.ingameMap:deleteMapHotspot(self.modFM.mapIcon);
-        self.modFM.mapIcon = nil;
+    self:setCruiseControlState(Drivable.CRUISECONTROL_STATE_OFF, true);
+    if self.isServer then
+        WheelsUtil.updateWheelsPhysics(self, 0, self.lastSpeedReal, 0, true, self.requiredDriveMode);
     end
---FS2015]]    
 
-    self.modFM.isDirty = true;
+    if g_currentMission.missionInfo.automaticMotorStartEnabled and not self.isEntered then
+        self:stopMotor(true);
+    end
+
+    --
+    g_currentMission:addIngameNotification(
+        {0.5, 0.5, 1.0, 1.0}, --FSBaseMission.INGAME_NOTIFICATION_INFO, 
+        "'Follower' vehicle stopped"    --string.format(g_i18n:getText(AIVehicle.REASON_TEXT_MAPPING[reason]), self.currentHelper.name)
+    )
 end;
 
 
@@ -1392,6 +1398,10 @@ function FollowMe.draw(self)
     --
     local showFollowMeMy = FollowMe.keyModifier_FollowMeMy == nil or (FollowMe.keyModifier_FollowMeMy ~= nil and Input.isKeyPressed(FollowMe.keyModifier_FollowMeMy));
     local showFollowMeFl = FollowMe.keyModifier_FollowMeFl == nil or (FollowMe.keyModifier_FollowMeFl ~= nil and Input.isKeyPressed(FollowMe.keyModifier_FollowMeFl));
+    
+    if self.isHired then
+        showFollowMeMy = false
+    end
     --
     if showFollowMeMy and self.modFM.FollowVehicleObj ~= nil then
         local sx,sy = FollowMe.getWorldToScreen(self.modFM.FollowVehicleObj.components[1].node)
@@ -1586,7 +1596,8 @@ function FollowMeEvent:writeStream(streamId, connection)
         self.stateId,
         self.vehicle.modFM.FollowKeepBack,
         self.vehicle.modFM.FollowXOffset,
-        self.vehicle.modFM.ShowWarningText
+        self.vehicle.modFM.ShowWarningText,
+        self.vehicle.modFM.helperIndex
     );
 end;
 
@@ -1598,11 +1609,12 @@ function FollowMeEvent:readStream(streamId, connection)
     stateId,
     keepBackDist,
     xOffset,
-    warnTxt         = FollowMe.sharedReadStream(g_server == nil, streamId);
+    warnTxt,
+    helperIndex = FollowMe.sharedReadStream(g_server == nil, streamId);
     --
     if vehObj ~= nil then
 --log("FollowMeEvent:readStream()");
-        FollowMe.recvUpdate(vehObj, stateId, keepBackDist, xOffset, followsObj, stalkedByObj, warnTxt);
+        FollowMe.recvUpdate(vehObj, stateId, keepBackDist, xOffset, followsObj, stalkedByObj, warnTxt, helperIndex);
     end;
 end;
 

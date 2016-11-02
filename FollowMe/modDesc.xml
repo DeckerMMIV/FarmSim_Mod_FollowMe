@@ -26,19 +26,19 @@ With "Follow Me" you can (though not backwards driving).
 
 Default control keys:
 
-'Myself' the current vehicle
-  RIGHT-CTRL F   = Toggle 'FollowMe' on/off
-  RIGHT-CTRL H   = Wait/Resume
+'Myself' is the current vehicle
+  RIGHT-CTRL F     = Toggle 'FollowMe' on/off
+  RIGHT-CTRL H     = Wait/Resume
   RIGHT-CTRL W/S = Distance increase/decrease
   RIGHT-CTRL A/D = Offset left/right adjust
-  RIGHT-CTRL X   = Offset reset or hold for invert
-  
+  RIGHT-CTRL X     = Offset reset or hold for invert
+ 
 'Behind' the followed vehicle  
-  RIGHT-SHIFT F   = Disengage 'FollowMe'
-  RIGHT-SHIFT H   = Wait/Resume
+  RIGHT-SHIFT F     = Disengage 'FollowMe'
+  RIGHT-SHIFT H     = Wait/Resume
   RIGHT-SHIFT W/S = Distance increase/decrease
   RIGHT-SHIFT A/D = Offset left/right adjust
-  RIGHT-SHIFT X   = Offset reset or hold for invert
+  RIGHT-SHIFT X     = Offset reset or hold for invert
 ]]>
         </en>
         <de>

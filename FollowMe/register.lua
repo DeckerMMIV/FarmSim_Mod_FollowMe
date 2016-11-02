@@ -9,7 +9,7 @@ RegistrationHelper_FM = {};
 RegistrationHelper_FM.isLoaded = false;
 
 if SpecializationUtil.specializations['FollowMe'] == nil then
-    SpecializationUtil.registerSpecialization('FollowMe', 'FollowMe', g_currentModDirectory .. 'FollowMe.lua')
+    SpecializationUtil.registerSpecialization('FollowMe', 'FollowMe', g_currentModDirectory .. 'FollowMe2.lua')
     RegistrationHelper_FM.isLoaded = false;
 end
 
@@ -46,6 +46,32 @@ function RegistrationHelper_FM:register()
             table.insert(vehicle.specializations, SpecializationUtil.getSpecialization("FollowMe"))
         end
     end
+
+    -- Make sure that it is not possible to start a hired helper, when FollowMe is active.
+    AIVehicle.canStartAIVehicle = Utils.overwrittenFunction(AIVehicle.canStartAIVehicle, function(self, superFunc)
+        if self.modFM ~= nil and self.modFM.FollowVehicleObj ~= nil then
+            return false;
+        end
+        return superFunc(self);
+    end);
+    
+    -- Overwrite getIsHired() to get other base-game script functionality to "work"
+    Vehicle.getIsHired = Utils.overwrittenFunction(Vehicle.getIsHired, function(self, superFunc)
+        if self.modFM ~= nil and self.modFM.FollowVehicleObj ~= nil then
+            return true;
+        end
+        return superFunc(self);
+    end);
+
+    -- More overwrite stuff, because base-game scripts calls stopAIVehicle when out-of-fuel and alike.
+    AIVehicle.stopAIVehicle = Utils.overwrittenFunction(AIVehicle.stopAIVehicle, function(self, superFunc, reason, noEventSend)
+        if self.modFM ~= nil and self.modFM.FollowVehicleObj ~= nil then
+            FollowMe.stopFollowMe(self)
+            return
+        end
+        return superFunc(self, reason, noEventSend)
+    end);
+
     RegistrationHelper_FM.isLoaded = true
 end
 
