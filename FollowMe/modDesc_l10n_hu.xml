@@ -53,5 +53,10 @@ Menj közelebb a követendő járműhöz." />
         <text name="FollowMeOffRgt"             text="Eltolás jobbra %.1f"  />
         <text name="FollowMeDistBehind"         text="Követési táv %.1f"    />
         <text name="FollowMeDistAhead"          text="Követési táv %.1f"    />
+        
+        <text name="FollowMeReason1"            text="Follower '%s' stopped (by player)"       /> <!-- needs translation -->
+        <text name="FollowMeReason2"            text="Follower '%s' stopped (no trail)"        /> <!-- needs translation -->
+        <text name="FollowMeReason3"            text="Follower '%s' stopped (too far behind)"  /> <!-- needs translation -->
+        <text name="FollowMeReason4"            text="Follower '%s' stopped (leader vanished)" /> <!-- needs translation -->
     </texts>
 </l10n>

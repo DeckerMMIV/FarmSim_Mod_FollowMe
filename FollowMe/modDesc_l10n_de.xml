@@ -45,7 +45,6 @@ Nähern sie sich dem führenden Fahrzeug." />
         <text name="input_FollowMeFlOffsDec"    text="FollowMe: Hinter Offset links" />
         <text name="input_FollowMeFlOffsInc"    text="FollowMe: Hinter Offset rechts" />
         <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Behind Offset invert"   />  <!-- needs translation -->
-
     
         <text name="FollowMeLeader"             text="Leader"            /> <!-- needs translation --> 
         <text name="FollowMeFollower"           text="Follower"          /> <!-- needs translation -->
@@ -54,5 +53,10 @@ Nähern sie sich dem führenden Fahrzeug." />
         <text name="FollowMeOffRgt"             text="Right-offs. %.1f"  /> <!-- needs translation -->
         <text name="FollowMeDistBehind"         text="Behind-dist. %.1f" /> <!-- needs translation -->
         <text name="FollowMeDistAhead"          text="Ahead-dist. %.1f"  /> <!-- needs translation -->
+        
+        <text name="FollowMeReason1"            text="Follower '%s' stopped (by player)"       /> <!-- needs translation -->
+        <text name="FollowMeReason2"            text="Follower '%s' stopped (no trail)"        /> <!-- needs translation -->
+        <text name="FollowMeReason3"            text="Follower '%s' stopped (too far behind)"  /> <!-- needs translation -->
+        <text name="FollowMeReason4"            text="Follower '%s' stopped (leader vanished)" /> <!-- needs translation -->
     </texts>
 </l10n>

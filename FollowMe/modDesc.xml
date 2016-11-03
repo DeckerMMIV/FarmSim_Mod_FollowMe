@@ -3,6 +3,10 @@
     <author>Decker_MMIV (DCK)</author>
     <authorContact>fs-uk.com, modcentral.co.uk, forum.farming-simulator.com</authorContact>
     
+<!--
+    NOTE: For contributing translations, DO NOT edit this ModDesc.XML.
+          Only modify the corresponding ModDesc_l10n_*.XML file.
+-->    
     <contributors>DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers, Ziuta, pewemo, Alfredo Prieto, xno</contributors>
 
     <version>1.0.0.17</version>
