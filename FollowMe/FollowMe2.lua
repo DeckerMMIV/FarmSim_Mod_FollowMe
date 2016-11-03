@@ -569,7 +569,7 @@ function FollowMe.updateTick(self, dt)
             -- Have leading vehicle to follow.
             local turnLightState = FollowMe.updateFollowMovement(self, dt);
 
-            if self.setBeaconLightsVisibility ~= nil then
+            if self.modFM.FollowVehicleObj ~= nil and self.setBeaconLightsVisibility ~= nil then
                 -- Simon says: Lights!
                 self:setLightsTypesMask(       self.modFM.FollowVehicleObj.lightsTypesMask or 0);
                 self:setBeaconLightsVisibility(self.modFM.FollowVehicleObj.beaconLightsActive or false);
@@ -1354,6 +1354,8 @@ function FollowMe.draw(self)
         local sx,sy = FollowMe.getWorldToScreen(self.modFM.StalkerVehicleObj.components[1].node)
         if sx~=nil then
             local txt = g_i18n:getText("FollowMeFollower")
+            if self.modFM.StalkerVehicleObj.currentHelper ~= nil then -- FS17
+                txt = txt .. (" '%s'"):format(self.modFM.StalkerVehicleObj.currentHelper.name)
             end
             if (self.modFM.StalkerVehicleObj.modFM.FollowState == FollowMe.STATE_WAITING) then
                 txt = txt .. g_i18n:getText("FollowMePaused")
