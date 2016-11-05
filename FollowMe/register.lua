@@ -49,7 +49,7 @@ function RegistrationHelper_FM:register()
 
     -- Make sure that it is not possible to start a hired helper, when FollowMe is active.
     AIVehicle.canStartAIVehicle = Utils.overwrittenFunction(AIVehicle.canStartAIVehicle, function(self, superFunc)
-        if self.modFM ~= nil and self.modFM.FollowVehicleObj ~= nil then
+        if self.getIsFollowMeActive ~= nil and self:getIsFollowMeActive() then
             return false;
         end
         return superFunc(self);
@@ -57,7 +57,7 @@ function RegistrationHelper_FM:register()
     
     -- Overwrite getIsHired() to get other base-game script functionality to "work"
     Vehicle.getIsHired = Utils.overwrittenFunction(Vehicle.getIsHired, function(self, superFunc)
-        if self.modFM ~= nil and self.modFM.FollowVehicleObj ~= nil then
+        if self.getIsFollowMeActive ~= nil and self:getIsFollowMeActive() then
             return true;
         end
         return superFunc(self);
@@ -65,8 +65,8 @@ function RegistrationHelper_FM:register()
 
     -- More overwrite stuff, because base-game scripts calls stopAIVehicle when out-of-fuel and alike.
     AIVehicle.stopAIVehicle = Utils.overwrittenFunction(AIVehicle.stopAIVehicle, function(self, superFunc, reason, noEventSend)
-        if self.modFM ~= nil and self.modFM.FollowVehicleObj ~= nil then
-            FollowMe.stopFollowMe(self)
+        if self.getIsFollowMeActive ~= nil and self:getIsFollowMeActive() then
+            FollowMe.stopFollowMe(self, nil, noEventSend)
             return
         end
         return superFunc(self, reason, noEventSend)
