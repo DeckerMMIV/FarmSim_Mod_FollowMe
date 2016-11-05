@@ -1527,7 +1527,7 @@ function FollowMeEvent:readStream(streamId, connection)
             FollowMe.waitResumeFollowMe(vehObj, reason, noEventSend)
         else
             FollowMe.changeDistance(vehObj, { keepBackDist }, noEventSend)
-            FollowMe.changeOffset(  vehObj, { xOffset },      noEventSend)
+            FollowMe.changeXOffset( vehObj, { xOffset },      noEventSend)
         end
     end;
 end;
