@@ -5,18 +5,10 @@
 
 [b][u]Changelog[/u][/b]
 1.0.0.17
-- Upgraded to FS17 and changed version-numbering-scheme due to ModHub
-2.2.3
-- Misc. minor description changes
-2.2.2
-- Italian translation update by xno.
-- Russian translation updated by Gonimy-Vetrom.
-2.2.1
-- Polish translation updated by Dzi4d3k.
-- Minor fixes for the other translations too.
-2.2.0
-- Added ability to toggle offset between 'current offset' and zero.
-- Updated input-bindings/actions to other default keys.
+- Upgraded to FS17
+- Added turn-light indication-state to 'trail-crumbs'
+- Had to remove traffic-collision-triggerboxes, so will crash into other vehicles! Drive carefully.
+- Changed versionnumbering-scheme due to ModHub
 
 
 [b][u]Mod description[/u][/b]
@@ -42,29 +34,27 @@ The action-keys, which can be changed in Options - Controls, are defined in two 
 
 [i]Myself[/i] - For the vehicle the player is driving:
 
-[b]RIGHT CTRL[/b] + [b]F  [/b] = Start/stop following the vehicle that is in front (if possible).
-[b]RIGHT CTRL[/b] + [b]H  [/b] = Pause/resume following the vehicle that is in front.
+[b]RIGHT CTRL[/b] + [b]F  [/b] = Start/stop following the vehicle in front (if possible).
+[b]RIGHT CTRL[/b] + [b]H  [/b] = Pause/resume following.
+[b]RIGHT CTRL[/b] + [b]W/S[/b] = Decrease/increase following distance, in steps of [b]5[/b].
 [b]RIGHT CTRL[/b] + [b]A/D[/b] = Adjust left/right offset when following, in steps of 0.5.
 [b]RIGHT CTRL[/b] + [b]X  [/b] = Toggle offset between zero and last value.
 [i]press-and-hold[/i] [b]RIGHT CTRL[/b] + [b]X[/b] = Invert the offset (left-to-right, right-to-left).
-[b]RIGHT CTRL[/b] + [b]W/S[/b] = Decrease/increase following distance, in steps of [b]5[/b].
 [i]press-and-hold[/i] [b]RIGHT CTRL[/b] + [b]W/S[/b] to repeat decrease/increase in steps of [b]1[/b].
 
 [i]Behind[/i] - To control the vehicle that is following behind [i]me[/i] (if any):
 
 [b]RIGHT SHIFT[/b] + [b]F  [/b] = Stop the follower.
 [b]RIGHT SHIFT[/b] + [b]H  [/b] = Pause/resume the follower.
+[b]RIGHT SHIFT[/b] + [b]W/S[/b] = Decrease/increase the follower's distance to [i]me[/i], in steps of [b]5[/b].
 [b]RIGHT SHIFT[/b] + [b]A/D[/b] = Adjust the follower's left/right offset, in steps of 0.5.
 [b]RIGHT SHIFT[/b] + [b]X  [/b] = Toggle the follower's offset between zero and last value.
 [i]press-and-hold[/i] [b]RIGHT SHIFT[/b] + [b]X[/b] = Invert the follower's offset (left-to-right, right-to-left).
-[b]RIGHT SHIFT[/b] + [b]W/S[/b] = Decrease/increase the follower's distance to [i]me[/i], in steps of [b]5[/b].
 [i]press-and-hold[/i] [b]RIGHT SHIFT[/b] + [b]W/S[/b] to repeat decrease/increase in steps of [b]1[/b].
 
 Note: Each set of action-keys [u]must use[/u] the same modifier-key!
 
 [u]Switching it on/off[/u]
-
-Do please note that, when loading a new map or savegame, the vehicles have [u]not[/u] yet placed enough "[i]trail crumbs[/i]" for other vehicles to follow. So do remember to drive the leading vehicle some distance, before setting up the follower vehicle.
 
 To follow some vehicle, point your own vehicle towards it and press the start action (RIGHT CTRL + F).
 
@@ -78,7 +68,7 @@ To stop following, press the same action again (RIGHT CTRL + F).
 
 The follow distance can be set using RIGHT CTRL + W/S, in increments of approximate 5 meters. Positive values are "keep back" distance (up to +250), and negative values are "in front" (up to -50).
 
-Do please note that vehicles that have no traffic-collision-triggerboxes or not configured correctly, will not be able to detect when/if they collide into the leading vehicle or some other vehicle - so you better set the distance further back.
+Do please note that current there are no traffic-collision-triggerboxes, so vehicles will not be able to detect when/if they collide into the leading vehicle or some other vehicle - so you better set the distance further back.
 
 Left/right offset is set using RIGHT CTRL + A/D, in increments of approximate 0.5 meter.
 
@@ -91,7 +81,7 @@ If a follower has a [i]turned on[/i] round-baler or a bale-wrapper, it will now 
 
 [b][u]Restrictions[/u][/b]
 
-This mod's script files MAY NOT, SHALL NOT and MUST NOT be embedded in any other mod nor any map-mod! - However it is accepted if this mod is packed into a mod-pack archive, when this mod's original ZIP-file and hash-value is kept intact.
+This mod's script files MAY NOT, SHALL NOT and MUST NOT be embedded in any other mod nor any map-mod!
 
 Please do NOT upload this mod to any other hosting site - I can do that myself, when needed!
 
@@ -110,11 +100,7 @@ Known bugs/problems:
 
 
 Credits:
-Script: Decker_MMIV
-Polish translations by: Ziuta & spinah
-Hungarian translations by: pokers
-Italian translations by: DD ModPassion
-French translations by: bbj89
-Russian translations by: Gonimy_Vetrom
-Original addSpecialization: Xentro
-Some German translations by: DrUptown
+Script:
+- Decker_MMIV
+Contributors/Translations:
+- DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers, Ziuta, pewemo, Alfredo Prieto, xno

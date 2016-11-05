@@ -253,16 +253,6 @@ function FollowMe.getIsFollowMeActive(self)
 end
 
 
-function FollowMe.getDeactivateOnLeave(self, superFunc)
-    local deactivate = true
-    if superFunc ~= nil then
-        deactivate = deactivate and superFunc(self)
-    end
-
-    return deactivate and not self:getIsFollowMeActive()
-end;
-
-
 function FollowMe.writeStream(self, streamId, connection)
     streamWriteInt8(            streamId, Utils.getNoNil(self.modFM.FollowKeepBack, 0))
     streamWriteInt8(            streamId, Utils.getNoNil(self.modFM.FollowXOffset,  0) * 2)
@@ -861,14 +851,14 @@ function FollowMe.onLeave(self)
     end
 end
 
---function FollowMe.getDeactivateOnLeave(self, superFunc)
---    local deactivate = true
---    if superFunc ~= nil then
---        deactivate = deactivate and superFunc(self)
---    end
---
---    return deactivate and not self.isHired
---end;
+function FollowMe.getDeactivateOnLeave(self, superFunc)
+    local deactivate = true
+    if superFunc ~= nil then
+        deactivate = deactivate and superFunc(self)
+    end
+
+    return deactivate and not self.followMeIsStarted
+end;
 
 
 -- Get distance to keep-in-front, or zero if not.

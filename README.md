@@ -7,11 +7,8 @@ To read more about this mod, find it on;
 ## FS17 - Change-log
 1.0.0.17
 - Upgraded to FS17
-- Added turn-light indication for 'trail-crumbs'
-- Copied and modified code from base-game's AIVehicle script
-  - To have vehicle-character appear in vehicle
-  - To have map-hotspot appear
-  - To have notifications appear when FollowMe is stopped
+- Added turn-light indication-state to 'trail-crumbs'
+- Had to remove collision-box, so will crash into other vehicles!
 - Changed versionnumbering-scheme due to ModHub
 
 
