@@ -40,6 +40,7 @@ FollowMe.REASON_NO_TRAIL_FOUND  = 2
 FollowMe.REASON_TOO_FAR_BEHIND  = 3
 FollowMe.REASON_LEADER_REMOVED  = 4
 FollowMe.REASON_ENGINE_STOPPED  = 5
+FollowMe.REASON_ALREADY_AI      = 6
 FollowMe.NUM_BITS_REASON  = 3
 
 
@@ -174,6 +175,8 @@ function FollowMe.load(self, savegame)
     self.getIsFollowMeActive  = FollowMe.getIsFollowMeActive
     self.getDeactivateOnLeave = Utils.overwrittenFunction(self.getDeactivateOnLeave, FollowMe.getDeactivateOnLeave);
     
+    self.followMeIsStarted = false
+    
     -- A simple attempt at making a "namespace" for 'Follow Me' variables.
     self.modFM = {};
     --
@@ -260,82 +263,31 @@ function FollowMe.getDeactivateOnLeave(self, superFunc)
 end;
 
 
-function FollowMe.sharedWriteStream(serverToClients, streamId, vehObj, followsObj, stalkedByObj, cmdId, stateId, keepBackDistance, xOffset, reason, helperIndex)
-    writeNetworkNodeObject(streamId, vehObj);
-    streamWriteInt8(       streamId, Utils.getNoNil(keepBackDistance, 0))
-    streamWriteInt8(       streamId, Utils.getNoNil(xOffset, 0) * 2)
-    streamWriteUIntN(      streamId, Utils.getNoNil(cmdId,   0), FollowMe.NUM_BITS_COMMAND)
-    if serverToClients then
-        streamWriteUIntN(  streamId, Utils.getNoNil(stateId, 0), FollowMe.NUM_BITS_STATE)
-        streamWriteUIntN(  streamId, Utils.getNoNil(reason,  0), FollowMe.NUM_BITS_REASON)
-        streamWriteBool(   streamId, followsObj   ~= nil)
-        streamWriteBool(   streamId, stalkedByObj ~= nil)
-        if followsObj ~= nil then
-            streamWriteUInt8(      streamId, Utils.getNoNil(helperIndex, 0))
-            writeNetworkNodeObject(streamId, followsObj)
-        end
-        if stalkedByObj ~= nil then
-            writeNetworkNodeObject(streamId, stalkedByObj)
-        end
-    end
-end;
-
-function FollowMe.sharedReadStream(serverToClients, streamId)
-    local stateId, followsObj, stalkedByObj, reason, helperIndex
-
-    local vehObj            = readNetworkNodeObject(streamId);
-    local keepBackDistance  = streamReadInt8( streamId);
-    local xOffset           = streamReadInt8( streamId) / 2;
-    local cmdId             = streamReadUIntN(streamId, FollowMe.NUM_BITS_COMMAND)
-    if serverToClients then
-        stateId             = streamReadUIntN(streamId, FollowMe.NUM_BITS_STATE)
-        reason              = streamReadUIntN(streamId, FollowMe.NUM_BITS_REASON)
-        local hasFollowsObj = streamReadBool( streamId)
-        local hasStalkerObj = streamReadBool( streamId)
-        if hasFollowsObj then
-            helperIndex     = streamReadUInt8( streamId)
-            followsObj      = readNetworkNodeObject(streamId)
-        end
-        if hasStalkerObj then
-            stalkedByObj    = readNetworkNodeObject(streamId)
-        end
-    end
-    if helperIndex == 0 then
-        helperIndex = nil
-    end
-    
-    return vehObj, followsObj, stalkedByObj, cmdId, stateId, keepBackDistance, xOffset, reason, helperIndex
-end;
-
-
 function FollowMe.writeStream(self, streamId, connection)
-    FollowMe.sharedWriteStream(
-        true,   -- 'true' = server to clients
-        streamId,
-        self,
-        self.modFM.FollowVehicleObj,
-        self.modFM.StalkerVehicleObj,
-        0, -- no command
-        self.modFM.FollowState,
-        self.modFM.FollowKeepBack,
-        self.modFM.FollowXOffset,
-        0, -- no reason
-        self.modFM.helperIndex
-    );
+    streamWriteInt8(            streamId, Utils.getNoNil(self.modFM.FollowKeepBack, 0))
+    streamWriteInt8(            streamId, Utils.getNoNil(self.modFM.FollowXOffset,  0) * 2)
+    if streamWriteBool(         streamId, self.followMeIsStarted) then
+        streamWriteUIntN(       streamId, self.modFM.FollowState, FollowMe.NUM_BITS_STATE)
+        streamWriteUInt8(       streamId, self.modFM.currentHelper.index)
+        writeNetworkNodeObject( streamId, self.modFM.FollowVehicleObj)
+    end
 end;
 
 function FollowMe.readStream(self, streamId, connection)
-    local dummyVeh, dummyCmd, dummyReason
-    --
-    dummyVeh,
-    self.modFM.FollowVehicleObj,
-    self.modFM.StalkerVehicleObj,
-    dummyCmd,
-    self.modFM.FollowState,
-    self.modFM.FollowKeepBack,
-    self.modFM.FollowXOffset,
-    dummyReason,
-    self.modFM.helperIndex  = FollowMe.sharedReadStream(true, streamId); -- 'true' = server to clients
+    local distance  = streamReadInt8(streamId)
+    local offset    = streamReadInt8(streamId) / 2
+    if streamReadBool(streamId) then
+        local state         = streamReadUIntN(       streamId, FollowMe.NUM_BITS_STATE)
+        local helperIndex   = streamReadUInt8(       streamId)
+        local followObj     = readNetworkNodeObject( streamId)
+
+        FollowMe.onStartFollowMe(self, followObj, helperIndex, true);
+        
+        self.modFM.FollowState = state;
+    end
+    
+    FollowMe.changeDistance(self, { distance }, true ); -- Absolute change
+    FollowMe.changeXOffset( self, { offset },   true ); -- Absolute change
 end;
 
 
@@ -352,11 +304,6 @@ function FollowMe.mouseEvent(self, posX, posY, isDown, isUp, button)
 end;
 
 function FollowMe.keyEvent(self, unicode, sym, modifier, isDown)
-end;
-
-function FollowMe.setWarning(self, txt, noSendEvent)
-    self.modFM.ShowWarningText = txt;   -- must be a string that can be given to g_i18n:getText()
-    self.modFM.ShowWarningTime = g_currentMission.time + 2500;
 end;
 
 function FollowMe.copyDrop(self, crumb, targetXYZ)
@@ -628,22 +575,16 @@ function FollowMe.startFollowMe(self, connection)
         g_client:getServerConnection():sendEvent(FollowMeRequestEvent:new(self, FollowMe.COMMAND_START));
     else
         -- Server only
-        if not self.isMotorStarted then
-            if connection ~= nil then
-                connection:sendEvent(FollowMeResponseEvent:new(self, self.modFM.FollowState, FollowMe.REASON_ENGINE_STOPPED, nil), nil, nil, self);    
-            else
-                FollowMe.showReason(self, FollowMe.REASON_ENGINE_STOPPED)
-            end
+        if self:getIsHired() then
+            FollowMe.showReason(self, connection, FollowMe.REASON_ALREADY_AI)
+        elseif not self.isMotorStarted then
+            FollowMe.showReason(self, connection, FollowMe.REASON_ENGINE_STOPPED)
         else
             local closestVehicle = FollowMe.findVehicleInFront(self)
             if closestVehicle == nil 
             or self.modFM.FollowVehicleObj ~= nil
             then
-                if connection ~= nil then
-                    connection:sendEvent(FollowMeResponseEvent:new(self, self.modFM.FollowState, FollowMe.REASON_NO_TRAIL_FOUND, nil), nil, nil, self);    
-                else
-                    FollowMe.showReason(self, FollowMe.REASON_NO_TRAIL_FOUND)
-                end
+                FollowMe.showReason(self, connection, FollowMe.REASON_NO_TRAIL_FOUND)
             else
                 FollowMe.onStartFollowMe(self, closestVehicle);
             end
@@ -675,6 +616,10 @@ end
 --
 
 function FollowMe.onStartFollowMe(self, followObj, helperIndex, noEventSend)
+    if followObj == nil then
+        log("onStartFollowMe(followObj=",followObj,", helperIndex=",helperIndex,")")
+    end
+
     if not self.followMeIsStarted and followObj ~= nil then
         if helperIndex ~= nil then
             self.modFM.currentHelper = HelperUtil.helperIndexToDesc[helperIndex]
@@ -770,47 +715,56 @@ function FollowMe.onStopFollowMe(self, reason, noEventSend)
         self.followMeIsStarted = false;
 
         --
-        FollowMe.showReason(self, reason, self.modFM.currentHelper)
+        FollowMe.showReason(self, nil, reason, self.modFM.currentHelper)
 
         self.modFM.currentHelper = nil
     end
 end
 
 function FollowMe.onWaitResumeFollowMe(self, reason, noEventSend)
-    --if self.followMeIsStarted then
-        if self.modFM.FollowState == FollowMe.STATE_FOLLOWING then
-            self.modFM.FollowState = FollowMe.STATE_WAITING
-            self.modFM.isDirty = (g_server ~= nil)
-        elseif self.modFM.FollowState == FollowMe.STATE_WAITING then
-            self.modFM.FollowState = FollowMe.STATE_FOLLOWING
-            self.modFM.isDirty = (g_server ~= nil)
-        end
-    --end
+    if self.modFM.FollowState == FollowMe.STATE_FOLLOWING then
+        self.modFM.FollowState = FollowMe.STATE_WAITING
+        self.modFM.isDirty = (g_server ~= nil)
+    elseif self.modFM.FollowState == FollowMe.STATE_WAITING then
+        self.modFM.FollowState = FollowMe.STATE_FOLLOWING
+        self.modFM.isDirty = (g_server ~= nil)
+    end
 end
 
-function FollowMe.showReason(self, reason, currentHelper)
-    if reason == FollowMe.REASON_NONE then
-        -- No notification needed
-    elseif reason == FollowMe.REASON_NO_TRAIL_FOUND then
-        FollowMe.setWarning(self, "FollowMeDropperNotFound");
-    elseif reason == FollowMe.REASON_ENGINE_STOPPED then
-        FollowMe.setWarning(self, "FollowMeStartEngine")
-    elseif reason ~= nil then
-        local txtId = ("FollowMeReason%d"):format(reason)
-        if g_i18n:hasText(txtId) then
-            local helperName = "?"
-            if currentHelper ~= nil then
-                helperName = Utils.getNoNil(currentHelper.name, helperName)
+function FollowMe.showReason(self, connection, reason, currentHelper)
+    if connection ~= nil then
+        connection:sendEvent(FollowMeResponseEvent:new(self, self.modFM.FollowState, reason, currentHelper), nil, nil, self);    
+    else
+        if reason == FollowMe.REASON_NONE then
+            -- No notification needed
+        elseif reason == FollowMe.REASON_ALREADY_AI then
+            FollowMe.setWarning(self, "FollowMeAlreadyAI");
+        elseif reason == FollowMe.REASON_NO_TRAIL_FOUND then
+            FollowMe.setWarning(self, "FollowMeDropperNotFound");
+        elseif reason == FollowMe.REASON_ENGINE_STOPPED then
+            FollowMe.setWarning(self, "FollowMeStartEngine")
+        elseif reason ~= nil then
+            local txtId = ("FollowMeReason%d"):format(reason)
+            if g_i18n:hasText(txtId) then
+                local helperName = "?"
+                if currentHelper ~= nil then
+                    helperName = Utils.getNoNil(currentHelper.name, helperName)
+                end
+                local reasonTxt = g_i18n:getText(txtId):format(helperName)
+                local reasonClr = {0.5, 0.5, 1.0, 1.0}
+                if reason == FollowMe.REASON_TOO_FAR_BEHIND then
+                    reasonClr = FSBaseMission.INGAME_NOTIFICATION_CRITICAL
+                end
+                g_currentMission:addIngameNotification(reasonClr, reasonTxt)
             end
-            local reasonTxt = g_i18n:getText(txtId):format(helperName)
-            local reasonClr = {0.5, 0.5, 1.0, 1.0}
-            if reason == FollowMe.REASON_TOO_FAR_BEHIND then
-                reasonClr = FSBaseMission.INGAME_NOTIFICATION_CRITICAL
-            end
-            g_currentMission:addIngameNotification(reasonClr, reasonTxt)
         end
     end
 end
+
+function FollowMe.setWarning(self, txt, noSendEvent)
+    self.modFM.ShowWarningText = g_i18n:getText(txt);
+    self.modFM.ShowWarningTime = g_currentMission.time + 2500;
+end;
 
 
 function FollowMe.findVehicleInFront(self)
@@ -937,8 +891,8 @@ function FollowMe.checkBaler(attachedTool)
     local pctSpeedReduction
     if attachedTool:getIsTurnedOn() then
         if attachedTool.baler.unloadingState == Baler.UNLOADING_CLOSED then
-            local unitFillLevel = attachedTool:getUnitFillLevel(self.baler.fillUnitIndex) 
-            local unitCapacity  = attachedTool:getUnitCapacity(self.baler.fillUnitIndex)
+            local unitFillLevel = attachedTool:getUnitFillLevel(attachedTool.baler.fillUnitIndex) 
+            local unitCapacity  = attachedTool:getUnitCapacity(attachedTool.baler.fillUnitIndex)
             if unitFillLevel >= unitCapacity then
                 allowedToDrive = false
                 hasCollision = true -- Stop faster
@@ -963,13 +917,17 @@ function FollowMe.checkBaler(attachedTool)
 end
 
 function FollowMe.checkBaleWrapper(attachedTool)
+    -- Typo-error bug in base-game's script.
+    -- Try to anticipate future "correct spelling".
+    local STATE_WRAPPER_FINISHED = Utils.getNoNil(BaleWrapper.STATE_WRAPPER_FINSIHED, BaleWrapper.STATE_WRAPPER_FINISHED)
+
     local allowedToDrive
     local hasCollision
-    if attachedTool.baleWrapperState == BaleWrapper.STATE_WRAPPER_FINISHED then -- '4'
+    if attachedTool.baleWrapperState == STATE_WRAPPER_FINISHED then -- '4'
         allowedToDrive = false
         -- Activate the bale unloading (server-side only!)
         attachedTool:doStateChange(BaleWrapper.CHANGE_WRAPPER_START_DROP_BALE);  -- '5'
-    elseif attachedTool.baleWrapperState > BaleWrapper.STATE_WRAPPER_FINISHED then -- '4'
+    elseif attachedTool.baleWrapperState > STATE_WRAPPER_FINISHED then -- '4'
         allowedToDrive = false
     end
     return allowedToDrive, hasCollision;
@@ -1258,14 +1216,18 @@ end;
 --
 
 function FollowMe.getWorldToScreen(nodeId)
-    local tx,ty,tz = getWorldTranslation(nodeId);
-    --ty = ty + self.displayYoffset;
-    local sx,sy,sz = project(tx,ty,tz);
-    if  sx<1 and sx>0  -- When "inside" screen
-    and sy<1 and sy>0  -- When "inside" screen
-    and          sz<1  -- Only draw when "in front of" camera
-    then
-        return sx,sy
+    if nodeId ~= nil then
+        local tx,ty,tz = getWorldTranslation(nodeId);
+        if tx ~= nil then
+            --ty = ty + self.displayYoffset;
+            local sx,sy,sz = project(tx,ty,tz);
+            if  sx<1 and sx>0  -- When "inside" screen
+            and sy<1 and sy>0  -- When "inside" screen
+            and          sz<1  -- Only draw when "in front of" camera
+            then
+                return sx,sy
+            end
+        end
     end
     return nil,nil
 end
@@ -1281,7 +1243,7 @@ end
 
 function FollowMe.draw(self)
     if self.modFM.ShowWarningTime > g_currentMission.time then
-        g_currentMission:showBlinkingWarning(g_i18n:getText(self.modFM.ShowWarningText))
+        g_currentMission:showBlinkingWarning(self.modFM.ShowWarningText)
     end;
     --
     local showFollowMeMy = FollowMe.keyModifier_FollowMeMy == nil or (FollowMe.keyModifier_FollowMeMy ~= nil and Input.isKeyPressed(FollowMe.keyModifier_FollowMeMy));
@@ -1421,87 +1383,6 @@ end;
 ---
 ---
 
---FollowMeEvent = {};
---FollowMeEvent_mt = Class(FollowMeEvent, Event);
---
---InitEventClass(FollowMeEvent, "FollowMeEvent");
---
---function FollowMeEvent:emptyNew()
---    local self = Event:new(FollowMeEvent_mt);
---    self.className = "FollowMeEvent";
---    return self;
---end;
---
---function FollowMeEvent:new(vehicle, cmdId, reason, helperIndex)
---    local self = FollowMeEvent:emptyNew()
---    self.vehicle            = vehicle
---    self.cmdId              = cmdId
---    self.reason             = reason
---    self.helperIndex        = helperIndex
---    if vehicle ~= nil and vehicle.modFM ~= nil then
---        self.followVehicleObj   = vehicle.modFM.FollowVehicleObj 
---        self.stalkerVehicleObj  = vehicle.modFM.StalkerVehicleObj
---        self.stateId            = vehicle.modFM.FollowState
---        self.distance           = vehicle.modFM.FollowKeepBack
---        self.offset             = vehicle.modFM.FollowXOffset
---    else
---        self.followVehicleObj   = nil
---        self.stalkerVehicleObj  = nil
---        self.stateId            = 0
---        self.distance           = 0
---        self.offset             = 0
---    end
---    return self;
---end;
---
---function FollowMeEvent:writeStream(streamId, connection)
---    FollowMe.sharedWriteStream(
---        g_server ~= nil,
---        streamId,
---        self.vehicle,
---        self.followVehicleObj,
---        self.stalkerVehicleObj,
---        self.cmdId,
---        self.stateId,
---        self.distance,
---        self.offset,
---        self.reason,
---        self.helperIndex
---    );
---end;
---
---function FollowMeEvent:readStream(streamId, connection)
---    local vehObj, followsObj, stalkedByObj, cmdId, stateId, keepBackDist, xOffset, reason, helperIndex = FollowMe.sharedReadStream(g_server == nil, streamId);
---
---    if vehObj ~= nil then
---        -- Received from server?
---        if connection:getIsServer() then
---            if vehObj.modFM ~= nil then
---                vehObj.modFM.FollowState        = stateId
---                vehObj.modFM.FollowVehicleObj   = followsObj
---                vehObj.modFM.StalkerVehicleObj  = stalkedByObj
---            end
---        end
---        
---        --
---        local noEventSend = connection:getIsServer()
---        if     cmdId == FollowMe.COMMAND_START then
---            FollowMe.startFollowMe(vehObj, helperIndex, noEventSend)
---        elseif cmdId == FollowMe.COMMAND_STOP then
---            FollowMe.stopFollowMe(vehObj, reason, noEventSend)
---        elseif cmdId == FollowMe.COMMAND_WAITRESUME then
---            FollowMe.waitResumeFollowMe(vehObj, reason, noEventSend)
---        else
---            FollowMe.changeDistance(vehObj, { keepBackDist }, noEventSend)
---            FollowMe.changeXOffset( vehObj, { xOffset },      noEventSend)
---        end
---    end;
---end;
-
----
----
----
-
 FollowMeRequestEvent = {};
 FollowMeRequestEvent_mt = Class(FollowMeRequestEvent, Event);
 
@@ -1619,7 +1500,7 @@ function FollowMeResponseEvent:readStream(streamId, connection)
             FollowMe.onStopFollowMe(self.vehicle, self.reason, true)
         else
             if self.reason ~= 0 then
-                FollowMe.showReason(self.vehicle, self.reason)
+                FollowMe.showReason(self.vehicle, nil, self.reason, nil)
             end
             self.vehicle.modFM.FollowState       = self.stateId
             self.vehicle.modFM.FollowVehicleObj  = self.followVehicleObj

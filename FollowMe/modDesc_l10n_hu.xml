@@ -20,8 +20,8 @@ A "Follow Me"-vel most megteheted (csak ne tolass).
         <text name="FollowMeMissingTrafficCollisionTrigger" text="Sajnos ez a jármű nem alkalmas követésre. Hiányzik az 'aiTrafficCollisionTrigger' rész." />
         <text name="FollowMeNotAvailable"                   text="Sajnos ez a jármű nem alkalmas követésre." />
 
+        <text name="FollowMeAlreadyAI"          text="Hired worker is using this vehicle" />  <!-- needs translation -->
         <text name="FollowMeStartEngine"        text="Először indítsd be a motort." />
-        <text name="FollowMeTooFarBehind"       text="Nagyon lemaradt, elvesztette az útvonalat, ezért megállt." />
 
         <text name="FollowMeDropperNotFound"    text="Keresési tartományban nincs követhető jármű.
 Menj közelebb a követendő járműhöz." />

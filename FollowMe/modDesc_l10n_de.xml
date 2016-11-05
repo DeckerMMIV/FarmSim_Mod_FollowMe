@@ -20,9 +20,9 @@ Mit "Follow Me" kann man dass (aber nicht beim rückwärts fahren).
         <text name="FollowMeMissingTrafficCollisionTrigger" text="Leider kann dieses Fahrzeug nicht als 'Nachfolger' eingesetzt werden. Es fehlt ein Teil namens 'aiTrafficCollisionTrigger'." />
         <text name="FollowMeNotAvailable"                   text="Leider kann dieses Fahrzeug nicht als 'Nachfolger' eingesetzt werden." />
 
-        <text name="FollowMeStartEngine"        text="Start engine first." />
-        <text name="FollowMeTooFarBehind"       text="'trail' des führenden Fahrzeug verloren. Stoppen." />
-        
+        <text name="FollowMeAlreadyAI"          text="Hired worker is using this vehicle" />  <!-- needs translation -->
+        <text name="FollowMeStartEngine"        text="Start engine first."                /> <!-- needs translation -->
+
         <text name="FollowMeDropperNotFound"    text="Kann in der Nähe keine Spur finden, der ich folgen könnte.
 Nähern sie sich dem führenden Fahrzeug." />
         
@@ -31,7 +31,7 @@ Nähern sie sich dem führenden Fahrzeug." />
         <text name="FollowMeMyToggle"           text="FollowMe: Toggle on/off"      />  <!-- needs translation -->
         
         <text name="input_FollowMeMyToggle"     text="FollowMe: Umzuschalten on/off" />
-        <text name="input_FollowMeMyPause"      text="FollowMe: Wait/resume"            />  <!-- needs translation -->
+        <text name="input_FollowMeMyPause"      text="FollowMe: Wait/resume"  />  <!-- needs translation -->
         <text name="input_FollowMeMyDistDec"    text="FollowMe: Selbst Abstand -" />
         <text name="input_FollowMeMyDistInc"    text="FollowMe: Selbst Abstand +" />
         <text name="input_FollowMeMyOffsDec"    text="FollowMe: Selbst Offset links" />

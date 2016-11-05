@@ -20,8 +20,8 @@ Met "Follow Me" kan dat (alleen niet bij achteruit rijden).
         <text name="FollowMeMissingTrafficCollisionTrigger" text="Dit voertuig kan niet niet worden ingesteld als 'volger'. Het mist het gedeelte 'aiTrafficCollisionTrigger'." />
         <text name="FollowMeNotAvailable"                   text="Dit voertuig kan niet niet worden ingesteld als 'volger'." />
         
+        <text name="FollowMeAlreadyAI"          text="Hired worker is using this vehicle" />  <!-- needs translation -->
         <text name="FollowMeStartEngine"        text="Start motor eerst." />
-        <text name="FollowMeTooFarBehind"       text="Het 'spoor'verloren van het leidende voertuig. Gestopt." />
 
         <text name="FollowMeDropperNotFound"    text="Niet binnen het bereik van een 'spoor'.
 Verklein afstand tot leiden voertuig." />

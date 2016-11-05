@@ -20,8 +20,8 @@ Avec "Follow Me", c'est possible (sauf en marche arrière).
         <text name="FollowMeMissingTrafficCollisionTrigger" text="Malheureusement, ce véhicule n'est pas capable d'agir comme un 'suiveur'. Il manque une partie appelée 'aiTrafficCollisionTrigger'." />
         <text name="FollowMeNotAvailable"                   text="Malheureusement, ce véhicule n'est pas capable d'agir comme un 'suiveur'." />
  
+        <text name="FollowMeAlreadyAI"          text="Hired worker is using this vehicle" />  <!-- needs translation -->
         <text name="FollowMeStartEngine"        text="Démarrer d'abord le moteur." />
-        <text name="FollowMeTooFarBehind"       text="Suiveur trop éloigné. Arrêt." />
 
         <text name="FollowMeDropperNotFound"    text="Impossible de trouver un leader.
 Rapprochez-vous de la voiture de tête." />

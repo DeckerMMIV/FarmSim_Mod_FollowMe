@@ -21,8 +21,8 @@ Con "Follow Me", è possibile (non solo seguirti).
         <text name="FollowMeMissingTrafficCollisionTrigger" text="Sfortunatamente questo veicolo non può essere un 'inseguitore'. Manca una parte chiamata 'aiTrafficCollisionTrigger'." />
         <text name="FollowMeNotAvailable"                   text="Sfortunatamente questo veicolo non può essere un 'inseguitore'." />
 
+        <text name="FollowMeAlreadyAI"          text="Hired worker is using this vehicle" />  <!-- needs translation -->
         <text name="FollowMeStartEngine"        text="Accendi il motore prima." />
-        <text name="FollowMeTooFarBehind"       text="Persa la 'scia' del veicolo che ti precede. Fermato." />
 
         <text name="FollowMeDropperNotFound"    text="Impossibile trovare una 'scia' vicina nel campo visivo da seguire.
 Vai più vicino al mezzo che ti precede." />

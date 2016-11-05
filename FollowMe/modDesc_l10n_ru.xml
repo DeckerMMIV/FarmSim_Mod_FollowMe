@@ -20,8 +20,8 @@
         <text name="FollowMeMissingTrafficCollisionTrigger" text="К сожалению это ТС не может быть ведомым. У него отсутствует деталь, называемая 'aiTrafficCollisionTrigger'." />
         <text name="FollowMeNotAvailable"                   text="К сожалению это транспортное средство не может быть ведомым." />
 
+        <text name="FollowMeAlreadyAI"          text="Hired worker is using this vehicle" />  <!-- needs translation -->
         <text name="FollowMeStartEngine"        text="Заведите двигатель первым." />
-        <text name="FollowMeTooFarBehind"       text="Потерял 'след' ведущего автомобиля. Остановился." />
 
         <text name="FollowMeDropperNotFound"    text="Не удалось найти поблизости 'следа' для следования.
 Подъедьте ближе к ведущему автомобилю." />

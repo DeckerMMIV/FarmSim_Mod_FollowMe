@@ -20,14 +20,14 @@ With "Follow Me" you can (though not backwards driving).
         <text name="FollowMeMissingTrafficCollisionTrigger" text="Unfortunately this vehicle is not able to act as a 'follower'. It is missing a part called 'aiTrafficCollisionTrigger'." />
         <text name="FollowMeNotAvailable"                   text="Unfortunately this vehicle is not able to act as a 'follower'." />
 
+        <text name="FollowMeAlreadyAI"          text="Hired worker is using this vehicle" />  <!-- needs translation -->
         <text name="FollowMeStartEngine"        text="Start engine first." />
-        <text name="FollowMeTooFarBehind"       text="Lost the 'trail' of leading vehicle. Stopping." />
 
         <text name="FollowMeDropperNotFound"    text="Unable to locate a nearby 'trail' within viewing-range to follow.
 Move closer to the leading vehicle." />
 
-        <text name="FollowMeKeysMyself"         text="%s - Myself control actions"  />
-        <text name="FollowMeKeysBehind"         text="%s - Behind control actions"  />
+        <text name="FollowMeKeysMyself"         text="%s - Myself control actions"  />  <!-- needs translation -->
+        <text name="FollowMeKeysBehind"         text="%s - Behind control actions"  />  <!-- needs translation -->
         <text name="FollowMeMyToggle"           text="FollowMe: Toggle on/off"      />
         
         <text name="input_FollowMeMyToggle"     text="FollowMe: Toggle on/off"              />

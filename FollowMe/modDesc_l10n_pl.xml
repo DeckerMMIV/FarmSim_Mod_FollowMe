@@ -21,8 +21,8 @@ Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz).
         <text name="FollowMeMissingTrafficCollisionTrigger" text="Niestety ten pojazd nie może działać jako pojazd 'podążający'. Brak elementu o nazwie 'aiTrafficCollisionTrigger'." />
         <text name="FollowMeNotAvailable"                   text="Niestety ten pojazd nie może działać jako pojazd 'podążający'." />
 
+        <text name="FollowMeAlreadyAI"          text="Hired worker is using this vehicle" />  <!-- needs translation -->
         <text name="FollowMeStartEngine"        text="Najpierw uruchom silnik." />
-        <text name="FollowMeTooFarBehind"       text="Zgubiono 'ścieżkę' pojazdu prowadzącego. Zatrzymywanie." />
 
         <text name="FollowMeDropperNotFound"    text="Nie można zlokalizować 'ścieżki' w zasięgu zakresu jej wyszukiwania.
 Zbliż się do pojazdu prowadzącego." />
