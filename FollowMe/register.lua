@@ -9,7 +9,7 @@ RegistrationHelper_FM = {};
 RegistrationHelper_FM.isLoaded = false;
 
 if SpecializationUtil.specializations['FollowMe'] == nil then
-    SpecializationUtil.registerSpecialization('FollowMe', 'FollowMe', g_currentModDirectory .. 'FollowMe2.lua')
+    SpecializationUtil.registerSpecialization('FollowMe', 'FollowMe', g_currentModDirectory .. 'FollowMe.lua')
     RegistrationHelper_FM.isLoaded = false;
 end
 

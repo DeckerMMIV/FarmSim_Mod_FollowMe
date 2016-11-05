@@ -249,7 +249,8 @@ end;
 
 
 function FollowMe.getIsFollowMeActive(self)
-    return self.modFM ~= nil and self.modFM.FollowVehicleObj ~= nil
+    return self.followMeIsStarted
+    --return self.modFM ~= nil and self.modFM.FollowVehicleObj ~= nil
 end
 
 
@@ -565,7 +566,7 @@ function FollowMe.startFollowMe(self, connection)
         g_client:getServerConnection():sendEvent(FollowMeRequestEvent:new(self, FollowMe.COMMAND_START));
     else
         -- Server only
-        if self:getIsHired() then
+        if not self:getIsFollowMeActive() and self:getIsHired() then
             FollowMe.showReason(self, connection, FollowMe.REASON_ALREADY_AI)
         elseif not self.isMotorStarted then
             FollowMe.showReason(self, connection, FollowMe.REASON_ENGINE_STOPPED)
