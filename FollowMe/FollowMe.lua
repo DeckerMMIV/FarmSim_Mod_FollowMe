@@ -316,13 +316,13 @@ function FollowMe.copyDrop(self, crumb, targetXYZ)
     end;
 end;
 
-function FollowMe.addDrop(self, wx,wy,wz, avgSpeed, turnLightState)
+function FollowMe.addDrop(self, wx,wy,wz, avgSpeed, turnLightState, reverserDirection)
     assert(g_server ~= nil);
 
     self.modFM.DropperCurrentIndex = self.modFM.DropperCurrentIndex + 1; -- Keep incrementing index, so followers will be able to detect if they get too far behind of the circular-array.
     local dropIndex = 1+((self.modFM.DropperCurrentIndex-1) % FollowMe.cBreadcrumbsMaxEntries);
 
-    local rx,ry,rz  = localDirectionToWorld(self.components[1].node, 0,0,1);
+    local rx,ry,rz  = localDirectionToWorld(self.components[1].node, 0,0, Utils.getNoNil(reverserDirection, 1));
     self.modFM.DropperCircularArray[dropIndex] = {
         trans = {wx,wy,wz},
         rot = {rx,ry,rz},
@@ -522,7 +522,7 @@ function FollowMe.updateTick(self, dt)
             local wage = (dt * self.pricePerMS * g_currentMission.missionInfo.buyPriceMultiplier) * FollowMe.wagePaymentMultiplier
             g_currentMission:addSharedMoney(-wage, "wagePayment");
             g_currentMission:addMoneyChange(-wage, FSBaseMission.MONEY_TYPE_AI)        
-        elseif (self.reverserDirection * self.movingDirection > 0) then  -- Must drive forward to drop crumbs
+        elseif (Utils.getNoNil(self.reverserDirection, 1) * self.movingDirection > 0) then  -- Must drive forward to drop crumbs
             self.modFM.sumSpeed = self.modFM.sumSpeed + self.lastSpeed;
             self.modFM.sumCount = self.modFM.sumCount + 1;
             --
@@ -531,7 +531,7 @@ function FollowMe.updateTick(self, dt)
             local distancePrevDrop = Utils.vector2Length(pwx-wx, pwz-wz);
             if distancePrevDrop >= FollowMe.cMinDistanceBetweenDrops then
                 local avgSpeed = math.max((self.modFM.sumSpeed / (self.modFM.sumCount>0 and self.modFM.sumCount or 1)), (5/3600));
-                FollowMe.addDrop(self, wx,wy,wz, avgSpeed, self.turnLightState);
+                FollowMe.addDrop(self, wx,wy,wz, avgSpeed, self.turnLightState, self.reverserDirection);
                 --
                 self.modFM.sumSpeed = 0;
                 self.modFM.sumCount = 0;
@@ -988,10 +988,10 @@ function FollowMe.updateFollowMovement(self, dt)
 
     -- current location / rotation
     local cx,cy,cz      = getWorldTranslation(self.components[1].node);
-    local crx,cry,crz   = localDirectionToWorld(self.components[1].node, 0,0,1);
+    local crx,cry,crz   = localDirectionToWorld(self.components[1].node, 0,0,Utils.getNoNil(self.reverserDirection, 1));
     -- leader location / rotation
     local lx,ly,lz      = getWorldTranslation(leader.components[1].node);
-    local lrx,lry,lrz   = localDirectionToWorld(leader.components[1].node, 0,0,1);
+    local lrx,lry,lrz   = localDirectionToWorld(leader.components[1].node, 0,0,Utils.getNoNil(leader.reverserDirection, 1));
 
     -- original target
     local ox,oy,oz;
@@ -1028,6 +1028,7 @@ function FollowMe.updateFollowMovement(self, dt)
     elseif crumbIndexDiff > 0 then
         -- Following crumbs...
         local crumbT = leader.modFM.DropperCircularArray[1+((self.modFM.FollowCurrentIndex-1) % FollowMe.cBreadcrumbsMaxEntries)];
+        turnLightState = crumbT.turnLightState
         --
         ox,oy,oz = crumbT.trans[1],crumbT.trans[2],crumbT.trans[3];
         orx,ory,orz = unpack(crumbT.rot);
@@ -1053,8 +1054,6 @@ function FollowMe.updateFollowMovement(self, dt)
         --
         if crumbIndexDiff > 0 then
             -- Still following crumbs...
-            turnLightState = crumbT.turnLightState
-            
             local crumbAvgSpeed = crumbT.avgSpeed;
             local crumbN = leader.modFM.DropperCircularArray[1+((self.modFM.FollowCurrentIndex  ) % FollowMe.cBreadcrumbsMaxEntries)];
             if crumbN ~= nil then
