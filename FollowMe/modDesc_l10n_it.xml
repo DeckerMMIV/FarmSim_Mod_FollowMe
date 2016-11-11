@@ -9,6 +9,7 @@
     <translationContributors>
         DD Modpassion
         xno
+        translate.google.com
     </translationContributors>
 
     <!-- Note that 'description' is only here for easier translations. It needs to be manually copied to ModDesc.XML later. -->
@@ -21,15 +22,15 @@ Con "Follow Me", è possibile (non solo seguirti).
         <text name="FollowMeMissingTrafficCollisionTrigger" text="Sfortunatamente questo veicolo non può essere un 'inseguitore'. Manca una parte chiamata 'aiTrafficCollisionTrigger'." />
         <text name="FollowMeNotAvailable"                   text="Sfortunatamente questo veicolo non può essere un 'inseguitore'." />
 
-        <text name="FollowMeAlreadyAI"          text="Hired worker is using this vehicle" />  <!-- needs translation -->
+        <text name="FollowMeAlreadyAI"          text="lavoratore assunto sta usando questo veicolo" />  <!-- needs translation -->
         <text name="FollowMeStartEngine"        text="Accendi il motore prima." />
 
         <text name="FollowMeDropperNotFound"    text="Impossibile trovare una 'scia' vicina nel campo visivo da seguire.
 Vai più vicino al mezzo che ti precede." />
         
-        <text name="FollowMeKeysMyself"         text="%s - Myself control actions"  />  <!-- needs translation -->
-        <text name="FollowMeKeysBehind"         text="%s - Behind control actions"  />  <!-- needs translation -->
-        <text name="FollowMeMyToggle"           text="FollowMe: Toggle on/off"      />  <!-- needs translation -->
+        <text name="FollowMeKeysMyself"         text="%s - Myself azioni di controllo"  />  <!-- needs translation -->
+        <text name="FollowMeKeysBehind"         text="%s - Behind azioni di controllo"  />  <!-- needs translation -->
+        <text name="FollowMeMyToggle"           text="FollowMe: Attiva on/off"      />
         
         <text name="input_FollowMeMyToggle"     text="FollowMe: Attiva on/off" />
         <text name="input_FollowMeMyPause"      text="FollowMe: Aspetta/Riparti" />
@@ -55,9 +56,9 @@ Vai più vicino al mezzo che ti precede." />
         <text name="FollowMeDistBehind"         text="Distanza dietro %.1f" />
         <text name="FollowMeDistAhead"          text="Distanza davanti %.1f" />
         
-        <text name="FollowMeReason1"            text="Follower '%s' stopped (by player)"       /> <!-- needs translation -->
-        <text name="FollowMeReason2"            text="Follower '%s' stopped (no trail)"        /> <!-- needs translation -->
-        <text name="FollowMeReason3"            text="Follower '%s' stopped (too far behind)"  /> <!-- needs translation -->
-        <text name="FollowMeReason4"            text="Follower '%s' stopped (leader vanished)" /> <!-- needs translation -->
+        <text name="FollowMeReason1"            text="Follower '%s' fermato (da giocatore)"     /> <!-- needs translation -->
+        <text name="FollowMeReason2"            text="Follower '%s' fermato (senza pista)"      /> <!-- needs translation -->
+        <text name="FollowMeReason3"            text="Follower '%s' fermato (troppo indietro)"  /> <!-- needs translation -->
+        <text name="FollowMeReason4"            text="Follower '%s' fermato (leader scomparso)" /> <!-- needs translation -->
     </texts>
 </l10n>

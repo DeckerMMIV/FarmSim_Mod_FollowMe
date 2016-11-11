@@ -8,6 +8,7 @@
     <!-- Add your own name or nickname here, when you contribute to this file's translation, so I know who to put into the credits. -->
     <translationContributors>
         Gonimy-Vetrom
+        translate.goog.com
     </translationContributors>
 
     <!-- Note that 'description' is only here for easier translations. It needs to be manually copied to ModDesc.XML later. -->
@@ -20,15 +21,15 @@
         <text name="FollowMeMissingTrafficCollisionTrigger" text="К сожалению это ТС не может быть ведомым. У него отсутствует деталь, называемая 'aiTrafficCollisionTrigger'." />
         <text name="FollowMeNotAvailable"                   text="К сожалению это транспортное средство не может быть ведомым." />
 
-        <text name="FollowMeAlreadyAI"          text="Hired worker is using this vehicle" />  <!-- needs translation -->
+        <text name="FollowMeAlreadyAI"          text="Наемный работник использует этот автомобиль" />  <!-- needs translation -->
         <text name="FollowMeStartEngine"        text="Заведите двигатель первым." />
 
         <text name="FollowMeDropperNotFound"    text="Не удалось найти поблизости 'следа' для следования.
 Подъедьте ближе к ведущему автомобилю." />
         
-        <text name="FollowMeKeysMyself"         text="%s - Myself control actions"  />  <!-- needs translation -->
-        <text name="FollowMeKeysBehind"         text="%s - Behind control actions"  />  <!-- needs translation -->
-        <text name="FollowMeMyToggle"           text="FollowMe: Toggle on/off"      />  <!-- needs translation -->
+        <text name="FollowMeKeysMyself"         text="%s - Myself управляющих воздействий"  />  <!-- needs translation -->
+        <text name="FollowMeKeysBehind"         text="%s - Behind управляющих воздействий"  />  <!-- needs translation -->
+        <text name="FollowMeMyToggle"           text="FollowMe: ВКЛ/ВЫКЛ"      />
         
         <text name="input_FollowMeMyToggle"     text="FollowMe: ВКЛ/ВЫКЛ" />
         <text name="input_FollowMeMyPause"      text="FollowMe: Ожидать/продолжить" />
@@ -54,9 +55,9 @@
         <text name="FollowMeDistBehind"         text="за мной дистанция %.1f" />
         <text name="FollowMeDistAhead"          text="отставать на %.1f" />
         
-        <text name="FollowMeReason1"            text="Follower '%s' stopped (by player)"       /> <!-- needs translation -->
-        <text name="FollowMeReason2"            text="Follower '%s' stopped (no trail)"        /> <!-- needs translation -->
-        <text name="FollowMeReason3"            text="Follower '%s' stopped (too far behind)"  /> <!-- needs translation -->
-        <text name="FollowMeReason4"            text="Follower '%s' stopped (leader vanished)" /> <!-- needs translation -->
+        <text name="FollowMeReason1"            text="Ведомый '%s' остановился (игроком)"               /> <!-- needs translation -->
+        <text name="FollowMeReason2"            text="Ведомый '%s' остановлен (не след)"                /> <!-- needs translation -->
+        <text name="FollowMeReason3"            text="Ведомый '%s' остановился (слишком далеко позади)" /> <!-- needs translation -->
+        <text name="FollowMeReason4"            text="Ведомый '%s' остановился (лидер исчез)"           /> <!-- needs translation -->
     </texts>
 </l10n>

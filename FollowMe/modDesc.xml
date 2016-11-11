@@ -9,7 +9,7 @@
 -->    
     <contributors>DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers, Ziuta, pewemo, Alfredo Prieto, xno</contributors>
 
-    <version>1.0.0.18</version>
+    <version>1.0.0.19</version>
 
     <title>
         <en>Follow Me</en>
@@ -46,8 +46,24 @@ Default control keys:
 ]]>
         </en>
         <de>
-<![CDATA[Wollten Sie schon immer haben, dass einige Fahrzeuge Sie folgen rund um die Karte?
-Mit "Follow Me" kann man dass (aber nicht beim rückwärts fahren).
+<![CDATA[Sie wollten schon immer einigen Fahrzeugen über die Karte folgen können?
+Mit "Follow Me" können Sie das (natürlich nur vorwärtsfahrend).
+
+Standardtastenbelegung:
+
+'Myself' ist das aktuelle Fahrzeug
+  RIGHT-CTRL F     =  FollowMe an/aus schalten
+  RIGHT-CTRL H     = Pausieren / Fortsetzen
+  RIGHT-CTRL W/S = Entfernung erhöhen / verringern
+  RIGHT-CTRL A/D = Versatz links / rechts einstellen
+  RIGHT-CTRL X     = Versatz zurücksetzen oder reset oder halten für invertieren
+ 
+'Behind' das folgende Fahrzeug
+  RIGHT-SHIFT F     = FollowMe deaktivieren
+  RIGHT-SHIFT H     = Pausieren / Fortsetzen
+  RIGHT-SHIFT W/S = Entfernung erhöhen / verringern
+  RIGHT-SHIFT A/D =  Versatz links / rechts einstellen
+  RIGHT-SHIFT X     =  Versatz zurücksetzen oder reset oder halten für invertieren.
 ]]>
         </de>
         <pl>

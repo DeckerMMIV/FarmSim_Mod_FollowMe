@@ -8,6 +8,7 @@
     <!-- Add your own name or nickname here, when you contribute to this file's translation, so I know who to put into the credits. -->
     <translationContributors>
         Alfredo Prieto
+        translate.google.com
     </translationContributors>
 
     <!-- Note that 'description' is only here for easier translations. It needs to be manually copied to ModDesc.XML later. -->
@@ -20,15 +21,15 @@ Con "Follow Me" se puede conseguir.(No funciona con marcha atrás).
         <text name="FollowMeMissingTrafficCollisionTrigger" text="Este vehículo no es capaz de actuar como seguidor. No se encuentra 'aiTrafficCollisionTrigger'." />
         <text name="FollowMeNotAvailable"                   text="Este vehículo no es capaz de actuar como 'follwer'." />
 
-        <text name="FollowMeAlreadyAI"          text="Hired worker is using this vehicle" />  <!-- needs translation -->
+        <text name="FollowMeAlreadyAI"          text="Trabajador contratado está utilizando este vehículo" />
         <text name="FollowMeStartEngine"        text="Arranca el motor primero." />
 
         <text name="FollowMeDropperNotFound"    text="Incapaz de localizar un vehículo guía en el rango de visión.
 Acérquese más a la cabeza tractora." />
         
-        <text name="FollowMeKeysMyself"         text="%s - Myself control actions"  />  <!-- needs translation -->
-        <text name="FollowMeKeysBehind"         text="%s - Behind control actions"  />  <!-- needs translation -->
-        <text name="FollowMeMyToggle"           text="FollowMe: Toggle on/off"      />  <!-- needs translation -->
+        <text name="FollowMeKeysMyself"         text="%s - Myself acciones de control"  />  <!-- needs translation -->
+        <text name="FollowMeKeysBehind"         text="%s - Behind acciones de control"  />  <!-- needs translation -->
+        <text name="FollowMeMyToggle"           text="FollowMe: Activar on/off"      />
         
         <text name="input_FollowMeMyToggle"     text="FollowMe: Activar on/off" />
         <text name="input_FollowMeMyPause"      text="FollowMe: Myself Pausa/reinicio" />
@@ -54,9 +55,9 @@ Acérquese más a la cabeza tractora." />
         <text name="FollowMeDistBehind"         text="Atrás-dist. %.1f" />
         <text name="FollowMeDistAhead"          text="Adelante-dist. %.1f" />
         
-        <text name="FollowMeReason1"            text="Follower '%s' stopped (by player)"       /> <!-- needs translation -->
-        <text name="FollowMeReason2"            text="Follower '%s' stopped (no trail)"        /> <!-- needs translation -->
-        <text name="FollowMeReason3"            text="Follower '%s' stopped (too far behind)"  /> <!-- needs translation -->
-        <text name="FollowMeReason4"            text="Follower '%s' stopped (leader vanished)" /> <!-- needs translation -->
+        <text name="FollowMeReason1"            text="Follower '%s' Parado (por jugador)"           />
+        <text name="FollowMeReason2"            text="Follower '%s' Parado (sin rastro)"            />
+        <text name="FollowMeReason3"            text="Follower '%s' Paró (demasiado atrás)"         />
+        <text name="FollowMeReason4"            text="Follower '%s' Paró (el líder desapareció)"    />
     </texts>
 </l10n>
