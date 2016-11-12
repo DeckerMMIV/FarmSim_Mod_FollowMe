@@ -573,7 +573,7 @@ function FollowMe.startFollowMe(self, connection)
         else
             local closestVehicle = FollowMe.findVehicleInFront(self)
             if closestVehicle == nil 
-            or self.modFM.FollowVehicleObj ~= nil
+            --or self.modFM.FollowVehicleObj ~= nil
             then
                 FollowMe.showReason(self, connection, FollowMe.REASON_NO_TRAIL_FOUND)
             else
@@ -630,6 +630,7 @@ function FollowMe.onStartFollowMe(self, followObj, helperIndex, noEventSend)
                 g_server:broadcastEvent(FollowMeResponseEvent:new(self, FollowMe.STATE_STARTING, FollowMe.REASON_NONE, self.modFM.currentHelper), nil, nil, self);
             end
         end
+        self.followMeIsStarted = true;
 
         self.isHirableBlocked = false;
         self.forceIsActive = true;
@@ -638,11 +639,13 @@ function FollowMe.onStartFollowMe(self, followObj, helperIndex, noEventSend)
         self.disableCharacterOnLeave = false;
 
         if self.vehicleCharacter ~= nil then
-           self.vehicleCharacter:delete();
-           self.vehicleCharacter:loadCharacter(self.modFM.currentHelper.xmlFilename, getUserRandomizedMpColor(self.modFM.currentHelper.name))
-           if self.isEntered then
-                self.vehicleCharacter:setCharacterVisibility(false)
-           end
+            self.vehicleCharacter:delete();
+            if self.modFM.currentHelper ~= nil then
+                self.vehicleCharacter:loadCharacter(self.modFM.currentHelper.xmlFilename, getUserRandomizedMpColor(self.modFM.currentHelper.name))
+                if self.isEntered then
+                    self.vehicleCharacter:setCharacterVisibility(false)
+                end
+            end
         end
 
         local hotspotX, _, hotspotZ = getWorldTranslation(self.rootNode);
@@ -651,8 +654,6 @@ function FollowMe.onStartFollowMe(self, followObj, helperIndex, noEventSend)
         local _, textOffsetY = getNormalizedScreenValues(0, 11.5);
         local width, height = getNormalizedScreenValues(15,15)
         self.mapAIHotspot = g_currentMission.ingameMap:createMapHotspot("helper", self.modFM.currentHelper.name, nil, getNormalizedUVs({776, 520, 240, 240}), {0.052, 0.1248, 0.672, 1}, hotspotX, hotspotZ, width, height, false, false, true, self.components[1].node, true, MapHotspot.CATEGORY_AI, textSize, textOffsetY, {1, 1, 1, 1}, nil, getNormalizedUVs({776, 520, 240, 240}), Overlay.ALIGN_VERTICAL_MIDDLE, 0.7)
-
-        self.followMeIsStarted = true;
     end
 end
 
@@ -672,10 +673,11 @@ function FollowMe.onStopFollowMe(self, reason, noEventSend)
             end
         end
 
+        self.followMeIsStarted = false;
+
         self.forceIsActive = false;
         self.stopMotorOnLeave = true;
         self.steeringEnabled = true;
-
         self.disableCharacterOnLeave = true;
 
         if self.vehicleCharacter ~= nil then
@@ -703,11 +705,9 @@ function FollowMe.onStopFollowMe(self, reason, noEventSend)
             self:stopMotor(true);
         end
 
-        self.followMeIsStarted = false;
-
-        --
         FollowMe.showReason(self, nil, reason, self.modFM.currentHelper)
 
+        HelperUtil.releaseHelper(self.modFM.currentHelper)
         self.modFM.currentHelper = nil
     end
 end
@@ -853,12 +853,13 @@ function FollowMe.onLeave(self)
 end
 
 function FollowMe.getDeactivateOnLeave(self, superFunc)
-    local deactivate = true
+    local deactivate = not self.followMeIsStarted
+
     if superFunc ~= nil then
         deactivate = deactivate and superFunc(self)
     end
 
-    return deactivate and not self.followMeIsStarted
+    return deactivate
 end;
 
 
@@ -1173,13 +1174,13 @@ end;
         lx,lz = 0,1
         AIVehicleUtil.driveInDirection(self, dt, 30, acceleration, (acceleration * 0.7), 30, allowedToDrive, moveForwards, lx,lz, nil, 1);
 
-        if self.modFM.FollowState == FollowMe.STATE_STOPPING then
-            if (self.lastSpeedReal*3600 < 2) then
-                --FollowMe.stopFollowMe(self)
-                self.modFM.FollowState = FollowMe.STATE_NONE
-                self.modFM.isDirty = true
-            end
-        end
+        --if self.modFM.FollowState == FollowMe.STATE_STOPPING then
+        --    if (self.lastSpeedReal*3600 < 2) then
+        --        --FollowMe.stopFollowMe(self)
+        --        self.modFM.FollowState = FollowMe.STATE_NONE
+        --        self.modFM.isDirty = true
+        --    end
+        --end
     else
         AIVehicleUtil.driveInDirection(self, dt, 30, acceleration, (acceleration * 0.7), 30, allowedToDrive, moveForwards, lx,lz, nil, 1);
 --[[
@@ -1290,7 +1291,8 @@ function FollowMe.draw(self)
         end
     end
     --
-    if g_currentMission.missionInfo.showHelpMenu then
+    --if g_currentMission.missionInfo.showHelpMenu then
+    if g_gameSettings:getValue("showHelpMenu") then
         if self.modFM.FollowVehicleObj ~= nil
         or (showFollowMeMy and g_currentMission:getHasPermission("hireAI")) then
             g_currentMission:addHelpButtonText(g_i18n:getText("FollowMeMyToggle"), InputBinding.FollowMeMyToggle, nil, GS_PRIO_HIGH);
