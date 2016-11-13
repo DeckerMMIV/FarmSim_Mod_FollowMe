@@ -8,6 +8,7 @@
     <!-- Add your own name or nickname here, when you contribute to this file's translation, so I know who to put into the credits. -->
     <translationContributors>
         Gonimy-Vetrom
+        translate.goog.com
     </translationContributors>
 
     <!-- Note that 'description' is only here for easier translations. It needs to be manually copied to ModDesc.XML later. -->
@@ -20,28 +21,31 @@
         <text name="FollowMeMissingTrafficCollisionTrigger" text="К сожалению это ТС не может быть ведомым. У него отсутствует деталь, называемая 'aiTrafficCollisionTrigger'." />
         <text name="FollowMeNotAvailable"                   text="К сожалению это транспортное средство не может быть ведомым." />
 
+        <text name="FollowMeAlreadyAI"          text="Наемный работник использует этот автомобиль" />  <!-- needs translation -->
         <text name="FollowMeStartEngine"        text="Заведите двигатель первым." />
-        <text name="FollowMeTooFarBehind"       text="Потерял 'след' ведущего автомобиля. Остановился." />
-        <text name="FollowMeDropperNotFound"    text="Не удалось найти поблизости 'следа' для следования. Подъедьте ближе к ведущему автомобилю." />
-        
-        <text name="FollowMeKeysMyself"         text="%s - Собственная дистанция/Смещение" />
-        <text name="FollowMeKeysBehind"         text="%s - Дистанция за предыдущим/Смещение" />
-            
-        <text name="FollowMeMyToggle"           text="FollowMe: ВКЛ/ВЫКЛ" />
-        <text name="FollowMeMyPause"            text="FollowMe: Ожидать/продолжить" />
-        <text name="FollowMeMyDistDec"          text="FollowMe: Собственная дистанция -" />
-        <text name="FollowMeMyDistInc"          text="FollowMe: Собственная дистанция +" />
-        <text name="FollowMeMyOffsDec"          text="FollowMe: Собственное смещение влево" />
-        <text name="FollowMeMyOffsInc"          text="FollowMe: Собственное смещение вправо" />
-        <text name="FollowMeMyOffsTgl"          text="FollowMe: Инвертировать собственное смещение" />
 
-        <text name="FollowMeFlStop"             text="FollowMe: Остановится за мной" />
-        <text name="FollowMeFlPause"            text="FollowMe: За мной ожидать/продолжить" />
-        <text name="FollowMeFlDistDec"          text="FollowMe: За мной дистанция -" />
-        <text name="FollowMeFlDistInc"          text="FollowMe: За мной дистанция +" />
-        <text name="FollowMeFlOffsDec"          text="FollowMe: За мной смещение влево" />
-        <text name="FollowMeFlOffsInc"          text="FollowMe: За мной смещение вправо" />
-        <text name="FollowMeFlOffsTgl"          text="FollowMe: Инвертировать смещение за мной"   />  <!-- needs translation -->
+        <text name="FollowMeDropperNotFound"    text="Не удалось найти поблизости 'следа' для следования.
+Подъедьте ближе к ведущему автомобилю." />
+        
+        <text name="FollowMeKeysMyself"         text="%s - Myself управляющих воздействий"  />  <!-- needs translation -->
+        <text name="FollowMeKeysBehind"         text="%s - Behind управляющих воздействий"  />  <!-- needs translation -->
+        <text name="FollowMeMyToggle"           text="FollowMe: ВКЛ/ВЫКЛ"      />
+        
+        <text name="input_FollowMeMyToggle"     text="FollowMe: ВКЛ/ВЫКЛ" />
+        <text name="input_FollowMeMyPause"      text="FollowMe: Ожидать/продолжить" />
+        <text name="input_FollowMeMyDistDec"    text="FollowMe: Собственная дистанция -" />
+        <text name="input_FollowMeMyDistInc"    text="FollowMe: Собственная дистанция +" />
+        <text name="input_FollowMeMyOffsDec"    text="FollowMe: Собственное смещение влево" />
+        <text name="input_FollowMeMyOffsInc"    text="FollowMe: Собственное смещение вправо" />
+        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Инвертировать собственное смещение" />
+
+        <text name="input_FollowMeFlStop"       text="FollowMe: Остановится за мной" />
+        <text name="input_FollowMeFlPause"      text="FollowMe: За мной ожидать/продолжить" />
+        <text name="input_FollowMeFlDistDec"    text="FollowMe: За мной дистанция -" />
+        <text name="input_FollowMeFlDistInc"    text="FollowMe: За мной дистанция +" />
+        <text name="input_FollowMeFlOffsDec"    text="FollowMe: За мной смещение влево" />
+        <text name="input_FollowMeFlOffsInc"    text="FollowMe: За мной смещение вправо" />
+        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Инвертировать смещение за мной"   />
             
         <text name="FollowMeLeader"             text="Ведущий" />
         <text name="FollowMeFollower"           text="Ведомый" />
@@ -50,5 +54,10 @@
         <text name="FollowMeOffRgt"             text="смещение вправо %.1f" />
         <text name="FollowMeDistBehind"         text="за мной дистанция %.1f" />
         <text name="FollowMeDistAhead"          text="отставать на %.1f" />
+        
+        <text name="FollowMeReason1"            text="Ведомый '%s' остановился (игроком)"               /> <!-- needs translation -->
+        <text name="FollowMeReason2"            text="Ведомый '%s' остановлен (не след)"                /> <!-- needs translation -->
+        <text name="FollowMeReason3"            text="Ведомый '%s' остановился (слишком далеко позади)" /> <!-- needs translation -->
+        <text name="FollowMeReason4"            text="Ведомый '%s' остановился (лидер исчез)"           /> <!-- needs translation -->
     </texts>
 </l10n>

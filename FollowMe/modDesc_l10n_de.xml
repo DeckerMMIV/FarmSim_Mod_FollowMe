@@ -8,48 +8,57 @@
     <!-- Add your own name or nickname here, when you contribute to this file's translation, so I know who to put into the credits. -->
     <translationContributors>
         ?
+        translate.google.com
+        ModHub (GIANTS Software)
     </translationContributors>
 
     <!-- Note that 'description' is only here for easier translations. It needs to be manually copied to ModDesc.XML later. -->
     <description>
-Wollten Sie schon immer haben, dass einige Fahrzeuge Sie folgen rund um die Karte?
-Mit "Follow Me" kann man dass (aber nicht beim rückwärts fahren).
+Sie wollten schon immer einigen Fahrzeugen über die Karte folgen können?
+Mit "Follow Me" können Sie das (natürlich nur vorwärtsfahrend).
     </description>
 
     <texts>
         <text name="FollowMeMissingTrafficCollisionTrigger" text="Leider kann dieses Fahrzeug nicht als 'Nachfolger' eingesetzt werden. Es fehlt ein Teil namens 'aiTrafficCollisionTrigger'." />
         <text name="FollowMeNotAvailable"                   text="Leider kann dieses Fahrzeug nicht als 'Nachfolger' eingesetzt werden." />
 
-        <text name="FollowMeStartEngine"        text="Start engine first." />
-        <text name="FollowMeTooFarBehind"       text="'trail' des führenden Fahrzeug verloren. Stoppen." />
-        <text name="FollowMeDropperNotFound"    text="Kann in der Nähe keine Spur finden, der ich folgen könnte. Nähern sie sich dem führenden Fahrzeug." />
+        <text name="FollowMeAlreadyAI"          text="Der gemietete Arbeiter nutzt dieses Fahrzeug" />
+        <text name="FollowMeStartEngine"        text="Motor zuerst anlassen."                />
+
+        <text name="FollowMeDropperNotFound"    text="Kann in der Nähe keine Spur finden, der ich folgen könnte.
+Nähern sie sich dem führenden Fahrzeug." />
         
-        <text name="FollowMeKeysMyself"         text="%s - Selbst Abstand/Offset" />
-        <text name="FollowMeKeysBehind"         text="%s - Hinter Abstand/Offset" />
-            
+        <text name="FollowMeKeysMyself"         text="%s - Selbst Steuerungsmaßnahmen"  />
+        <text name="FollowMeKeysBehind"         text="%s - Hinter Steuerungsmaßnahmen"  />
         <text name="FollowMeMyToggle"           text="FollowMe: Umzuschalten on/off" />
-        <text name="FollowMeMyPause"            text="FollowMe: Wait/resume"            />  <!-- needs translation -->
-        <text name="FollowMeMyDistDec"          text="FollowMe: Selbst Abstand -" />
-        <text name="FollowMeMyDistInc"          text="FollowMe: Selbst Abstand +" />
-        <text name="FollowMeMyOffsDec"          text="FollowMe: Selbst Offset links" />
-        <text name="FollowMeMyOffsInc"          text="FollowMe: Selbst Offset rechts" />
-        <text name="FollowMeMyOffsTgl"          text="FollowMe: Myself Offset invert"   />  <!-- needs translation -->
+        
+        <text name="input_FollowMeMyToggle"     text="FollowMe: Umzuschalten on/off" />
+        <text name="input_FollowMeMyPause"      text="FollowMe: Warten / Fortsetzen"  />
+        <text name="input_FollowMeMyDistDec"    text="FollowMe: Selbst Abstand -" />
+        <text name="input_FollowMeMyDistInc"    text="FollowMe: Selbst Abstand +" />
+        <text name="input_FollowMeMyOffsDec"    text="FollowMe: Selbst Offset links" />
+        <text name="input_FollowMeMyOffsInc"    text="FollowMe: Selbst Offset rechts" />
+        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Selbst Offset invert."   />
 
-        <text name="FollowMeFlStop"             text="FollowMe: Hinter Aufhalten" />
-        <text name="FollowMeFlPause"            text="FollowMe: Behind wait/resume"     />  <!-- needs translation -->
-        <text name="FollowMeFlDistDec"          text="FollowMe: Hinter Abstand -" />
-        <text name="FollowMeFlDistInc"          text="FollowMe: Hinter Abstand +" />
-        <text name="FollowMeFlOffsDec"          text="FollowMe: Hinter Offset links" />
-        <text name="FollowMeFlOffsInc"          text="FollowMe: Hinter Offset rechts" />
-        <text name="FollowMeFlOffsTgl"          text="FollowMe: Behind Offset invert"   />  <!-- needs translation -->
-
-    <!-- needs translation -->
-        <text name="FollowMeLeader"             text="Leader" />
-        <text name="FollowMeFollower"           text="Follower" />
-        <text name="FollowMePaused"             text=" (Waiting)"           />  <!-- needs translation -->
-        <text name="FollowMeOffLft"             text="%.1f Left-offs." />
-        <text name="FollowMeOffRgt"             text="Right-offs. %.1f" />
-        <text name="FollowMeDistBehind"         text="Behind-dist. %.1f" />
-        <text name="FollowMeDistAhead"          text="Ahead-dist. %.1f" />
+        <text name="input_FollowMeFlStop"       text="FollowMe: Hinter Aufhalten" />
+        <text name="input_FollowMeFlPause"      text="FollowMe: Hinter Warten / Fortsetzen" />
+        <text name="input_FollowMeFlDistDec"    text="FollowMe: Hinter Abstand -" />
+        <text name="input_FollowMeFlDistInc"    text="FollowMe: Hinter Abstand +" />
+        <text name="input_FollowMeFlOffsDec"    text="FollowMe: Hinter Offset links" />
+        <text name="input_FollowMeFlOffsInc"    text="FollowMe: Hinter Offset rechts" />
+        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Hinter Offset invert."   />
+    
+        <text name="FollowMeLeader"             text="Führer"            />
+        <text name="FollowMeFollower"           text="Nachfolger"        />
+        <text name="FollowMePaused"             text=" (Warten)"        />
+        <text name="FollowMeOffLft"             text="%.1f Links-offs."   />
+        <text name="FollowMeOffRgt"             text="Recht-offs. %.1f"  />
+        <text name="FollowMeDistBehind"         text="Hinter-abst. %.1f" />
+        <text name="FollowMeDistAhead"          text="Voraus-abst. %.1f"  />
+        
+        <text name="FollowMeReason1"            text="Nachfolger '%s' gestoppt (durch Spieler)"       /> 
+        <text name="FollowMeReason2"            text="Nachfolger '%s' gestoppt (keine Spur)"        /> 
+        <text name="FollowMeReason3"            text="Nachfolger '%s' gestoppt (Zu weit hinten)"  /> 
+        <text name="FollowMeReason4"            text="Nachfolger '%s' gestoppt (Führer verschwunden)" /> 
     </texts>
 </l10n>

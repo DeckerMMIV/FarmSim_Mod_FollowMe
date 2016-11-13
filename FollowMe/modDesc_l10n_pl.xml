@@ -9,6 +9,7 @@
     <translationContributors>
         Ziuta
         Dzi4d3k
+        translate.google.com
     </translationContributors>
 
     <!-- Note that 'description' is only here for easier translations. It needs to be manually copied to ModDesc.XML later. -->
@@ -21,28 +22,31 @@ Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz).
         <text name="FollowMeMissingTrafficCollisionTrigger" text="Niestety ten pojazd nie może działać jako pojazd 'podążający'. Brak elementu o nazwie 'aiTrafficCollisionTrigger'." />
         <text name="FollowMeNotAvailable"                   text="Niestety ten pojazd nie może działać jako pojazd 'podążający'." />
 
+        <text name="FollowMeAlreadyAI"          text="Zatrudniony pracownik wykorzystuje ten pojazd" />  <!-- needs translation -->
         <text name="FollowMeStartEngine"        text="Najpierw uruchom silnik." />
-        <text name="FollowMeTooFarBehind"       text="Zgubiono 'ścieżkę' pojazdu prowadzącego. Zatrzymywanie." />
-        <text name="FollowMeDropperNotFound"    text="Nie można zlokalizować 'ścieżki' w zasięgu zakresu jej wyszukiwania. Zbliż się do pojazdu prowadzącego." />
-        
-        <text name="FollowMeKeysMyself"         text="%s - Odstęp od aktywnego pojazdu" />
-        <text name="FollowMeKeysBehind"         text="%s - Odstęp z tyłu" />
-        
-        <text name="FollowMeMyToggle"           text="FollowMe: Przełączanie wł/wył" />
-        <text name="FollowMeMyPause"            text="FollowMe: Czekaj/wznów"/>
-        <text name="FollowMeMyDistDec"          text="FollowMe: Odstęp aktywnego pojazdu -" />
-        <text name="FollowMeMyDistInc"          text="FollowMe: Odstęp aktywnego pojazdu +" />
-        <text name="FollowMeMyOffsDec"          text="FollowMe: Przesunięcie aktywnego pojazdu w lewo" />
-        <text name="FollowMeMyOffsInc"          text="FollowMe: Przesunięcie aktywnego pojazdu w prawo" />
-        <text name="FollowMeMyOffsTgl"          text="FollowMe: Przesunięcie aktywnego pojazdu wył/wznów"   />
 
-        <text name="FollowMeFlStop"             text="FollowMe: Podążające pojazdy - STOP" />
-        <text name="FollowMeFlPause"            text="FollowMe: Czekaj z tyłu/wznów"/>
-        <text name="FollowMeFlDistDec"          text="FollowMe: Odstęp z tyłu -" />
-        <text name="FollowMeFlDistInc"          text="FollowMe: Odstęp z tyłu +" />
-        <text name="FollowMeFlOffsDec"          text="FollowMe: Odstęp z tyłu w lewo" />
-        <text name="FollowMeFlOffsInc"          text="FollowMe: Odstęp z tyłu w prawo" />
-        <text name="FollowMeFlOffsTgl"          text="FollowMe: Przesunięcie podążającego pojazdu wył/wznów"   />
+        <text name="FollowMeDropperNotFound"    text="Nie można zlokalizować 'ścieżki' w zasięgu zakresu jej wyszukiwania.
+Zbliż się do pojazdu prowadzącego." />
+        
+        <text name="FollowMeKeysMyself"         text="%s - Myself działania kontrolne"  />  <!-- needs translation -->
+        <text name="FollowMeKeysBehind"         text="%s - Behind działania kontrolne"  />  <!-- needs translation -->
+        <text name="FollowMeMyToggle"           text="FollowMe: Przełączanie wł/wył"      />  <!-- needs translation -->
+        
+        <text name="input_FollowMeMyToggle"     text="FollowMe: Przełączanie wł/wył" />
+        <text name="input_FollowMeMyPause"      text="FollowMe: Czekaj/wznów"/>
+        <text name="input_FollowMeMyDistDec"    text="FollowMe: Odstęp aktywnego pojazdu -" />
+        <text name="input_FollowMeMyDistInc"    text="FollowMe: Odstęp aktywnego pojazdu +" />
+        <text name="input_FollowMeMyOffsDec"    text="FollowMe: Przesunięcie aktywnego pojazdu w lewo" />
+        <text name="input_FollowMeMyOffsInc"    text="FollowMe: Przesunięcie aktywnego pojazdu w prawo" />
+        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Przesunięcie aktywnego pojazdu wył/wznów"   />
+
+        <text name="input_FollowMeFlStop"       text="FollowMe: Podążające pojazdy - STOP" />
+        <text name="input_FollowMeFlPause"      text="FollowMe: Czekaj z tyłu/wznów"/>
+        <text name="input_FollowMeFlDistDec"    text="FollowMe: Odstęp z tyłu -" />
+        <text name="input_FollowMeFlDistInc"    text="FollowMe: Odstęp z tyłu +" />
+        <text name="input_FollowMeFlOffsDec"    text="FollowMe: Odstęp z tyłu w lewo" />
+        <text name="input_FollowMeFlOffsInc"    text="FollowMe: Odstęp z tyłu w prawo" />
+        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Przesunięcie podążającego pojazdu wył/wznów"   />
         
         <text name="FollowMeLeader"             text="Prowadzący" />
         <text name="FollowMeFollower"           text="Podążający" />
@@ -51,5 +55,10 @@ Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz).
         <text name="FollowMeOffRgt"             text="Odstęp w prawo %.1f" />
         <text name="FollowMeDistBehind"         text="Dystans za %.1f" />
         <text name="FollowMeDistAhead"          text="Dystans przed %.1f" />
+        
+        <text name="FollowMeReason1"            text="Podążający '%s' zatrzymany (przez gracza)"    /> <!-- needs translation -->
+        <text name="FollowMeReason2"            text="Podążający '%s' zatrzymana (bez szlaku)"      /> <!-- needs translation -->
+        <text name="FollowMeReason3"            text="Podążający '%s' przestał (zbyt daleko w tyle)" /> <!-- needs translation -->
+        <text name="FollowMeReason4"            text="Podążający '%s' przestał (lider zniknął)"     /> <!-- needs translation -->
     </texts>
 </l10n>

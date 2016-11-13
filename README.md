@@ -2,9 +2,19 @@
 
 To read more about this mod, find it on;
 - http://fs-uk.com - http://fs-uk.com/mods/list/team/45
-- http://modcentral.co.uk - http://modcentral.co.uk/forum/index.php?resources/authors/decker_mmiv.18/
+- http://modcentral.co.uk - http://modcentral.co.uk/resources/authors/decker_mmiv.18/
 
-## Change-log
+## FS17 - Change-log
+1.0.0.17
+- Upgraded to FS17
+- Added turn-light indication-state to 'trail-crumbs'
+- Had to remove collision-box, so will crash into other vehicles!
+- Changed versionnumbering-scheme due to ModHub
+
+
+## FS15 - Change-log
+2.3.0
+- Version bump due to official updated release
 
 2.2.3
 - Misc. minor description changes
