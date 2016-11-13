@@ -1,11 +1,8 @@
-﻿﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
     <description>
-<![CDATA[Vous avez toujours voulu avoir quelques véhicules que vous suivez dans la carte?
-Avec "Follow Me", vous pouvez (mais pas en arrière de conduire.)
-
-
-Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
+Vous avez toujours souhaité que certains véhicules puissent vous suivre?
+Avec "Follow Me", c'est possible (sauf en marche arrière).
     </description>
     
     <texts>
@@ -20,18 +17,24 @@ Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         <text name="FollowMeKeysBehind"         text="%s - Suiveur Écart/Décalage" />
              
         <text name="FollowMeMyToggle"           text="FollowMe: Activer/Désactiver" />
+        <text name="FollowMeMyPause"            text="FollowMe: Attendre/Redémarrer"  />  
         <text name="FollowMeMyDistDec"          text="FollowMe: Leader Écart -" />
         <text name="FollowMeMyDistInc"          text="FollowMe: Leader Écart +" />
         <text name="FollowMeMyOffsDec"          text="FollowMe: Leader décalage gauche" />
         <text name="FollowMeMyOffsInc"          text="FollowMe: Leader décalage droite" />
+        <text name="FollowMeMyOffsTgl"          text="FollowMe: Myself Offset invert"   />  <!-- needs translation -->
+
         <text name="FollowMeFlStop"             text="FollowMe: Stopper le suiveur" />
+        <text name="FollowMeFlPause"            text="FollowMe: Suiveur Attendre/Redémarrer" />
         <text name="FollowMeFlDistDec"          text="FollowMe: Suiveur Écart -" />
         <text name="FollowMeFlDistInc"          text="FollowMe: Suiveur Écart +" />
         <text name="FollowMeFlOffsDec"          text="FollowMe: Suiveur décalage gauche" />
         <text name="FollowMeFlOffsInc"          text="FollowMe: Suiveur décalage droite" />
-             
+        <text name="FollowMeFlOffsTgl"          text="FollowMe: Behind Offset invert"   />  <!-- needs translation -->
+
         <text name="FollowMeLeader"             text="Leader" />
         <text name="FollowMeFollower"           text="Suiveur" />
+        <text name="FollowMePaused"             text=" (En attente)"           />  
         <text name="FollowMeOffLft"             text="%.1f Décal. gauche" />
         <text name="FollowMeOffRgt"             text="Décal. droite %.1f" />
         <text name="FollowMeDistBehind"         text="Dist. suiveur. %.1f" />

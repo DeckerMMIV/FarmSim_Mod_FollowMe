@@ -1,11 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
+    <!-- Note that 'description' is only here for easier translations. It needs to be manually copied to ModDesc.XML later. -->
     <description>
-<![CDATA[Была ли у Вас необходимость в том что-бы какие-либо ТС
-двигались следом за вами? С "Follow Me" это возможно! 
-
-
-Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
+Была ли у Вас необходимость в том что-бы какие-либо ТС
+двигались следом за вами? С "Follow Me" это возможно!
     </description>
 
     <texts>
@@ -20,18 +18,24 @@ Decker_MMIV - fs-uk.com, forum.farming-simulator.com, modhoster.com]]>
         <text name="FollowMeKeysBehind"         text="%s - Дистанция за предыдущим/Смещение" />
             
         <text name="FollowMeMyToggle"           text="FollowMe: ВКЛ/ВЫКЛ" />
+        <text name="FollowMeMyPause"            text="FollowMe: Ожидать/продолжить" />
         <text name="FollowMeMyDistDec"          text="FollowMe: Собственная дистанция -" />
         <text name="FollowMeMyDistInc"          text="FollowMe: Собственная дистанция +" />
         <text name="FollowMeMyOffsDec"          text="FollowMe: Собственное смещение влево" />
         <text name="FollowMeMyOffsInc"          text="FollowMe: Собственное смещение вправо" />
+        <text name="FollowMeMyOffsTgl"          text="FollowMe: Инвертировать собственное смещение" />
+
         <text name="FollowMeFlStop"             text="FollowMe: Остановится за мной" />
+        <text name="FollowMeFlPause"            text="FollowMe: За мной ожидать/продолжить" />
         <text name="FollowMeFlDistDec"          text="FollowMe: За мной дистанция -" />
         <text name="FollowMeFlDistInc"          text="FollowMe: За мной дистанция +" />
         <text name="FollowMeFlOffsDec"          text="FollowMe: За мной смещение влево" />
         <text name="FollowMeFlOffsInc"          text="FollowMe: За мной смещение вправо" />
+        <text name="FollowMeFlOffsTgl"          text="FollowMe: Инвертировать смещение за мной"   />  <!-- needs translation -->
             
         <text name="FollowMeLeader"             text="Ведущий" />
         <text name="FollowMeFollower"           text="Ведомый" />
+        <text name="FollowMePaused"             text=" (Ожидает)" />
         <text name="FollowMeOffLft"             text="%.1f смещение влево" />
         <text name="FollowMeOffRgt"             text="смещение вправо %.1f" />
         <text name="FollowMeDistBehind"         text="за мной дистанция %.1f" />
