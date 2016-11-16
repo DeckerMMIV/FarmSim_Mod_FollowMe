@@ -7,9 +7,12 @@
     NOTE: For contributing translations, DO NOT edit this ModDesc.XML.
           Only modify the corresponding ModDesc_l10n_*.XML file.
 -->    
-    <contributors>DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers, Ziuta, pewemo, Alfredo Prieto, xno</contributors>
+    <contributors>
+        DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers, Ziuta, pewemo, Alfredo Prieto, xno, 
+        Vanquish081
+    </contributors>
 
-    <version>1.0.0.20</version>
+    <version>1.0.1.21</version>
 
     <title>
         <en>Follow Me</en>

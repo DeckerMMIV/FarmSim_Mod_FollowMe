@@ -4,6 +4,10 @@
 
 
 [b][u]Changelog[/u][/b]
+1.0.1.21
+- Spanish translation update by Vanquish081
+- Possible work-around of the 'currentHelper' problem.
+
 1.0.0.17
 - Upgraded to FS17
 - Added turn-light indication-state to 'trail-crumbs'
