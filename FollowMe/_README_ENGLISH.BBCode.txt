@@ -4,7 +4,8 @@
 
 
 [b][u]Changelog[/u][/b]
-1.0.2.29
+1.0.2.30
+- Italian translation update by xno
 - Changed speed & driving behaviour
 - Limit speed when equipment active
 - Fix motor stop problem
