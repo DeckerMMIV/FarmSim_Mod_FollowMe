@@ -237,16 +237,14 @@ function FollowMe.load(self, savegame)
 end;
 
 function FollowMe.delete(self)
-    if self.isServer then
-        if self.modFM.StalkerVehicleObj ~= nil then
-            -- Stop the stalker-vehicle
-            FollowMe.stopFollowMe(self.modFM.StalkerVehicleObj, FollowMe.REASON_LEADER_REMOVED);
-        end;
-        if self.modFM.FollowVehicleObj ~= nil then
-            -- Stop ourself
-            FollowMe.stopFollowMe(self, FollowMe.REASON_NONE);
-        end
+    if self.modFM.StalkerVehicleObj ~= nil then
+        -- Stop the stalker-vehicle
+        FollowMe.onStopFollowMe(self.modFM.StalkerVehicleObj, FollowMe.REASON_LEADER_REMOVED, true);
     end;
+    if self.modFM.FollowVehicleObj ~= nil then
+        -- Stop ourself
+        FollowMe.onStopFollowMe(self, FollowMe.REASON_NONE, true);
+    end
 end;
 
 
@@ -719,8 +717,8 @@ function FollowMe.onStopFollowMe(self, reason, noEventSend)
         end
 
         -- TODO - does a g_gameSettings:getValue() exist for 'automaticMotorStartEnabled'?
-        if g_currentMission.missionInfo.automaticMotorStartEnabled and not self.isEntered then
-            self:stopMotor(true);
+        if self.isServer and g_currentMission.missionInfo.automaticMotorStartEnabled and not (self.isEntered or self.isControlled) then
+            self:stopMotor();
         end
 
         FollowMe.showReason(self, nil, reason, self.modFM.currentHelper)
@@ -1203,7 +1201,13 @@ end;
         end;
     end
 
+    -- Check if any equipment is active, which will then limit the speed further
+    local speedLimit,speedLimitActive = self:getSpeedLimit()
+    if speedLimitActive then
+        avgSpeedKMH = math.min(avgSpeedKMH, speedLimit)
+    end
     
+    --
     local pX,pY,pZ = worldToLocal(self.components[1].node, tx,ty,tz);
     
 --[[DEBUG
@@ -1215,23 +1219,25 @@ end;
     --self.modFM.lastAcceleration  = acceleration;
     --self.modFM.lastLastSpeedReal = math.max(0, self.lastSpeedReal); -- Only forward movement considered.
 
-    --
-    if hasCollision or not allowedToDrive then
-        --acceleration = (hasCollision and (self.lastSpeedReal * 3600 > 5)) and -1 or 0; -- colliding and speed more than 5km/h, then negative acceleration (brake?)
-        --lx,lz = 0,1
-        --AIVehicleUtil.driveInDirection(self, dt, 30, acceleration, (acceleration * 0.7), 30, allowedToDrive, moveForwards, lx,lz, nil, 1);
-        AIVehicleUtil.driveToPoint(self, dt, acceleration, allowedToDrive, moveForwards, pX,pZ, avgSpeedKMH)
-    else
-        --AIVehicleUtil.driveInDirection(self, dt, 30, acceleration, (acceleration * 0.7), 30, allowedToDrive, moveForwards, lx,lz, nil, 1);
-        AIVehicleUtil.driveToPoint(self, dt, acceleration, allowedToDrive, moveForwards, pX,pZ, avgSpeedKMH)
---[[
-        if self.aiTrafficCollisionTrigger ~= nil then
-            -- Attempt to rotate the traffic-collision-trigger in direction of steering
-            AIVehicleUtil.setCollisionDirection(getParent(self.aiTrafficCollisionTrigger), self.aiTrafficCollisionTrigger, lx,lz);
-        end
---]]        
-    end;
+--    --
+--    if hasCollision or not allowedToDrive then
+--        --acceleration = (hasCollision and (self.lastSpeedReal * 3600 > 5)) and -1 or 0; -- colliding and speed more than 5km/h, then negative acceleration (brake?)
+--        --lx,lz = 0,1
+--        --AIVehicleUtil.driveInDirection(self, dt, 30, acceleration, (acceleration * 0.7), 30, allowedToDrive, moveForwards, lx,lz, nil, 1);
+--        AIVehicleUtil.driveToPoint(self, dt, acceleration, allowedToDrive, moveForwards, pX,pZ, avgSpeedKMH)
+--    else
+--        --AIVehicleUtil.driveInDirection(self, dt, 30, acceleration, (acceleration * 0.7), 30, allowedToDrive, moveForwards, lx,lz, nil, 1);
+--        AIVehicleUtil.driveToPoint(self, dt, acceleration, allowedToDrive, moveForwards, pX,pZ, avgSpeedKMH)
+----[[
+--        if self.aiTrafficCollisionTrigger ~= nil then
+--            -- Attempt to rotate the traffic-collision-trigger in direction of steering
+--            AIVehicleUtil.setCollisionDirection(getParent(self.aiTrafficCollisionTrigger), self.aiTrafficCollisionTrigger, lx,lz);
+--        end
+----]]        
+--    end;
 
+    AIVehicleUtil.driveToPoint(self, dt, acceleration, allowedToDrive, moveForwards, pX,pZ, avgSpeedKMH)
+    
 --[[  DEBUG
 if Vehicle.debugRendering then
     FollowMe.debugDraw[dbgId.."a0"] = {"FM",string.format("Vehicle:%s",    tostring(self.realVehicleName))};
