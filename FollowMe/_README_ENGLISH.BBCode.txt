@@ -4,6 +4,12 @@
 
 
 [b][u]Changelog[/u][/b]
+1.0.2.29
+- Changed speed & driving behaviour
+- Limit speed when equipment active
+- Fix motor stop problem
+- Fix for vehicle reset/delete
+
 1.0.1.21
 - Spanish translation update by Vanquish081
 - Possible work-around of the 'currentHelper' problem.
