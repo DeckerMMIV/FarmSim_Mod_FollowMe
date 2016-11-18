@@ -204,11 +204,6 @@ function FollowMe.load(self, savegame)
     --
     self.modFM.currentHelper = nil
     --
---[[DEBUG
-    self.modFM.dbgAcceleration = 0;
-    self.modFM.dbgAllowedToDrive = false;
---DEBUG]]
-    --
     self.modFM.isDirty = false;
     self.modFM.delayDirty = nil;
     --
@@ -250,7 +245,6 @@ end;
 
 function FollowMe.getIsFollowMeActive(self)
     return self.followMeIsStarted
-    --return self.modFM ~= nil and self.modFM.FollowVehicleObj ~= nil
 end
 
 
@@ -530,7 +524,6 @@ function FollowMe.updateTick(self, dt)
             local pwx,pwy,pwz = unpack(self.modFM.DropperCircularArray[1+((self.modFM.DropperCurrentIndex-1) % FollowMe.cBreadcrumbsMaxEntries)].trans); -- previous position
             local distancePrevDrop = Utils.vector2Length(pwx-wx, pwz-wz);
             if distancePrevDrop >= FollowMe.cMinDistanceBetweenDrops then
-                --local avgSpeed = math.max((self.modFM.sumSpeed / (self.modFM.sumCount>0 and self.modFM.sumCount or 1)), (5/3600));
                 local avgSpeedKMH = math.max((self.modFM.sumSpeed / (self.modFM.sumCount>0 and self.modFM.sumCount or 1)) * 3600, 1)
                 FollowMe.addDrop(self, wx,wy,wz, avgSpeedKMH, self.turnLightState, self.reverserDirection);
                 --
@@ -995,10 +988,6 @@ function FollowMe.updateFollowMovement(self, dt)
         end
     end
 
---[[DEBUG
-    local dbgId = tostring(networkGetObjectId(self));
---DEBUG]]
-
     --
     local leader = self.modFM.FollowVehicleObj;
 
@@ -1031,7 +1020,6 @@ function FollowMe.updateFollowMovement(self, dt)
     --
     if crumbIndexDiff >= FollowMe.cBreadcrumbsMaxEntries then
         -- circular-array have "circled" once, and this follower did not move fast enough.
-        --DEBUG log("Much too far behind. Stopping auto-follow.");
         if self.modFM.FollowState ~= FollowMe.STATE_STOPPING then
             FollowMe.stopFollowMe(self, FollowMe.REASON_TOO_FAR_BEHIND);
         end
@@ -1077,19 +1065,17 @@ function FollowMe.updateFollowMovement(self, dt)
                 -- Apply offset, to next original target
                 local ntx = crumbN.trans[1] - crumbN.rot[3] * self.modFM.FollowXOffset;
                 local ntz = crumbN.trans[3] + crumbN.rot[1] * self.modFM.FollowXOffset;
-                --local ntDist = Utils.vector2Length(ntx - cx, ntz - cz);
                 local pct = math.max(1 - (tDist / FollowMe.cMinDistanceBetweenDrops), 0);
                 tx,_,tz = Utils.vector3ArrayLerp( {tx,0,tz}, {ntx,0,ntz}, pct);
                 avgSpeedKMH = (avgSpeedKMH + crumbN.avgSpeedKMH) / 2;
             end;
             --
-            --local keepBackMeters = FollowMe.getKeepBack(self, ((self.realGroundSpeed~=nil) and (self.realGroundSpeed*3.6) or (math.max(0,self.lastSpeedReal)*3600)));
             local keepBackMeters = FollowMe.getKeepBack(self, math.max(0, self.lastSpeed) * 3600);
             local distCrumbs   = math.floor(keepBackMeters / FollowMe.cMinDistanceBetweenDrops);
             local distFraction = keepBackMeters - (distCrumbs * FollowMe.cMinDistanceBetweenDrops);
 
-            --allowedToDrive = allowedToDrive and ((crumbIndexDiff > distCrumbs) or ((crumbIndexDiff == distCrumbs) and (tDist >= distFraction)));
             allowedToDrive = allowedToDrive and not (crumbIndexDiff < distCrumbs); -- Too far ahead?
+
             if allowedToDrive then
                 if (crumbIndexDiff > distCrumbs) then
                     avgSpeedKMH = math.max(5, avgSpeedKMH * 1.33)
@@ -1097,35 +1083,11 @@ function FollowMe.updateFollowMovement(self, dt)
                     avgSpeedKMH = 0
                 end
             end
-            
---[[DEBUG
-if Vehicle.debugRendering then
-    FollowMe.debugDraw[dbgId.."a3"] = {"FM",string.format("KeepBack:%.2f, DistCrumbs:%.0f/%.2f, DistTarget:%.2f", keepBackMeters, distCrumbs, distFraction, tDist) };
-end;
---DEBUG]]
-            ----
-            --local mySpeedDiffPct = (math.max(0, self.lastSpeedReal) / math.max(0.00001,self.modFM.lastLastSpeedReal)) - 1;
-            --
-            --local targetSpeedDiffPct = Utils.clamp(((math.max(5/3600, crumbAvgSpeed) - math.max(0,self.lastSpeedReal))*3600) / math.max(1,crumbAvgSpeed*3600), -1, 1);
-            --acceleration = Utils.clamp(self.modFM.lastAcceleration * 0.9  + (targetSpeedDiffPct * (1 - math.abs(mySpeedDiffPct))), 0.01, 1);
-            --
-            --if keepInFrontMeters > 0 then
-            --    if distMeters > 10 then
-            --        acceleration = math.max(1.0, acceleration)
-            --    else
-            --        acceleration = math.max(0.75, acceleration)
-            --    end
-            --end
---[[DEBUG
-if Vehicle.debugRendering then
-    FollowMe.debugDraw[dbgId.."a5"] = {"FM",string.format("MySpdDiff:%+3.1f, TrgSpdDiff:%+.2f, Apply:%+.4f", mySpeedDiffPct*100, targetSpeedDiffPct, (targetSpeedDiffPct * (1 - math.abs(mySpeedDiffPct))) ) };
-end;
---DEBUG]]
         end;
     end;
     --
     if crumbIndexDiff <= 0 then
-        ---- Following leader directly...
+        -- Following leader directly...
         turnLightState = leader.turnLightState
         
         tx = lx;
@@ -1137,24 +1099,9 @@ end;
         local nz = dx * math.sin(trAngle) + dz * math.cos(trAngle);
         --
         local distMetersDiff = distMeters - FollowMe.getKeepBack(self);
---[[DEBUG
-if Vehicle.debugRendering then
-    FollowMe.debugDraw[dbgId.."a3"] = {"FM",string.format("DistDiff: %.2f", distMetersDiff)};
-end;
---DEBUG]]
-        --allowedToDrive = allowedToDrive and (keepInFrontMeters >= 0) and (nz > 0) and (distMetersDiff > 0.5);
+
         allowedToDrive = allowedToDrive and (nz > 0);
-
-        --
-        --local leaderLastSpeedKMH = math.max(0, leader.lastSpeedReal) * 3600; -- only consider forward movement.
-        --local mySpeedDiffPct = (math.max(0, self.lastSpeedReal) / math.max(0.00001,self.modFM.lastLastSpeedReal)) - 1;
-        --
-        --local leaderLastSpeedReal = leaderLastSpeedKMH / 3600;
-
         avgSpeedKMH = math.max(0, leader.lastSpeed) * 3600; -- only consider forward movement.
-        
-        --local targetSpeedDiffPct = Utils.clamp(((math.max(5/3600, leaderLastSpeedReal) - math.max(0,self.lastSpeedReal))*3600) / math.max(1,leaderLastSpeedReal*3600), -1, 1);
-        --acceleration = Utils.clamp(self.modFM.lastAcceleration * 0.9 + (targetSpeedDiffPct * (1 - math.abs(mySpeedDiffPct))), 0.01, 1);
 
         if distMetersDiff < 0 then
             local factor = 1 - math.min(1, math.abs(distMetersDiff)/10)
@@ -1164,29 +1111,8 @@ end;
             local factor = (math.min(1, distMetersDiff / 10) * 1.2) + 0.2
             avgSpeedKMH = avgSpeedKMH + 10 * factor
             acceleration = math.min(0.5, math.max(1.0, acceleration * factor))
-            
-            --avgSpeedKMH = math.max(1, avgSpeedKMH)
-            --if distMetersDiff > 15 then
-            --    acceleration = math.max(1.0, acceleration)
-            --elseif distMetersDiff > 10 then
-            --    acceleration = math.max(0.75, acceleration)
-            --elseif distMetersDiff > 5 then
-            --    acceleration = math.max(0.5, acceleration);
-            --else
-            --    acceleration = math.max(0.25, acceleration);
-            --end
         end
-        
---[[DEBUG
-if Vehicle.debugRendering then
-    FollowMe.debugDraw[dbgId.."a5"] = {"FM",string.format("MySpdDiff:%+3.1f, TrgSpdDiff:%+3.1f, Apply:%+.4f", mySpeedDiffPct*100, targetSpeedDiffPct*100, (targetSpeedDiffPct * (1 - math.abs(mySpeedDiffPct))) ) };
-end;
---DEBUG]]
     end;
-    --
---[[DEBUG
-    FollowMe.dbgTarget = {tx,ty,tz};
---DEBUG]]
 
     -- Reduce speed if "attack angle" against target is more than 45degrees.
     if self.modFM.reduceSpeedTime > g_currentMission.time then
@@ -1209,43 +1135,8 @@ end;
     
     --
     local pX,pY,pZ = worldToLocal(self.components[1].node, tx,ty,tz);
-    
---[[DEBUG
-if Vehicle.debugRendering then
-    FollowMe.debugDraw[dbgId.."a4"] = {"FM",string.format("Steer:%.2f/%.2f, Degree:%3.2f", lx,lz, math.deg(math.atan2(lx,lz)) ) };
-end;
---DEBUG]]
-    --
-    --self.modFM.lastAcceleration  = acceleration;
-    --self.modFM.lastLastSpeedReal = math.max(0, self.lastSpeedReal); -- Only forward movement considered.
-
---    --
---    if hasCollision or not allowedToDrive then
---        --acceleration = (hasCollision and (self.lastSpeedReal * 3600 > 5)) and -1 or 0; -- colliding and speed more than 5km/h, then negative acceleration (brake?)
---        --lx,lz = 0,1
---        --AIVehicleUtil.driveInDirection(self, dt, 30, acceleration, (acceleration * 0.7), 30, allowedToDrive, moveForwards, lx,lz, nil, 1);
---        AIVehicleUtil.driveToPoint(self, dt, acceleration, allowedToDrive, moveForwards, pX,pZ, avgSpeedKMH)
---    else
---        --AIVehicleUtil.driveInDirection(self, dt, 30, acceleration, (acceleration * 0.7), 30, allowedToDrive, moveForwards, lx,lz, nil, 1);
---        AIVehicleUtil.driveToPoint(self, dt, acceleration, allowedToDrive, moveForwards, pX,pZ, avgSpeedKMH)
-----[[
---        if self.aiTrafficCollisionTrigger ~= nil then
---            -- Attempt to rotate the traffic-collision-trigger in direction of steering
---            AIVehicleUtil.setCollisionDirection(getParent(self.aiTrafficCollisionTrigger), self.aiTrafficCollisionTrigger, lx,lz);
---        end
-----]]        
---    end;
-
     AIVehicleUtil.driveToPoint(self, dt, acceleration, allowedToDrive, moveForwards, pX,pZ, avgSpeedKMH)
     
---[[  DEBUG
-if Vehicle.debugRendering then
-    FollowMe.debugDraw[dbgId.."a0"] = {"FM",string.format("Vehicle:%s",    tostring(self.realVehicleName))};
-    FollowMe.debugDraw[dbgId.."a1"] = {"FM",string.format("AllowDrive:%s, Collision:%s, CrumbIdx:%s, CrumbDiff:%s", allowedToDrive and "Y" or "N", hasCollision and "Y" or "N", tostring(self.modFM.FollowCurrentIndex), tostring(crumbIndexDiff))};
-    FollowMe.debugDraw[dbgId.."a2"] = {"FM",string.format("Acc:%1.2f, LstSpd:%2.3f, mrRealSpd:%2.3f, %s", acceleration, self.lastSpeed*3600, tMRRealSpd, (self.modFM.reduceSpeedTime > g_currentMission.time) and "Half!" or "")};
-end;
---DEBUG]]
-
     return turnLightState
 end;
 
@@ -1338,7 +1229,6 @@ function FollowMe.draw(self)
         end
     end
     --
-    --if g_currentMission.missionInfo.showHelpMenu then
     if g_gameSettings:getValue("showHelpMenu") then
         if self.modFM.FollowVehicleObj ~= nil
         or (showFollowMeMy and g_currentMission:getHasPermission("hireAI")) then
