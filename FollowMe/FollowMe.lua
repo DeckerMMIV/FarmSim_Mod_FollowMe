@@ -895,7 +895,7 @@ function FollowMe.checkBaler(attachedTool)
             local unitCapacity  = attachedTool:getUnitCapacity(attachedTool.baler.fillUnitIndex)
             if unitFillLevel >= unitCapacity then
                 allowedToDrive = false
-                hasCollision = true -- Stop faster
+                --hasCollision = true -- Stop faster
                 if (table.getn(attachedTool.baler.bales) > 0) and attachedTool:isUnloadingAllowed() then
                     -- Activate the bale unloading (server-side only!)
                     attachedTool:setIsUnloadingBale(true);
@@ -906,7 +906,7 @@ function FollowMe.checkBaler(attachedTool)
             end
         else
             allowedToDrive = false
-            hasCollision = true
+            --hasCollision = true
             if attachedTool.baler.unloadingState == Baler.UNLOADING_OPEN then
                 -- Activate closing (server-side only!)
                 attachedTool:setIsUnloadingBale(false);
@@ -937,7 +937,7 @@ function FollowMe.updateFollowMovement(self, dt)
     assert(self.modFM.FollowVehicleObj ~= nil);
 
     local allowedToDrive = (self.modFM.FollowState == FollowMe.STATE_FOLLOWING) and self.isMotorStarted;
-    local hasCollision = false;
+    --local hasCollision = false;
     local moveForwards = true;
     local turnLightState = nil;
     
@@ -981,7 +981,7 @@ function FollowMe.updateFollowMovement(self, dt)
         local pctSpeedReduction
         setAllowedToDrive, setHasCollision, pctSpeedReduction = attachedTool[2](attachedTool[1]);
         allowedToDrive = setAllowedToDrive~=nil and setAllowedToDrive or allowedToDrive;
-        hasCollision   = setHasCollision~=nil   and setHasCollision   or hasCollision;
+        --hasCollision   = setHasCollision~=nil   and setHasCollision   or hasCollision;
         if pctSpeedReduction ~= nil and pctSpeedReduction > 0 then
             self.modFM.reduceSpeedTime = g_currentMission.time + 250
             -- TODO - change above, so it actually affects acceleration value
@@ -1023,7 +1023,7 @@ function FollowMe.updateFollowMovement(self, dt)
         if self.modFM.FollowState ~= FollowMe.STATE_STOPPING then
             FollowMe.stopFollowMe(self, FollowMe.REASON_TOO_FAR_BEHIND);
         end
-        hasCollision = true
+        --hasCollision = true
         allowedToDrive = false
         acceleration = 0.0
         -- Set target 2 meters straight ahead of vehicle.
@@ -1070,7 +1070,7 @@ function FollowMe.updateFollowMovement(self, dt)
                 avgSpeedKMH = (avgSpeedKMH + crumbN.avgSpeedKMH) / 2;
             end;
             --
-            local keepBackMeters = FollowMe.getKeepBack(self, math.max(0, self.lastSpeed) * 3600);
+            local keepBackMeters = FollowMe.getKeepBack(self) --, math.max(0, self.lastSpeed) * 3600);
             local distCrumbs   = math.floor(keepBackMeters / FollowMe.cMinDistanceBetweenDrops);
             local distFraction = keepBackMeters - (distCrumbs * FollowMe.cMinDistanceBetweenDrops);
 
@@ -1078,7 +1078,12 @@ function FollowMe.updateFollowMovement(self, dt)
 
             if allowedToDrive then
                 if (crumbIndexDiff > distCrumbs) then
-                    avgSpeedKMH = math.max(5, avgSpeedKMH * 1.33)
+                    --avgSpeedKMH = math.max(5, avgSpeedKMH * 1.33)
+                    --local factor = (math.min(1, (distCrumbs * FollowMe.cMinDistanceBetweenDrops) / 10) * 1.2) + 0.2
+                    --avgSpeedKMH = avgSpeedKMH + avgSpeedKMH * factor
+                    --acceleration = math.min(0.5, math.max(1.0, acceleration * factor))
+                    
+                    avgSpeedKMH = avgSpeedKMH + avgSpeedKMH * ((crumbIndexDiff - distCrumbs) / 5)
                 elseif not ((crumbIndexDiff == distCrumbs) and (tDist >= distFraction)) then 
                     avgSpeedKMH = 0
                 end
@@ -1231,7 +1236,8 @@ function FollowMe.draw(self)
     --
     if g_gameSettings:getValue("showHelpMenu") then
         if self.modFM.FollowVehicleObj ~= nil
-        or (showFollowMeMy and g_currentMission:getHasPermission("hireAI")) then
+        or (showFollowMeMy and g_currentMission:getHasPermission("hireAI"))
+        then
             g_currentMission:addHelpButtonText(g_i18n:getText("FollowMeMyToggle"), InputBinding.FollowMeMyToggle, nil, GS_PRIO_HIGH);
         end;
         --
