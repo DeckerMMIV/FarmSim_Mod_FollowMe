@@ -22,15 +22,15 @@ Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz).
         <text name="FollowMeMissingTrafficCollisionTrigger" text="Niestety ten pojazd nie może działać jako pojazd 'podążający'. Brak elementu o nazwie 'aiTrafficCollisionTrigger'." />
         <text name="FollowMeNotAvailable"                   text="Niestety ten pojazd nie może działać jako pojazd 'podążający'." />
 
-        <text name="FollowMeAlreadyAI"          text="Zatrudniony pracownik wykorzystuje ten pojazd" />  <!-- needs translation -->
+        <text name="FollowMeAlreadyAI"          text="Pomocnik wykorzystuje ten pojazd" />
         <text name="FollowMeStartEngine"        text="Najpierw uruchom silnik." />
 
         <text name="FollowMeDropperNotFound"    text="Nie można zlokalizować 'ścieżki' w zasięgu zakresu jej wyszukiwania.
 Zbliż się do pojazdu prowadzącego." />
         
-        <text name="FollowMeKeysMyself"         text="%s - Myself działania kontrolne"  />  <!-- needs translation -->
-        <text name="FollowMeKeysBehind"         text="%s - Behind działania kontrolne"  />  <!-- needs translation -->
-        <text name="FollowMeMyToggle"           text="FollowMe: Przełączanie wł/wył"      />  <!-- needs translation -->
+        <text name="FollowMeKeysMyself"         text="%s - Sterowanie prowadzącego" />
+        <text name="FollowMeKeysBehind"         text="%s - Sterowanie podążającego" />
+        <text name="FollowMeMyToggle"           text="FollowMe: Przełączanie wł/wył" />
         
         <text name="input_FollowMeMyToggle"     text="FollowMe: Przełączanie wł/wył" />
         <text name="input_FollowMeMyPause"      text="FollowMe: Czekaj/wznów"/>
@@ -38,7 +38,7 @@ Zbliż się do pojazdu prowadzącego." />
         <text name="input_FollowMeMyDistInc"    text="FollowMe: Odstęp aktywnego pojazdu +" />
         <text name="input_FollowMeMyOffsDec"    text="FollowMe: Przesunięcie aktywnego pojazdu w lewo" />
         <text name="input_FollowMeMyOffsInc"    text="FollowMe: Przesunięcie aktywnego pojazdu w prawo" />
-        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Przesunięcie aktywnego pojazdu wył/wznów"   />
+        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Przesunięcie aktywnego pojazdu wył/wznów" />
 
         <text name="input_FollowMeFlStop"       text="FollowMe: Podążające pojazdy - STOP" />
         <text name="input_FollowMeFlPause"      text="FollowMe: Czekaj z tyłu/wznów"/>
@@ -46,7 +46,7 @@ Zbliż się do pojazdu prowadzącego." />
         <text name="input_FollowMeFlDistInc"    text="FollowMe: Odstęp z tyłu +" />
         <text name="input_FollowMeFlOffsDec"    text="FollowMe: Odstęp z tyłu w lewo" />
         <text name="input_FollowMeFlOffsInc"    text="FollowMe: Odstęp z tyłu w prawo" />
-        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Przesunięcie podążającego pojazdu wył/wznów"   />
+        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Przesunięcie podążającego pojazdu wył/wznów" />
         
         <text name="FollowMeLeader"             text="Prowadzący" />
         <text name="FollowMeFollower"           text="Podążający" />
@@ -56,9 +56,9 @@ Zbliż się do pojazdu prowadzącego." />
         <text name="FollowMeDistBehind"         text="Dystans za %.1f" />
         <text name="FollowMeDistAhead"          text="Dystans przed %.1f" />
         
-        <text name="FollowMeReason1"            text="Podążający '%s' zatrzymany (przez gracza)"    /> <!-- needs translation -->
-        <text name="FollowMeReason2"            text="Podążający '%s' zatrzymana (bez szlaku)"      /> <!-- needs translation -->
-        <text name="FollowMeReason3"            text="Podążający '%s' przestał (zbyt daleko w tyle)" /> <!-- needs translation -->
-        <text name="FollowMeReason4"            text="Podążający '%s' przestał (lider zniknął)"     /> <!-- needs translation -->
+        <text name="FollowMeReason1"            text="Podążający '%s' zatrzymany (przez gracza)" />
+        <text name="FollowMeReason2"            text="Podążający '%s' zatrzymany (brak szlaku)" />
+        <text name="FollowMeReason3"            text="Podążający '%s' zatrzymany (został w tyle)" />
+        <text name="FollowMeReason4"            text="Podążający '%s' zatrzymany (prowadzący zniknął)" />
     </texts>
 </l10n>
