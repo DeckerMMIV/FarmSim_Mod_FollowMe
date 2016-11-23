@@ -9,56 +9,56 @@
     <translationContributors>
         DD Modpassion
         xno
-        translate.google.com
+        Paxly
     </translationContributors>
 
     <!-- Note that 'description' is only here for easier translations. It needs to be manually copied to ModDesc.XML later. -->
     <description>
 Hai mai voluto avere alcuni veicoli che ti seguono per la mappa?
-Con "Follow Me", è possibile (non solo seguirti).
+Con "Follow Me" è possibile (non ancora con guida in retromarcia).
     </description>
 
     <texts>
         <text name="FollowMeMissingTrafficCollisionTrigger" text="Sfortunatamente questo veicolo non può essere un 'inseguitore'. Manca una parte chiamata 'aiTrafficCollisionTrigger'." />
         <text name="FollowMeNotAvailable"                   text="Sfortunatamente questo veicolo non può essere un 'inseguitore'." />
 
-        <text name="FollowMeAlreadyAI"          text="Un operaio assunto sta usando questo veicolo" /> 
+        <text name="FollowMeAlreadyAI"          text="Il lavoratore assunto sta usando questo veicolo" /> 
         <text name="FollowMeStartEngine"        text="Accendi il motore prima." />
 
-        <text name="FollowMeDropperNotFound"    text="Impossibile trovare una 'pista' vicina nel campo visivo da seguire.
-Vai più vicino al mezzo che ti precede." />
+        <text name="FollowMeDropperNotFound"    text="Impossibile trovare una 'scia' vicina nel campo visivo da seguire.
+Avvicinati al mezzo che ti precede." />
         
-        <text name="FollowMeKeysMyself"         text="%s - Mie azioni di controllo"  />  
-        <text name="FollowMeKeysBehind"         text="%s - Inseguitore azioni di controllo"  />  
+        <text name="FollowMeKeysMyself"         text="%s - Comandi capo scia"  />  
+        <text name="FollowMeKeysBehind"         text="%s - Comandi inseguitore"  />  
         <text name="FollowMeMyToggle"           text="FollowMe: Attiva on/off"      />
         
         <text name="input_FollowMeMyToggle"     text="FollowMe: Attiva on/off" />
         <text name="input_FollowMeMyPause"      text="FollowMe: Aspetta/Riparti" />
         <text name="input_FollowMeMyDistDec"    text="FollowMe: Mia distanza -" />
         <text name="input_FollowMeMyDistInc"    text="FollowMe: Mia distanza +" />
-        <text name="input_FollowMeMyOffsDec"    text="FollowMe: Mio scostamento laterale sx" />
-        <text name="input_FollowMeMyOffsInc"    text="FollowMe: Mio scostamento laterale dx" />
-        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: inverti il mio scostamento"  /> 
+        <text name="input_FollowMeMyOffsDec"    text="FollowMe: Mia distanza laterale sx" />
+        <text name="input_FollowMeMyOffsInc"    text="FollowMe: Mia distanza laterale dx" />
+        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Inverti la mia distanza"  /> 
 
         <text name="input_FollowMeFlStop"       text="FollowMe: Ferma l'inseguitore"  />
         <text name="input_FollowMeFlPause"      text="FollowMe: Inseguitore Aspetta/Riparti" />
         <text name="input_FollowMeFlDistDec"    text="FollowMe: Distanza dell'inseguitore -" />
         <text name="input_FollowMeFlDistInc"    text="FollowMe: Distanza dell'inseguitore +" />
-        <text name="input_FollowMeFlOffsDec"    text="FollowMe: scostamento dell'inseguitore a sx" />
-        <text name="input_FollowMeFlOffsInc"    text="FollowMe: scostamento dell'inseguitore a dx" />
-        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Inverti scostamento dell'inseguitore"   /> 
-
+        <text name="input_FollowMeFlOffsDec"    text="FollowMe: Distanza dell'inseguitore a sx" />
+        <text name="input_FollowMeFlOffsInc"    text="FollowMe: Distanza dell'inseguitore a dx" />
+        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Inverti Distanza dell'inseguitore"   /> 
+        
         <text name="FollowMeLeader"             text="Leader" />
         <text name="FollowMeFollower"           text="Inseguitore" />
         <text name="FollowMePaused"             text=" (In attesa)" />
-        <text name="FollowMeOffLft"             text="scostamento laterale a sx %.1f" />
-        <text name="FollowMeOffRgt"             text="scostamento laterale a dx %.1f" />
+        <text name="FollowMeOffLft"             text="Distanza laterale a sx %.1f" />
+        <text name="FollowMeOffRgt"             text="Distanza laterale a dx %.1f" />
         <text name="FollowMeDistBehind"         text="Distanza dietro %.1f" />
         <text name="FollowMeDistAhead"          text="Distanza davanti %.1f" />
         
-        <text name="FollowMeReason1"            text="Inseguitore '%s' fermato (da giocatore)"     /> 
-        <text name="FollowMeReason2"            text="Inseguitore '%s' fermato (senza pista)"      /> 
-        <text name="FollowMeReason3"            text="Inseguitore '%s' fermato (troppo indietro)"  /> 
+        <text name="FollowMeReason1"            text="Inseguitore '%s' fermato (dal giocatore)"     /> 
+        <text name="FollowMeReason2"            text="Inseguitore '%s' fermato (nessuna pista)"      /> 
+        <text name="FollowMeReason3"            text="Inseguitore '%s' fermato (troppo lontano)"  /> 
         <text name="FollowMeReason4"            text="Inseguitore '%s' fermato (leader scomparso)" /> 
     </texts>
 </l10n>

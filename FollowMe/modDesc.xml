@@ -9,10 +9,10 @@
 -->    
     <contributors>
         DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers, Ziuta, pewemo, Alfredo Prieto, xno, 
-        Vanquish081
+        Vanquish081, Paxly
     </contributors>
 
-    <version>1.0.2.31</version>
+    <version>1.0.2.32</version>
 
     <title>
         <en>Follow Me</en>
@@ -31,8 +31,8 @@
 <![CDATA[Ever wanted to have some vehicles follow you around the map?
 With "Follow Me" you can (though not backwards driving).
 
-Change-log (1.0.2.30)
-- Spanish and Italian translations updated by contributors
+Change-log (1.0.2.32)
+- Translations updated by contributors; Spanish, Italian, Russian, Polish.
 - Changed speed & driving behaviour
 - Fix for motor stop, vehicle reset/delete and 'currentHelper' bug
 
@@ -57,8 +57,8 @@ Default control keys:
 <![CDATA[Sie wollten schon immer einigen Fahrzeugen über die Karte folgen können?
 Mit "Follow Me" können Sie das (natürlich nur vorwärtsfahrend).
 
-Change-log (1.0.2.30)
-- Spanish and Italian translations updated by contributors
+Change-log (1.0.2.32)
+- Translations updated by contributors; Spanish, Italian, Russian, Polish.
 - Changed speed & driving behaviour
 - Fix for motor stop, vehicle reset/delete and 'currentHelper' bug
 
@@ -83,8 +83,8 @@ Standardtastenbelegung:
 <![CDATA[Czy kiedykolwiek chciałeś by niektóre pojazdy podążały za tobą po mapie?
 Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz).
 
-Change-log (1.0.2.30)
-- Spanish and Italian translations updated by contributors
+Change-log (1.0.2.32)
+- Translations updated by contributors; Spanish, Italian, Russian, Polish.
 - Changed speed & driving behaviour
 - Fix for motor stop, vehicle reset/delete and 'currentHelper' bug
 ]]>
@@ -93,28 +93,44 @@ Change-log (1.0.2.30)
 <![CDATA[Vous avez toujours souhaité que certains véhicules puissent vous suivre?
 Avec "Follow Me", c'est possible (sauf en marche arrière).
 
-Change-log (1.0.2.30)
-- Spanish and Italian translations updated by contributors
+Change-log (1.0.2.32)
+- Translations updated by contributors; Spanish, Italian, Russian, Polish.
 - Changed speed & driving behaviour
 - Fix for motor stop, vehicle reset/delete and 'currentHelper' bug
 ]]>
         </fr>
         <ru>
 <![CDATA[Была ли у Вас необходимость в том что-бы какие-либо ТС
-двигались следом за вами? С "Follow Me" это возможно! 
+двигались следом за вами? С "Follow Me" это возможно!
 
-Change-log (1.0.2.30)
-- Spanish and Italian translations updated by contributors
+Change-log (1.0.2.32)
+- Translations updated by contributors; Spanish, Italian, Russian, Polish.
 - Changed speed & driving behaviour
 - Fix for motor stop, vehicle reset/delete and 'currentHelper' bug
+
+Клавиши управления по умолчанию:
+
+'Собственный' это текущая техника
+  RIGHT-CTRL F     = Переключение 'FollowMe' Вкл/Выкл
+  RIGHT-CTRL H     = Ожидать/Продолжить
+  RIGHT-CTRL W/S   = Дистанцию увеличить/уменьшить
+  RIGHT-CTRL A/D   = Настройка смещения влево/вправо
+  RIGHT-CTRL X     = Сбросить смещение или инвертировать (удерживая)
+ 
+'За мной' это техника которая едет следом за ведомым   
+  RIGHT-SHIFT F     = Выключить 'FollowMe'
+  RIGHT-SHIFT H     = Ожидать/Продолжить
+  RIGHT-SHIFT W/S   = Дистанцию увеличить/уменьшить
+  RIGHT-SHIFT A/D   = Настройка смещения влево/вправо
+  RIGHT-SHIFT X     = Сбросить смещение или инвертировать (удерживая) 
 ]]>
         </ru>
         <it>
 <![CDATA[Hai mai voluto avere alcuni veicoli che ti seguono per la mappa?
-Con "Follow Me", è possibile (non solo seguirti).
+Con "Follow Me" è possibile (non ancora con guida in retromarcia).
 
-Change-log (1.0.2.30)
-- Spanish and Italian translations updated by contributors
+Change-log (1.0.2.32)
+- Translations updated by contributors; Spanish, Italian, Russian, Polish.
 - Changed speed & driving behaviour
 - Fix for motor stop, vehicle reset/delete and 'currentHelper' bug
 ]]>
@@ -123,8 +139,8 @@ Change-log (1.0.2.30)
 <![CDATA[Mindig is szeretted volna, hogy a járművek kövessenek bármerre is mész a térképen?
 A "Follow Me"-vel most megteheted (csak ne tolass).
 
-Change-log (1.0.2.30)
-- Spanish and Italian translations updated by contributors
+Change-log (1.0.2.32)
+- Translations updated by contributors; Spanish, Italian, Russian, Polish.
 - Changed speed & driving behaviour
 - Fix for motor stop, vehicle reset/delete and 'currentHelper' bug
 ]]>
@@ -133,8 +149,8 @@ Change-log (1.0.2.30)
 <![CDATA[Zou je willen dat sommige voertuigen je volgen over de map?
 Met "Follow Me" kan dat (alleen niet bij achteruit rijden).
 
-Change-log (1.0.2.30)
-- Spanish and Italian translations updated by contributors
+Change-log (1.0.2.32)
+- Translations updated by contributors; Spanish, Italian, Russian, Polish.
 - Changed speed & driving behaviour
 - Fix for motor stop, vehicle reset/delete and 'currentHelper' bug
 ]]>
@@ -143,8 +159,8 @@ Change-log (1.0.2.30)
 <![CDATA[¿Quieres conseguir que te sigan algunos de tus vehículos alrededor del mapa?
 Con "Follow Me" se puede conseguir.(No funciona con marcha atrás).
 
-Change-log (1.0.2.30)
-- Spanish and Italian translations updated by contributors
+Change-log (1.0.2.32)
+- Translations updated by contributors; Spanish, Italian, Russian, Polish.
 - Changed speed & driving behaviour
 - Fix for motor stop, vehicle reset/delete and 'currentHelper' bug
 ]]>
