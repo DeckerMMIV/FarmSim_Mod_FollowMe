@@ -879,15 +879,15 @@ end
 
 -- Get distance to keep-back, or zero if not.
 function FollowMe.getKeepBack(self, speedKMH)
-    if speedKMH == nil then speedKMH=0; end;
+    --if speedKMH == nil then speedKMH=0; end;
     local keepBack = Utils.clamp(self.modFM.FollowKeepBack, 0, 999);
-    return keepBack * (1 + speedKMH/100);
+    return keepBack --* (1 + speedKMH/100);
 end;
 
 
 function FollowMe.checkBaler(attachedTool)
-    local allowedToDrive
-    local hasCollision
+    local allowedToDrive = true
+    local hasCollision = false
     local pctSpeedReduction
     if attachedTool:getIsTurnedOn() then
         if attachedTool.baler.unloadingState == Baler.UNLOADING_CLOSED then
@@ -921,16 +921,19 @@ function FollowMe.checkBaleWrapper(attachedTool)
     -- Try to anticipate future "correct spelling".
     local STATE_WRAPPER_FINISHED = Utils.getNoNil(BaleWrapper.STATE_WRAPPER_FINSIHED, BaleWrapper.STATE_WRAPPER_FINISHED)
 
-    local allowedToDrive
-    local hasCollision
-    if attachedTool.baleWrapperState == STATE_WRAPPER_FINISHED then -- '4'
+    local allowedToDrive = true
+    local hasCollision = false
+    local pctSpeedReduction
+    if attachedTool.baleWrapperState == BaleWrapper.STATE_WRAPPER_WRAPPING_BALE then
+        pctSpeedReduction = 0.5
+    elseif attachedTool.baleWrapperState == STATE_WRAPPER_FINISHED then -- '4'
         allowedToDrive = false
         -- Activate the bale unloading (server-side only!)
         attachedTool:doStateChange(BaleWrapper.CHANGE_WRAPPER_START_DROP_BALE);  -- '5'
     elseif attachedTool.baleWrapperState > STATE_WRAPPER_FINISHED then -- '4'
         allowedToDrive = false
     end
-    return allowedToDrive, hasCollision;
+    return allowedToDrive, hasCollision, pctSpeedReduction;
 end
 
 function FollowMe.updateFollowMovement(self, dt)
@@ -980,7 +983,7 @@ function FollowMe.updateFollowMovement(self, dt)
         local setHasCollision
         local pctSpeedReduction
         setAllowedToDrive, setHasCollision, pctSpeedReduction = attachedTool[2](attachedTool[1]);
-        allowedToDrive = setAllowedToDrive~=nil and setAllowedToDrive or allowedToDrive;
+        allowedToDrive = allowedToDrive and Utils.getNoNil(setAllowedToDrive, allowedToDrive);
         --hasCollision   = setHasCollision~=nil   and setHasCollision   or hasCollision;
         if pctSpeedReduction ~= nil and pctSpeedReduction > 0 then
             self.modFM.reduceSpeedTime = g_currentMission.time + 250
@@ -1012,7 +1015,7 @@ function FollowMe.updateFollowMovement(self, dt)
     local keepInFrontMeters = FollowMe.getKeepFront(self);
     lx = lx - lrz * self.modFM.FollowXOffset + lrx * keepInFrontMeters;
     lz = lz + lrx * self.modFM.FollowXOffset + lrz * keepInFrontMeters;
-    -- distance to leader-target
+    -- distance to leader-target (only "correct" when trail is a straight-line)
     local distMeters = Utils.vector2Length(cx-lx,cz-lz);
 
     local crumbIndexDiff = leader.modFM.DropperCurrentIndex - self.modFM.FollowCurrentIndex;
@@ -1077,7 +1080,9 @@ function FollowMe.updateFollowMovement(self, dt)
             allowedToDrive = allowedToDrive and not (crumbIndexDiff < distCrumbs); -- Too far ahead?
 
             if allowedToDrive then
-                if (crumbIndexDiff > distCrumbs) then
+                if keepInFrontMeters > 0 then
+                    avgSpeedKMH = avgSpeedKMH * 2
+                elseif (crumbIndexDiff > distCrumbs) then
                     --avgSpeedKMH = math.max(5, avgSpeedKMH * 1.33)
                     --local factor = (math.min(1, (distCrumbs * FollowMe.cMinDistanceBetweenDrops) / 10) * 1.2) + 0.2
                     --avgSpeedKMH = avgSpeedKMH + avgSpeedKMH * factor
@@ -1119,17 +1124,17 @@ function FollowMe.updateFollowMovement(self, dt)
         end
     end;
 
-    -- Reduce speed if "attack angle" against target is more than 45degrees.
     if self.modFM.reduceSpeedTime > g_currentMission.time then
-        acceleration = math.max(0.1, acceleration * 0.5)
+        --acceleration = math.max(0.1, acceleration * 0.5)
         avgSpeedKMH = math.max(1, avgSpeedKMH * 0.3)
-    else
-        local lx,lz = AIVehicleUtil.getDriveDirection(self.components[1].node, tx,ty,tz);
-        if (self.lastSpeed*3600 > 10) and (math.abs(math.atan2(lx,lz)) > (math.pi/4)) then
-            acceleration = math.max(0.1, acceleration * 0.5)
-            avgSpeedKMH = math.max(1, avgSpeedKMH * 0.3)
-            self.modFM.reduceSpeedTime = g_currentMission.time + 250; -- For the next 250ms, keep speed reduced.
-        end;
+    --else
+    --    -- Reduce speed if "attack angle" against target is more than 45degrees.
+    --    local lx,lz = AIVehicleUtil.getDriveDirection(self.components[1].node, tx,ty,tz);
+    --    if (self.lastSpeed*3600 > 10) and (math.abs(math.atan2(lx,lz)) > (math.pi/4)) then
+    --        acceleration = math.max(0.1, acceleration * 0.5)
+    --        avgSpeedKMH = math.max(1, avgSpeedKMH * 0.3)
+    --        self.modFM.reduceSpeedTime = g_currentMission.time + 250; -- For the next 250ms, keep speed reduced.
+    --    end;
     end
 
     -- Check if any equipment is active, which will then limit the speed further
