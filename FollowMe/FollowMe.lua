@@ -335,7 +335,7 @@ function FollowMe.changeDistance(self, newValue, noSendEvent)
     end
     self.modFM.FollowKeepBack = Utils.clamp(newValue, -50, 127); -- Min -128 and Max 127 due to writeStreamInt8().
     if not noSendEvent then
-        self.modFM.delayDirty = g_currentMission.time + 250;
+        self.modFM.delayDirty = g_currentMission.time + 750;
     end
 end;
 
@@ -347,7 +347,7 @@ function FollowMe.changeXOffset(self, newValue, noSendEvent)
     end
     self.modFM.FollowXOffset = Utils.clamp(newValue, -50.0, 50.0);
     if not noSendEvent then
-        self.modFM.delayDirty = g_currentMission.time + 250;
+        self.modFM.delayDirty = g_currentMission.time + 750;
     end
 end;
 
@@ -361,7 +361,7 @@ function FollowMe.toggleXOffset(self, withZero, noSendEvent)
             self.modFM.FollowXOffset = 0;
         end
         if not noSendEvent then
-            self.modFM.delayDirty = g_currentMission.time + 250;
+            self.modFM.delayDirty = g_currentMission.time + 750;
         end;
     else
         FollowMe.changeXOffset(self, { -self.modFM.FollowXOffset }, noSendEvent) -- Absolute change
