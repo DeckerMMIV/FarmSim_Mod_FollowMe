@@ -4,16 +4,17 @@
 
 
 [b][u]Changelog[/u][/b]
-1.0.2.30
-- Italian translation update by xno
+1.1.0.35
 - Changed speed & driving behaviour
 - Limit speed when equipment active
+- Translations contributed/updated;
+  - Russian by Gonimy-Vetrom
+  - Polish by Ziuta
+  - Italian by xno & Paxly
+  - Spanish by Vanquish081
 - Fix motor stop problem
 - Fix for vehicle reset/delete
-
-1.0.1.21
-- Spanish translation update by Vanquish081
-- Possible work-around of the 'currentHelper' problem.
+- Possible work-around of the 'currentHelper' problem
 
 1.0.0.17
 - Upgraded to FS17

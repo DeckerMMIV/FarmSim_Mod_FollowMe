@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="32">
+<modDesc descVersion="33">
     <author>Decker_MMIV (DCK)</author>
     <authorContact>fs-uk.com, modcentral.co.uk, forum.farming-simulator.com</authorContact>
     
@@ -12,7 +12,7 @@
         Vanquish081, Paxly
     </contributors>
 
-    <version>1.0.2.34</version>
+    <version>1.1.0.35</version>
 
     <title>
         <en>Follow Me</en>
@@ -31,7 +31,7 @@
 <![CDATA[Ever wanted to have some vehicles follow you around the map?
 With "Follow Me" you can (though not backwards driving).
 
-Change-log (1.0.2.34)
+Change-log (1.1.0.35)
 - Translations updated by contributors; Spanish, Italian, Russian, Polish.
 - Changed speed & driving behaviour
 - Fix for motor stop, vehicle reset/delete and 'currentHelper' bug
@@ -57,7 +57,7 @@ Default control keys:
 <![CDATA[Sie wollten schon immer einigen Fahrzeugen über die Karte folgen können?
 Mit "Follow Me" können Sie das (natürlich nur vorwärtsfahrend).
 
-Change-log (1.0.2.34)
+Change-log (1.1.0.35)
 - Translations updated by contributors; Spanish, Italian, Russian, Polish.
 - Changed speed & driving behaviour
 - Fix for motor stop, vehicle reset/delete and 'currentHelper' bug
@@ -83,7 +83,7 @@ Standardtastenbelegung:
 <![CDATA[Czy kiedykolwiek chciałeś by niektóre pojazdy podążały za tobą po mapie?
 Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz).
 
-Change-log (1.0.2.34)
+Change-log (1.1.0.35)
 - Translations updated by contributors; Spanish, Italian, Russian, Polish.
 - Changed speed & driving behaviour
 - Fix for motor stop, vehicle reset/delete and 'currentHelper' bug
@@ -93,7 +93,7 @@ Change-log (1.0.2.34)
 <![CDATA[Vous avez toujours souhaité que certains véhicules puissent vous suivre?
 Avec "Follow Me", c'est possible (sauf en marche arrière).
 
-Change-log (1.0.2.34)
+Change-log (1.1.0.35)
 - Translations updated by contributors; Spanish, Italian, Russian, Polish.
 - Changed speed & driving behaviour
 - Fix for motor stop, vehicle reset/delete and 'currentHelper' bug
@@ -103,7 +103,7 @@ Change-log (1.0.2.34)
 <![CDATA[Была ли у Вас необходимость в том что-бы какие-либо ТС
 двигались следом за вами? С "Follow Me" это возможно!
 
-Change-log (1.0.2.34)
+Change-log (1.1.0.35)
 - Translations updated by contributors; Spanish, Italian, Russian, Polish.
 - Changed speed & driving behaviour
 - Fix for motor stop, vehicle reset/delete and 'currentHelper' bug
@@ -129,7 +129,7 @@ Change-log (1.0.2.34)
 <![CDATA[Hai mai voluto avere alcuni veicoli che ti seguono per la mappa?
 Con "Follow Me" è possibile (non ancora con guida in retromarcia).
 
-Change-log (1.0.2.34)
+Change-log (1.1.0.35)
 - Translations updated by contributors; Spanish, Italian, Russian, Polish.
 - Changed speed & driving behaviour
 - Fix for motor stop, vehicle reset/delete and 'currentHelper' bug
@@ -139,7 +139,7 @@ Change-log (1.0.2.34)
 <![CDATA[Mindig is szeretted volna, hogy a járművek kövessenek bármerre is mész a térképen?
 A "Follow Me"-vel most megteheted (csak ne tolass).
 
-Change-log (1.0.2.34)
+Change-log (1.1.0.35)
 - Translations updated by contributors; Spanish, Italian, Russian, Polish.
 - Changed speed & driving behaviour
 - Fix for motor stop, vehicle reset/delete and 'currentHelper' bug
@@ -149,7 +149,7 @@ Change-log (1.0.2.34)
 <![CDATA[Zou je willen dat sommige voertuigen je volgen over de map?
 Met "Follow Me" kan dat (alleen niet bij achteruit rijden).
 
-Change-log (1.0.2.34)
+Change-log (1.1.0.35)
 - Translations updated by contributors; Spanish, Italian, Russian, Polish.
 - Changed speed & driving behaviour
 - Fix for motor stop, vehicle reset/delete and 'currentHelper' bug
@@ -159,7 +159,7 @@ Change-log (1.0.2.34)
 <![CDATA[¿Quieres conseguir que te sigan algunos de tus vehículos alrededor del mapa?
 Con "Follow Me" se puede conseguir.(No funciona con marcha atrás).
 
-Change-log (1.0.2.34)
+Change-log (1.1.0.35)
 - Translations updated by contributors; Spanish, Italian, Russian, Polish.
 - Changed speed & driving behaviour
 - Fix for motor stop, vehicle reset/delete and 'currentHelper' bug

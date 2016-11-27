@@ -6,6 +6,17 @@ To read more about this mod, find it on;
 - http://modcentral.co.uk - http://modcentral.co.uk/resources/authors/decker_mmiv.18/
 
 ## FS17 - Change-log
+1.1.0.35
+- Release for ModHub
+
+1.0.2.34
+- Tweaks for speed and timers
+
+1.0.2.32
+- Italian translation update by Paxly
+- Russian translation update Gonimy-Vetrom
+- Polish translation update Ziuta
+
 1.0.2.30
 - Italian translation update by xno
 - Changed speed & driving behaviour
