@@ -6,6 +6,9 @@ To read more about this mod, find it on;
 - http://modcentral.co.uk - http://modcentral.co.uk/resources/authors/decker_mmiv.18/
 
 ## FS17 - Change-log
+1.1.0.36
+- Dutch translation update by pewemo
+
 1.1.0.35
 - Release for ModHub
 

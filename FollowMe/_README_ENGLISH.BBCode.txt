@@ -4,6 +4,9 @@
 
 
 [b][u]Changelog[/u][/b]
+1.1.0.36
+- Dutch translation update by pewemo
+
 1.1.0.35
 - Changed speed & driving behaviour
 - Limit speed when equipment active
