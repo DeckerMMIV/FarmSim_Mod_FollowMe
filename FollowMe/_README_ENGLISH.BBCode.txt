@@ -4,6 +4,12 @@
 
 
 [b][u]Changelog[/u][/b]
+1.1.0.38
+- Italian translation of keys description, by Paxly
+
+1.1.0.37
+- French translation update by Taco29
+
 1.1.0.36
 - Dutch translation update by pewemo
 
