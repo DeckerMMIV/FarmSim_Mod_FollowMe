@@ -103,6 +103,22 @@ Avec "Follow Me", c'est possible (sauf en marche arrière).
         <it>
 <![CDATA[Hai mai voluto avere alcuni veicoli che ti seguono per la mappa?
 Con "Follow Me" è possibile (non ancora con guida in retromarcia).
+
+Comandi predefiniti:
+
+'Capo scia' è il veicolo controllato del giocatore
+  CTRL-DESTRO F     = 'FollowMe' on/off
+  CTRL-DESTRO H     = Aspetta / Riprendi
+  CTRL-DESTRO W/S   = Aumenta / Diminuisci distanza
+  CTRL-DESTRO A/D   = Scostamento laterale +/-
+  CTRL-DESTRO X     = Cancella scostamento o tieni premuto per invertire
+ 
+'Inseguitore' è il veicolo che segue  
+  MAIUSC-DESTRO F     = 'FollowMe' on/off
+  MAIUSC-DESTRO H     = Aspetta / Riprendi
+  MAIUSC-DESTRO W/S   = Aumenta / Diminuisci distanza
+  MAIUSC-DESTRO A/D   = Scostamento laterale +/-
+  MAIUSC-DESTRO X     = Cancella scostamento o tieni premuto per invertir
 ]]>
         </it>
         <hu>
