@@ -4,6 +4,9 @@
 
 
 [b][u]Changelog[/u][/b]
+1.2.0.39
+- Support for baler-and-wrapper combination; FBP 3135 (Kuhn DLC)
+
 1.1.0.38
 - Italian translation of keys description, by Paxly
 
@@ -124,4 +127,5 @@ Credits:
 Script:
 - Decker_MMIV
 Contributors/Translations:
-- DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers, Ziuta, pewemo, Alfredo Prieto, xno
+- DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers, Ziuta, pewemo, Alfredo Prieto, xno, 
+- Vanquish081, Paxly, Taco29

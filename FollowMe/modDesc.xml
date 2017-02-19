@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="33">
+<modDesc descVersion="34">
     <author>Decker_MMIV (DCK)</author>
     <authorContact>fs-uk.com, modcentral.co.uk, forum.farming-simulator.com</authorContact>
     
@@ -12,7 +12,7 @@
         Vanquish081, Paxly, Taco29
     </contributors>
 
-    <version>1.1.0.38</version>
+    <version>1.2.0.39</version>
 
     <title>
         <en>Follow Me</en>
@@ -26,6 +26,12 @@
         <es>Follow Me</es>
     </title>
 
+    <changeLog><![CDATA[
+1.2.0.39
+- Support for baler-and-wrapper combination; FBP 3135 (Kuhn DLC)
+]]></changeLog>
+
+    
     <description>
         <en>
 <![CDATA[Ever wanted to have some vehicles follow you around the map?

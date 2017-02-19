@@ -15,7 +15,8 @@ FollowMe.version = (modItem and modItem.version) and modItem.version or "?.?.?";
 FollowMe.wagePaymentMultiplier = 0.2
 
 --
-
+FollowMe.isInitialized = false
+--
 FollowMe.cMinDistanceBetweenDrops        =   5;   -- TODO, make configurable
 FollowMe.cBreadcrumbsMaxEntries          = 100;   -- TODO, make configurable
 FollowMe.cMstimeBetweenDrops             =  40;   -- TODO, make configurable
@@ -110,7 +111,10 @@ function FollowMe.initialize()
     
     -- Get the modifier-key (if any) from input-binding
     FollowMe.keyModifier_FollowMeMyToggle = getKeyIdOfModifier(InputBinding.FollowMeMyToggle);
-
+    if nil == FollowMe.keyModifier_FollowMeMyToggle then
+        log("WARNING: Modifier-key(1) is nil!");
+    end
+    
     -- Test that these four use the same modifier-key
        FollowMe.keyModifier_FollowMeMy  = getKeyIdOfModifier(InputBinding.FollowMeMyToggle )
     if FollowMe.keyModifier_FollowMeMy ~= getKeyIdOfModifier(InputBinding.FollowMeMyPause  )
@@ -136,8 +140,12 @@ function FollowMe.initialize()
             .. "," .. removeFromString(InputBinding.getRawKeyNamesOfDigitalAction(InputBinding.FollowMeMyOffsTgl), FollowMe.keys_FollowMeMy);
     FollowMe.keys_FollowMeMy = FollowMe.keys_FollowMeMy .. " " .. shortKeys;
     
-    -- Test that these four use the same modifier-key
-       FollowMe.keyModifier_FollowMeFl  = getKeyIdOfModifier(InputBinding.FollowMeFlStop);
+    -- Test that these use the same modifier-key
+    FollowMe.keyModifier_FollowMeFl = getKeyIdOfModifier(InputBinding.FollowMeFlStop);
+    if nil == FollowMe.keyModifier_FollowMeFl then
+        log("WARNING: Modifier-key(2) is nil!");
+    end
+    
     if FollowMe.keyModifier_FollowMeFl ~= getKeyIdOfModifier(InputBinding.FollowMeFlPause  )
     or FollowMe.keyModifier_FollowMeFl ~= getKeyIdOfModifier(InputBinding.FollowMeFlDistDec)
     or FollowMe.keyModifier_FollowMeFl ~= getKeyIdOfModifier(InputBinding.FollowMeFlDistInc)
@@ -412,7 +420,7 @@ end;
 --
 function FollowMe.update(self, dt)
 
-    local activeForInput = not g_gui:getIsGuiVisible() and not g_currentMission.isPlayerFrozen and self.isEntered;
+    local activeForInput = self.isEntered and not g_currentMission.isPlayerFrozen and not g_gui:getIsGuiVisible();
 
     if activeForInput and not self.isConveyorBelt then
         if InputBinding.hasEvent(InputBinding.FollowMeMyToggle) then
@@ -888,7 +896,7 @@ end;
 function FollowMe.checkBaler(attachedTool)
     local allowedToDrive = true
     local hasCollision = false
-    local pctSpeedReduction
+    local pctSpeedReduction = 0
     if attachedTool:getIsTurnedOn() then
         if attachedTool.baler.unloadingState == Baler.UNLOADING_CLOSED then
             local unitFillLevel = attachedTool:getUnitFillLevel(attachedTool.baler.fillUnitIndex) 
@@ -923,17 +931,26 @@ function FollowMe.checkBaleWrapper(attachedTool)
 
     local allowedToDrive = true
     local hasCollision = false
-    local pctSpeedReduction
+    local pctSpeedReduction = 0
     if attachedTool.baleWrapperState == BaleWrapper.STATE_WRAPPER_WRAPPING_BALE then
         pctSpeedReduction = 0.5
     elseif attachedTool.baleWrapperState == STATE_WRAPPER_FINISHED then -- '4'
         allowedToDrive = false
         -- Activate the bale unloading (server-side only!)
-        attachedTool:doStateChange(BaleWrapper.CHANGE_WRAPPER_START_DROP_BALE);  -- '5'
+        attachedTool:doStateChange(BaleWrapper.CHANGE_BUTTON_EMPTY);
     elseif attachedTool.baleWrapperState > STATE_WRAPPER_FINISHED then -- '4'
         allowedToDrive = false
     end
     return allowedToDrive, hasCollision, pctSpeedReduction;
+end
+
+function FollowMe.checkBalerAndWrapper(attachedTool)
+    local d1, c1, r1 = FollowMe.checkBaler(attachedTool)
+    local d2, c2, r2 = FollowMe.checkBaleWrapper(attachedTool)
+    local allowedToDrive    = d1 and d2
+    local hasCollision      = c1 and c2
+    local pctSpeedReduction = math.max(r1, r2)
+    return allowedToDrive, hasCollision, pctSpeedReduction
 end
 
 function FollowMe.updateFollowMovement(self, dt)
@@ -963,6 +980,14 @@ function FollowMe.updateFollowMovement(self, dt)
             and tool.object.baler.baleUnloadAnimationName ~= nil  -- Seems RoundBalers are the only ones which have set the 'baleUnloadAnimationName'
             and SpecializationUtil.hasSpecialization(Baler, tool.object.specializations)
             then
+                if tool.object.baleWrapperState ~= nil
+                and SpecializationUtil.hasSpecialization(BaleWrapper, tool.object.specializations)
+                then
+                    -- Found both baler and wrapper (Kuhn DLC)
+                    attachedTool = { tool.object, FollowMe.checkBalerAndWrapper };
+                    break;
+                end
+            
                 -- Found (Round)Baler.LUA
                 attachedTool = { tool.object, FollowMe.checkBaler };
                 break
