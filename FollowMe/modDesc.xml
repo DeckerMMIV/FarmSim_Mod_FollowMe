@@ -12,7 +12,7 @@
         Vanquish081, Paxly, Taco29
     </contributors>
 
-    <version>1.2.0.39</version>
+    <version>1.2.1.40</version>
 
     <title>
         <en>Follow Me</en>
@@ -27,15 +27,23 @@
     </title>
 
     <changeLog><![CDATA[
-1.2.0.39
-- Support for baler-and-wrapper combination; FBP 3135 (Kuhn DLC)
+1.2.1.40
+- Translations updated by contributors.
+- Support for baler-and-wrapper combination; FBP 3135 (Kuhn DLC).
+- Increased starting distance to 20, from 10.
+- Fix for saving/loading distance and offset between savegame-sessions.
 ]]></changeLog>
-
     
     <description>
         <en>
 <![CDATA[Ever wanted to have some vehicles follow you around the map?
 With "Follow Me" you can (though not backwards driving).
+
+Changelog (1.2.1.40)
+- Translations updated by contributors.
+- Support for baler-and-wrapper combination; FBP 3135 (Kuhn DLC).
+- Increased starting distance to 20, from 10.
+- Fix for saving/loading distance and offset between savegame-sessions.
 
 Default control keys:
 
@@ -58,6 +66,12 @@ Default control keys:
 <![CDATA[Sie wollten schon immer einigen Fahrzeugen über die Karte folgen können?
 Mit "Follow Me" können Sie das (natürlich nur vorwärtsfahrend).
 
+Changelog (1.2.1.40)
+- Translations updated by contributors.
+- Support for baler-and-wrapper combination; FBP 3135 (Kuhn DLC).
+- Increased starting distance to 20, from 10.
+- Fix for saving/loading distance and offset between savegame-sessions.
+
 Standardtastenbelegung:
 
 'Myself' ist das aktuelle Fahrzeug
@@ -78,16 +92,34 @@ Standardtastenbelegung:
         <pl>
 <![CDATA[Czy kiedykolwiek chciałeś by niektóre pojazdy podążały za tobą po mapie?
 Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz).
+
+Changelog (1.2.1.40)
+- Translations updated by contributors.
+- Support for baler-and-wrapper combination; FBP 3135 (Kuhn DLC).
+- Increased starting distance to 20, from 10.
+- Fix for saving/loading distance and offset between savegame-sessions.
 ]]>
         </pl>
         <fr> 
 <![CDATA[Vous avez toujours souhaité que certains véhicules puissent vous suivre ?
 Avec "Follow Me", c'est possible (sauf en marche arrière).
+
+Changelog (1.2.1.40)
+- Translations updated by contributors.
+- Support for baler-and-wrapper combination; FBP 3135 (Kuhn DLC).
+- Increased starting distance to 20, from 10.
+- Fix for saving/loading distance and offset between savegame-sessions.
 ]]>
         </fr>
         <ru>
 <![CDATA[Была ли у Вас необходимость в том что-бы какие-либо ТС
 двигались следом за вами? С "Follow Me" это возможно!
+
+Changelog (1.2.1.40)
+- Translations updated by contributors.
+- Support for baler-and-wrapper combination; FBP 3135 (Kuhn DLC).
+- Increased starting distance to 20, from 10.
+- Fix for saving/loading distance and offset between savegame-sessions.
 
 Клавиши управления по умолчанию:
 
@@ -110,6 +142,12 @@ Avec "Follow Me", c'est possible (sauf en marche arrière).
 <![CDATA[Hai mai voluto avere alcuni veicoli che ti seguono per la mappa?
 Con "Follow Me" è possibile (non ancora con guida in retromarcia).
 
+Changelog (1.2.1.40)
+- Translations updated by contributors.
+- Support for baler-and-wrapper combination; FBP 3135 (Kuhn DLC).
+- Increased starting distance to 20, from 10.
+- Fix for saving/loading distance and offset between savegame-sessions.
+
 Comandi predefiniti:
 
 'Capo scia' è il veicolo controllato del giocatore
@@ -130,16 +168,34 @@ Comandi predefiniti:
         <hu>
 <![CDATA[Mindig is szeretted volna, hogy a járművek kövessenek bármerre is mész a térképen?
 A "Follow Me"-vel most megteheted (csak ne tolass).
+
+Changelog (1.2.1.40)
+- Translations updated by contributors.
+- Support for baler-and-wrapper combination; FBP 3135 (Kuhn DLC).
+- Increased starting distance to 20, from 10.
+- Fix for saving/loading distance and offset between savegame-sessions.
 ]]>
         </hu>
         <nl>
 <![CDATA[Zou je willen dat sommige voertuigen je volgen over de map?
 Met "Follow Me" kan dat (alleen niet bij achteruit rijden).
+
+Changelog (1.2.1.40)
+- Translations updated by contributors.
+- Support for baler-and-wrapper combination; FBP 3135 (Kuhn DLC).
+- Increased starting distance to 20, from 10.
+- Fix for saving/loading distance and offset between savegame-sessions.
 ]]>
         </nl>
         <es>
 <![CDATA[¿Quieres conseguir que te sigan algunos de tus vehículos alrededor del mapa?
 Con "Follow Me" se puede conseguir.(No funciona con marcha atrás).
+
+Changelog (1.2.1.40)
+- Translations updated by contributors.
+- Support for baler-and-wrapper combination; FBP 3135 (Kuhn DLC).
+- Increased starting distance to 20, from 10.
+- Fix for saving/loading distance and offset between savegame-sessions.
 ]]>
         </es>
     </description>

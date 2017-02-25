@@ -4,6 +4,10 @@
 
 
 [b][u]Changelog[/u][/b]
+1.2.1.40
+- Increased starting distance to 20, from 10.
+- Fix for saving/loading distance and offset between savegame-sessions.
+
 1.2.0.39
 - Support for baler-and-wrapper combination; FBP 3135 (Kuhn DLC)
 

@@ -199,7 +199,7 @@ function FollowMe.load(self, savegame)
     self.modFM.FollowState = FollowMe.STATE_NONE;
     self.modFM.FollowVehicleObj = nil;  -- What vehicle is this one following (if any)
     self.modFM.FollowCurrentIndex = 0;
-    self.modFM.FollowKeepBack = 10;
+    self.modFM.FollowKeepBack = 20;
     self.modFM.FollowXOffset = 0;
     self.modFM.ToggleXOffset = 0;
     --
@@ -228,11 +228,11 @@ function FollowMe.load(self, savegame)
 
     --
     if savegame ~= nil and not savegame.resetVehicles then
-        local distance = getXMLFloat(savegame.xmlFile, savegame.key .. "followMe#distance")
+        local distance = getXMLFloat(savegame.xmlFile, savegame.key .. ".followMe#backDist")
         if distance ~= nil then
             FollowMe.changeDistance(self, { distance }, true ); -- Absolute change
         end
-        local offset = getXMLFloat(savegame.xmlFile, savegame.key .. "followMe#offset")
+        local offset = getXMLFloat(savegame.xmlFile, savegame.key .. ".followMe#sideOffs")
         if offset ~= nil then
             FollowMe.changeXOffset(self, { offset }, true ); -- Absolute change
         end
@@ -287,7 +287,7 @@ end;
 function FollowMe.getSaveAttributesAndNodes(self, nodeIdent)
     local attributes, nodes
     if self.modFM ~= nil then
-        nodes = nodeIdent .. ('<followMe distance="%.0f" offset="%.1f" />'):format(self.modFM.FollowKeepBack, self.modFM.FollowXOffset)
+        nodes = nodeIdent .. ('<followMe backDist="%.0f" sideOffs="%.1f" />'):format(self.modFM.FollowKeepBack, self.modFM.FollowXOffset)
     end
     return attributes, nodes;
 end;
