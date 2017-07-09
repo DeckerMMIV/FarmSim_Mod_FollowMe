@@ -24,8 +24,7 @@ Avec "Follow Me", c'est possible (sauf en marche arrière).
         <text name="FollowMeAlreadyAI"       text="Un employé utilise déjà ce véhicule" />
         <text name="FollowMeStartEngine"     text="Démarrer d'abord le moteur." />
 
-        <text name="FollowMeDropperNotFound" text="Impossible de trouver un meneur.
-Placez le véhicule meneur devant celui-ci." />
+        <text name="FollowMeDropperNotFound" text="Impossible de trouver un meneur. Placez le véhicule meneur devant celui-ci." />
 
         <text name="FollowMeKeysMyself"      text="%s - Actions de contrôle meneur" />
         <text name="FollowMeKeysBehind"      text="%s - Actions de contrôle suiveur" />
@@ -55,9 +54,9 @@ Placez le véhicule meneur devant celui-ci." />
         <text name="FollowMeDistBehind"      text="Dist. suiveur %.1f" />
         <text name="FollowMeDistAhead"       text="Dist. meneur %.1f" />
         
-        <text name="FollowMeReason1"         text="Follower '%s' arrêté (par le joueur)" />
-        <text name="FollowMeReason2"         text="Follower '%s' arrêté (pas de trajectoire)" />
-        <text name="FollowMeReason3"         text="Follower '%s' arrêté (trop éloigné)" />
-        <text name="FollowMeReason4"         text="Follower '%s' arrêté (meneur)" />
+        <text name="FollowMeReason1"         text="Suiveur '%s' arrêté (par le joueur)" />
+        <text name="FollowMeReason2"         text="Suiveur '%s' arrêté (pas de trajectoire)" />
+        <text name="FollowMeReason3"         text="Suiveur '%s' arrêté (trop éloigné)" />
+        <text name="FollowMeReason4"         text="Suiveur '%s' arrêté (meneur)" />
     </texts>
 </l10n>
