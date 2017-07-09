@@ -6,6 +6,19 @@
 -- @date    2016-11-xx
 --
 
+--[[
+Notes:
+
+Mouse support:
+- ModifierKey + Mouse movement/buttons/wheel
+- wheel = select; myself, follower(1), follower(2), ...
+- myself: when not following: right-mouse on vehicle in front; start following that
+- myself: right-mouse on vehicle at back/behind; it start following me (automatically start motor too)
+- myself/follower(#): when following: left-mouse; pause/resume
+- myself/follower(#): when following: right-mouse + mouse-pointer: set following distance/offset
+
+--]]
+
 FollowMe = {};
 --
 local modItem = ModsUtil.findModItemByModName(g_currentModName);
@@ -1108,12 +1121,11 @@ function FollowMe.updateFollowMovement(self, dt)
                 if keepInFrontMeters > 0 then
                     avgSpeedKMH = avgSpeedKMH * 2
                 elseif (crumbIndexDiff > distCrumbs) then
-                    --avgSpeedKMH = math.max(5, avgSpeedKMH * 1.33)
-                    --local factor = (math.min(1, (distCrumbs * FollowMe.cMinDistanceBetweenDrops) / 10) * 1.2) + 0.2
-                    --avgSpeedKMH = avgSpeedKMH + avgSpeedKMH * factor
-                    --acceleration = math.min(0.5, math.max(1.0, acceleration * factor))
-                    
-                    avgSpeedKMH = avgSpeedKMH + avgSpeedKMH * ((crumbIndexDiff - distCrumbs) / 5)
+                    if true == self.mrIsMrVehicle then
+                        -- Don't allow MR vehicle to 'speed up to catch up', as it may fall over when cornering at higher speeds
+                    else
+                        avgSpeedKMH = avgSpeedKMH + avgSpeedKMH * ((crumbIndexDiff - distCrumbs) / 5)
+                    end
                 elseif not ((crumbIndexDiff == distCrumbs) and (tDist >= distFraction)) then 
                     avgSpeedKMH = 0
                 end
@@ -1138,7 +1150,7 @@ function FollowMe.updateFollowMovement(self, dt)
         allowedToDrive = allowedToDrive and (nz > 0);
         avgSpeedKMH = math.max(0, leader.lastSpeed) * 3600; -- only consider forward movement.
 
-        if distMetersDiff < 0 then
+        if distMetersDiff < 0.5 then
             local factor = 1 - math.min(1, math.abs(distMetersDiff)/10)
             avgSpeedKMH = avgSpeedKMH * factor
             acceleration = 0
