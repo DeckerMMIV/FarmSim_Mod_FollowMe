@@ -6,7 +6,7 @@ To read more about this mod, find it on;
 - http://modcentral.co.uk - http://modcentral.co.uk/resources/authors/decker_mmiv.18/
 
 ## FS17 - Change-log
-1.2.2.42
+1.2.2.43
 - Disallow MoreRealistic vehicles to 'speed up to catch up', as a temporary fix, until a better speed algorithm is found.
 - MoreRealistic vehicles now apply brake if 'going faster than leader-vehicle'.
 

@@ -4,7 +4,7 @@
 
 
 [b][u]Changelog[/u][/b]
-1.2.2.42
+1.2.2.43
 - Disallow MoreRealistic vehicles to 'speed up to catch up', as a temporary fix, until a better speed algorithm is found.
 - MoreRealistic vehicles now apply brake if 'going faster than leader-vehicle'.
 

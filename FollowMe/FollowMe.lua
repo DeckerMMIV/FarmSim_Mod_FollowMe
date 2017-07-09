@@ -1122,11 +1122,12 @@ function FollowMe.updateFollowMovement(self, dt)
                 if keepInFrontMeters > 0 then
                     avgSpeedKMH = avgSpeedKMH * 2
                 elseif (crumbIndexDiff > distCrumbs) then
-                    if true == self.mrIsMrVehicle then
+                    local lastSpeedKMH = (self.lastSpeed * 3600)
+                    if true == self.mrIsMrVehicle and lastSpeedKMH > 5 then
                         -- Don't allow MR vehicle to 'speed up to catch up', as it may fall over when cornering at higher speeds
-                        if (self.lastSpeed * 3600) > avgSpeedKMH then
-                            -- Apply brake if going faster than allowed.
-                            acceleration = -1
+                        if  lastSpeedKMH > avgSpeedKMH then
+                            -- Apply brake if going faster than allowed
+                            acceleration = Utils.lerp(0, -1, (lastSpeedKMH - avgSpeedKMH / 5) - 1)
                         end
                     else
                         avgSpeedKMH = avgSpeedKMH + avgSpeedKMH * ((crumbIndexDiff - distCrumbs) / 5)
@@ -1356,10 +1357,36 @@ function FollowMe.draw(self)
     end
 --DEBUG]]
 
+--[[
+    if showFollowMeMy and self.modFM.FollowVehicleObj ~= nil then
+        FollowMe.debugDrawTrail(self)
+    end
+    if showFollowMeFl and self.modFM.StalkerVehicleObj ~= nil then
+        FollowMe.debugDrawTrail(self.modFM.StalkerVehicleObj)
+    end
+--]]
+
     setTextAlignment(RenderText.ALIGN_LEFT);
     setTextBold(false);
     setTextColor(1,1,1,1);
 end;
+
+function FollowMe.debugDrawTrail(self)
+    local leader = self.modFM.FollowVehicleObj
+    local wpIdx = self.modFM.FollowCurrentIndex
+    local crumb1 = leader.modFM.DropperCircularArray[1+(wpIdx % FollowMe.cBreadcrumbsMaxEntries)];
+    local crumb2
+    while wpIdx < leader.modFM.DropperCurrentIndex do
+        wpIdx = wpIdx + 1
+        crumb2 = leader.modFM.DropperCircularArray[1+(wpIdx % FollowMe.cBreadcrumbsMaxEntries)];
+        
+        local x1,y1,z1 = unpack(crumb1.trans)
+        local x2,y2,z2 = unpack(crumb2.trans)
+        drawDebugLine(x1,y1+1,z1, 1,1,1, x2,y2+1,z2, 0,0,1, false)
+        
+        crumb1 = crumb2
+    end
+end
 
 ---
 ---
