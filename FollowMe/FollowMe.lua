@@ -206,12 +206,12 @@ function FollowMe.load(self, savegame)
     self.modFM.sumSpeed = 0;
     self.modFM.sumCount = 0;
     self.modFM.DropperCircularArray = {};
-    self.modFM.DropperCurrentIndex = 0;
+    self.modFM.DropperCurrentIndex = -1;
     self.modFM.StalkerVehicleObj = nil;  -- Needed in case self is being deleted.
     --
     self.modFM.FollowState = FollowMe.STATE_NONE;
     self.modFM.FollowVehicleObj = nil;  -- What vehicle is this one following (if any)
-    self.modFM.FollowCurrentIndex = 0;
+    self.modFM.FollowCurrentIndex = -1;
     self.modFM.FollowKeepBack = 20;
     self.modFM.FollowXOffset = 0;
     self.modFM.ToggleXOffset = 0;
@@ -316,8 +316,8 @@ function FollowMe.copyDrop(self, crumb, targetXYZ)
     assert(g_server ~= nil);
 
     self.modFM.DropperCurrentIndex = self.modFM.DropperCurrentIndex + 1; -- Keep incrementing index, so followers will be able to detect if they get too far behind of the circular-array.
-    local dropIndex = 1+((self.modFM.DropperCurrentIndex-1) % FollowMe.cBreadcrumbsMaxEntries);
 
+    local dropIndex = 1+(self.modFM.DropperCurrentIndex % FollowMe.cBreadcrumbsMaxEntries);
     if targetXYZ == nil then
         self.modFM.DropperCircularArray[dropIndex] = crumb;
     else
@@ -335,9 +335,10 @@ function FollowMe.addDrop(self, wx,wy,wz, avgSpeedKMH, turnLightState, reverserD
     assert(g_server ~= nil);
 
     self.modFM.DropperCurrentIndex = self.modFM.DropperCurrentIndex + 1; -- Keep incrementing index, so followers will be able to detect if they get too far behind of the circular-array.
-    local dropIndex = 1+((self.modFM.DropperCurrentIndex-1) % FollowMe.cBreadcrumbsMaxEntries);
 
     local rx,ry,rz  = localDirectionToWorld(self.components[1].node, 0,0, Utils.getNoNil(reverserDirection, 1));
+
+    local dropIndex = 1+(self.modFM.DropperCurrentIndex % FollowMe.cBreadcrumbsMaxEntries);
     self.modFM.DropperCircularArray[dropIndex] = {
         trans           = {wx,wy,wz},
         rot             = {rx,ry,rz},
@@ -542,7 +543,7 @@ function FollowMe.updateTick(self, dt)
             self.modFM.sumCount = self.modFM.sumCount + 1;
             --
             local wx,wy,wz = getWorldTranslation(self.components[1].node); -- current position
-            local pwx,pwy,pwz = unpack(self.modFM.DropperCircularArray[1+((self.modFM.DropperCurrentIndex-1) % FollowMe.cBreadcrumbsMaxEntries)].trans); -- previous position
+            local pwx,pwy,pwz = unpack(self.modFM.DropperCircularArray[1+(self.modFM.DropperCurrentIndex % FollowMe.cBreadcrumbsMaxEntries)].trans); -- previous position
             local distancePrevDrop = Utils.vector2Length(pwx-wx, pwz-wz);
             if distancePrevDrop >= FollowMe.cMinDistanceBetweenDrops then
                 local avgSpeedKMH = math.max((self.modFM.sumSpeed / (self.modFM.sumCount>0 and self.modFM.sumCount or 1)) * 3600, 1)
@@ -825,10 +826,10 @@ function FollowMe.findVehicleInFront(self)
 
     if closestVehicle ~= nil then
         -- Find closest "breadcrumb"
-        self.modFM.FollowCurrentIndex = 0;
+        self.modFM.FollowCurrentIndex = -1;
         local closestDistance = 50;
-        for i=closestVehicle.modFM.DropperCurrentIndex, math.max(closestVehicle.modFM.DropperCurrentIndex - FollowMe.cBreadcrumbsMaxEntries,1), -1 do
-            local crumb = closestVehicle.modFM.DropperCircularArray[1+((i-1) % FollowMe.cBreadcrumbsMaxEntries)];
+        for i=closestVehicle.modFM.DropperCurrentIndex, math.max(closestVehicle.modFM.DropperCurrentIndex - FollowMe.cBreadcrumbsMaxEntries,0), -1 do
+            local crumb = closestVehicle.modFM.DropperCircularArray[1+(i % FollowMe.cBreadcrumbsMaxEntries)];
             if crumb ~= nil then
                 local x,y,z = unpack(crumb.trans);
                 -- Translate
@@ -847,7 +848,7 @@ function FollowMe.findVehicleInFront(self)
                     end;
                 end;
                 --
-                if self.modFM.FollowCurrentIndex ~= 0 and dist > closestDistance then
+                if self.modFM.FollowCurrentIndex ~= -1 and dist > closestDistance then
                     -- If crumb is "going further away" from already found one, then stop searching.
                     break;
                 end;
@@ -855,7 +856,7 @@ function FollowMe.findVehicleInFront(self)
         end;
         --log(string.format("ClosestDist:%f, index:%d", closestDistance, self.modFM.FollowCurrentIndex));
         --
-        if self.modFM.FollowCurrentIndex == 0 then
+        if self.modFM.FollowCurrentIndex == -1 then
             closestVehicle = nil;
         end;
     end
@@ -1073,7 +1074,7 @@ function FollowMe.updateFollowMovement(self, dt)
         tz = cz + crz * 2;
     elseif crumbIndexDiff > 0 then
         -- Following crumbs...
-        local crumbT = leader.modFM.DropperCircularArray[1+((self.modFM.FollowCurrentIndex-1) % FollowMe.cBreadcrumbsMaxEntries)];
+        local crumbT = leader.modFM.DropperCircularArray[1+(self.modFM.FollowCurrentIndex % FollowMe.cBreadcrumbsMaxEntries)];
         turnLightState = crumbT.turnLightState
         --
         ox,oy,oz = crumbT.trans[1],crumbT.trans[2],crumbT.trans[3];
@@ -1101,7 +1102,7 @@ function FollowMe.updateFollowMovement(self, dt)
         if crumbIndexDiff > 0 then
             -- Still following crumbs...
             avgSpeedKMH = crumbT.avgSpeedKMH;
-            local crumbN = leader.modFM.DropperCircularArray[1+((self.modFM.FollowCurrentIndex  ) % FollowMe.cBreadcrumbsMaxEntries)];
+            local crumbN = leader.modFM.DropperCircularArray[1+((self.modFM.FollowCurrentIndex+1) % FollowMe.cBreadcrumbsMaxEntries)];
             if crumbN ~= nil then
                 -- Apply offset, to next original target
                 local ntx = crumbN.trans[1] - crumbN.rot[3] * self.modFM.FollowXOffset;
@@ -1123,6 +1124,10 @@ function FollowMe.updateFollowMovement(self, dt)
                 elseif (crumbIndexDiff > distCrumbs) then
                     if true == self.mrIsMrVehicle then
                         -- Don't allow MR vehicle to 'speed up to catch up', as it may fall over when cornering at higher speeds
+                        if (self.lastSpeed * 3600) > avgSpeedKMH then
+                            -- Apply brake if going faster than allowed.
+                            acceleration = -1
+                        end
                     else
                         avgSpeedKMH = avgSpeedKMH + avgSpeedKMH * ((crumbIndexDiff - distCrumbs) / 5)
                     end

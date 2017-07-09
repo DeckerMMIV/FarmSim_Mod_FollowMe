@@ -6,8 +6,9 @@ To read more about this mod, find it on;
 - http://modcentral.co.uk - http://modcentral.co.uk/resources/authors/decker_mmiv.18/
 
 ## FS17 - Change-log
-1.2.2.41
+1.2.2.42
 - Disallow MoreRealistic vehicles to 'speed up to catch up', as a temporary fix, until a better speed algorithm is found.
+- MoreRealistic vehicles now apply brake if 'going faster than leader-vehicle'.
 
 1.2.1.40
 - Increased starting distance to 20, from 10.
