@@ -4,6 +4,9 @@
 
 
 [b][u]Changelog[/u][/b]
+1.2.2.44
+- Translations updated by contributors.
+
 1.2.2.43
 - Disallow MoreRealistic vehicles to 'speed up to catch up', as a temporary fix, until a better speed algorithm is found.
 - MoreRealistic vehicles now apply brake if 'going faster than leader-vehicle'.
@@ -135,5 +138,5 @@ Credits:
 Script:
 - Decker_MMIV
 Contributors/Translations:
-- DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers, Ziuta, pewemo, Alfredo Prieto, xno, 
-- Vanquish081, Paxly, Taco29
+- DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers, Ziuta, pewemo, Alfredo Prieto, xno,
+- Vanquish081, Paxly, Taco29, Anonymous
