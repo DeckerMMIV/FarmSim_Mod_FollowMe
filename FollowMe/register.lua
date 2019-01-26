@@ -8,9 +8,35 @@
 RegistrationHelper_FM = {};
 RegistrationHelper_FM.isLoaded = false;
 
-if SpecializationUtil.specializations['FollowMe'] == nil then
-    SpecializationUtil.registerSpecialization('FollowMe', 'FollowMe', g_currentModDirectory .. 'FollowMe.lua')
-    RegistrationHelper_FM.isLoaded = false;
+source(Utils.getFilename("FollowMe.lua", g_currentModDirectory))
+
+if g_specializationManager:getSpecializationByName("FollowMe") == nil then
+    if FollowMe == nil then
+       print("Unable to find specialization '" .. "FollowMe" .. "'");
+    else
+        for i, typeDef in pairs(g_vehicleTypeManager.vehicleTypes) do
+            if typeDef ~= nil and i ~= "locomotive" then
+                local isDrivable = false
+                local isEnterable = false
+                local hasMotor = false
+                for name, spec in pairs(typeDef.specializationsByName) do
+                    if name == "drivable" then
+                        isDrivable = true
+                    elseif name == "motorized" then
+                        hasMotor = true
+                    elseif name == "enterable" then
+                        isEnterable = true
+                    end
+                end
+                if isDrivable and isEnterable and hasMotor then
+                    print("Attached specialization " .. "'" .. "FollowMe" .. "'" .. "to vehicleType '" .. tostring(i) .. "'")
+                    typeDef.specializationsByName["FollowMe"] = FollowMe
+                    table.insert(typeDef.specializationNames, "FollowMe")
+                    table.insert(typeDef.specializations, FollowMe)
+                end
+            end
+        end
+    end
 end
 
 function RegistrationHelper_FM:loadMap(name)
@@ -40,12 +66,16 @@ end
 function RegistrationHelper_FM:draw()
 end
 
-function RegistrationHelper_FM:register()
-    for _, vehicle in pairs(VehicleTypeUtil.vehicleTypes) do
-        if vehicle ~= nil and SpecializationUtil.hasSpecialization(Drivable, vehicle.specializations) then
-            table.insert(vehicle.specializations, SpecializationUtil.getSpecialization("FollowMe"))
-        end
+
+function RegistrationHelper_FM:getIsHired(superFunc)
+    if self.getIsFollowMeActive ~= nil and self:getIsFollowMeActive() then
+        return true;
     end
+    return superFunc()
+end
+
+
+function RegistrationHelper_FM:register()
 
     -- Make sure that it is not possible to start a hired helper, when FollowMe is active.
     AIVehicle.canStartAIVehicle = Utils.overwrittenFunction(AIVehicle.canStartAIVehicle, function(self, superFunc)
@@ -56,17 +86,12 @@ function RegistrationHelper_FM:register()
     end);
     
     -- Overwrite getIsHired() to get other base-game script functionality to "work"
-    Vehicle.getIsHired = Utils.overwrittenFunction(Vehicle.getIsHired, function(self, superFunc)
-        if self.getIsFollowMeActive ~= nil and self:getIsFollowMeActive() then
-            return true;
-        end
-        return superFunc(self);
-    end);
+    Vehicle.getIsAIActive = Utils.overwrittenFunction(Vehicle.getIsAIActive, RegistrationHelper_FM.getIsHired);
 
     -- More overwrite stuff, because base-game scripts calls stopAIVehicle when out-of-fuel and alike.
     AIVehicle.stopAIVehicle = Utils.overwrittenFunction(AIVehicle.stopAIVehicle, function(self, superFunc, reason, noEventSend)
         if self.getIsFollowMeActive ~= nil and self:getIsFollowMeActive() then
-            FollowMe.stopFollowMe(self, nil, noEventSend)
+            FollowMeSpec.stopFollowMe(self, nil, noEventSend)
             return
         end
         return superFunc(self, reason, noEventSend)
