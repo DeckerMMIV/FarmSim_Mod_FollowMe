@@ -52,6 +52,7 @@ Verklein afstand tot leiden voertuig." />
         <text name="FollowMeOffRgt"             text="Rechts-uitl. %.1f" />
         <text name="FollowMeDistBehind"         text="Achter-afst. %.1f" />
         <text name="FollowMeDistAhead"          text="Voor-afst. %.1f" />
+        <text name="FollowMeTrailStrength"      text="Trail %d%%"           />
         
         <text name="FollowMeReason1"            text="Volger '%s' gestopt (door de speler)"     />
         <text name="FollowMeReason2"            text="Volger '%s' gestopt (geen trail)"         /> 

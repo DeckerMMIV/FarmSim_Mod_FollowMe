@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="34">
+<modDesc descVersion="38">
     <author>Decker_MMIV (DCK)</author>
     <authorContact>fs-uk.com, modcentral.co.uk, forum.farming-simulator.com</authorContact>
     
@@ -12,7 +12,7 @@
         Vanquish081, Paxly, Taco29, Anonymous
     </contributors>
 
-    <version>1.2.2.44</version>
+    <version>1.2.5.47</version>
 
     <title>
         <en>Follow Me</en>
@@ -27,6 +27,17 @@
     </title>
 
     <changeLog><![CDATA[
+1.2.5.47
+- When follower has less than 20% of the trail left, the trail-strength will be displayed at the follower.
+
+1.2.4.46
+- Don't try to start following a vehicle that points/drives towards ourself. Useful when following a low-loader carrying a backward parked vehicle.
+- When using baler-with-wrapper equipment, then don't stop when unloading bale from wrapper.
+
+1.2.3.45
+- Tweaks to speeds, when using MoreRealistic vehicles.
+- [WIP] Experiment with using mouse to control follower.
+
 1.2.2.44
 - Translations updated by contributors.
 

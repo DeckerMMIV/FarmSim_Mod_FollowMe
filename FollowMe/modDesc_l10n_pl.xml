@@ -55,6 +55,7 @@ Zbliż się do pojazdu prowadzącego." />
         <text name="FollowMeOffRgt"             text="Odstęp w prawo %.1f" />
         <text name="FollowMeDistBehind"         text="Dystans za %.1f" />
         <text name="FollowMeDistAhead"          text="Dystans przed %.1f" />
+        <text name="FollowMeTrailStrength"      text="Trail %d%%"           />
         
         <text name="FollowMeReason1"            text="Podążający '%s' zatrzymany (przez gracza)" />
         <text name="FollowMeReason2"            text="Podążający '%s' zatrzymany (brak szlaku)" />

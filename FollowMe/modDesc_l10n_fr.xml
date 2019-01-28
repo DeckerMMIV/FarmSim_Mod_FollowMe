@@ -55,6 +55,7 @@ Placez le véhicule meneur devant celui-ci." />
         <text name="FollowMeOffRgt"          text="Décal. droite %.1f" />
         <text name="FollowMeDistBehind"      text="Dist. suiveur %.1f" />
         <text name="FollowMeDistAhead"       text="Dist. meneur %.1f" />
+        <text name="FollowMeTrailStrength"   text="Trail %d%%"           />
         
         <text name="FollowMeReason1"         text="Suiveur '%s' arrêté (par le joueur)" />
         <text name="FollowMeReason2"         text="Suiveur '%s' arrêté (pas de trajectoire)" />

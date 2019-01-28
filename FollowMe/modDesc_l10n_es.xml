@@ -54,6 +54,7 @@ Acérquese más a la cabeza tractora." />
         <text name="FollowMeOffRgt"             text="Dcha-offset %.1f" />
         <text name="FollowMeDistBehind"         text="Atrás-dist. %.1f" />
         <text name="FollowMeDistAhead"          text="Adelante-dist. %.1f" />
+        <text name="FollowMeTrailStrength"      text="Trail %d%%"           />
         
         <text name="FollowMeReason1"            text="Follower '%s' ha parado (por jugador)"           />
         <text name="FollowMeReason2"            text="Follower '%s' ha parado (no hay rastro)"            />

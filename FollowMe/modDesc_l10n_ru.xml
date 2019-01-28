@@ -53,6 +53,7 @@
         <text name="FollowMeOffRgt"             text="смещение вправо %.1f" />
         <text name="FollowMeDistBehind"         text="за мной дистанция %.1f" />
         <text name="FollowMeDistAhead"          text="отставать на %.1f" />
+        <text name="FollowMeTrailStrength"      text="Trail %d%%"           />
         
         <text name="FollowMeReason1"            text="Ведомый '%s' остановлен игроком"/>
         <text name="FollowMeReason2"            text="Ведомый '%s' остановился (нет следа)"/>

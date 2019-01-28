@@ -55,6 +55,7 @@ Avvicinati al mezzo che ti precede." />
         <text name="FollowMeOffRgt"             text="Distanza laterale a dx %.1f" />
         <text name="FollowMeDistBehind"         text="Distanza dietro %.1f" />
         <text name="FollowMeDistAhead"          text="Distanza davanti %.1f" />
+        <text name="FollowMeTrailStrength"      text="Trail %d%%"           />
         
         <text name="FollowMeReason1"            text="Inseguitore '%s' fermato (dal giocatore)"     /> 
         <text name="FollowMeReason2"            text="Inseguitore '%s' fermato (nessuna pista)"      /> 

@@ -55,7 +55,8 @@ Nähern sie sich dem führenden Fahrzeug." />
         <text name="FollowMeOffRgt"             text="Recht-offs. %.1f"  />
         <text name="FollowMeDistBehind"         text="Hinter-abst. %.1f" />
         <text name="FollowMeDistAhead"          text="Voraus-abst. %.1f"  />
-        
+        <text name="FollowMeTrailStrength"      text="Trail %d%%"           />
+ 
         <text name="FollowMeReason1"            text="Nachfolger '%s' gestoppt (durch Spieler)"       /> 
         <text name="FollowMeReason2"            text="Nachfolger '%s' gestoppt (keine Spur)"        /> 
         <text name="FollowMeReason3"            text="Nachfolger '%s' gestoppt (Zu weit hinten)"  /> 

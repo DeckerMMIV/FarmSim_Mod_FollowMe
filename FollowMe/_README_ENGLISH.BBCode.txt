@@ -1,9 +1,16 @@
 [b]Follow Me[/b]
 
+Mod for Farming Simulator 17
+
+
 [i]Remember to check the support topic for any additional information regarding this mod[/i]
 
 
 [b][u]Changelog[/u][/b]
+1.2.3.45
+- Tweaks to speeds, when using MoreRealistic vehicles.
+- [WIP] Experiment with using mouse to control follower.
+
 1.2.2.44
 - Translations updated by contributors.
 

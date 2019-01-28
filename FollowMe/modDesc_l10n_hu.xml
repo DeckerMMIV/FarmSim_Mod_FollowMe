@@ -54,6 +54,7 @@ Menj közelebb a követendő járműhöz." />
         <text name="FollowMeOffRgt"             text="Eltolás jobbra %.1f"  />
         <text name="FollowMeDistBehind"         text="Követési táv %.1f"    />
         <text name="FollowMeDistAhead"          text="Követési táv %.1f"    />
+        <text name="FollowMeTrailStrength"      text="Trail %d%%"           />
         
         <text name="FollowMeReason1"            text="Követő '%s' megállt (a játékos)"        /> <!-- needs translation -->
         <text name="FollowMeReason2"            text="Követő '%s' megállt (nincs nyomvonal)"  /> <!-- needs translation -->
