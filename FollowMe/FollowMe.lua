@@ -57,6 +57,11 @@ FollowMe.REASON_ENGINE_STOPPED  = 5
 FollowMe.REASON_ALREADY_AI      = 6
 FollowMe.NUM_BITS_REASON  = 3
 
+function FollowMe.prerequisitesPresent(specializations)
+    return true
+end
+
+
 function FollowMe.registerEventListeners(vehicleType)
     for _,n in pairs( { "draw", "onLoad", "onUpdate", "onUpdateTick", "onRegisterActionEvents", "onReadStream", "onWriteStream", "onEnterVehicle", "onLeaveVehicle"} ) do
 		SpecializationUtil.registerEventListener(vehicleType, n, FollowMe)
@@ -197,17 +202,17 @@ function FollowMe.getIsFollowMeActive(self)
 end
 
 
-function FollowMe:onWriteStream(self, streamId, connection)
-    streamWriteInt8(            streamId, Utils.getNoNil(self.modFM.FollowKeepBack, 0))
-    streamWriteInt8(            streamId, Utils.getNoNil(self.modFM.FollowXOffset,  0) * 2)
-    if streamWriteBool(         streamId, self.followMeIsStarted) then
-        streamWriteUIntN(       streamId, self.modFM.FollowState, FollowMe.NUM_BITS_STATE)
-        streamWriteUInt8(       streamId, self.modFM.currentHelper.index)
-        writeNetworkNodeObject( streamId, self.modFM.FollowVehicleObj)
+function FollowMe:onWriteStream(streamId, connection)
+    streamWriteInt8(streamId, Utils.getNoNil(self.modFM.FollowKeepBack, 0))
+    streamWriteInt8(streamId, Utils.getNoNil(self.modFM.FollowXOffset,  0) * 2)
+    if streamWriteBool(streamId, self.followMeIsStarted) then
+        streamWriteUIntN(streamId, self.modFM.FollowState, FollowMe.NUM_BITS_STATE)
+        streamWriteUInt8(streamId, self.modFM.currentHelper.index)
+        writeNetworkNodeObject(streamId, self.modFM.FollowVehicleObj)
     end
 end;
 
-function FollowMe:onReadStream(self, streamId, connection)
+function FollowMe:onReadStream(streamId, connection)
     local distance  = streamReadInt8(streamId)
     local offset    = streamReadInt8(streamId) / 2
     if streamReadBool(streamId) then
@@ -359,10 +364,6 @@ function FollowMe.hasEventShortLong(inBinding, repeatIntervalMS)
     return FollowMe.INPUTEVENT_NONE; -- Not released
 end;
 
-
-function FollowMe.prerequisitesPresent(specializations)
-    return true
-end;
 
 
 function FollowMe.handleAction(self, actionName, keyStatus, arg4, arg5, arg6) 
@@ -1227,7 +1228,7 @@ function FollowMe:draw()
     --
     if g_gameSettings:getValue("showHelpMenu") then
         if self.modFM.FollowVehicleObj ~= nil
-        or (showFollowMeMy and g_currentMission:getHasPermission("hireAI"))
+        or (showFollowMeMy and g_currentMission:getHasPlayerPermission("hireAI"))
         then
             g_currentMission:addHelpButtonText(g_i18n:getText("FollowMeMyToggle"), InputBinding.FollowMeMyToggle, nil, GS_PRIO_HIGH);
         end;
