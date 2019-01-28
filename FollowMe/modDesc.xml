@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="38">
+<modDesc descVersion="42">
     <author>Decker_MMIV (DCK)</author>
     <authorContact>fs-uk.com, modcentral.co.uk, forum.farming-simulator.com</authorContact>
-    
+
 <!--
     NOTE: For contributing translations, DO NOT edit this ModDesc.XML.
           Only modify the corresponding ModDesc_l10n_*.XML file.
--->    
+-->
     <contributors>
-        DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers, Ziuta, pewemo, Alfredo Prieto, xno, 
+        DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers, Ziuta, pewemo, Alfredo Prieto, xno,
         Vanquish081, Paxly, Taco29, Anonymous
     </contributors>
 
@@ -25,7 +25,6 @@
         <nl>Follow Me</nl>
         <es>Follow Me</es>
     </title>
-
     <changeLog><![CDATA[
 1.2.5.47
 - When follower has less than 20% of the trail left, the trail-strength will be displayed at the follower.
@@ -51,7 +50,7 @@
 - Increased starting distance to 20, from 10.
 - Fix for saving/loading distance and offset between savegame-sessions.
 ]]></changeLog>
-    
+
     <description>
         <en>
 <![CDATA[Ever wanted to have some vehicles follow you around the map?
@@ -71,8 +70,8 @@ Default control keys:
   RIGHT-CTRL W/S = Distance increase/decrease
   RIGHT-CTRL A/D = Offset left/right adjust
   RIGHT-CTRL X     = Offset reset or hold for invert
- 
-'Behind' the followed vehicle  
+
+'Behind' the followed vehicle
   RIGHT-SHIFT F     = Disengage 'FollowMe'
   RIGHT-SHIFT H     = Wait/Resume
   RIGHT-SHIFT W/S = Distance increase/decrease
@@ -98,7 +97,7 @@ Standardtastenbelegung:
   RIGHT-CTRL W/S = Entfernung erhöhen / verringern
   RIGHT-CTRL A/D = Versatz links / rechts einstellen
   RIGHT-CTRL X     = Versatz zurücksetzen oder reset oder halten für invertieren
- 
+
 'Behind' das folgende Fahrzeug
   RIGHT-SHIFT F     = FollowMe deaktivieren
   RIGHT-SHIFT H     = Pausieren / Fortsetzen
@@ -118,7 +117,7 @@ Changelog (1.2.1.40)
 - Fix for saving/loading distance and offset between savegame-sessions.
 ]]>
         </pl>
-        <fr> 
+        <fr>
 <![CDATA[Vous avez toujours souhaité que certains véhicules puissent vous suivre ?
 Avec "Follow Me", c'est possible (sauf en marche arrière).
 
@@ -147,13 +146,13 @@ Changelog (1.2.1.40)
   RIGHT-CTRL W/S   = Дистанцию увеличить/уменьшить
   RIGHT-CTRL A/D   = Настройка смещения влево/вправо
   RIGHT-CTRL X     = Сбросить смещение или инвертировать (удерживая)
- 
-'За мной' это техника которая едет следом за ведомым   
+
+'За мной' это техника которая едет следом за ведомым
   RIGHT-SHIFT F     = Выключить 'FollowMe'
   RIGHT-SHIFT H     = Ожидать/Продолжить
   RIGHT-SHIFT W/S   = Дистанцию увеличить/уменьшить
   RIGHT-SHIFT A/D   = Настройка смещения влево/вправо
-  RIGHT-SHIFT X     = Сбросить смещение или инвертировать (удерживая) 
+  RIGHT-SHIFT X     = Сбросить смещение или инвертировать (удерживая)
 ]]>
         </ru>
         <it>
@@ -174,8 +173,8 @@ Comandi predefiniti:
   CTRL-DESTRO W/S   = Aumenta / Diminuisci distanza
   CTRL-DESTRO A/D   = Scostamento laterale +/-
   CTRL-DESTRO X     = Cancella scostamento o tieni premuto per invertire
- 
-'Inseguitore' è il veicolo che segue  
+
+'Inseguitore' è il veicolo che segue
   MAIUSC-DESTRO F     = 'FollowMe' on/off
   MAIUSC-DESTRO H     = Aspetta / Riprendi
   MAIUSC-DESTRO W/S   = Aumenta / Diminuisci distanza
@@ -226,24 +225,66 @@ Changelog (1.2.1.40)
     </extraSourceFiles>
 
     <l10n filenamePrefix="modDesc_l10n" /> <!-- Load the corresponding modDesc_l10n_<language>.XML file, or revert to 'en'/'de'. -->
+    <actions>
+        <action name="FollowMeMyToggle" />
+        <action name="FollowMeMyPause" />
+        <action name="FollowMeMyDistDec" />
+        <action name="FollowMeMyDistInc" />
+        <action name="FollowMeMyOffsDec" />
+        <action name="FollowMeMyOffsInc" />
+        <action name="FollowMeMyOffsTgl" />
+        <action name="FollowMeFlStop" />
+        <action name="FollowMeFlPause" />
+        <action name="FollowMeFlDistDec" />
+        <action name="FollowMeFlDistInc" />
+        <action name="FollowMeFlOffsDec" />
+        <action name="FollowMeFlOffsInc" />
+        <action name="FollowMeFlOffsTgl" />
+    </actions>
+    <inputBinding>
+        <actionBinding action="FollowMeMyToggle">
+                <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_f" />>
+        </actionBinding>
+        <actionBinding action="FollowMeMyPause">
+                <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_h" />>
+        </actionBinding>
+        <actionBinding action="FollowMeMyDistDec">
+                <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_w" />>
+        </actionBinding>
+        <actionBinding action="FollowMeMyDistInc">
+                <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_s" />>
+        </actionBinding>
+        <actionBinding action="FollowMeMyOffsDec">
+                <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_a" />>
+        </actionBinding>
+        <actionBinding action="FollowMeMyOffsInc">
+                <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_d" />>
+        </actionBinding>
+        <actionBinding action="FollowMeMyOffsTgl">
+                <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_x" />>
+        </actionBinding>
 
-    <inputBindings>
-        <!-- IMPORTANT! These 'FollowMeMy...' must use the same modifier-key! -->                               
-        <input visible="true" name="FollowMeMyToggle"  category="VEHICLE" key1="KEY_rctrl KEY_f"  />
-        <input visible="true" name="FollowMeMyPause"   category="VEHICLE" key1="KEY_rctrl KEY_h"  />
-        <input visible="true" name="FollowMeMyDistDec" category="VEHICLE" key1="KEY_rctrl KEY_w"  />
-        <input visible="true" name="FollowMeMyDistInc" category="VEHICLE" key1="KEY_rctrl KEY_s"  />
-        <input visible="true" name="FollowMeMyOffsDec" category="VEHICLE" key1="KEY_rctrl KEY_a"  />
-        <input visible="true" name="FollowMeMyOffsInc" category="VEHICLE" key1="KEY_rctrl KEY_d"  />
-        <input visible="true" name="FollowMeMyOffsTgl" category="VEHICLE" key1="KEY_rctrl KEY_x"  />
 
-        <!-- IMPORTANT! These 'FollowMeFl...' must use the same modifier-key! And MUST BE different from the 'FollowMeMy...' set -->
-        <input visible="true" name="FollowMeFlStop"    category="VEHICLE" key1="KEY_rshift KEY_f" />
-        <input visible="true" name="FollowMeFlPause"   category="VEHICLE" key1="KEY_rshift KEY_h" />
-        <input visible="true" name="FollowMeFlDistDec" category="VEHICLE" key1="KEY_rshift KEY_w" />
-        <input visible="true" name="FollowMeFlDistInc" category="VEHICLE" key1="KEY_rshift KEY_s" />
-        <input visible="true" name="FollowMeFlOffsDec" category="VEHICLE" key1="KEY_rshift KEY_a" />
-        <input visible="true" name="FollowMeFlOffsInc" category="VEHICLE" key1="KEY_rshift KEY_d" />
-        <input visible="true" name="FollowMeFlOffsTgl" category="VEHICLE" key1="KEY_rshift KEY_x" />
-    </inputBindings>
+        <actionBinding action="FollowMeFlStop">
+                <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_f" />>
+        </actionBinding>
+        <actionBinding action="FollowMeFlPause">
+                <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_h" />>
+        </actionBinding>
+        <actionBinding action="FollowMeFlDistDec">
+                <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_w" />>
+        </actionBinding>
+        <actionBinding action="FollowMeFlDistInc">
+                <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_s" />>
+        </actionBinding>
+        <actionBinding action="FollowMeFlOffsDec">
+                <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_a" />>
+        </actionBinding>
+        <actionBinding action="FollowMeFlOffsInc">
+                <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_d" />>
+        </actionBinding>
+        <actionBinding action="FollowMeFlOffsTgl">
+                <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_x" />>
+        </actionBinding>
+    </inputBinding>
 </modDesc>
