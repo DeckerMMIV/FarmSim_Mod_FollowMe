@@ -2,9 +2,47 @@
 --  Follow Me
 --
 -- @author  Decker_MMIV - fs-uk.com, forum.farming-simulator.com
--- @date    2016-11-xx
+-- @date    2019-01-xx
 --
 
+-- For debugging
+local function log(...)
+  if true then
+      local txt = ""
+      for idx = 1,select("#", ...) do
+          txt = txt .. tostring(select(idx, ...))
+      end
+      print(string.format("%7ums ", g_time) .. txt);
+  end
+end;
+
+-- FS19
+local specTypeName = 'followMe'
+g_specializationManager:addSpecialization(specTypeName, 'FollowMe', g_currentModDirectory .. 'FollowMe.lua', "")
+local modSpecTypeName = g_currentModName ..".".. specTypeName
+--
+for vehTypeName,vehTypeObj in pairs( g_vehicleTypeManager.vehicleTypes ) do
+  if  true  == SpecializationUtil.hasSpecialization(Drivable      ,vehTypeObj.specializations)
+  and true  == SpecializationUtil.hasSpecialization(Motorized     ,vehTypeObj.specializations)
+  and true  == SpecializationUtil.hasSpecialization(Enterable     ,vehTypeObj.specializations)
+  and false == SpecializationUtil.hasSpecialization(ConveyorBelt  ,vehTypeObj.specializations)
+  and false == SpecializationUtil.hasSpecialization(Locomotive    ,vehTypeObj.specializations)
+  then
+    g_vehicleTypeManager:addSpecialization(vehTypeName, modSpecTypeName)
+    log("FollowMe added to:    ",vehTypeName)
+  else
+    log("FollowMe ignored for: ",vehTypeName)
+  end
+end
+--[[
+for _,vehTypeName in pairs( { 'baseDrivable' } ) do
+  g_vehicleTypeManager:addSpecialization(vehTypeName, modSpecTypeName)
+end
+--]]
+
+
+
+--[[
 RegistrationHelper_FM = {};
 RegistrationHelper_FM.isLoaded = false;
 
@@ -84,7 +122,7 @@ function RegistrationHelper_FM:register()
         end
         return superFunc(self);
     end);
-    
+
     -- Overwrite getIsHired() to get other base-game script functionality to "work"
     Vehicle.getIsAIActive = Utils.overwrittenFunction(Vehicle.getIsAIActive, RegistrationHelper_FM.getIsHired);
 
@@ -101,3 +139,4 @@ function RegistrationHelper_FM:register()
 end
 
 addModEventListener(RegistrationHelper_FM)
+--]]

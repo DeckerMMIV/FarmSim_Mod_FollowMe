@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="42">
-    <author>Decker_MMIV (DCK)</author>
-    <authorContact>fs-uk.com, modcentral.co.uk, forum.farming-simulator.com</authorContact>
+    <author>Decker_MMIV</author>
+    <authorContact>fs-uk.com, forum.farming-simulator.com</authorContact>
 
 <!--
     NOTE: For contributing translations, DO NOT edit this ModDesc.XML.
           Only modify the corresponding ModDesc_l10n_*.XML file.
 -->
     <contributors>
-        DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers, Ziuta, pewemo, Alfredo Prieto, xno,
-        Vanquish081, Paxly, Taco29, Anonymous
+        Rushmead, DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion,
+        pokers, Ziuta, pewemo, Alfredo Prieto, xno, Vanquish081, Paxly, Taco29, Anonymous
     </contributors>
 
     <version>1.2.5.47</version>
@@ -218,73 +218,47 @@ Changelog (1.2.1.40)
     </description>
 
     <iconFilename>store_FollowMe.dds</iconFilename>
-    <multiplayer supported="true"/>
+    <multiplayer supported="false"/>
 
     <extraSourceFiles>
         <sourceFile filename="register.lua" />
     </extraSourceFiles>
 
     <l10n filenamePrefix="modDesc_l10n" /> <!-- Load the corresponding modDesc_l10n_<language>.XML file, or revert to 'en'/'de'. -->
+
     <actions>
-        <action name="FollowMeMyToggle" />
-        <action name="FollowMeMyPause" />
-        <action name="FollowMeMyDistDec" />
-        <action name="FollowMeMyDistInc" />
-        <action name="FollowMeMyOffsDec" />
-        <action name="FollowMeMyOffsInc" />
-        <action name="FollowMeMyOffsTgl" />
-        <action name="FollowMeFlStop" />
-        <action name="FollowMeFlPause" />
-        <action name="FollowMeFlDistDec" />
-        <action name="FollowMeFlDistInc" />
-        <action name="FollowMeFlOffsDec" />
-        <action name="FollowMeFlOffsInc" />
-        <action name="FollowMeFlOffsTgl" />
+        <action name="FollowMeMyToggle"  category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeMyPause"   category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeMyDistDec" category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeMyDistInc" category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeMyOffsDec" category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeMyOffsInc" category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeMyOffsTgl" category="VEHICLE" axisType="HALF" />
+
+        <action name="FollowMeFlStop"    category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeFlPause"   category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeFlDistDec" category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeFlDistInc" category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeFlOffsDec" category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeFlOffsInc" category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeFlOffsTgl" category="VEHICLE" axisType="HALF" />
     </actions>
+
     <inputBinding>
-        <actionBinding action="FollowMeMyToggle">
-                <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_f" />>
-        </actionBinding>
-        <actionBinding action="FollowMeMyPause">
-                <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_h" />>
-        </actionBinding>
-        <actionBinding action="FollowMeMyDistDec">
-                <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_w" />>
-        </actionBinding>
-        <actionBinding action="FollowMeMyDistInc">
-                <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_s" />>
-        </actionBinding>
-        <actionBinding action="FollowMeMyOffsDec">
-                <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_a" />>
-        </actionBinding>
-        <actionBinding action="FollowMeMyOffsInc">
-                <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_d" />>
-        </actionBinding>
-        <actionBinding action="FollowMeMyOffsTgl">
-                <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_x" />>
-        </actionBinding>
+        <actionBinding action="FollowMeMyToggle" ><binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_f" index="1" /></actionBinding>
+        <actionBinding action="FollowMeMyPause"  ><binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_h" index="1" /></actionBinding>
+        <actionBinding action="FollowMeMyDistDec"><binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_w" index="1" /></actionBinding>
+        <actionBinding action="FollowMeMyDistInc"><binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_s" index="1" /></actionBinding>
+        <actionBinding action="FollowMeMyOffsDec"><binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_a" index="1" /></actionBinding>
+        <actionBinding action="FollowMeMyOffsInc"><binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_d" index="1" /></actionBinding>
+        <actionBinding action="FollowMeMyOffsTgl"><binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_x" index="1" /></actionBinding>
 
-
-        <actionBinding action="FollowMeFlStop">
-                <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_f" />>
-        </actionBinding>
-        <actionBinding action="FollowMeFlPause">
-                <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_h" />>
-        </actionBinding>
-        <actionBinding action="FollowMeFlDistDec">
-                <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_w" />>
-        </actionBinding>
-        <actionBinding action="FollowMeFlDistInc">
-                <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_s" />>
-        </actionBinding>
-        <actionBinding action="FollowMeFlOffsDec">
-                <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_a" />>
-        </actionBinding>
-        <actionBinding action="FollowMeFlOffsInc">
-                <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_d" />>
-        </actionBinding>
-        <actionBinding action="FollowMeFlOffsTgl">
-                <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_x" />>
-        </actionBinding>
+        <actionBinding action="FollowMeFlStop"   ><binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_f" index="1" /></actionBinding>
+        <actionBinding action="FollowMeFlPause"  ><binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_h" index="1" /></actionBinding>
+        <actionBinding action="FollowMeFlDistDec"><binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_w" index="1" /></actionBinding>
+        <actionBinding action="FollowMeFlDistInc"><binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_s" index="1" /></actionBinding>
+        <actionBinding action="FollowMeFlOffsDec"><binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_a" index="1" /></actionBinding>
+        <actionBinding action="FollowMeFlOffsInc"><binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_d" index="1" /></actionBinding>
+        <actionBinding action="FollowMeFlOffsTgl"><binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_x" index="1" /></actionBinding>
     </inputBinding>
 </modDesc>
