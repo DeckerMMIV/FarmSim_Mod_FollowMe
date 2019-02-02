@@ -57,6 +57,18 @@ AIVehicle.updateAIDriveStrategies = Utils.overwrittenFunction(AIVehicle.updateAI
 end)
 
 
+-- WARNING!
+Vehicle.getSpeedLimit = Utils.overwrittenFunction(Vehicle.getSpeedLimit, function(self, superFunc, onlyIfWorking)
+  if  nil == onlyIfWorking
+  and nil ~= self.spec_aiVehicle
+  and nil ~= self.spec_aiVehicle.modFM_doCheckSpeedLimitOnlyIfWorking
+  then
+    onlyIfWorking = self.spec_aiVehicle.modFM_doCheckSpeedLimitOnlyIfWorking
+  end
+  return superFunc(self, onlyIfWorking)
+end)
+
+
 -- For debugging
 local function log(...)
   if true then
@@ -68,10 +80,13 @@ local function log(...)
   end
 end;
 
+
+
 -- FS19
 local specTypeName = 'followMe'
 g_specializationManager:addSpecialization(specTypeName, 'FollowMe', g_currentModDirectory .. 'FollowMe.lua', "")
 local modSpecTypeName = g_currentModName ..".".. specTypeName
+--local modSpecTypeName = specTypeName
 --
 for vehTypeName,vehTypeObj in pairs( g_vehicleTypeManager.vehicleTypes ) do
   if  true  == SpecializationUtil.hasSpecialization(Drivable      ,vehTypeObj.specializations)
@@ -87,6 +102,8 @@ for vehTypeName,vehTypeObj in pairs( g_vehicleTypeManager.vehicleTypes ) do
     log("FollowMe ignored for: ",vehTypeName)
   end
 end
+
+
 --[[
 for _,vehTypeName in pairs( { 'baseDrivable' } ) do
   g_vehicleTypeManager:addSpecialization(vehTypeName, modSpecTypeName)

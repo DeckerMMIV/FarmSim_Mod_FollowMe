@@ -46,6 +46,7 @@ FollowMe = {};
 
 local specTypeName = 'followMe'
 local modSpecTypeName = g_currentModName ..".".. specTypeName
+--local modSpecTypeName = specTypeName
 function FollowMe.getSpec(self)
   return self["spec_" .. modSpecTypeName] -- Work-around... while waiting for some better published LUADOCs from GIANTS Software...
 end
@@ -160,7 +161,7 @@ end;
 --
 
 function FollowMe:onLoad(savegame)
-    --log("FollowMe:onLoad()")
+    log("FollowMe:onLoad()")
     FollowMe.initialize();
 
     local spec = FollowMe.getSpec(self)
@@ -224,14 +225,6 @@ function FollowMe:onLoad(savegame)
         end
     end
 end;
-
--- function FollowMe:onPostLoad(savegame)
---   log("FollowMe:onPostLoad()")
---   if self.isServer then
---     -- Drop one "crumb", to avoid a 'nil check' later.
---     FollowMe.addDrop(self, 10);
---   end
--- end
 
 function FollowMe:delete()
     if nil ~= self.modFM.StalkerVehicleObj then
@@ -391,14 +384,15 @@ function FollowMe:addDrop(maxSpeed, turnLightState, reverserDirection)
 
     self.modFM.DropperCurrentIndex = self.modFM.DropperCurrentIndex + 1; -- Keep incrementing index, so followers will be able to detect if they get too far behind of the circular-array.
 
-    local node      = FollowMe.getFollowNode(self)
-    local wx,wy,wz  = getWorldTranslation(node);
-    local rx,ry,rz  = localDirectionToWorld(node, 0,0, Utils.getNoNil(reverserDirection, 1));
+    --local node        = FollowMe.getFollowNode(self)
+    local node = self:getAIVehicleSteeringNode()
+    --local vX,vY,vZ    = getWorldTranslation(node);
+    --local vrX,vrY,vrZ = localDirectionToWorld(node, 0,0, Utils.getNoNil(reverserDirection, 1));
 
     local dropIndex = 1+(self.modFM.DropperCurrentIndex % FollowMe.cBreadcrumbsMaxEntries);
     self.modFM.DropperCircularArray[dropIndex] = {
-        trans           = {wx,wy,wz},
-        rot             = {rx,ry,rz},
+        trans           = { getWorldTranslation(node) }, -- { vX,vY,vZ },
+        rot             = { localDirectionToWorld(node, 0,0,Utils.getNoNil(reverserDirection,1)) }, -- { vrX,vrY,vrZ },
         maxSpeed        = maxSpeed,
         turnLightState  = turnLightState,
     };
@@ -541,57 +535,50 @@ function FollowMe:onRegisterActionEvents(isSelected, isOnActiveVehicle)
       return
     end
 
-    local actionsMy = { InputAction.FollowMeMyToggle, InputAction.FollowMeMyPause, InputAction.FollowMeMyDistDec, InputAction.FollowMeMyDistInc, InputAction.FollowMeMyOffsDec, InputAction.FollowMeMyOffsInc, InputAction.FollowMeMyOffsTgl }
-    local actionsFl = { InputAction.FollowMeFlStop,   InputAction.FollowMeFlPause, InputAction.FollowMeFlDistDec, InputAction.FollowMeFlDistInc, InputAction.FollowMeFlOffsDec, InputAction.FollowMeFlOffsInc, InputAction.FollowMeFlOffsTgl }
-
-    --local spec = self.modFM...? or self.["spec_<modName>.FollowMe"]
-    --self:clearActionEventsTable(spec.actionEvents)
-
-    -- for _,actionName in pairs(actionsMy) do
-    --   g_inputBinding:removeActionEventsByActionName(actionName)
-    -- end
-    -- for _,actionName in pairs(actionsFl) do
-    --   g_inputBinding:removeActionEventsByActionName(actionName)
-    -- end
-
     local spec = FollowMe.getSpec(self)
     self:clearActionEventsTable(spec.actionEvents)
 
-    --local activeForInput = self:getIsEntered() and not g_currentMission.isPlayerFrozen and not g_gui:getIsGuiVisible();
-    local activeForInput = self:getIsActiveForInput(true)
-    --log("FollowMe:onRegisterActionEvents(",self,") activeForInput=",activeForInput)
-    if activeForInput
-    --and not self.isConveyorBelt
-    then
-        for _,actionName in pairs(actionsMy) do
-            --local succ, eventID, colli = g_inputBinding:registerActionEvent(actionName, self, FollowMe.handleAction, false, true, false, true, nil)
-            --log("registerActionEvent(",actionName,") => ",succ," ",eventID," ",colli)
-            local succ, eventID, colli = self:addActionEvent(spec.actionEvents, actionName, self, FollowMe.handleAction, false, true, false, true, nil)
-            --log("addActionEvent(",actionName,") => ",succ," ",eventID," ",colli)
-            g_inputBinding:setActionEventTextVisibility(eventID, false)
-        end
+    local function addActionEvents(tbl)
+      for _,actionName in pairs(tbl) do
+        local succ, eventID, colli = self:addActionEvent(spec.actionEvents, actionName, self, FollowMe.handleAction, false, true, false, true, nil)
+        g_inputBinding:setActionEventTextVisibility(eventID, false)
+      end
+    end
 
-        if nil ~= self.modFM.StalkerVehicleObj then
-            for _,actionName in pairs(actionsFl) do
-                --local succ, eventID, colli = g_inputBinding:registerActionEvent(actionName, self, FollowMe.handleAction, false, true, false, true, nil)
-                --log("registerActionEvent(",actionName,") => ",succ," ",eventID," ",colli)
-                local succ, eventID, colli = self:addActionEvent(spec.actionEvents, actionName, self, FollowMe.handleAction, false, true, false, true, nil)
-                --log("addActionEvent(",actionName,") => ",succ," ",eventID," ",colli)
-                g_inputBinding:setActionEventTextVisibility(eventID, false)
-            end
-        end
+    --local activeForInput = self:getIsEntered() and not g_currentMission.isPlayerFrozen and not g_gui:getIsGuiVisible();
+    local activeForInput = self:getIsActiveForInput(true) and not self.isConveyorBelt
+    local isFollowMeActive = FollowMe.getIsFollowMeActive(self)
+    --log("FollowMe:onRegisterActionEvents(",self,") activeForInput=",activeForInput)
+    if activeForInput or isFollowMeActive then
+      addActionEvents( { InputAction.FollowMeMyToggle } )
+      if isFollowMeActive then
+        addActionEvents( { InputAction.FollowMeMyPause, InputAction.FollowMeMyDistDec, InputAction.FollowMeMyDistInc, InputAction.FollowMeMyOffsDec, InputAction.FollowMeMyOffsInc, InputAction.FollowMeMyOffsTgl } )
+      end
+      -- local actionsMy = { InputAction.FollowMeMyToggle, InputAction.FollowMeMyPause, InputAction.FollowMeMyDistDec, InputAction.FollowMeMyDistInc, InputAction.FollowMeMyOffsDec, InputAction.FollowMeMyOffsInc, InputAction.FollowMeMyOffsTgl }
+      -- for _,actionName in pairs(actionsMy) do
+      --   local succ, eventID, colli = self:addActionEvent(spec.actionEvents, actionName, self, FollowMe.handleAction, false, true, false, true, nil)
+      --   g_inputBinding:setActionEventTextVisibility(eventID, false)
+      -- end
+    end
+    if (activeForInput or isFollowMeActive) and nil ~= self.modFM.StalkerVehicleObj then
+      addActionEvents( { InputAction.FollowMeFlStop, InputAction.FollowMeFlPause, InputAction.FollowMeFlDistDec, InputAction.FollowMeFlDistInc, InputAction.FollowMeFlOffsDec, InputAction.FollowMeFlOffsInc, InputAction.FollowMeFlOffsTgl } )
+      -- local actionsFl = { InputAction.FollowMeFlStop,   InputAction.FollowMeFlPause, InputAction.FollowMeFlDistDec, InputAction.FollowMeFlDistInc, InputAction.FollowMeFlOffsDec, InputAction.FollowMeFlOffsInc, InputAction.FollowMeFlOffsTgl }
+      -- for _,actionName in pairs(actionsFl) do
+      --   local succ, eventID, colli = self:addActionEvent(spec.actionEvents, actionName, self, FollowMe.handleAction, false, true, false, true, nil)
+      --   g_inputBinding:setActionEventTextVisibility(eventID, false)
+      -- end
     end
 end
 --
-function FollowMe:onUpdate(dt, isActiveForInput, isSelected)
-    if FollowMe.getIsFollowMeActive(self) then
-        -- self.forceIsActive = true;
-        self.steeringEnabled = false;
-        self.spec_motorized.stopMotorOnLeave  = false
-        self.spec_drivable.allowPlayerControl = false
+function FollowMe:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection, isSelected)
+    -- if FollowMe.getIsFollowMeActive(self) then
+    --     -- self.forceIsActive = true;
+    --     -- self.steeringEnabled = false;
+    --     -- self.spec_motorized.stopMotorOnLeave  = false
+    --     -- self.spec_drivable.allowPlayerControl = false
 
-        self:raiseActive()
-    end
+    --     -- self:raiseActive()
+    -- end
 end;
 
 function FollowMe:onUpdateTick(dt, isActiveForInput, isSelected)
@@ -630,14 +617,15 @@ function FollowMe:onUpdateTick(dt, isActiveForInput, isSelected)
             --
             local distancePrevDrop
             if -1 < self.modFM.DropperCurrentIndex then
-              local wx,wy,wz = getWorldTranslation(FollowMe.getFollowNode(self)); -- current position
-              local pwx,pwy,pwz = unpack(self.modFM.DropperCircularArray[1+(self.modFM.DropperCurrentIndex % FollowMe.cBreadcrumbsMaxEntries)].trans); -- previous position
-              distancePrevDrop = MathUtil.vector2LengthSq(pwx-wx, pwz-wz);
+              local node = self:getAIVehicleSteeringNode() -- FollowMe.getFollowNode(self)
+              local vX,vY,vZ = getWorldTranslation(node) -- current position
+              local oX,oY,oZ = unpack(self.modFM.DropperCircularArray[1+(self.modFM.DropperCurrentIndex % FollowMe.cBreadcrumbsMaxEntries)].trans); -- old position
+              distancePrevDrop = MathUtil.vector2LengthSq(oX - vX, oZ - vZ);
             else
               distancePrevDrop = FollowMe.cMinDistanceBetweenDrops
             end
             if distancePrevDrop >= FollowMe.cMinDistanceBetweenDrops then
-                local maxSpeed = math.max((self.modFM.sumSpeed / (self.modFM.sumCount>0 and self.modFM.sumCount or 1)) * 3600, 1)
+                local maxSpeed = math.max(5, (self.modFM.sumSpeed / self.modFM.sumCount) * 3600)
                 FollowMe.addDrop(self, maxSpeed, self.turnLightState, self.reverserDirection);
                 --
                 self.modFM.sumSpeed = 0;
@@ -756,6 +744,8 @@ function AIDriveStrategyFollow:delete()
     vehicle.modFM.FollowState = FollowMe.STATE_NONE
     vehicle.followMeIsStarted = false
 
+    vehicle.spec_aiVehicle.modFM_doCheckSpeedLimitOnlyIfWorking = nil
+
     --vehicle.spec_aiVehicle.didNotMoveTimer = vehicle.spec_aiVehicle.didNotMoveTimeout
 
     AIDriveStrategyFollow:superClass().delete(self);
@@ -770,6 +760,8 @@ function AIDriveStrategyFollow:setAIVehicle(vehicle)
       vehicle.modFM.FollowVehicleObj = closestVehicle
       vehicle.modFM.FollowState = FollowMe.STATE_FOLLOWING
       vehicle.followMeIsStarted = true
+
+      vehicle.spec_aiVehicle.modFM_doCheckSpeedLimitOnlyIfWorking = true  -- A work-around, for forcing AIVehicle:onUpdateTick() making its call to `self:getSpeedLimit()` into a `self:getSpeedLimit(true)`
 
       --vehicle.spec_aiVehicle.didNotMoveTimer = vehicle.spec_aiVehicle.didNotMoveTimeout
     else
@@ -875,7 +867,7 @@ function AIDriveStrategyFollow:getDriveData(dt, vX, vY, vZ)
 
             if isAllowedToDrive then
                 if (crumbIndexDiff > distCrumbs) then
-                  distanceToStop = (crumbIndexDiff - distCrumbs) * FollowMe.cMinDistanceBetweenDrops
+                  distanceToStop = ((crumbIndexDiff - distCrumbs) * FollowMe.cMinDistanceBetweenDrops) + FollowMe.getKeepFront(vehicle)
                     --local lastSpeedKMH = (vehicle.lastSpeed * 3600)
                     --if true == vehicle.mrIsMrVehicle and lastSpeedKMH > 5 then
                     --    -- Don't allow MR vehicle to 'speed up to catch up', as it may fall over when cornering at higher speeds
@@ -887,7 +879,7 @@ function AIDriveStrategyFollow:getDriveData(dt, vX, vY, vZ)
                     --else
                         maxSpeed = maxSpeed + maxSpeed * (math.min(5, (crumbIndexDiff - distCrumbs)) / 5)
                     --end
-                else
+                elseif FollowMe.getKeepFront(vehicle) <= 0 then
                   distanceToStop = math.max(0, tDist - distFraction)
                 --elseif not ((crumbIndexDiff == distCrumbs) and (tDist >= distFraction)) then
                 --    maxSpeed = 0
@@ -925,11 +917,12 @@ function AIDriveStrategyFollow:getDriveData(dt, vX, vY, vZ)
     if (not isAllowedToDrive) or (maxSpeed < 0.5) then
       maxSpeed = 0
     end
+    distanceToStop = math.floor(distanceToStop)
 
-    if self.lastDistToStop ~= distanceToStop then
-      log("maxSpeed:",maxSpeed," distToStop:",distanceToStop)
-      self.lastDistToStop = distanceToStop
-    end
+    -- if self.lastDistToStop ~= distanceToStop then
+    --   log("maxSpeed:",maxSpeed," distToStop:",distanceToStop)
+    --   self.lastDistToStop = distanceToStop
+    -- end
 
     local moveForwards = true
     return tX, tZ, moveForwards, maxSpeed, distanceToStop
@@ -1179,7 +1172,8 @@ function FollowMe:findVehicleInFront()
     end
     -- Anything below is only server-side
 
-    local node      = FollowMe.getFollowNode(self)
+    --local node      = FollowMe.getFollowNode(self)
+    local node      = self:getAIVehicleSteeringNode()
     local wx,wy,wz  = getWorldTranslation(node);
     local rx,ry,rz  = localDirectionToWorld(node, 0,0, Utils.getNoNil(self.reverserDirection, 1));
     local rlength   = MathUtil.vector2Length(rx,rz);
@@ -1198,7 +1192,8 @@ function FollowMe:findVehicleInFront()
         and nil ~= vehicleObj.modFM.DropperCircularArray -- Make sure other vehicle has circular array
         and nil == vehicleObj.modFM.StalkerVehicleObj -- and is not already stalked by something.
         then
-            local vehicleNode = FollowMe.getFollowNode(vehicleObj);
+            --local vehicleNode = FollowMe.getFollowNode(vehicleObj);
+            local vehicleNode = vehicleObj:getAIVehicleSteeringNode()
             -- Make sure that the other vehicle is actually driving "away from us"
             -- I.e. in the same direction
             local vrx, vry, vrz = localDirectionToWorld(vehicleNode, 0,0, Utils.getNoNil(vehicleObj.reverserDirection, 1));
@@ -1961,6 +1956,23 @@ function FollowMeResponseEvent:readStream(streamId, connection)
     end;
 end;
 
-
 --
 print(("Script loaded: FollowMe.lua - from %s (v%s)"):format(g_currentModName, g_modManager:getModByName(g_currentModName).version));
+
+--[[
+for vehTypeName,vehTypeObj in pairs( g_vehicleTypeManager.vehicleTypes ) do
+  if  true  == SpecializationUtil.hasSpecialization(Drivable      ,vehTypeObj.specializations)
+  and true  == SpecializationUtil.hasSpecialization(Motorized     ,vehTypeObj.specializations)
+  and true  == SpecializationUtil.hasSpecialization(Enterable     ,vehTypeObj.specializations)
+  and true  == SpecializationUtil.hasSpecialization(AIVehicle     ,vehTypeObj.specializations)
+  and false == SpecializationUtil.hasSpecialization(ConveyorBelt  ,vehTypeObj.specializations)
+  and false == SpecializationUtil.hasSpecialization(Locomotive    ,vehTypeObj.specializations)
+  and false == SpecializationUtil.hasSpecialization(FollowMe      ,vehTypeObj.specializations)
+  then
+    g_vehicleTypeManager:addSpecialization(vehTypeName, modSpecTypeName)
+    log("FollowMe added to:    ",vehTypeName)
+  else
+    log("FollowMe ignored for: ",vehTypeName)
+  end
+end
+--]]
