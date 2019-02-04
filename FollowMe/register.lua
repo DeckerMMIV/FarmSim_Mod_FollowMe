@@ -56,6 +56,14 @@ AIVehicle.startAIVehicle = Utils.overwrittenFunction(AIVehicle.startAIVehicle, f
 end)
 
 -- WARNING!
+AIVehicle.getCanAIVehicleContinueWork = Utils.overwrittenFunction(AIVehicle.getCanAIVehicleContinueWork, function(self, superFunc))
+  if FollowMe.getIsFollowMeActive(self) then
+    return true;
+  end
+  return superFunc(self)
+end)
+
+-- WARNING!
 AIVehicle.updateAIDriveStrategies = Utils.overwrittenFunction(AIVehicle.updateAIDriveStrategies, function(self, superFunc)
   local mod_ForcedDrivingStrategyId = Utils.getNoNil(self.spec_aiVehicle.mod_ForcedDrivingStrategyId, 0)
   if 0 == mod_ForcedDrivingStrategyId then

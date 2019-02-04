@@ -93,7 +93,10 @@ function FollowMe.prerequisitesPresent(specializations)
 end
 
 function FollowMe.registerFunctions(vehicleType)
-  for _,funcName in pairs( { "getIsFollowMeActive" } ) do
+  for _,funcName in pairs( {
+    "getIsFollowMeActive",
+    "getIsFollowMeWaiting",
+  } ) do
     SpecializationUtil.registerFunction(vehicleType, funcName, FollowMe[funcName])
   end
 end
@@ -103,11 +106,12 @@ function FollowMe.registerEventListeners(vehicleType)
   for _,funcName in pairs( {
     "onDraw",
     "onLoad",
-    "onUpdate",
+    --"onUpdate",
     "onUpdateTick",
     "onRegisterActionEvents",
-    "onReadStream", "onWriteStream",
-    --"onEnterVehicle", "onLeaveVehicle",
+    --"onReadStream", "onWriteStream",
+    "onEnterVehicle",
+    "onLeaveVehicle",
   } ) do
     SpecializationUtil.registerEventListener(vehicleType, funcName, FollowMe)
   end
@@ -135,7 +139,7 @@ function FollowMe:onLoad(savegame)
     spec.actionEvents = {}
 
     --
-    self.getIsFollowMeActive  = FollowMe.getIsFollowMeActive
+    --self.getIsFollowMeActive  = FollowMe.getIsFollowMeActive
     --self.getDeactivateOnLeave = Utils.overwrittenFunction(self.getDeactivateOnLeave, FollowMe.getDeactivateOnLeave);
 
     self.followMeIsStarted = false
@@ -229,6 +233,11 @@ end
 
 function FollowMe:getIsFollowMeActive()
   return self.followMeIsStarted
+end
+
+function FollowMe:getIsFollowMeWaiting()
+  local spec = FollowMe.getSpec(self)
+  return spec.FollowState == FollowMe.STATE_WAITING
 end
 
 -- AIVehicle.getCanStartAIVehicle = Utils.overwrittenFunction(AIVehicle.getCanStartAIVehicle, function(self, superFunc)
@@ -480,10 +489,8 @@ function FollowMe:handleAction(actionName, inputValue, callbackState, isAnalog, 
             end
         end
         ,FollowMeMyPause   = function() FollowMe.waitResumeFollowMe(self, FollowMe.REASON_USER_ACTION); end
-        ,FollowMeMyDistDec = function() FollowMe.changeDistance(self, -5); end
-        ,FollowMeMyDistInc = function() FollowMe.changeDistance(self, 5); end
-        ,FollowMeMyOffsDec = function() FollowMe.changeXOffset(self, -0.5); end
-        ,FollowMeMyOffsInc = function() FollowMe.changeXOffset(self, 0.5); end
+        ,FollowMeMyDist    = function(value) FollowMe.changeDistance(self, 5 * MathUtil.sign(value)); end
+        ,FollowMeMyOffs    = function(value) FollowMe.changeXOffset(self, 0.5 * MathUtil.sign(value)); end
         ,FollowMeMyOffsTgl = function() FollowMe.toggleXOffset(self, true); end
 
         ,FollowMeFlStop = function()
@@ -492,23 +499,21 @@ function FollowMe:handleAction(actionName, inputValue, callbackState, isAnalog, 
             end
         end
         ,FollowMeFlPause   = function() FollowMe.waitResumeFollowMe(stalker, FollowMe.REASON_USER_ACTION); end
-        ,FollowMeFlDistDec = function() FollowMe.changeDistance(stalker, -5); end
-        ,FollowMeFlDistInc = function() FollowMe.changeDistance(stalker, 5); end
-        ,FollowMeFlOffsDec = function() FollowMe.changeXOffset(stalker, -0.5); end
-        ,FollowMeFlOffsInc = function() FollowMe.changeXOffset(stalker, 0.5); end
+        ,FollowMeFlDist    = function(value) FollowMe.changeDistance(stalker, 5 * MathUtil.sign(value)); end
+        ,FollowMeFlOffs    = function(value) FollowMe.changeXOffset(stalker, 0.5 * MathUtil.sign(value)); end
         ,FollowMeFlOffsTgl = function() FollowMe.toggleXOffset(stalker, true); end
     }
     local action = switch[actionName]
     if action then
-        action()
+        action(inputValue)
     else
       log("Not found action: ",actionName)
     end
 end
 
 
-function FollowMe:onRegisterActionEvents(isSelected, isOnActiveVehicle)
-    --log("FollowMe:onRegisterActionEvents(",self,") ",isSelected," ",isOnActiveVehicle)
+function FollowMe:onRegisterActionEvents(isSelected, isOnActiveVehicle, arg3, arg4, arg5)
+    log("FollowMe:onRegisterActionEvents(",self,") ",isSelected," ",isOnActiveVehicle," ",arg3," ",arg4," ",arg5)
     --Actions are only relevant if the function is run clientside
     if not self.isClient then
       return
@@ -517,36 +522,61 @@ function FollowMe:onRegisterActionEvents(isSelected, isOnActiveVehicle)
     local spec = FollowMe.getSpec(self)
     self:clearActionEventsTable(spec.actionEvents)
 
-    local function addActionEvents(tbl)
-      for _,actionName in pairs(tbl) do
-        local succ, eventID, colli = self:addActionEvent(spec.actionEvents, actionName, self, FollowMe.handleAction, false, true, false, true, nil)
-        --g_inputBinding:setActionEventText(eventID, "..todo..")
+    local function addActionEvents(veh, prio, tbl)
+      for _,actionElem in pairs(tbl) do
+        local actionName = actionElem[1]
+        local actionText = actionElem[2]
+        local succ, eventID, colli = veh:addActionEvent(spec.actionEvents, actionName, veh, FollowMe.handleAction, false, true, false, true, nil)
+        if nil ~= actionText then
+          g_inputBinding:setActionEventText(eventID, actionText)
+        end
+        if nil ~= prio then
+          g_inputBinding:setActionEventTextPriority(eventID, prio)
+        end
         g_inputBinding:setActionEventTextVisibility(eventID, true)
       end
     end
 
     --local activeForInput = self:getIsEntered() and not g_currentMission.isPlayerFrozen and not g_gui:getIsGuiVisible();
+    local isEntered = self:getIsEntered()
     local activeForInput = self:getIsActiveForInput(true) and not self.isConveyorBelt
     local isFollowMeActive = FollowMe.getIsFollowMeActive(self)
-    --log("FollowMe:onRegisterActionEvents(",self,") activeForInput=",activeForInput)
-    if activeForInput or isFollowMeActive then
-      addActionEvents( { InputAction.FollowMeMyToggle } )
-      if isFollowMeActive then
-        addActionEvents( { InputAction.FollowMeMyPause, InputAction.FollowMeMyDistDec, InputAction.FollowMeMyDistInc, InputAction.FollowMeMyOffsDec, InputAction.FollowMeMyOffsInc, InputAction.FollowMeMyOffsTgl } )
+    log("FollowMe:onRegisterActionEvents(",self,") isEntered=",isEntered," activeForInput=",activeForInput," followMeActive=",isFollowMeActive)
+    if isEntered then
+      if (activeForInput or isFollowMeActive) then
+        addActionEvents(self, nil, {
+          { InputAction.FollowMeMyToggle, nil }
+        } )
+        if isFollowMeActive then
+          local pauseText
+          if self:getIsFollowMeWaiting() then
+            pauseText = g_i18n:getText("FollowMeMyResume")
+          else
+            pauseText = g_i18n:getText("FollowMeMyWait")
+          end
+          addActionEvents(self, GS_PRIO_VERY_HIGH, {
+            { InputAction.FollowMeMyPause,   pauseText },
+            { InputAction.FollowMeMyDist,    g_i18n:getText("FollowMeMyDist") },
+            { InputAction.FollowMeMyOffs,    g_i18n:getText("FollowMeMyOffs") },
+            { InputAction.FollowMeMyOffsTgl, nil },
+          } )
+        end
       end
-      -- local actionsMy = { InputAction.FollowMeMyToggle, InputAction.FollowMeMyPause, InputAction.FollowMeMyDistDec, InputAction.FollowMeMyDistInc, InputAction.FollowMeMyOffsDec, InputAction.FollowMeMyOffsInc, InputAction.FollowMeMyOffsTgl }
-      -- for _,actionName in pairs(actionsMy) do
-      --   local succ, eventID, colli = self:addActionEvent(spec.actionEvents, actionName, self, FollowMe.handleAction, false, true, false, true, nil)
-      --   g_inputBinding:setActionEventTextVisibility(eventID, false)
-      -- end
-    end
-    if (activeForInput or isFollowMeActive) and nil ~= spec.StalkerVehicleObj then
-      addActionEvents( { InputAction.FollowMeFlStop, InputAction.FollowMeFlPause, InputAction.FollowMeFlDistDec, InputAction.FollowMeFlDistInc, InputAction.FollowMeFlOffsDec, InputAction.FollowMeFlOffsInc, InputAction.FollowMeFlOffsTgl } )
-      -- local actionsFl = { InputAction.FollowMeFlStop,   InputAction.FollowMeFlPause, InputAction.FollowMeFlDistDec, InputAction.FollowMeFlDistInc, InputAction.FollowMeFlOffsDec, InputAction.FollowMeFlOffsInc, InputAction.FollowMeFlOffsTgl }
-      -- for _,actionName in pairs(actionsFl) do
-      --   local succ, eventID, colli = self:addActionEvent(spec.actionEvents, actionName, self, FollowMe.handleAction, false, true, false, true, nil)
-      --   g_inputBinding:setActionEventTextVisibility(eventID, false)
-      -- end
+      if (activeForInput or isFollowMeActive) and nil ~= spec.StalkerVehicleObj then
+        local pauseText
+        if spec.StalkerVehicleObj:getIsFollowMeWaiting() then
+          pauseText = g_i18n:getText("FollowMeFlResume")
+        else
+          pauseText = g_i18n:getText("FollowMeFlWait")
+        end
+        addActionEvents(self, GS_PRIO_HIGH, {
+          { InputAction.FollowMeFlStop,    nil },
+          { InputAction.FollowMeFlPause,   pauseText },
+          { InputAction.FollowMeFlDist,    g_i18n:getText("FollowMeFlDist") },
+          { InputAction.FollowMeFlOffs,    g_i18n:getText("FollowMeFlOffs") },
+          { InputAction.FollowMeFlOffsTgl, nil },
+        } )
+      end
     end
 end
 --
@@ -1117,6 +1147,9 @@ function FollowMe:onWaitResumeFollowMe(reason, noEventSend)
         spec.FollowState = FollowMe.STATE_FOLLOWING
         spec.isDirty = (nil ~= g_server)
     end
+
+    self:requestActionEventUpdate()
+    spec.FollowVehicleObj:requestActionEventUpdate()
 end
 
 function FollowMe:showReason(connection, reason, currentHelper)
@@ -1260,22 +1293,32 @@ function FollowMe:findVehicleInFront()
     return closestVehicle, followCurrentIndex
 end
 
--- function FollowMe:onEnterVehicle(isControlling)
---     log("onEnterVehicle() ",isControlling)
---     if nil ~= self.mapAIHotspot then
---         self.mapAIHotspot.enabled = false;
---     end
--- end
+function FollowMe:onEnterVehicle(isControlling,arg2,arg3)
+    log("onEnterVehicle(",self,") ",isControlling," ",arg2," ",arg3)
+    -- if nil ~= self.mapAIHotspot then
+    --     self.mapAIHotspot.enabled = false;
+    -- end
 
--- function FollowMe:onLeaveVehicle()
---     log("onLeaveVehicle(",self,")")
---     if nil ~= self.mapAIHotspot then
---         self.mapAIHotspot.enabled = true;
---     end
---     if self.followMeIsStarted and nil ~= self.spec_enterable.vehicleCharacter then
---         self.spec_enterable.vehicleCharacter:setCharacterVisibility(true);
---     end
--- end
+    -- local spec = FollowMe.getSpec(self)
+    -- self:clearActionEventsTable(spec.actionEvents)
+end
+
+function FollowMe:onLeaveVehicle(arg1,arg2,arg3)
+    log("onLeaveVehicle(",self,") ",arg1," ",arg2," ",arg3)
+    -- if nil ~= self.mapAIHotspot then
+    --     self.mapAIHotspot.enabled = true;
+    -- end
+    -- if self.followMeIsStarted and nil ~= self.spec_enterable.vehicleCharacter then
+    --     self.spec_enterable.vehicleCharacter:setCharacterVisibility(true);
+    -- end
+
+    -- if FollowMe.getIsFollowMeActive(self) then
+    --   self:requestActionEventUpdate()
+    -- end
+
+    -- local spec = FollowMe.getSpec(self)
+    -- self:clearActionEventsTable(spec.actionEvents)
+end
 
 -- function FollowMe:getDeactivateOnLeave(superFunc)
 --   if FollowMe.getIsFollowMeActive(self) then

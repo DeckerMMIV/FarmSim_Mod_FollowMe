@@ -96,36 +96,40 @@ Con "Follow Me" se puede conseguir.(No funciona con marcha atrás).
     <actions>
         <action name="FollowMeMyToggle"  category="VEHICLE" axisType="HALF" />
         <action name="FollowMeMyPause"   category="VEHICLE" axisType="HALF" />
-        <action name="FollowMeMyDistDec" category="VEHICLE" axisType="HALF" />
-        <action name="FollowMeMyDistInc" category="VEHICLE" axisType="HALF" />
-        <action name="FollowMeMyOffsDec" category="VEHICLE" axisType="HALF" />
-        <action name="FollowMeMyOffsInc" category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeMyDist"    category="VEHICLE" axisType="FULL" />
+        <action name="FollowMeMyOffs"    category="VEHICLE" axisType="FULL" />
         <action name="FollowMeMyOffsTgl" category="VEHICLE" axisType="HALF" />
 
         <action name="FollowMeFlStop"    category="VEHICLE" axisType="HALF" />
         <action name="FollowMeFlPause"   category="VEHICLE" axisType="HALF" />
-        <action name="FollowMeFlDistDec" category="VEHICLE" axisType="HALF" />
-        <action name="FollowMeFlDistInc" category="VEHICLE" axisType="HALF" />
-        <action name="FollowMeFlOffsDec" category="VEHICLE" axisType="HALF" />
-        <action name="FollowMeFlOffsInc" category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeFlDist"    category="VEHICLE" axisType="FULL" />
+        <action name="FollowMeFlOffs"    category="VEHICLE" axisType="FULL" />
         <action name="FollowMeFlOffsTgl" category="VEHICLE" axisType="HALF" />
     </actions>
 
     <inputBinding>
         <actionBinding action="FollowMeMyToggle" ><binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_f" index="1" /></actionBinding>
         <actionBinding action="FollowMeMyPause"  ><binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_h" index="1" /></actionBinding>
-        <actionBinding action="FollowMeMyDistDec"><binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_w" index="1" /></actionBinding>
-        <actionBinding action="FollowMeMyDistInc"><binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_s" index="1" /></actionBinding>
-        <actionBinding action="FollowMeMyOffsDec"><binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_a" index="1" /></actionBinding>
-        <actionBinding action="FollowMeMyOffsInc"><binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_d" index="1" /></actionBinding>
+        <actionBinding action="FollowMeMyDist">
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_w" axisComponent="-" neutralInput="0" index="1" />
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_s" axisComponent="+" neutralInput="0" index="1" />
+        </actionBinding>
+        <actionBinding action="FollowMeMyOffs">
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_a" axisComponent="-" neutralInput="0" index="1" />
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_d" axisComponent="+" neutralInput="0" index="1" />
+        </actionBinding>
         <actionBinding action="FollowMeMyOffsTgl"><binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_x" index="1" /></actionBinding>
 
         <actionBinding action="FollowMeFlStop"   ><binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_f" index="1" /></actionBinding>
         <actionBinding action="FollowMeFlPause"  ><binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_h" index="1" /></actionBinding>
-        <actionBinding action="FollowMeFlDistDec"><binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_w" index="1" /></actionBinding>
-        <actionBinding action="FollowMeFlDistInc"><binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_s" index="1" /></actionBinding>
-        <actionBinding action="FollowMeFlOffsDec"><binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_a" index="1" /></actionBinding>
-        <actionBinding action="FollowMeFlOffsInc"><binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_d" index="1" /></actionBinding>
+        <actionBinding action="FollowMeFlDist">
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_w" axisComponent="-" neutralInput="0" index="1" />
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_s" axisComponent="+" neutralInput="0" index="1" />
+        </actionBinding>
+        <actionBinding action="FollowMeFlOffs">
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_a" axisComponent="-" neutralInput="0" index="1" />
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_d" axisComponent="+" neutralInput="0" index="1" />
+        </actionBinding>
         <actionBinding action="FollowMeFlOffsTgl"><binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_x" index="1" /></actionBinding>
     </inputBinding>
 </modDesc>

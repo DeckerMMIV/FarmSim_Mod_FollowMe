@@ -30,20 +30,29 @@ Move closer to the leading vehicle, while staying behind it." />
         <text name="FollowMeKeysBehind"         text="%s - Behind control actions"  />
         <text name="FollowMeMyToggle"           text="FollowMe: Toggle on/off"      />
 
+        <text name="FollowMeMyDist"             text="FollowMe: Distance"           />
+        <text name="FollowMeMyOffs"             text="FollowMe: Offset"             />
+        <text name="FollowMeMyWait"             text="FollowMe: Wait"               />
+        <text name="FollowMeMyResume"           text="FollowMe: Resume"             />
+        <text name="FollowMeFlDist"             text="FollowMe: Behind Distance"          />
+        <text name="FollowMeFlOffs"             text="FollowMe: Behind Offset"            />
+        <text name="FollowMeFlWait"             text="FollowMe: Behind Wait"              />
+        <text name="FollowMeFlResume"           text="FollowMe: Behind Resume"            />
+
         <text name="input_FollowMeMyToggle"     text="FollowMe: Toggle on/off"              />
         <text name="input_FollowMeMyPause"      text="FollowMe: Myself Wait/Resume"         />
-        <text name="input_FollowMeMyDistDec"    text="FollowMe: Myself Distance -"          />
-        <text name="input_FollowMeMyDistInc"    text="FollowMe: Myself Distance +"          />
-        <text name="input_FollowMeMyOffsDec"    text="FollowMe: Myself Offset left"         />
-        <text name="input_FollowMeMyOffsInc"    text="FollowMe: Myself Offset right"        />
+        <text name="input_FollowMeMyDist_2"     text="FollowMe: Myself Distance -"          />
+        <text name="input_FollowMeMyDist_1"     text="FollowMe: Myself Distance +"          />
+        <text name="input_FollowMeMyOffs_2"     text="FollowMe: Myself Offset left"         />
+        <text name="input_FollowMeMyOffs_1"     text="FollowMe: Myself Offset right"        />
         <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Myself Offset invert/reset" />
 
         <text name="input_FollowMeFlStop"       text="FollowMe: Behind Disengage"           />
         <text name="input_FollowMeFlPause"      text="FollowMe: Behind Wait/Resume"         />
-        <text name="input_FollowMeFlDistDec"    text="FollowMe: Behind Distance -"          />
-        <text name="input_FollowMeFlDistInc"    text="FollowMe: Behind Distance +"          />
-        <text name="input_FollowMeFlOffsDec"    text="FollowMe: Behind Offset left"         />
-        <text name="input_FollowMeFlOffsInc"    text="FollowMe: Behind Offset right"        />
+        <text name="input_FollowMeFlDist_2"     text="FollowMe: Behind Distance -"          />
+        <text name="input_FollowMeFlDist_1"     text="FollowMe: Behind Distance +"          />
+        <text name="input_FollowMeFlOffs_2"     text="FollowMe: Behind Offset left"         />
+        <text name="input_FollowMeFlOffs_1"     text="FollowMe: Behind Offset right"        />
         <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Behind Offset invert/reset" />
 
         <text name="FollowMeLeader"             text="Leader"               />
