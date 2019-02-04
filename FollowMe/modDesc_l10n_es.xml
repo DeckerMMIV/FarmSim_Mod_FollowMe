@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
-    <!-- 
-        Please contribute any other translations at 
+    <!--
+        Please contribute any other translations at
         https://github.com/DeckerMMIV/FarmSim_Mod_FollowMe
     -->
 
@@ -26,11 +26,11 @@ Con "Follow Me" se puede conseguir.(No funciona con marcha atrás).
 
         <text name="FollowMeDropperNotFound"    text="Incapaz de localizar un vehículo guía en el rango de visión.
 Acérquese más a la cabeza tractora." />
-        
+
         <text name="FollowMeKeysMyself"         text="%s - Control/Acciones Propias"  />
         <text name="FollowMeKeysBehind"         text="%s - Control/Acciones Seguidores"  />
         <text name="FollowMeMyToggle"           text="FollowMe: FollowMe: On/Off"      />
-        
+
         <text name="input_FollowMeMyToggle"     text="FollowMe: On/Off" />
         <text name="input_FollowMeMyPause"      text="FollowMe: Pausar/reiniciar Guía" />
         <text name="input_FollowMeMyDistDec"    text="FollowMe: Disminuir distancia Guía -" />
@@ -55,7 +55,7 @@ Acérquese más a la cabeza tractora." />
         <text name="FollowMeDistBehind"         text="Atrás-dist. %.1f" />
         <text name="FollowMeDistAhead"          text="Adelante-dist. %.1f" />
         <text name="FollowMeTrailStrength"      text="Trail %d%%"           />
-        
+
         <text name="FollowMeReason1"            text="Follower '%s' ha parado (por jugador)"           />
         <text name="FollowMeReason2"            text="Follower '%s' ha parado (no hay rastro)"            />
         <text name="FollowMeReason3"            text="Follower '%s' ha parado (demasiado lejos)"         />

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
-    <!-- 
-        Please contribute any other translations at 
+    <!--
+        Please contribute any other translations at
         https://github.com/DeckerMMIV/FarmSim_Mod_FollowMe
     -->
 
@@ -27,11 +27,11 @@ Mit "Follow Me" können Sie das (natürlich nur vorwärtsfahrend).
 
         <text name="FollowMeDropperNotFound"    text="Kann in der Nähe keine Spur finden, der ich folgen könnte.
 Nähern sie sich dem führenden Fahrzeug." />
-        
+
         <text name="FollowMeKeysMyself"         text="%s - Selbst Steuerungsmaßnahmen"  />
         <text name="FollowMeKeysBehind"         text="%s - Hinter Steuerungsmaßnahmen"  />
         <text name="FollowMeMyToggle"           text="FollowMe: Umzuschalten on/off" />
-        
+
         <text name="input_FollowMeMyToggle"     text="FollowMe: Umzuschalten on/off" />
         <text name="input_FollowMeMyPause"      text="FollowMe: Warten / Fortsetzen"  />
         <text name="input_FollowMeMyDistDec"    text="FollowMe: Selbst Abstand -" />
@@ -47,7 +47,7 @@ Nähern sie sich dem führenden Fahrzeug." />
         <text name="input_FollowMeFlOffsDec"    text="FollowMe: Hinter Offset links" />
         <text name="input_FollowMeFlOffsInc"    text="FollowMe: Hinter Offset rechts" />
         <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Hinter Offset invert."   />
-    
+
         <text name="FollowMeLeader"             text="Führer"            />
         <text name="FollowMeFollower"           text="Nachfolger"        />
         <text name="FollowMePaused"             text=" (Warten)"        />
@@ -56,10 +56,10 @@ Nähern sie sich dem führenden Fahrzeug." />
         <text name="FollowMeDistBehind"         text="Hinter-abst. %.1f" />
         <text name="FollowMeDistAhead"          text="Voraus-abst. %.1f"  />
         <text name="FollowMeTrailStrength"      text="Trail %d%%"           />
- 
-        <text name="FollowMeReason1"            text="Nachfolger '%s' gestoppt (durch Spieler)"       /> 
-        <text name="FollowMeReason2"            text="Nachfolger '%s' gestoppt (keine Spur)"        /> 
-        <text name="FollowMeReason3"            text="Nachfolger '%s' gestoppt (Zu weit hinten)"  /> 
-        <text name="FollowMeReason4"            text="Nachfolger '%s' gestoppt (Führer verschwunden)" /> 
+
+        <text name="FollowMeReason1"            text="Nachfolger '%s' gestoppt (durch Spieler)"       />
+        <text name="FollowMeReason2"            text="Nachfolger '%s' gestoppt (keine Spur)"        />
+        <text name="FollowMeReason3"            text="Nachfolger '%s' gestoppt (Zu weit hinten)"  />
+        <text name="FollowMeReason4"            text="Nachfolger '%s' gestoppt (Führer verschwunden)" />
     </texts>
 </l10n>

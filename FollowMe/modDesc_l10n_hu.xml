@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
-    <!-- 
-        Please contribute any other translations at 
+    <!--
+        Please contribute any other translations at
         https://github.com/DeckerMMIV/FarmSim_Mod_FollowMe
     -->
 
@@ -16,7 +16,7 @@
 Mindig is szeretted volna, hogy a járművek kövessenek bármerre is mész a térképen?
 A "Follow Me"-vel most megteheted (csak ne tolass).
     </description>
-    
+
     <texts>
         <text name="FollowMeMissingTrafficCollisionTrigger" text="Sajnos ez a jármű nem alkalmas követésre. Hiányzik az 'aiTrafficCollisionTrigger' rész." />
         <text name="FollowMeNotAvailable"                   text="Sajnos ez a jármű nem alkalmas követésre." />
@@ -26,11 +26,11 @@ A "Follow Me"-vel most megteheted (csak ne tolass).
 
         <text name="FollowMeDropperNotFound"    text="Keresési tartományban nincs követhető jármű.
 Menj közelebb a követendő járműhöz." />
-        
+
         <text name="FollowMeKeysMyself"         text="%s - Myself ellenőrzési intézkedések"  />  <!-- needs translation -->
         <text name="FollowMeKeysBehind"         text="%s - Követő ellenőrzési intézkedések"  />  <!-- needs translation -->
         <text name="FollowMeMyToggle"           text="FollowMe: Toggle on/off"      />  <!-- needs translation -->
-        
+
         <text name="input_FollowMeMyToggle"     text="FollowMe: Ki/Be"                  />
         <text name="input_FollowMeMyPause"      text="FollowMe: Várakozok/Követem"      />
         <text name="input_FollowMeMyDistDec"    text="FollowMe: Követési távolság -"    />
@@ -55,7 +55,7 @@ Menj közelebb a követendő járműhöz." />
         <text name="FollowMeDistBehind"         text="Követési táv %.1f"    />
         <text name="FollowMeDistAhead"          text="Követési táv %.1f"    />
         <text name="FollowMeTrailStrength"      text="Trail %d%%"           />
-        
+
         <text name="FollowMeReason1"            text="Követő '%s' megállt (a játékos)"        /> <!-- needs translation -->
         <text name="FollowMeReason2"            text="Követő '%s' megállt (nincs nyomvonal)"  /> <!-- needs translation -->
         <text name="FollowMeReason3"            text="Követő '%s' megállt (túl messze)"       /> <!-- needs translation -->

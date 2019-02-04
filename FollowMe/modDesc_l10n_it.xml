@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
-    <!-- 
-        Please contribute any other translations at 
+    <!--
+        Please contribute any other translations at
         https://github.com/DeckerMMIV/FarmSim_Mod_FollowMe
     -->
 
@@ -22,23 +22,23 @@ Con "Follow Me" è possibile (non ancora con guida in retromarcia).
         <text name="FollowMeMissingTrafficCollisionTrigger" text="Sfortunatamente questo veicolo non può essere un 'inseguitore'. Manca una parte chiamata 'aiTrafficCollisionTrigger'." />
         <text name="FollowMeNotAvailable"                   text="Sfortunatamente questo veicolo non può essere un 'inseguitore'." />
 
-        <text name="FollowMeAlreadyAI"          text="Il lavoratore assunto sta usando questo veicolo" /> 
+        <text name="FollowMeAlreadyAI"          text="Il lavoratore assunto sta usando questo veicolo" />
         <text name="FollowMeStartEngine"        text="Accendi il motore prima." />
 
         <text name="FollowMeDropperNotFound"    text="Impossibile trovare una 'scia' vicina nel campo visivo da seguire.
 Avvicinati al mezzo che ti precede." />
-        
-        <text name="FollowMeKeysMyself"         text="%s - Comandi capo scia"  />  
-        <text name="FollowMeKeysBehind"         text="%s - Comandi inseguitore"  />  
+
+        <text name="FollowMeKeysMyself"         text="%s - Comandi capo scia"  />
+        <text name="FollowMeKeysBehind"         text="%s - Comandi inseguitore"  />
         <text name="FollowMeMyToggle"           text="FollowMe: Attiva on/off"      />
-        
+
         <text name="input_FollowMeMyToggle"     text="FollowMe: Attiva on/off" />
         <text name="input_FollowMeMyPause"      text="FollowMe: Aspetta/Riparti" />
         <text name="input_FollowMeMyDistDec"    text="FollowMe: Mia distanza -" />
         <text name="input_FollowMeMyDistInc"    text="FollowMe: Mia distanza +" />
         <text name="input_FollowMeMyOffsDec"    text="FollowMe: Mia distanza laterale sx" />
         <text name="input_FollowMeMyOffsInc"    text="FollowMe: Mia distanza laterale dx" />
-        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Inverti la mia distanza"  /> 
+        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Inverti la mia distanza"  />
 
         <text name="input_FollowMeFlStop"       text="FollowMe: Ferma l'inseguitore"  />
         <text name="input_FollowMeFlPause"      text="FollowMe: Inseguitore Aspetta/Riparti" />
@@ -46,8 +46,8 @@ Avvicinati al mezzo che ti precede." />
         <text name="input_FollowMeFlDistInc"    text="FollowMe: Distanza dell'inseguitore +" />
         <text name="input_FollowMeFlOffsDec"    text="FollowMe: Distanza dell'inseguitore a sx" />
         <text name="input_FollowMeFlOffsInc"    text="FollowMe: Distanza dell'inseguitore a dx" />
-        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Inverti Distanza dell'inseguitore"   /> 
-        
+        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Inverti Distanza dell'inseguitore"   />
+
         <text name="FollowMeLeader"             text="Leader" />
         <text name="FollowMeFollower"           text="Inseguitore" />
         <text name="FollowMePaused"             text=" (In attesa)" />
@@ -56,10 +56,10 @@ Avvicinati al mezzo che ti precede." />
         <text name="FollowMeDistBehind"         text="Distanza dietro %.1f" />
         <text name="FollowMeDistAhead"          text="Distanza davanti %.1f" />
         <text name="FollowMeTrailStrength"      text="Trail %d%%"           />
-        
-        <text name="FollowMeReason1"            text="Inseguitore '%s' fermato (dal giocatore)"     /> 
-        <text name="FollowMeReason2"            text="Inseguitore '%s' fermato (nessuna pista)"      /> 
-        <text name="FollowMeReason3"            text="Inseguitore '%s' fermato (troppo lontano)"  /> 
-        <text name="FollowMeReason4"            text="Inseguitore '%s' fermato (leader scomparso)" /> 
+
+        <text name="FollowMeReason1"            text="Inseguitore '%s' fermato (dal giocatore)"     />
+        <text name="FollowMeReason2"            text="Inseguitore '%s' fermato (nessuna pista)"      />
+        <text name="FollowMeReason3"            text="Inseguitore '%s' fermato (troppo lontano)"  />
+        <text name="FollowMeReason4"            text="Inseguitore '%s' fermato (leader scomparso)" />
     </texts>
 </l10n>

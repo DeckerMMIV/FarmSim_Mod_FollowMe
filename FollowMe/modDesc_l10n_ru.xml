@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
-    <!-- 
-        Please contribute any other translations at 
+    <!--
+        Please contribute any other translations at
         https://github.com/DeckerMMIV/FarmSim_Mod_FollowMe
     -->
 
     <!-- Add your own name or nickname here, when you contribute to this file's translation, so I know who to put into the credits. -->
     <translationContributors>
-        Gonimy-Vetrom       
+        Gonimy-Vetrom
     </translationContributors>
 
     <!-- Note that 'description' is only here for easier translations. It needs to be manually copied to ModDesc.XML later. -->
@@ -25,11 +25,11 @@
 
         <text name="FollowMeDropperNotFound"    text="Не удалось найти поблизости 'следа' для следования.
 Подъедьте ближе к ведущему автомобилю." />
-        
+
         <text name="FollowMeKeysMyself"         text="%s - Управление собственной техникой"  />
         <text name="FollowMeKeysBehind"         text="%s - Управление техникой за мной"  />
         <text name="FollowMeMyToggle"           text="FollowMe: ВКЛ/ВЫКЛ"      />
-        
+
         <text name="input_FollowMeMyToggle"     text="FollowMe: ВКЛ/ВЫКЛ" />
         <text name="input_FollowMeMyPause"      text="FollowMe: Ожидать/продолжить" />
         <text name="input_FollowMeMyDistDec"    text="FollowMe: Собственная дистанция -" />
@@ -45,7 +45,7 @@
         <text name="input_FollowMeFlOffsDec"    text="FollowMe: За мной смещение влево" />
         <text name="input_FollowMeFlOffsInc"    text="FollowMe: За мной смещение вправо" />
         <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Инвертировать смещение за мной"   />
-            
+
         <text name="FollowMeLeader"             text="Ведущий" />
         <text name="FollowMeFollower"           text="Ведомый" />
         <text name="FollowMePaused"             text=" (Ожидает)" />
@@ -54,7 +54,7 @@
         <text name="FollowMeDistBehind"         text="за мной дистанция %.1f" />
         <text name="FollowMeDistAhead"          text="отставать на %.1f" />
         <text name="FollowMeTrailStrength"      text="Trail %d%%"           />
-        
+
         <text name="FollowMeReason1"            text="Ведомый '%s' остановлен игроком"/>
         <text name="FollowMeReason2"            text="Ведомый '%s' остановился (нет следа)"/>
         <text name="FollowMeReason3"            text="Ведомый '%s' остановился (отстал)"/>

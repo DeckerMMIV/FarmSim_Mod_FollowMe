@@ -79,6 +79,8 @@ Con "Follow Me" se puede conseguir.(No funciona con marcha atrás).
     </description>
 
     <iconFilename>store_FollowMe.dds</iconFilename>
+
+    <!-- NO! - DONT ATTEMPT CHANGING THE SETTING! - The FollowMe script is NOT YET multiplayer ready! -->
     <multiplayer supported="false"/>
 
     <!-- specializations>

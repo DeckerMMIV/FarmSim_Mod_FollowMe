@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
-    <!-- 
-        Please contribute any other translations at 
+    <!--
+        Please contribute any other translations at
         https://github.com/DeckerMMIV/FarmSim_Mod_FollowMe
     -->
 
@@ -29,7 +29,7 @@ Move closer to the leading vehicle, while staying behind it." />
         <text name="FollowMeKeysMyself"         text="%s - Myself control actions"  />
         <text name="FollowMeKeysBehind"         text="%s - Behind control actions"  />
         <text name="FollowMeMyToggle"           text="FollowMe: Toggle on/off"      />
-        
+
         <text name="input_FollowMeMyToggle"     text="FollowMe: Toggle on/off"              />
         <text name="input_FollowMeMyPause"      text="FollowMe: Myself Wait/Resume"         />
         <text name="input_FollowMeMyDistDec"    text="FollowMe: Myself Distance -"          />
@@ -54,7 +54,7 @@ Move closer to the leading vehicle, while staying behind it." />
         <text name="FollowMeDistBehind"         text="Behind-dist. %.1f"    />
         <text name="FollowMeDistAhead"          text="Ahead-dist. %.1f"     />
         <text name="FollowMeTrailStrength"      text="Trail %d%%"           />
-        
+
         <text name="FollowMeReason1"            text="Follower '%s' stopped (by player)"       />
         <text name="FollowMeReason2"            text="Follower '%s' stopped (no trail)"        />
         <text name="FollowMeReason3"            text="Follower '%s' stopped (too far behind)"  />
