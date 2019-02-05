@@ -18,45 +18,93 @@ end;
 
 
 
-
--- WARNING! This forced change of a constant, is a hack'ish attempt at getting a bit more data through to AIVehicle's methods!
-FarmManager.modOrig_FARM_ID_SEND_NUM_BITS = FarmManager.FARM_ID_SEND_NUM_BITS
-FarmManager.FARM_ID_SEND_NUM_BITS = 8
-
-AIVehicle.FORCED_DRIVING_STRATEGY_0 = 0   -- Game's default AI
-AIVehicle.FORCED_DRIVING_STRATEGY_1 = 1   -- Mod: Follow Me
+--
+--
 
 -- WARNING!
-AIVehicleSetStartedEvent.new = Utils.overwrittenFunction(AIVehicleSetStartedEvent.new, function(self, superFunc, object, reason, isStarted, helper, startedFarmId)
-  if nil ~= startedFarmId then
-    local mod_ForcedDrivingStrategyId = Utils.getNoNil(object.spec_aiVehicle.mod_ForcedDrivingStrategyId, 0)
-    startedFarmId = bitOR(startedFarmId, mod_ForcedDrivingStrategyId * 16)
-  end
-  return superFunc(self, object, reason, isStarted, helper, startedFarmId)
+AIVehicleSetStartedEvent.new = Utils.overwrittenFunction(AIVehicleSetStartedEvent.new, function(dummySelf, superFunc, object, reason, isStarted, helper, startedFarmId)
+  local self = superFunc(dummySelf, object, reason, isStarted, helper, startedFarmId)
+  self.mod_ForcedDrivingStrategyName = object.spec_aiVehicle.mod_ForcedDrivingStrategyName
+  return self
 end)
+
+-- WARNING!
+AIVehicleSetStartedEvent.writeStream = Utils.overwrittenFunction(AIVehicleSetStartedEvent.writeStream, function(self, superFunc, streamId, connection)
+  if nil ~= self.mod_ForcedDrivingStrategyName
+  and "" ~= self.mod_ForcedDrivingStrategyName then
+    streamWriteBool(streamId, true)
+    streamWriteString(streamId, self.mod_ForcedDrivingStrategyName)
+  else
+    streamWriteBool(streamId, false)
+  end
+  superFunc(self, streamId, connection)
+end)
+
+-- WARNING!
+AIVehicleSetStartedEvent.readStream = Utils.overwrittenFunction(AIVehicleSetStartedEvent.readStream, function(self, superFunc, streamId, connection)
+  if streamReadBool(streamId) then
+    self.mod_ForcedDrivingStrategyName = streamReadString(streamId)
+  else
+    self.mod_ForcedDrivingStrategyName = nil
+  end
+  superFunc(self, streamId, connection)
+end)
+
+-- WARNING!
+AIVehicleSetStartedEvent.run = Utils.overwrittenFunction(AIVehicleSetStartedEvent.run, function(self, superFunc, connection)
+  self.object.spec_aiVehicle.mod_ForcedDrivingStrategyName = self.mod_ForcedDrivingStrategyName
+  superFunc(self, connection)
+end)
+
+--
+--
 
 -- WARNING!
 AIVehicle.onWriteStream = Utils.overwrittenFunction(AIVehicle.onWriteStream, function(self, superFunc, streamId, connection)
-  local orig_StartedFarmId = self.spec_aiVehicle.startedFarmId
-  local mod_ForcedDrivingStrategyId = Utils.getNoNil(self.spec_aiVehicle.mod_ForcedDrivingStrategyId, 0)
-  self.spec_aiVehicle.startedFarmId = bitOR(self.spec_aiVehicle.startedFarmId, mod_ForcedDrivingStrategyId * 16)
-  superFunc(self, streamId, connection)
-  self.spec_aiVehicle.startedFarmId = orig_StartedFarmId
-end)
-
--- WARNING!
-AIVehicle.startAIVehicle = Utils.overwrittenFunction(AIVehicle.startAIVehicle, function(self, superFunc, helperIndex, noEventSend, startedFarmId, forcedDrivingStrategyId)
-  if nil ~= forcedDrivingStrategyId then
-    self.spec_aiVehicle.mod_ForcedDrivingStrategyId = forcedDrivingStrategyId
+  if nil ~= self.spec_aiVehicle.mod_ForcedDrivingStrategyName
+  and "" ~= self.spec_aiVehicle.mod_ForcedDrivingStrategyName then
+    streamWriteBool(streamId, true)
+    streamWriteString(streamId, self.spec_aiVehicle.mod_ForcedDrivingStrategyName)
   else
-    self.spec_aiVehicle.mod_ForcedDrivingStrategyId = bitAND(startedFarmId / 16, 15)
+    streamWriteBool(streamId, false)
   end
-  startedFarmId = bitAND(startedFarmId, 15)
-  superFunc(self, helperIndex, noEventSend, startedFarmId)
+  superFunc(self, streamId, connection)
 end)
 
 -- WARNING!
-AIVehicle.getCanAIVehicleContinueWork = Utils.overwrittenFunction(AIVehicle.getCanAIVehicleContinueWork, function(self, superFunc))
+AIVehicle.onReadStream = Utils.overwrittenFunction(AIVehicle.onReadStream, function(self, superFunc, streamId, connection)
+  if streamReadBool(streamId) then
+    self.spec_aiVehicle.mod_ForcedDrivingStrategyName = streamReadString(streamId)
+  else
+    self.spec_aiVehicle.mod_ForcedDrivingStrategyName = nil
+  end
+  superFunc(self, streamId, connection)
+end)
+
+-- WARNING!
+AIVehicle.startAIVehicle = Utils.overwrittenFunction(AIVehicle.startAIVehicle, function(self, superFunc, helperIndex, noEventSend, startedFarmId, forcedDrivingStrategyName)
+  if nil ~= forcedDrivingStrategyName then
+    self.spec_aiVehicle.mod_ForcedDrivingStrategyName = forcedDrivingStrategyName
+  end
+  superFunc(self, helperIndex, noEventSend, startedFarmId, forcedDrivingStrategyName)
+end)
+
+--
+--
+
+-- WARNING!
+AIVehicle.raiseAIEvent = Utils.overwrittenFunction(AIVehicle.raiseAIEvent, function(self, superFunc, aiEvt1, aiEvt2)
+  if "FollowMe" == self.spec_aiVehicle.mod_ForcedDrivingStrategyName then
+    -- Don't raise the `aiEvt2`.
+    -- This to avoid any attached implements to unfold/start/whatever, when FollowMe is activated via AIVehicle.startAIVehicle()
+    SpecializationUtil.raiseEvent(self, aiEvt1)
+    return
+  end
+  superFunc(self, aiEvt1, aiEvt2)
+end)
+
+-- WARNING!
+AIVehicle.getCanAIVehicleContinueWork = Utils.overwrittenFunction(AIVehicle.getCanAIVehicleContinueWork, function(self, superFunc)
   if FollowMe.getIsFollowMeActive(self) then
     return true;
   end
@@ -65,16 +113,12 @@ end)
 
 -- WARNING!
 AIVehicle.updateAIDriveStrategies = Utils.overwrittenFunction(AIVehicle.updateAIDriveStrategies, function(self, superFunc)
-  local mod_ForcedDrivingStrategyId = Utils.getNoNil(self.spec_aiVehicle.mod_ForcedDrivingStrategyId, 0)
-  if 0 == mod_ForcedDrivingStrategyId then
-    -- No forced driving-strategy-id given, so let the original method do what it need to do.
-    superFunc(self)
-  else
-    -- TODO: Have some 'lookup' table, where other mods can register their 'driving-strategy-id' number (maximum 15 available)
-    if AIVehicle.FORCED_DRIVING_STRATEGY_1 == mod_ForcedDrivingStrategyId then
-      FollowMe.updateAIDriveStrategies(self)
-    end
+  if "FollowMe" == self.spec_aiVehicle.mod_ForcedDrivingStrategyName then
+    FollowMe.updateAIDriveStrategies(self)
+    return
   end
+  -- No forced driving-strategy-id given, so let the original method do what it need to do.
+  superFunc(self)
 end)
 
 
@@ -82,15 +126,15 @@ end)
 Vehicle.getSpeedLimit = Utils.overwrittenFunction(Vehicle.getSpeedLimit, function(self, superFunc, onlyIfWorking)
   if  nil == onlyIfWorking
   and nil ~= self.spec_aiVehicle
-  and nil ~= self.spec_aiVehicle.modFM_doCheckSpeedLimitOnlyIfWorking
   then
-    onlyIfWorking = self.spec_aiVehicle.modFM_doCheckSpeedLimitOnlyIfWorking
+    onlyIfWorking = self.spec_aiVehicle.mod_CheckSpeedLimitOnlyIfWorking
   end
   return superFunc(self, onlyIfWorking)
 end)
 
+--
+--
 
--- FS19
 local specTypeName = 'followMe'
 g_specializationManager:addSpecialization(specTypeName, 'FollowMe', g_currentModDirectory .. 'FollowMe.lua', "")
 

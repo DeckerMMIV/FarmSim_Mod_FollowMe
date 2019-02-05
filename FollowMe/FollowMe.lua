@@ -110,8 +110,8 @@ function FollowMe.registerEventListeners(vehicleType)
     "onUpdateTick",
     "onRegisterActionEvents",
     --"onReadStream", "onWriteStream",
-    "onEnterVehicle",
-    "onLeaveVehicle",
+    --"onEnterVehicle",
+    --"onLeaveVehicle",
   } ) do
     SpecializationUtil.registerEventListener(vehicleType, funcName, FollowMe)
   end
@@ -210,12 +210,15 @@ function FollowMe:delete()
     local spec = FollowMe.getSpec(self)
     if nil ~= spec.StalkerVehicleObj then
         -- Stop the stalker-vehicle
-        FollowMe.onStopFollowMe(spec.StalkerVehicleObj, FollowMe.REASON_LEADER_REMOVED, true);
+        if FollowMe.getIsFollowMeActive(spec.StalkerVehicleObj) then
+          FollowMe.stopFollowMe(spec.StalkerVehicleObj, FollowMe.REASON_USER_ACTION);
+        end
+        -- FollowMe.onStopFollowMe(spec.StalkerVehicleObj, FollowMe.REASON_LEADER_REMOVED, true);
     end;
-    if nil ~= spec.FollowVehicleObj then
-        -- Stop ourself
-        FollowMe.onStopFollowMe(self, FollowMe.REASON_NONE, true);
-    end
+    -- if nil ~= spec.FollowVehicleObj then
+    --     -- Stop ourself
+    --     FollowMe.onStopFollowMe(self, FollowMe.REASON_NONE, true);
+    -- end
 end;
 
 function FollowMe:getCanStartFollowMe()
@@ -240,44 +243,36 @@ function FollowMe:getIsFollowMeWaiting()
   return spec.FollowState == FollowMe.STATE_WAITING
 end
 
--- AIVehicle.getCanStartAIVehicle = Utils.overwrittenFunction(AIVehicle.getCanStartAIVehicle, function(self, superFunc)
---   if FollowMe.getIsFollowMeActive(self) then
---     return false
---   end
---   return superFunc(self)
--- end)
+-- function FollowMe:onWriteStream(streamId, connection)
+--     local spec = FollowMe.getSpec(self)
+--     streamWriteInt8(streamId, Utils.getNoNil(spec.FollowKeepBack, 0))
+--     streamWriteInt8(streamId, Utils.getNoNil(spec.FollowXOffset,  0) * 2)
+--     if streamWriteBool(streamId, self.followMeIsStarted) then
+--         streamWriteUIntN(streamId, spec.FollowState,   FollowMe.NUM_BITS_STATE)
+--         streamWriteUIntN(streamId, spec.startedFarmId, FarmManager.FARM_ID_SEND_NUM_BITS)
+--         streamWriteUInt8(streamId, spec.currentHelper.index)
+--         writeNetworkNodeObject(streamId, spec.FollowVehicleObj)
+--     end
+-- end;
 
+-- function FollowMe:onReadStream(streamId, connection)
+--     local distance  = streamReadInt8(streamId)
+--     local offset    = streamReadInt8(streamId) / 2
+--     if streamReadBool(streamId) then
+--         local state         = streamReadUIntN(       streamId, FollowMe.NUM_BITS_STATE)
+--         local farmId        = streamReadUIntN(       streamId, FarmManager.FARM_ID_SEND_NUM_BITS)
+--         local helperIndex   = streamReadUInt8(       streamId)
+--         local followObj     = readNetworkNodeObject( streamId)
 
-function FollowMe:onWriteStream(streamId, connection)
-    local spec = FollowMe.getSpec(self)
-    streamWriteInt8(streamId, Utils.getNoNil(spec.FollowKeepBack, 0))
-    streamWriteInt8(streamId, Utils.getNoNil(spec.FollowXOffset,  0) * 2)
-    if streamWriteBool(streamId, self.followMeIsStarted) then
-        streamWriteUIntN(streamId, spec.FollowState,   FollowMe.NUM_BITS_STATE)
-        streamWriteUIntN(streamId, spec.startedFarmId, FarmManager.FARM_ID_SEND_NUM_BITS)
-        streamWriteUInt8(streamId, spec.currentHelper.index)
-        writeNetworkNodeObject(streamId, spec.FollowVehicleObj)
-    end
-end;
+--         FollowMe.onStartFollowMe(self, followObj, helperIndex, true, farmId);
 
-function FollowMe:onReadStream(streamId, connection)
-    local distance  = streamReadInt8(streamId)
-    local offset    = streamReadInt8(streamId) / 2
-    if streamReadBool(streamId) then
-        local state         = streamReadUIntN(       streamId, FollowMe.NUM_BITS_STATE)
-        local farmId        = streamReadUIntN(       streamId, FarmManager.FARM_ID_SEND_NUM_BITS)
-        local helperIndex   = streamReadUInt8(       streamId)
-        local followObj     = readNetworkNodeObject( streamId)
+--         local spec = FollowMe.getSpec(self)
+--         spec.FollowState = state;
+--     end
 
-        FollowMe.onStartFollowMe(self, followObj, helperIndex, true, farmId);
-
-        local spec = FollowMe.getSpec(self)
-        spec.FollowState = state;
-    end
-
-    FollowMe.changeDistance(self, { distance }, true ); -- Absolute change
-    FollowMe.changeXOffset( self, { offset },   true ); -- Absolute change
-end;
+--     FollowMe.changeDistance(self, { distance }, true ); -- Absolute change
+--     FollowMe.changeXOffset( self, { offset },   true ); -- Absolute change
+-- end;
 
 
 function FollowMe:getFollowNode()
@@ -473,7 +468,7 @@ end;
 
 
 function FollowMe:handleAction(actionName, inputValue, callbackState, isAnalog, isMouse)
-    log("FollowMe:handleAction ",actionName," ",inputValue," ",callbackState," ",isAnalog," ",isMouse)
+    --log("FollowMe:handleAction ",actionName," ",inputValue," ",callbackState," ",isAnalog," ",isMouse)
     local spec = FollowMe.getSpec(self)
     local stalker = spec.StalkerVehicleObj;
     local switch = {
@@ -506,14 +501,14 @@ function FollowMe:handleAction(actionName, inputValue, callbackState, isAnalog, 
     local action = switch[actionName]
     if action then
         action(inputValue)
-    else
-      log("Not found action: ",actionName)
+    -- else
+    --   log("Not found action: ",actionName)
     end
 end
 
 
 function FollowMe:onRegisterActionEvents(isSelected, isOnActiveVehicle, arg3, arg4, arg5)
-    log("FollowMe:onRegisterActionEvents(",self,") ",isSelected," ",isOnActiveVehicle," ",arg3," ",arg4," ",arg5)
+    --log("FollowMe:onRegisterActionEvents(",self,") ",isSelected," ",isOnActiveVehicle," ",arg3," ",arg4," ",arg5)
     --Actions are only relevant if the function is run clientside
     if not self.isClient then
       return
@@ -541,7 +536,7 @@ function FollowMe:onRegisterActionEvents(isSelected, isOnActiveVehicle, arg3, ar
     local isEntered = self:getIsEntered()
     local activeForInput = self:getIsActiveForInput(true) and not self.isConveyorBelt
     local isFollowMeActive = FollowMe.getIsFollowMeActive(self)
-    log("FollowMe:onRegisterActionEvents(",self,") isEntered=",isEntered," activeForInput=",activeForInput," followMeActive=",isFollowMeActive)
+    --log("FollowMe:onRegisterActionEvents(",self,") isEntered=",isEntered," activeForInput=",activeForInput," followMeActive=",isFollowMeActive)
     if isEntered then
       if (activeForInput or isFollowMeActive) then
         addActionEvents(self, nil, {
@@ -579,17 +574,17 @@ function FollowMe:onRegisterActionEvents(isSelected, isOnActiveVehicle, arg3, ar
       end
     end
 end
---
-function FollowMe:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection, isSelected)
-    -- if FollowMe.getIsFollowMeActive(self) then
-    --     -- self.forceIsActive = true;
-    --     -- self.steeringEnabled = false;
-    --     -- self.spec_motorized.stopMotorOnLeave  = false
-    --     -- self.spec_drivable.allowPlayerControl = false
 
-    --     -- self:raiseActive()
-    -- end
-end;
+-- function FollowMe:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection, isSelected)
+--     -- if FollowMe.getIsFollowMeActive(self) then
+--     --     -- self.forceIsActive = true;
+--     --     -- self.steeringEnabled = false;
+--     --     -- self.spec_motorized.stopMotorOnLeave  = false
+--     --     -- self.spec_drivable.allowPlayerControl = false
+
+--     --     -- self:raiseActive()
+--     -- end
+-- end;
 
 function FollowMe:onUpdateTick(dt, isActiveForInput, isSelected)
     local spec = FollowMe.getSpec(self)
@@ -646,48 +641,24 @@ function FollowMe:onUpdateTick(dt, isActiveForInput, isSelected)
     --FollowMe.sendUpdate(self);
 end;
 
-function FollowMe.sendUpdate(self)
-    local spec = FollowMe.getSpec(self)
+-- function FollowMe.sendUpdate(self)
+--     local spec = FollowMe.getSpec(self)
 
-    if spec.isDirty
-    or (nil ~= spec.delayDirty and spec.delayDirty < g_currentMission.time)
-    then
-        spec.isDirty = false;
-        spec.delayDirty = nil;
-        --
-        if nil == g_server then
-            -- Client - Send "distance/offset update" to server
-            g_client:getServerConnection():sendEvent(FollowMeRequestEvent:new(self, FollowMe.COMMAND_NONE, FollowMe.REASON_NONE, nil));
-        else
-            -- Server only
-            g_server:broadcastEvent(FollowMeResponseEvent:new(self, spec.FollowState, FollowMe.REASON_NONE, spec.currentHelper), nil, nil, self);
-        end
-    end;
-end;
-
--- -- Hack'ish covert attempt, at _avoiding_ AIVehicle.updateAIDriveStrategies() to create any 'driveStrategies'.
--- -- This "hack" is part of tRYing to get `self:getIsAIActive()` to return true, when FollowMe is active, but without
--- -- anything actually happening in AIVehicle.onUpdate and .onUpdateTick
--- AIVehicle.updateAIImplementData = Utils.overwrittenFunction(AIVehicle.updateAIImplementData, function(self, superFunc)
---   if FollowMe.getIsFollowMeActive(self) then
---     self.spec_aiVehicle.aiImplementList = {}
---   else
---     superFunc(self)
---   end
--- end)
-
--- -- Hack'ish attempt at, when FollowMe is active, then disable the 'TOGGLE_AI' event that is tested for in the AIVehicle.onUpdateTick method
--- AIVehicle.onUpdateTick = Utils.appendedFunction(AIVehicle.onUpdateTick, function(self, superFunc, dt, isActiveForInput, isSelected)
---   if self.isClient then
---     if FollowMe.getIsFollowMeActive(self) then
---       local actionEvent = self.spec_aiVehicle.actionEvents[InputAction.TOGGLE_AI]
---       if nil ~= actionEvent then
---         g_inputBinding:setActionEventActive(actionEvent.actionEventId, false)
---       end
---     end
---   end
--- end)
-
+--     if spec.isDirty
+--     or (nil ~= spec.delayDirty and spec.delayDirty < g_currentMission.time)
+--     then
+--         spec.isDirty = false;
+--         spec.delayDirty = nil;
+--         --
+--         if nil == g_server then
+--             -- Client - Send "distance/offset update" to server
+--             g_client:getServerConnection():sendEvent(FollowMeRequestEvent:new(self, FollowMe.COMMAND_NONE, FollowMe.REASON_NONE, nil));
+--         else
+--             -- Server only
+--             g_server:broadcastEvent(FollowMeResponseEvent:new(self, spec.FollowState, FollowMe.REASON_NONE, spec.currentHelper), nil, nil, self);
+--         end
+--     end;
+-- end;
 
 function FollowMe:startFollowMe(connection, startedFarmId)
     if nil == g_server then
@@ -707,7 +678,7 @@ function FollowMe:startFollowMe(connection, startedFarmId)
                 FollowMe.showReason(self, connection, FollowMe.REASON_CLEAR_WARNING)
                 --FollowMe.onStartFollowMe(self, closestVehicle, nil, nil, startedFarmId);
 
-                self:startAIVehicle(nil, nil, startedFarmId, AIVehicle.FORCED_DRIVING_STRATEGY_1)
+                self:startAIVehicle(nil, nil, startedFarmId, "FollowMe")
             end
         end
     end
@@ -737,7 +708,6 @@ end
 --
 --
 
-
 AIDriveStrategyFollow = {};
 local AIDriveStrategyFollow_mt = Class(AIDriveStrategyFollow, AIDriveStrategy);
 
@@ -758,7 +728,7 @@ function AIDriveStrategyFollow:delete()
     vehicleSpec.FollowState = FollowMe.STATE_NONE
     vehicle.followMeIsStarted = false
 
-    vehicle.spec_aiVehicle.modFM_doCheckSpeedLimitOnlyIfWorking = nil
+    vehicle.spec_aiVehicle.mod_CheckSpeedLimitOnlyIfWorking = nil
 
     AIDriveStrategyFollow:superClass().delete(self);
 end
@@ -779,7 +749,7 @@ function AIDriveStrategyFollow:setAIVehicle(vehicle)
       vehicleSpec.FollowState = FollowMe.STATE_FOLLOWING
       vehicle.followMeIsStarted = true
 
-      vehicle.spec_aiVehicle.modFM_doCheckSpeedLimitOnlyIfWorking = true  -- A work-around, for forcing AIVehicle:onUpdateTick() making its call to `self:getSpeedLimit()` into a `self:getSpeedLimit(true)`
+      vehicle.spec_aiVehicle.mod_CheckSpeedLimitOnlyIfWorking = true  -- A work-around, for forcing AIVehicle:onUpdateTick() making its call to `self:getSpeedLimit()` into a `self:getSpeedLimit(true)`
     else
       vehicleSpec.FollowVehicleObj = nil
       vehicle.followMeIsStarted = false
@@ -966,176 +936,176 @@ end
 --
 --
 
-function FollowMe.acquireHelper(helperIndex)
-    local helperObj
-    if nil ~= helperIndex and helperIndex >= 1 and helperIndex <= table.getn(g_helperManager.indexToHelper) then
-        helperObj = g_helperManager.indexToHelper[helperIndex]
-    else
-        helperObj = g_helperManager:getRandomHelper()
-    end
+-- function FollowMe.acquireHelper(helperIndex)
+--     local helperObj
+--     if nil ~= helperIndex and helperIndex >= 1 and helperIndex <= table.getn(g_helperManager.indexToHelper) then
+--         helperObj = g_helperManager.indexToHelper[helperIndex]
+--     else
+--         helperObj = g_helperManager:getRandomHelper()
+--     end
 
-    g_helperManager:useHelper(helperObj)
+--     g_helperManager:useHelper(helperObj)
 
-    return helperObj
-end
+--     return helperObj
+-- end
 
-function FollowMe.releaseHelper(helperObj)
-    if nil ~= helperObj then
-        g_helperManager:releaseHelper(helperObj)
-    end
-    return nil
-end
+-- function FollowMe.releaseHelper(helperObj)
+--     if nil ~= helperObj then
+--         g_helperManager:releaseHelper(helperObj)
+--     end
+--     return nil
+-- end
 
-function FollowMe:activateHotspot()
-  local spec = FollowMe.getSpec(self)
+-- function FollowMe:activateHotspot()
+--   local spec = FollowMe.getSpec(self)
 
-  local _, textSize    = getNormalizedScreenValues(0, 9)
-  local _, textOffsetY = getNormalizedScreenValues(0, 18)
-  local width, height  = getNormalizedScreenValues(24, 24)
-  spec.mapAIHotspot = MapHotspot:new("helper", MapHotspot.CATEGORY_AI)
-  spec.mapAIHotspot:setSize(width, height)
-  spec.mapAIHotspot:setLinkedNode(FollowMe.getFollowNode(self))
-  if nil ~= spec.currentHelper and nil ~= spec.currentHelper.name then
-    spec.mapAIHotspot:setText(spec.currentHelper.name)
-  end
-  spec.mapAIHotspot:setImage(nil, getNormalizedUVs(MapHotspot.UV.HELPER), {0.052, 0.1248, 0.672, 1})
-  spec.mapAIHotspot:setBackgroundImage(nil, getNormalizedUVs(MapHotspot.UV.HELPER))
-  spec.mapAIHotspot:setIconScale(0.7)
-  spec.mapAIHotspot:setTextOptions(textSize, nil, textOffsetY, {1, 1, 1, 1}, Overlay.ALIGN_VERTICAL_MIDDLE)
-  g_currentMission:addMapHotspot(spec.mapAIHotspot)
-end
+--   local _, textSize    = getNormalizedScreenValues(0, 9)
+--   local _, textOffsetY = getNormalizedScreenValues(0, 18)
+--   local width, height  = getNormalizedScreenValues(24, 24)
+--   spec.mapAIHotspot = MapHotspot:new("helper", MapHotspot.CATEGORY_AI)
+--   spec.mapAIHotspot:setSize(width, height)
+--   spec.mapAIHotspot:setLinkedNode(FollowMe.getFollowNode(self))
+--   if nil ~= spec.currentHelper and nil ~= spec.currentHelper.name then
+--     spec.mapAIHotspot:setText(spec.currentHelper.name)
+--   end
+--   spec.mapAIHotspot:setImage(nil, getNormalizedUVs(MapHotspot.UV.HELPER), {0.052, 0.1248, 0.672, 1})
+--   spec.mapAIHotspot:setBackgroundImage(nil, getNormalizedUVs(MapHotspot.UV.HELPER))
+--   spec.mapAIHotspot:setIconScale(0.7)
+--   spec.mapAIHotspot:setTextOptions(textSize, nil, textOffsetY, {1, 1, 1, 1}, Overlay.ALIGN_VERTICAL_MIDDLE)
+--   g_currentMission:addMapHotspot(spec.mapAIHotspot)
+-- end
 
-function FollowMe:deactivateHotspot()
-  local spec = FollowMe.getSpec(self)
-  if nil ~= spec.mapAIHotspot then
-    g_currentMission:removeMapHotspot(spec.mapAIHotspot)
-    spec.mapAIHotspot:delete()
-    spec.mapAIHotspot = nil
-  end
-end
+-- function FollowMe:deactivateHotspot()
+--   local spec = FollowMe.getSpec(self)
+--   if nil ~= spec.mapAIHotspot then
+--     g_currentMission:removeMapHotspot(spec.mapAIHotspot)
+--     spec.mapAIHotspot:delete()
+--     spec.mapAIHotspot = nil
+--   end
+-- end
 
-function FollowMe:onStartFollowMe(leader, helperIndex, noEventSend, startedFarmId)
-    log("onStartFollowMe(leader=",leader,", helperIndex=",helperIndex,")")
+-- function FollowMe:onStartFollowMe(leader, helperIndex, noEventSend, startedFarmId)
+--     log("onStartFollowMe(leader=",leader,", helperIndex=",helperIndex,")")
 
-    if not FollowMe.getIsFollowMeActive(self) and nil ~= leader then
-        local spec = FollowMe.getSpec(self)
+--     if not FollowMe.getIsFollowMeActive(self) and nil ~= leader then
+--         local spec = FollowMe.getSpec(self)
 
-        self.followMeIsStarted = true;
+--         self.followMeIsStarted = true;
 
-        spec.currentHelper = FollowMe.acquireHelper(helperIndex)
-        spec.startedFarmId = startedFarmId
+--         spec.currentHelper = FollowMe.acquireHelper(helperIndex)
+--         spec.startedFarmId = startedFarmId
 
-        --
-        local leaderSpec = FollowMe.getSpec(leader)
-        leaderSpec.StalkerVehicleObj = self
+--         --
+--         local leaderSpec = FollowMe.getSpec(leader)
+--         leaderSpec.StalkerVehicleObj = self
 
-        spec.FollowVehicleObj = followObj
-        spec.FollowState = FollowMe.STATE_FOLLOWING
+--         spec.FollowVehicleObj = followObj
+--         spec.FollowState = FollowMe.STATE_FOLLOWING
 
-        if true ~= noEventSend and nil ~= g_server then
-            g_server:broadcastEvent(FollowMeResponseEvent:new(self, FollowMe.STATE_STARTING, FollowMe.REASON_NONE, spec.currentHelper, spec.startedFarmId), nil, nil, self);
-        end
+--         if true ~= noEventSend and nil ~= g_server then
+--             g_server:broadcastEvent(FollowMeResponseEvent:new(self, FollowMe.STATE_STARTING, FollowMe.REASON_NONE, spec.currentHelper, spec.startedFarmId), nil, nil, self);
+--         end
 
-        --self.isHirableBlocked = false;
-        --self.forceIsActive = true;
-        self.steeringEnabled = false;
-        self.spec_motorized.stopMotorOnLeave  = false
-        self.spec_drivable.allowPlayerControl = false
+--         --self.isHirableBlocked = false;
+--         --self.forceIsActive = true;
+--         self.steeringEnabled = false;
+--         self.spec_motorized.stopMotorOnLeave  = false
+--         self.spec_drivable.allowPlayerControl = false
 
-        -- self.spec_enterable.disableCharacterOnLeave = false
-        -- if nil ~= self.spec_enterable:getVehicleCharacter() then
-        --     self.spec_enterable:deleteVehicleCharacter()
-        -- end
-        -- if nil ~= spec.currentHelper then
-        --     self.spec_enterable:setRandomVehicleCharacter()
-        --     if not self.spec_enterable.isEntered then
-        --         if nil ~= self.spec_enterable.enterAnimation and nil ~= self.spec_enterable.playAnimation then
-        --             self:playAnimation(self.spec_enterable.enterAnimation, 1, nil, true)
-        --         end
-        --     end
-        -- end
+--         -- self.spec_enterable.disableCharacterOnLeave = false
+--         -- if nil ~= self.spec_enterable:getVehicleCharacter() then
+--         --     self.spec_enterable:deleteVehicleCharacter()
+--         -- end
+--         -- if nil ~= spec.currentHelper then
+--         --     self.spec_enterable:setRandomVehicleCharacter()
+--         --     if not self.spec_enterable.isEntered then
+--         --         if nil ~= self.spec_enterable.enterAnimation and nil ~= self.spec_enterable.playAnimation then
+--         --             self:playAnimation(self.spec_enterable.enterAnimation, 1, nil, true)
+--         --         end
+--         --     end
+--         -- end
 
-        FollowMe.activateHotspot(self)
+--         FollowMe.activateHotspot(self)
 
-        --
-        self.spec_aiVehicle.isActive = true
-        self:requestActionEventUpdate()
-    end
-end
+--         --
+--         self.spec_aiVehicle.isActive = true
+--         self:requestActionEventUpdate()
+--     end
+-- end
 
-function FollowMe:onStopFollowMe(reason, noEventSend)
-    log("FollowMe:onStopFollowMe() ",reason)
-    if FollowMe.getIsFollowMeActive(self) then
-        local spec = FollowMe.getSpec(self)
+-- function FollowMe:onStopFollowMe(reason, noEventSend)
+--     log("FollowMe:onStopFollowMe() ",reason)
+--     if FollowMe.getIsFollowMeActive(self) then
+--         local spec = FollowMe.getSpec(self)
 
-        self.spec_aiVehicle.isActive = false
+--         self.spec_aiVehicle.isActive = false
 
-        self.followMeIsStarted = false;
+--         self.followMeIsStarted = false;
 
-        if nil ~= spec.FollowVehicleObj then
-          local leaderSpec = FollowMe.getSpec(spec.FollowVehicleObj)
-          leaderSpec.StalkerVehicleObj = nil
-        end
-        spec.FollowVehicleObj = nil
-        spec.FollowState = FollowMe.STATE_NONE
+--         if nil ~= spec.FollowVehicleObj then
+--           local leaderSpec = FollowMe.getSpec(spec.FollowVehicleObj)
+--           leaderSpec.StalkerVehicleObj = nil
+--         end
+--         spec.FollowVehicleObj = nil
+--         spec.FollowState = FollowMe.STATE_NONE
 
-        if true ~= noEventSend and nil ~= g_server then
-            log("g_server:broadcastEvent")
-            g_server:broadcastEvent(FollowMeResponseEvent:new(self, FollowMe.STATE_STOPPING, reason, spec.currentHelper, 0), nil, nil, self);
-        end
+--         if true ~= noEventSend and nil ~= g_server then
+--             log("g_server:broadcastEvent")
+--             g_server:broadcastEvent(FollowMeResponseEvent:new(self, FollowMe.STATE_STOPPING, reason, spec.currentHelper, 0), nil, nil, self);
+--         end
 
-        FollowMe.showReason(self, nil, reason, spec.currentHelper)
+--         FollowMe.showReason(self, nil, reason, spec.currentHelper)
 
-        spec.currentHelper = FollowMe.releaseHelper(spec.currentHelper)
+--         spec.currentHelper = FollowMe.releaseHelper(spec.currentHelper)
 
-        --self.forceIsActive = false;
-        --self.steeringEnabled = true;
-        self.spec_motorized.stopMotorOnLeave  = true
-        self.spec_drivable.allowPlayerControl = true
+--         --self.forceIsActive = false;
+--         --self.steeringEnabled = true;
+--         self.spec_motorized.stopMotorOnLeave  = true
+--         self.spec_drivable.allowPlayerControl = true
 
-        self:setCruiseControlState(Drivable.CRUISECONTROL_STATE_OFF, true);
+--         self:setCruiseControlState(Drivable.CRUISECONTROL_STATE_OFF, true);
 
-        -- self.spec_enterable.disableCharacterOnLeave = true
+--         -- self.spec_enterable.disableCharacterOnLeave = true
 
-        -- -- Remove helper-character
-        -- if nil ~= self.spec_enterable:getVehicleCharacter() then
-        --   self.spec_enterable:deleteVehicleCharacter()
-        -- end
+--         -- -- Remove helper-character
+--         -- if nil ~= self.spec_enterable:getVehicleCharacter() then
+--         --   self.spec_enterable:deleteVehicleCharacter()
+--         -- end
 
-        -- if self.spec_enterable.isEntered or self.spec_enterable.isControlled then
-        --     -- if nil ~= self.spec_enterable.vehicleCharacter then
-        --     --     log("self.spec_enterable:setVehicleCharacter")
-        --     --     --g_gameSettings:getValue("playerIndex")
-        --     --     --g_gameSettings:getValue("playerColorIndex")
-        --     --     self.spec_enterable:setVehicleCharacter(g_playerModelManager:getPlayerModelByIndex(self.playerIndex).filename, self.playerColorIndex)
-        --     --     self.spec_enterable.vehicleCharacter:setCharacterVisibility(not self.spec_enterable.isEntered)
-        --     -- end
+--         -- if self.spec_enterable.isEntered or self.spec_enterable.isControlled then
+--         --     -- if nil ~= self.spec_enterable.vehicleCharacter then
+--         --     --     log("self.spec_enterable:setVehicleCharacter")
+--         --     --     --g_gameSettings:getValue("playerIndex")
+--         --     --     --g_gameSettings:getValue("playerColorIndex")
+--         --     --     self.spec_enterable:setVehicleCharacter(g_playerModelManager:getPlayerModelByIndex(self.playerIndex).filename, self.playerColorIndex)
+--         --     --     self.spec_enterable.vehicleCharacter:setCharacterVisibility(not self.spec_enterable.isEntered)
+--         --     -- end
 
-        --     -- Add player-character
-        --     local playerModel = g_playerModelManager:getPlayerModelByIndex(self.spec_enterable.playerStyle.selectedModelIndex)
-        --     self:setVehicleCharacter(playerModel.xmlFilename, self.spec_enterable.playerStyle)
-        --     -- if self.spec_enterable.enterAnimation ~= nil and self.playAnimation ~= nil then
-        --     --     self:playAnimation(self.spec_enterable.enterAnimation, 1, nil, true)
-        --     -- end
-        -- end;
+--         --     -- Add player-character
+--         --     local playerModel = g_playerModelManager:getPlayerModelByIndex(self.spec_enterable.playerStyle.selectedModelIndex)
+--         --     self:setVehicleCharacter(playerModel.xmlFilename, self.spec_enterable.playerStyle)
+--         --     -- if self.spec_enterable.enterAnimation ~= nil and self.playAnimation ~= nil then
+--         --     --     self:playAnimation(self.spec_enterable.enterAnimation, 1, nil, true)
+--         --     -- end
+--         -- end;
 
-        FollowMe.deactivateHotspot(self)
+--         FollowMe.deactivateHotspot(self)
 
-        if self.isServer then
-            --log("WheelsUtil.updateWheelsPhysics")
-            WheelsUtil.updateWheelsPhysics(self, 0, self.lastSpeedReal, 0, true, self.requiredDriveMode);
-        end
+--         if self.isServer then
+--             --log("WheelsUtil.updateWheelsPhysics")
+--             WheelsUtil.updateWheelsPhysics(self, 0, self.lastSpeedReal, 0, true, self.requiredDriveMode);
+--         end
 
-        -- TODO - does a g_gameSettings:getValue() exist for 'automaticMotorStartEnabled'?
-        if self.isServer and g_currentMission.missionInfo.automaticMotorStartEnabled and not (self.spec_enterable.isEntered or self.spec_enterable.isControlled) then
-            --log("self:stopMotor")
-            self:stopMotor();
-            -- TODO: Stopping motor also causes brakes to not work!!?!? What kind of vehicle inspector authorized such a vehicle that cannot brake when engine is off?
-        end
+--         -- TODO - does a g_gameSettings:getValue() exist for 'automaticMotorStartEnabled'?
+--         if self.isServer and g_currentMission.missionInfo.automaticMotorStartEnabled and not (self.spec_enterable.isEntered or self.spec_enterable.isControlled) then
+--             --log("self:stopMotor")
+--             self:stopMotor();
+--             -- TODO: Stopping motor also causes brakes to not work!!?!? What kind of vehicle inspector authorized such a vehicle that cannot brake when engine is off?
+--         end
 
-        self:requestActionEventUpdate()
-    end
-end
+--         self:requestActionEventUpdate()
+--     end
+-- end
 
 function FollowMe:onWaitResumeFollowMe(reason, noEventSend)
     local spec = FollowMe.getSpec(self)
@@ -1214,7 +1184,7 @@ function FollowMe:findVehicleInFront()
     local rotRad    = MathUtil.degToRad(rotDeg-45.0);
     --log(string.format("getWorldTranslation:%f/%f/%f - localDirectionToWorld:%f/%f/%f - rDeg:%f - rRad:%f", wx,wy,wz, rx,ry,rz, rotDeg, rotRad));
 
-    log("Myself ",self:getName()," Rxyz(",vec2str(rx,ry,rz),") Wxyz(",vec2str(wx,wy,wz),")")
+    --log("Myself ",self:getName()," Rxyz(",vec2str(rx,ry,rz),") Wxyz(",vec2str(wx,wy,wz),")")
 
     -- Find closest vehicle, that is in front of self.
     local closestDistance = 50*50; -- due to using Utils.vector2LengthSq()
@@ -1243,7 +1213,7 @@ function FollowMe:findVehicleInFront()
                         closestDistance = dist;
                         closestVehicle = vehicleObj;
 
-                        log("closest(",dist,") ",closestVehicle:getName()," Rxyz(",vec2str(vrx,vry,vrz),") Wxyz(",vec2str(vx,vy,vz),")")
+                        --log("closest(",dist,") ",closestVehicle:getName()," Rxyz(",vec2str(vrx,vry,vrz),") Wxyz(",vec2str(vx,vy,vz),")")
                     end;
                 end;
             end;
@@ -1252,7 +1222,7 @@ function FollowMe:findVehicleInFront()
 
     local followCurrentIndex = -1;
     if nil ~= closestVehicle then
-        log("FollowMe:findVehicleInFront() candidate=",closestVehicle:getName())
+        --log("FollowMe:findVehicleInFront() candidate=",closestVehicle:getName())
         -- Find closest "breadcrumb"
         local closestDistance = 50*50; -- due to using Utils.vector2LengthSq()
         local closestSpec = FollowMe.getSpec(closestVehicle)
@@ -1289,36 +1259,36 @@ function FollowMe:findVehicleInFront()
         end;
     end
 
-    log("FollowMe:findVehicleInFront() actual=",(nil ~= closestVehicle) and closestVehicle:getFullName() or "(nil)")
+    --log("FollowMe:findVehicleInFront() actual=",(nil ~= closestVehicle) and closestVehicle:getFullName() or "(nil)")
     return closestVehicle, followCurrentIndex
 end
 
-function FollowMe:onEnterVehicle(isControlling,arg2,arg3)
-    log("onEnterVehicle(",self,") ",isControlling," ",arg2," ",arg3)
-    -- if nil ~= self.mapAIHotspot then
-    --     self.mapAIHotspot.enabled = false;
-    -- end
+-- function FollowMe:onEnterVehicle(isControlling,arg2,arg3)
+--     log("onEnterVehicle(",self,") ",isControlling," ",arg2," ",arg3)
+--     -- if nil ~= self.mapAIHotspot then
+--     --     self.mapAIHotspot.enabled = false;
+--     -- end
 
-    -- local spec = FollowMe.getSpec(self)
-    -- self:clearActionEventsTable(spec.actionEvents)
-end
+--     -- local spec = FollowMe.getSpec(self)
+--     -- self:clearActionEventsTable(spec.actionEvents)
+-- end
 
-function FollowMe:onLeaveVehicle(arg1,arg2,arg3)
-    log("onLeaveVehicle(",self,") ",arg1," ",arg2," ",arg3)
-    -- if nil ~= self.mapAIHotspot then
-    --     self.mapAIHotspot.enabled = true;
-    -- end
-    -- if self.followMeIsStarted and nil ~= self.spec_enterable.vehicleCharacter then
-    --     self.spec_enterable.vehicleCharacter:setCharacterVisibility(true);
-    -- end
+-- function FollowMe:onLeaveVehicle(arg1,arg2,arg3)
+--     log("onLeaveVehicle(",self,") ",arg1," ",arg2," ",arg3)
+--     -- if nil ~= self.mapAIHotspot then
+--     --     self.mapAIHotspot.enabled = true;
+--     -- end
+--     -- if self.followMeIsStarted and nil ~= self.spec_enterable.vehicleCharacter then
+--     --     self.spec_enterable.vehicleCharacter:setCharacterVisibility(true);
+--     -- end
 
-    -- if FollowMe.getIsFollowMeActive(self) then
-    --   self:requestActionEventUpdate()
-    -- end
+--     -- if FollowMe.getIsFollowMeActive(self) then
+--     --   self:requestActionEventUpdate()
+--     -- end
 
-    -- local spec = FollowMe.getSpec(self)
-    -- self:clearActionEventsTable(spec.actionEvents)
-end
+--     -- local spec = FollowMe.getSpec(self)
+--     -- self:clearActionEventsTable(spec.actionEvents)
+-- end
 
 -- function FollowMe:getDeactivateOnLeave(superFunc)
 --   if FollowMe.getIsFollowMeActive(self) then
@@ -1413,243 +1383,243 @@ function FollowMe.checkBalerAndWrapper(attachedTool)
     return allowedToDrive, hasCollision, pctSpeedReduction
 end
 
-function FollowMe:updateFollowMovement(dt)
-    local spec = FollowMe.getSpec(self)
-    assert(nil ~= spec.FollowVehicleObj);
-    local allowedToDrive = (spec.FollowState == FollowMe.STATE_FOLLOWING) and self.spec_motorized.isMotorStarted;
-    --local hasCollision = false;
-    local moveForwards = true;
-    local turnLightState = nil;
-    local trailStrength = 1.0;
+-- function FollowMe:updateFollowMovement(dt)
+--     local spec = FollowMe.getSpec(self)
+--     assert(nil ~= spec.FollowVehicleObj);
+--     local allowedToDrive = (spec.FollowState == FollowMe.STATE_FOLLOWING) and self.spec_motorized.isMotorStarted;
+--     --local hasCollision = false;
+--     local moveForwards = true;
+--     local turnLightState = nil;
+--     local trailStrength = 1.0;
 
-    --
-    --if allowedToDrive and nil ~= self.numCollidingVehicles then
-    --    for _,numCollisions in pairs(self.numCollidingVehicles) do
-    --        if numCollisions > 0 then
-    --            hasCollision = true; -- Collision imminent! Brake! Brake!
-    --            break;
-    --        end;
-    --    end;
-    --end
+--     --
+--     --if allowedToDrive and nil ~= self.numCollidingVehicles then
+--     --    for _,numCollisions in pairs(self.numCollidingVehicles) do
+--     --        if numCollisions > 0 then
+--     --            hasCollision = true; -- Collision imminent! Brake! Brake!
+--     --            break;
+--     --        end;
+--     --    end;
+--     --end
 
-    -- Attempt at automatically unloading of round-bales
-    local attachedTool = nil;
-    -- Locate supported equipment
-    for _,tool in pairs(self:getAttachedImplements()) do
-        if nil ~= tool.object then
-            if  nil ~= tool.object.baler
-            and nil ~= tool.object.baler.baleUnloadAnimationName  -- Seems RoundBalers are the only ones which have set the 'baleUnloadAnimationName'
-            and SpecializationUtil.hasSpecialization(Baler, tool.object.specializations)
-            then
-                if nil ~= tool.object.baleWrapperState
-                and SpecializationUtil.hasSpecialization(BaleWrapper, tool.object.specializations)
-                then
-                    -- Found both baler and wrapper (Kuhn DLC)
-                    attachedTool = { tool.object, FollowMe.checkBalerAndWrapper };
-                    break;
-                end
+--     -- Attempt at automatically unloading of round-bales
+--     local attachedTool = nil;
+--     -- Locate supported equipment
+--     for _,tool in pairs(self:getAttachedImplements()) do
+--         if nil ~= tool.object then
+--             if  nil ~= tool.object.baler
+--             and nil ~= tool.object.baler.baleUnloadAnimationName  -- Seems RoundBalers are the only ones which have set the 'baleUnloadAnimationName'
+--             and SpecializationUtil.hasSpecialization(Baler, tool.object.specializations)
+--             then
+--                 if nil ~= tool.object.baleWrapperState
+--                 and SpecializationUtil.hasSpecialization(BaleWrapper, tool.object.specializations)
+--                 then
+--                     -- Found both baler and wrapper (Kuhn DLC)
+--                     attachedTool = { tool.object, FollowMe.checkBalerAndWrapper };
+--                     break;
+--                 end
 
-                -- Found (Round)Baler.LUA
-                attachedTool = { tool.object, FollowMe.checkBaler };
-                break
-            end
-            if nil ~= tool.object.baleWrapperState
-            and SpecializationUtil.hasSpecialization(BaleWrapper, tool.object.specializations)
-            then
-                -- Found BaleWrapper
-                attachedTool = { tool.object, FollowMe.checkBaleWrapper };
-                break
-            end
-        end
-    end
-    --
-    if nil ~= attachedTool then
-        local setAllowedToDrive
-        local setHasCollision
-        local pctSpeedReduction
-        setAllowedToDrive, setHasCollision, pctSpeedReduction = attachedTool[2](attachedTool[1]);
-        allowedToDrive = allowedToDrive and Utils.getNoNil(setAllowedToDrive, allowedToDrive);
-        --hasCollision   = setHasCollision~=nil   and setHasCollision   or hasCollision;
-        if nil ~= pctSpeedReduction and pctSpeedReduction > 0 then
-            spec.reduceSpeedTime = g_currentMission.time + 250
-            -- TODO - change above, so it actually affects acceleration value
-        end
-    end
+--                 -- Found (Round)Baler.LUA
+--                 attachedTool = { tool.object, FollowMe.checkBaler };
+--                 break
+--             end
+--             if nil ~= tool.object.baleWrapperState
+--             and SpecializationUtil.hasSpecialization(BaleWrapper, tool.object.specializations)
+--             then
+--                 -- Found BaleWrapper
+--                 attachedTool = { tool.object, FollowMe.checkBaleWrapper };
+--                 break
+--             end
+--         end
+--     end
+--     --
+--     if nil ~= attachedTool then
+--         local setAllowedToDrive
+--         local setHasCollision
+--         local pctSpeedReduction
+--         setAllowedToDrive, setHasCollision, pctSpeedReduction = attachedTool[2](attachedTool[1]);
+--         allowedToDrive = allowedToDrive and Utils.getNoNil(setAllowedToDrive, allowedToDrive);
+--         --hasCollision   = setHasCollision~=nil   and setHasCollision   or hasCollision;
+--         if nil ~= pctSpeedReduction and pctSpeedReduction > 0 then
+--             spec.reduceSpeedTime = g_currentMission.time + 250
+--             -- TODO - change above, so it actually affects acceleration value
+--         end
+--     end
 
-    -- current location / rotation
-    local cNode         = FollowMe.getFollowNode(self)
-    local vX,vY,vZ      = getWorldTranslation(cNode);
-    local vRX,vRY,vRZ   = localDirectionToWorld(cNode, 0,0,Utils.getNoNil(self.reverserDirection, 1));
+--     -- current location / rotation
+--     local cNode         = FollowMe.getFollowNode(self)
+--     local vX,vY,vZ      = getWorldTranslation(cNode);
+--     local vRX,vRY,vRZ   = localDirectionToWorld(cNode, 0,0,Utils.getNoNil(self.reverserDirection, 1));
 
-    -- leader location / rotation
-    local leader        = spec.FollowVehicleObj;
-    local lNode         = FollowMe.getFollowNode(leader)
-    local lx,ly,lz      = getWorldTranslation(lNode);
-    local lrx,lry,lrz   = localDirectionToWorld(lNode, 0,0,Utils.getNoNil(leader.reverserDirection, 1));
+--     -- leader location / rotation
+--     local leader        = spec.FollowVehicleObj;
+--     local lNode         = FollowMe.getFollowNode(leader)
+--     local lx,ly,lz      = getWorldTranslation(lNode);
+--     local lrx,lry,lrz   = localDirectionToWorld(lNode, 0,0,Utils.getNoNil(leader.reverserDirection, 1));
 
-    -- original target
-    local ox,oy,oz;
-    local orx,ory,orz;
-    -- actual target
-    local tX,tY,tZ;
-    local tRX,tRY,tRZ;
-    --
-    local acceleration = 1.0;
-    local maxSpeed = 0.0;
+--     -- original target
+--     local ox,oy,oz;
+--     local orx,ory,orz;
+--     -- actual target
+--     local tX,tY,tZ;
+--     local tRX,tRY,tRZ;
+--     --
+--     local acceleration = 1.0;
+--     local maxSpeed = 0.0;
 
-    -- leader-target
-    local keepInFrontMeters = FollowMe.getKeepFront(self);
-    lx = lx - lrz * spec.FollowXOffset + lrx * keepInFrontMeters;
-    lz = lz + lrx * spec.FollowXOffset + lrz * keepInFrontMeters;
-    -- distance to leader-target (only "correct" when trail is a straight-line)
-    local distMeters = MathUtil.vector2Length(vX-lx,vZ-lz);
+--     -- leader-target
+--     local keepInFrontMeters = FollowMe.getKeepFront(self);
+--     lx = lx - lrz * spec.FollowXOffset + lrx * keepInFrontMeters;
+--     lz = lz + lrx * spec.FollowXOffset + lrz * keepInFrontMeters;
+--     -- distance to leader-target (only "correct" when trail is a straight-line)
+--     local distMeters = MathUtil.vector2Length(vX-lx,vZ-lz);
 
-    local crumbIndexDiff = leader.modFM.DropperCurrentIndex - spec.FollowCurrentIndex;
-    --
-    if crumbIndexDiff >= FollowMe.cBreadcrumbsMaxEntries then
-        -- circular-array have "circled" once, and this follower did not move fast enough.
-        if spec.FollowState ~= FollowMe.STATE_STOPPING then
-            FollowMe.stopFollowMe(self, FollowMe.REASON_TOO_FAR_BEHIND);
-        end
-        trailStrength = 0.0
-        --hasCollision = true
-        allowedToDrive = false
-        acceleration = 0.0
-        -- Set target 2 meters straight ahead of vehicle.
-        tX = vX + vRX * 2;
-        tY = vY;
-        tZ = vZ + vRZ * 2;
-    elseif crumbIndexDiff > 0 then
-        trailStrength = 1.0 - (crumbIndexDiff / FollowMe.cBreadcrumbsMaxEntries)
+--     local crumbIndexDiff = leader.modFM.DropperCurrentIndex - spec.FollowCurrentIndex;
+--     --
+--     if crumbIndexDiff >= FollowMe.cBreadcrumbsMaxEntries then
+--         -- circular-array have "circled" once, and this follower did not move fast enough.
+--         if spec.FollowState ~= FollowMe.STATE_STOPPING then
+--             FollowMe.stopFollowMe(self, FollowMe.REASON_TOO_FAR_BEHIND);
+--         end
+--         trailStrength = 0.0
+--         --hasCollision = true
+--         allowedToDrive = false
+--         acceleration = 0.0
+--         -- Set target 2 meters straight ahead of vehicle.
+--         tX = vX + vRX * 2;
+--         tY = vY;
+--         tZ = vZ + vRZ * 2;
+--     elseif crumbIndexDiff > 0 then
+--         trailStrength = 1.0 - (crumbIndexDiff / FollowMe.cBreadcrumbsMaxEntries)
 
-        -- Following crumbs...
-        local crumbT = leader.modFM.DropperCircularArray[1+(spec.FollowCurrentIndex % FollowMe.cBreadcrumbsMaxEntries)];
-        turnLightState = crumbT.turnLightState
-        --
-        ox,oy,oz = crumbT.trans[1],crumbT.trans[2],crumbT.trans[3];
-        orx,ory,orz = unpack(crumbT.rot);
-        -- Apply offset
-        tX = ox - orz * spec.FollowXOffset;
-        tY = oy;
-        tZ = oz + orx * spec.FollowXOffset;
-        --
-        local dx,dz = tX - vX, tZ - vZ;
-        local tDist = MathUtil.vector2Length(dx,dz);
-        --
-        local trAngle = math.atan2(orx,orz);
-        local nz = dx * math.sin(trAngle) + dz * math.cos(trAngle);
-        --
-        if (tDist < (FollowMe.cMinDistanceBetweenDrops / 2)) -- close enough to crumb?
-        or (nz < 0) -- in front of crumb?
-        then
-            FollowMe.copyDrop(self, crumbT, (spec.FollowXOffset == 0) and nil or {tX,tY,tZ});
-            -- Go to next crumb
-            spec.FollowCurrentIndex = spec.FollowCurrentIndex + 1;
-            crumbIndexDiff = leader.modFM.DropperCurrentIndex - spec.FollowCurrentIndex;
-        end;
-        --
-        if crumbIndexDiff > 0 then
-            -- Still following crumbs...
-            maxSpeed = crumbT.maxSpeed;
-            local crumbN = leader.modFM.DropperCircularArray[1+((spec.FollowCurrentIndex+1) % FollowMe.cBreadcrumbsMaxEntries)];
-            if nil ~= crumbN then
-                -- Apply offset, to next original target
-                local ntX = crumbN.trans[1] - crumbN.rot[3] * spec.FollowXOffset;
-                local ntZ = crumbN.trans[3] + crumbN.rot[1] * spec.FollowXOffset;
-                local pct = math.max(1 - (tDist / FollowMe.cMinDistanceBetweenDrops), 0);
-                tX,_,tZ = MathUtil.vector3ArrayLerp( {tX,0,tZ}, {ntX,0,ntZ}, pct);
-                maxSpeed = (maxSpeed + crumbN.maxSpeed) / 2;
-            end;
-            --
-            local keepBackMeters = FollowMe.getKeepBack(self) --, math.max(0, self.lastSpeed) * 3600);
-            local distCrumbs   = math.floor(keepBackMeters / FollowMe.cMinDistanceBetweenDrops);
-            local distFraction = keepBackMeters - (distCrumbs * FollowMe.cMinDistanceBetweenDrops);
+--         -- Following crumbs...
+--         local crumbT = leader.modFM.DropperCircularArray[1+(spec.FollowCurrentIndex % FollowMe.cBreadcrumbsMaxEntries)];
+--         turnLightState = crumbT.turnLightState
+--         --
+--         ox,oy,oz = crumbT.trans[1],crumbT.trans[2],crumbT.trans[3];
+--         orx,ory,orz = unpack(crumbT.rot);
+--         -- Apply offset
+--         tX = ox - orz * spec.FollowXOffset;
+--         tY = oy;
+--         tZ = oz + orx * spec.FollowXOffset;
+--         --
+--         local dx,dz = tX - vX, tZ - vZ;
+--         local tDist = MathUtil.vector2Length(dx,dz);
+--         --
+--         local trAngle = math.atan2(orx,orz);
+--         local nz = dx * math.sin(trAngle) + dz * math.cos(trAngle);
+--         --
+--         if (tDist < (FollowMe.cMinDistanceBetweenDrops / 2)) -- close enough to crumb?
+--         or (nz < 0) -- in front of crumb?
+--         then
+--             FollowMe.copyDrop(self, crumbT, (spec.FollowXOffset == 0) and nil or {tX,tY,tZ});
+--             -- Go to next crumb
+--             spec.FollowCurrentIndex = spec.FollowCurrentIndex + 1;
+--             crumbIndexDiff = leader.modFM.DropperCurrentIndex - spec.FollowCurrentIndex;
+--         end;
+--         --
+--         if crumbIndexDiff > 0 then
+--             -- Still following crumbs...
+--             maxSpeed = crumbT.maxSpeed;
+--             local crumbN = leader.modFM.DropperCircularArray[1+((spec.FollowCurrentIndex+1) % FollowMe.cBreadcrumbsMaxEntries)];
+--             if nil ~= crumbN then
+--                 -- Apply offset, to next original target
+--                 local ntX = crumbN.trans[1] - crumbN.rot[3] * spec.FollowXOffset;
+--                 local ntZ = crumbN.trans[3] + crumbN.rot[1] * spec.FollowXOffset;
+--                 local pct = math.max(1 - (tDist / FollowMe.cMinDistanceBetweenDrops), 0);
+--                 tX,_,tZ = MathUtil.vector3ArrayLerp( {tX,0,tZ}, {ntX,0,ntZ}, pct);
+--                 maxSpeed = (maxSpeed + crumbN.maxSpeed) / 2;
+--             end;
+--             --
+--             local keepBackMeters = FollowMe.getKeepBack(self) --, math.max(0, self.lastSpeed) * 3600);
+--             local distCrumbs   = math.floor(keepBackMeters / FollowMe.cMinDistanceBetweenDrops);
+--             local distFraction = keepBackMeters - (distCrumbs * FollowMe.cMinDistanceBetweenDrops);
 
-            allowedToDrive = allowedToDrive and not (crumbIndexDiff < distCrumbs); -- Too far ahead?
+--             allowedToDrive = allowedToDrive and not (crumbIndexDiff < distCrumbs); -- Too far ahead?
 
-            if allowedToDrive then
-                if keepInFrontMeters > 0 then
-                    maxSpeed = maxSpeed * 2
-                elseif (crumbIndexDiff > distCrumbs) then
-                    local lastSpeedKMH = (self.lastSpeed * 3600)
-                    if true == self.mrIsMrVehicle and lastSpeedKMH > 5 then
-                        -- Don't allow MR vehicle to 'speed up to catch up', as it may fall over when cornering at higher speeds
-                        local diffSpeedKMH = (lastSpeedKMH - maxSpeed)
-                        if diffSpeedKMH > 1 then
-                            -- Apply brake if going faster than allowed
-                            acceleration = MathUtil.lerp(0, -1, math.sin(math.min(diffSpeedKMH-1, math.pi/2)))
-                        end
-                    else
-                        maxSpeed = maxSpeed + maxSpeed * ((crumbIndexDiff - distCrumbs) / 5)
-                    end
-                elseif not ((crumbIndexDiff == distCrumbs) and (tDist >= distFraction)) then
-                    maxSpeed = 0
-                end
-            end
-        end;
-    end;
-    --
-    if crumbIndexDiff <= 0 then
-        -- Following leader directly...
-        turnLightState = leader.spec_lights:getTurnLightState()
+--             if allowedToDrive then
+--                 if keepInFrontMeters > 0 then
+--                     maxSpeed = maxSpeed * 2
+--                 elseif (crumbIndexDiff > distCrumbs) then
+--                     local lastSpeedKMH = (self.lastSpeed * 3600)
+--                     if true == self.mrIsMrVehicle and lastSpeedKMH > 5 then
+--                         -- Don't allow MR vehicle to 'speed up to catch up', as it may fall over when cornering at higher speeds
+--                         local diffSpeedKMH = (lastSpeedKMH - maxSpeed)
+--                         if diffSpeedKMH > 1 then
+--                             -- Apply brake if going faster than allowed
+--                             acceleration = MathUtil.lerp(0, -1, math.sin(math.min(diffSpeedKMH-1, math.pi/2)))
+--                         end
+--                     else
+--                         maxSpeed = maxSpeed + maxSpeed * ((crumbIndexDiff - distCrumbs) / 5)
+--                     end
+--                 elseif not ((crumbIndexDiff == distCrumbs) and (tDist >= distFraction)) then
+--                     maxSpeed = 0
+--                 end
+--             end
+--         end;
+--     end;
+--     --
+--     if crumbIndexDiff <= 0 then
+--         -- Following leader directly...
+--         turnLightState = leader.spec_lights:getTurnLightState()
 
-        tX = lx;
-        tY = ly;
-        tZ = lz;
-        -- Rotate to see if the target is still "in front of us"
-        local dx,dz = tX - vX, tZ - vZ;
-        local trAngle = math.atan2(lrx,lrz);
-        local nz = dx * math.sin(trAngle) + dz * math.cos(trAngle);
-        --
-        local distMetersDiff = distMeters - FollowMe.getKeepBack(self);
+--         tX = lx;
+--         tY = ly;
+--         tZ = lz;
+--         -- Rotate to see if the target is still "in front of us"
+--         local dx,dz = tX - vX, tZ - vZ;
+--         local trAngle = math.atan2(lrx,lrz);
+--         local nz = dx * math.sin(trAngle) + dz * math.cos(trAngle);
+--         --
+--         local distMetersDiff = distMeters - FollowMe.getKeepBack(self);
 
-        allowedToDrive = allowedToDrive and (nz > 0);
-        maxSpeed = math.max(0, leader.lastSpeed) * 3600; -- only consider forward movement.
+--         allowedToDrive = allowedToDrive and (nz > 0);
+--         maxSpeed = math.max(0, leader.lastSpeed) * 3600; -- only consider forward movement.
 
-        if distMetersDiff < 0.5 then
-            local factor = 1 - math.min(1, math.abs(distMetersDiff)/10)
-            maxSpeed = maxSpeed * factor
-            acceleration = 0
-        elseif distMetersDiff > 1 then
-            local factor = (math.min(1, distMetersDiff / 10) * 1.2) + 0.2
-            maxSpeed = maxSpeed + 10 * factor
-            acceleration = math.min(0.5, math.max(1.0, acceleration * factor))
-        end
-    end;
+--         if distMetersDiff < 0.5 then
+--             local factor = 1 - math.min(1, math.abs(distMetersDiff)/10)
+--             maxSpeed = maxSpeed * factor
+--             acceleration = 0
+--         elseif distMetersDiff > 1 then
+--             local factor = (math.min(1, distMetersDiff / 10) * 1.2) + 0.2
+--             maxSpeed = maxSpeed + 10 * factor
+--             acceleration = math.min(0.5, math.max(1.0, acceleration * factor))
+--         end
+--     end;
 
-    if spec.reduceSpeedTime > g_currentMission.time then
-        --acceleration = math.max(0.1, acceleration * 0.5)
-        maxSpeed = math.max(1, maxSpeed * 0.3)
-    --else
-    --    -- Reduce speed if "attack angle" against target is more than 45degrees.
-    --    local lx,lz = AIVehicleUtil.getDriveDirection(self.components[1].node, tX,tY,tZ);
-    --    if (self.lastSpeed*3600 > 10) and (math.abs(math.atan2(lx,lz)) > (math.pi/4)) then
-    --        acceleration = math.max(0.1, acceleration * 0.5)
-    --        maxSpeed = math.max(1, maxSpeed * 0.3)
-    --        spec.reduceSpeedTime = g_currentMission.time + 250; -- For the next 250ms, keep speed reduced.
-    --    end;
-    end
+--     if spec.reduceSpeedTime > g_currentMission.time then
+--         --acceleration = math.max(0.1, acceleration * 0.5)
+--         maxSpeed = math.max(1, maxSpeed * 0.3)
+--     --else
+--     --    -- Reduce speed if "attack angle" against target is more than 45degrees.
+--     --    local lx,lz = AIVehicleUtil.getDriveDirection(self.components[1].node, tX,tY,tZ);
+--     --    if (self.lastSpeed*3600 > 10) and (math.abs(math.atan2(lx,lz)) > (math.pi/4)) then
+--     --        acceleration = math.max(0.1, acceleration * 0.5)
+--     --        maxSpeed = math.max(1, maxSpeed * 0.3)
+--     --        spec.reduceSpeedTime = g_currentMission.time + 250; -- For the next 250ms, keep speed reduced.
+--     --    end;
+--     end
 
-    -- Check if any equipment is active, which will then limit the speed further
-    local speedLimit,speedLimitActive = self:getSpeedLimit()
-    if speedLimitActive then
-        maxSpeed = math.min(maxSpeed, speedLimit)
-    end
+--     -- Check if any equipment is active, which will then limit the speed further
+--     local speedLimit,speedLimitActive = self:getSpeedLimit()
+--     if speedLimitActive then
+--         maxSpeed = math.min(maxSpeed, speedLimit)
+--     end
 
-    --
-    -- if allowedToDrive then
-    --   self.spec_motorized.motor:setSpeedLimit(speedLimit);
-    --   if self.spec_drivable.cruiseControl.state ~= Drivable.CRUISECONTROL_STATE_ACTIVE then
-    --     self:setCruiseControlState(Drivable.CRUISECONTROL_STATE_ACTIVE);
-    --   end
-    -- end
+--     --
+--     -- if allowedToDrive then
+--     --   self.spec_motorized.motor:setSpeedLimit(speedLimit);
+--     --   if self.spec_drivable.cruiseControl.state ~= Drivable.CRUISECONTROL_STATE_ACTIVE then
+--     --     self:setCruiseControlState(Drivable.CRUISECONTROL_STATE_ACTIVE);
+--     --   end
+--     -- end
 
-    --
-    local pX,pY,pZ = worldToLocal(cNode, tX,tY,tZ);
-    AIVehicleUtil.driveToPoint(self, dt, acceleration, allowedToDrive, moveForwards, pX,pZ, maxSpeed)
+--     --
+--     local pX,pY,pZ = worldToLocal(cNode, tX,tY,tZ);
+--     AIVehicleUtil.driveToPoint(self, dt, acceleration, allowedToDrive, moveForwards, pX,pZ, maxSpeed)
 
-    return turnLightState, trailStrength
-end;
+--     return turnLightState, trailStrength
+-- end;
 
 --
 --
@@ -1879,137 +1849,137 @@ end
 ---
 ---
 
-FollowMeRequestEvent = {};
-FollowMeRequestEvent_mt = Class(FollowMeRequestEvent, Event);
+-- FollowMeRequestEvent = {};
+-- FollowMeRequestEvent_mt = Class(FollowMeRequestEvent, Event);
 
-InitEventClass(FollowMeRequestEvent, "FollowMeRequestEvent");
+-- InitEventClass(FollowMeRequestEvent, "FollowMeRequestEvent");
 
-function FollowMeRequestEvent:emptyNew()
-    local self = Event:new(FollowMeRequestEvent_mt);
-    self.className = "FollowMeRequestEvent";
-    return self;
-end;
+-- function FollowMeRequestEvent:emptyNew()
+--     local self = Event:new(FollowMeRequestEvent_mt);
+--     self.className = "FollowMeRequestEvent";
+--     return self;
+-- end;
 
-function FollowMeRequestEvent:new(vehicle, cmdId, reason, farmId)
-    local self = FollowMeRequestEvent:emptyNew()
-    self.vehicle    = vehicle
-    self.farmId     = Utils.getNoNil(farmId, 0)
-    self.cmdId      = Utils.getNoNil(cmdId, 0)
-    self.reason     = Utils.getNoNil(reason, 0)
-    self.distance   = 0 --Utils.getNoNil(vehicle.modFM.FollowKeepBack, 0)
-    self.offset     = 0 --Utils.getNoNil(vehicle.modFM.FollowXOffset, 0)
-    return self;
-end;
+-- function FollowMeRequestEvent:new(vehicle, cmdId, reason, farmId)
+--     local self = FollowMeRequestEvent:emptyNew()
+--     self.vehicle    = vehicle
+--     self.farmId     = Utils.getNoNil(farmId, 0)
+--     self.cmdId      = Utils.getNoNil(cmdId, 0)
+--     self.reason     = Utils.getNoNil(reason, 0)
+--     self.distance   = 0 --Utils.getNoNil(vehicle.modFM.FollowKeepBack, 0)
+--     self.offset     = 0 --Utils.getNoNil(vehicle.modFM.FollowXOffset, 0)
+--     return self;
+-- end;
 
-function FollowMeRequestEvent:writeStream(streamId, connection)
-    writeNetworkNodeObject(streamId, self.vehicle);
-    streamWriteUIntN(      streamId, self.farmId, FarmManager.FARM_ID_SEND_NUM_BITS)
-    streamWriteUIntN(      streamId, self.cmdId,  FollowMe.NUM_BITS_COMMAND)
-    streamWriteUIntN(      streamId, self.reason, FollowMe.NUM_BITS_REASON)
-    streamWriteInt8(       streamId, self.distance)
-    streamWriteInt8(       streamId, self.offset * 2)
-end;
+-- function FollowMeRequestEvent:writeStream(streamId, connection)
+--     writeNetworkNodeObject(streamId, self.vehicle);
+--     streamWriteUIntN(      streamId, self.farmId, FarmManager.FARM_ID_SEND_NUM_BITS)
+--     streamWriteUIntN(      streamId, self.cmdId,  FollowMe.NUM_BITS_COMMAND)
+--     streamWriteUIntN(      streamId, self.reason, FollowMe.NUM_BITS_REASON)
+--     streamWriteInt8(       streamId, self.distance)
+--     streamWriteInt8(       streamId, self.offset * 2)
+-- end;
 
-function FollowMeRequestEvent:readStream(streamId, connection)
-    self.vehicle  = readNetworkNodeObject(streamId);
-    self.farmId   = streamReadUIntN(      streamId, FarmManager.FARM_ID_SEND_NUM_BITS)
-    self.cmdId    = streamReadUIntN(      streamId, FollowMe.NUM_BITS_COMMAND)
-    self.reason   = streamReadUIntN(      streamId, FollowMe.NUM_BITS_REASON)
-    self.distance = streamReadInt8(       streamId)
-    self.offset   = streamReadInt8(       streamId) / 2
+-- function FollowMeRequestEvent:readStream(streamId, connection)
+--     self.vehicle  = readNetworkNodeObject(streamId);
+--     self.farmId   = streamReadUIntN(      streamId, FarmManager.FARM_ID_SEND_NUM_BITS)
+--     self.cmdId    = streamReadUIntN(      streamId, FollowMe.NUM_BITS_COMMAND)
+--     self.reason   = streamReadUIntN(      streamId, FollowMe.NUM_BITS_REASON)
+--     self.distance = streamReadInt8(       streamId)
+--     self.offset   = streamReadInt8(       streamId) / 2
 
-    if nil ~= self.vehicle then
-        if     self.cmdId == FollowMe.COMMAND_START then
-            FollowMe.startFollowMe(self.vehicle, connection, self.farmId)
-        elseif self.cmdId == FollowMe.COMMAND_STOP then
-            FollowMe.stopFollowMe(self.vehicle, self.reason)
-        elseif self.cmdId == FollowMe.COMMAND_WAITRESUME then
-            FollowMe.waitResumeFollowMe(self.vehicle, self.reason)
-        else
-            FollowMe.changeDistance(self.vehicle, { self.distance } )
-            FollowMe.changeXOffset( self.vehicle, { self.offset } )
-        end
-    end;
-end;
+--     if nil ~= self.vehicle then
+--         if     self.cmdId == FollowMe.COMMAND_START then
+--             FollowMe.startFollowMe(self.vehicle, connection, self.farmId)
+--         elseif self.cmdId == FollowMe.COMMAND_STOP then
+--             FollowMe.stopFollowMe(self.vehicle, self.reason)
+--         elseif self.cmdId == FollowMe.COMMAND_WAITRESUME then
+--             FollowMe.waitResumeFollowMe(self.vehicle, self.reason)
+--         else
+--             FollowMe.changeDistance(self.vehicle, { self.distance } )
+--             FollowMe.changeXOffset( self.vehicle, { self.offset } )
+--         end
+--     end;
+-- end;
 
 
----
----
----
+-- ---
+-- ---
+-- ---
 
-FollowMeResponseEvent = {};
-FollowMeResponseEvent_mt = Class(FollowMeResponseEvent, Event);
+-- FollowMeResponseEvent = {};
+-- FollowMeResponseEvent_mt = Class(FollowMeResponseEvent, Event);
 
-InitEventClass(FollowMeResponseEvent, "FollowMeResponseEvent");
+-- InitEventClass(FollowMeResponseEvent, "FollowMeResponseEvent");
 
-function FollowMeResponseEvent:emptyNew()
-    local self = Event:new(FollowMeResponseEvent_mt);
-    self.className = "FollowMeResponseEvent";
-    return self;
-end;
+-- function FollowMeResponseEvent:emptyNew()
+--     local self = Event:new(FollowMeResponseEvent_mt);
+--     self.className = "FollowMeResponseEvent";
+--     return self;
+-- end;
 
-function FollowMeResponseEvent:new(vehicle, stateId, reason, helper, farmId)
-    local self = FollowMeResponseEvent:emptyNew()
-    self.vehicle            = vehicle
-    self.stateId            = Utils.getNoNil(stateId, 0)
-    self.reason             = Utils.getNoNil(reason, 0)
-    self.distance           = 0 --Utils.getNoNil(vehicle.modFM.FollowKeepBack, 0)
-    self.offset             = 0 --Utils.getNoNil(vehicle.modFM.FollowXOffset, 0)
-    self.helperIndex        = 0
-    if nil ~= helper then
-        self.helperIndex = helper.index
-    end
-    self.farmId             = Utils.getNoNil(farmId, 0)
-    self.followVehicleObj   = nil --vehicle.modFM.FollowVehicleObj
-    self.stalkerVehicleObj  = nil --vehicle.modFM.StalkerVehicleObj
-    return self;
-end;
+-- function FollowMeResponseEvent:new(vehicle, stateId, reason, helper, farmId)
+--     local self = FollowMeResponseEvent:emptyNew()
+--     self.vehicle            = vehicle
+--     self.stateId            = Utils.getNoNil(stateId, 0)
+--     self.reason             = Utils.getNoNil(reason, 0)
+--     self.distance           = 0 --Utils.getNoNil(vehicle.modFM.FollowKeepBack, 0)
+--     self.offset             = 0 --Utils.getNoNil(vehicle.modFM.FollowXOffset, 0)
+--     self.helperIndex        = 0
+--     if nil ~= helper then
+--         self.helperIndex = helper.index
+--     end
+--     self.farmId             = Utils.getNoNil(farmId, 0)
+--     self.followVehicleObj   = nil --vehicle.modFM.FollowVehicleObj
+--     self.stalkerVehicleObj  = nil --vehicle.modFM.StalkerVehicleObj
+--     return self;
+-- end;
 
-function FollowMeResponseEvent:writeStream(streamId, connection)
-    writeNetworkNodeObject(streamId, self.vehicle)
-    streamWriteUIntN(      streamId, self.stateId,  FollowMe.NUM_BITS_STATE)
-    streamWriteUIntN(      streamId, self.reason,   FollowMe.NUM_BITS_REASON)
-    streamWriteUIntN(      streamId, self.farmId,   FarmManager.FARM_ID_SEND_NUM_BITS)
-    streamWriteInt8(       streamId, self.distance)
-    streamWriteInt8(       streamId, self.offset * 2)
-    streamWriteUInt8(      streamId, self.helperIndex)
-    writeNetworkNodeObject(streamId, self.followVehicleObj )
-    writeNetworkNodeObject(streamId, self.stalkerVehicleObj)
-end;
+-- function FollowMeResponseEvent:writeStream(streamId, connection)
+--     writeNetworkNodeObject(streamId, self.vehicle)
+--     streamWriteUIntN(      streamId, self.stateId,  FollowMe.NUM_BITS_STATE)
+--     streamWriteUIntN(      streamId, self.reason,   FollowMe.NUM_BITS_REASON)
+--     streamWriteUIntN(      streamId, self.farmId,   FarmManager.FARM_ID_SEND_NUM_BITS)
+--     streamWriteInt8(       streamId, self.distance)
+--     streamWriteInt8(       streamId, self.offset * 2)
+--     streamWriteUInt8(      streamId, self.helperIndex)
+--     writeNetworkNodeObject(streamId, self.followVehicleObj )
+--     writeNetworkNodeObject(streamId, self.stalkerVehicleObj)
+-- end;
 
-function FollowMeResponseEvent:readStream(streamId, connection)
-    self.vehicle            = readNetworkNodeObject(streamId)
-    self.stateId            = streamReadUIntN(      streamId, FollowMe.NUM_BITS_STATE)
-    self.reason             = streamReadUIntN(      streamId, FollowMe.NUM_BITS_REASON)
-    self.farmId             = streamReadUIntN(      streamId, FarmManager.FARM_ID_SEND_NUM_BITS)
-    self.distance           = streamReadInt8(       streamId)
-    self.offset             = streamReadInt8(       streamId) / 2
-    self.helperIndex        = streamReadUInt8(      streamId)
-    self.followVehicleObj   = readNetworkNodeObject(streamId)
-    self.stalkerVehicleObj  = readNetworkNodeObject(streamId)
+-- function FollowMeResponseEvent:readStream(streamId, connection)
+--     self.vehicle            = readNetworkNodeObject(streamId)
+--     self.stateId            = streamReadUIntN(      streamId, FollowMe.NUM_BITS_STATE)
+--     self.reason             = streamReadUIntN(      streamId, FollowMe.NUM_BITS_REASON)
+--     self.farmId             = streamReadUIntN(      streamId, FarmManager.FARM_ID_SEND_NUM_BITS)
+--     self.distance           = streamReadInt8(       streamId)
+--     self.offset             = streamReadInt8(       streamId) / 2
+--     self.helperIndex        = streamReadUInt8(      streamId)
+--     self.followVehicleObj   = readNetworkNodeObject(streamId)
+--     self.stalkerVehicleObj  = readNetworkNodeObject(streamId)
 
-    if nil ~= self.vehicle then
-        if 0 == self.helperIndex then
-            self.helperIndex = nil
-        end
+--     if nil ~= self.vehicle then
+--         if 0 == self.helperIndex then
+--             self.helperIndex = nil
+--         end
 
-        FollowMe.changeDistance(self.vehicle, { self.distance } ,true )
-        FollowMe.changeXOffset( self.vehicle, { self.offset }   ,true )
+--         FollowMe.changeDistance(self.vehicle, { self.distance } ,true )
+--         FollowMe.changeXOffset( self.vehicle, { self.offset }   ,true )
 
-        if     self.stateId == FollowMe.STATE_STARTING then
-            FollowMe.onStartFollowMe(self.vehicle, self.followVehicleObj, self.helperIndex, true, self.farmId)
-        elseif self.stateId == FollowMe.STATE_STOPPING then
-            FollowMe.onStopFollowMe(self.vehicle, self.reason, true)
-        else
-            if self.reason ~= 0 then
-                FollowMe.showReason(self.vehicle, nil, self.reason, nil)
-            end
-            --self.vehicle.modFM.FollowState       = self.stateId
-            --self.vehicle.modFM.FollowVehicleObj  = self.followVehicleObj
-            --self.vehicle.modFM.StalkerVehicleObj = self.stalkerVehicleObj
-        end
-    end;
-end;
+--         if     self.stateId == FollowMe.STATE_STARTING then
+--             FollowMe.onStartFollowMe(self.vehicle, self.followVehicleObj, self.helperIndex, true, self.farmId)
+--         elseif self.stateId == FollowMe.STATE_STOPPING then
+--             FollowMe.onStopFollowMe(self.vehicle, self.reason, true)
+--         else
+--             if self.reason ~= 0 then
+--                 FollowMe.showReason(self.vehicle, nil, self.reason, nil)
+--             end
+--             --self.vehicle.modFM.FollowState       = self.stateId
+--             --self.vehicle.modFM.FollowVehicleObj  = self.followVehicleObj
+--             --self.vehicle.modFM.StalkerVehicleObj = self.stalkerVehicleObj
+--         end
+--     end;
+-- end;
 
 --
 print(("Script loaded: FollowMe.lua - from %s (v%s)"):format(g_currentModName, g_modManager:getModByName(g_currentModName).version));
