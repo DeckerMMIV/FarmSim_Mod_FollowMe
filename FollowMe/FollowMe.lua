@@ -777,9 +777,9 @@ function AIDriveStrategyFollow:getDriveData(dt, vX, vY, vZ)
     -- actual target
     local tX,tY,tZ;
     --
-    local isAllowedToDrive = (FollowMe.STATE_WAITING ~= vehicleSpec.FollowState)
-    local distanceToStop = 10
-    --local acceleration = 1.0
+    local isAllowedToDrive  = (FollowMe.STATE_WAITING ~= vehicleSpec.FollowState)
+    local distanceToStop    = -(FollowMe.getKeepBack(vehicle))
+    local keepInFrontMeters = FollowMe.getKeepFront(vehicle)
     local maxSpeed = 0
     --
     local crumbIndexDiff = leaderSpec.DropperCurrentIndex - vehicleSpec.FollowCurrentIndex;
@@ -795,7 +795,6 @@ function AIDriveStrategyFollow:getDriveData(dt, vX, vY, vZ)
         --trailStrength = 0.0
         --hasCollision = true
         isAllowedToDrive = false
-        --acceleration = 0.0
 
         -- vehicle rotation
         local vRX,vRY,vRZ   = localDirectionToWorld(vehicle:getAIVehicleSteeringNode(), 0,0,Utils.getNoNil(vehicle.reverserDirection, 1));
@@ -825,19 +824,21 @@ function AIDriveStrategyFollow:getDriveData(dt, vX, vY, vZ)
         local trAngle = math.atan2(orx,orz);
         local nz = dx * math.sin(trAngle) + dz * math.cos(trAngle);
         --
+        local nextCrumbOffset = 1
         if (tDist < (FollowMe.cMinDistanceBetweenDrops / 2)) -- close enough to crumb?
-        or (nz < 0) -- in front of crumb?
+        or (nz < 0) -- already in front of crumb?
+        or (tDist < 15 and (nz / tDist) < 0.8 and crumbIndexDiff > 3) -- Too steep an "attack angle"
         then
             FollowMe.copyDrop(vehicle, crumbT, (vehicleSpec.FollowXOffset == 0) and nil or {tX,tY,tZ});
             -- Go to next crumb
             vehicleSpec.FollowCurrentIndex = vehicleSpec.FollowCurrentIndex + 1;
+            nextCrumbOffset = 0
             crumbIndexDiff = leaderSpec.DropperCurrentIndex - vehicleSpec.FollowCurrentIndex;
-        end;
+        end
         --
         if crumbIndexDiff > 0 then
             -- Still following crumbs...
-            --maxSpeed = crumbT.maxSpeed;
-            local crumbN = leaderSpec.DropperCircularArray[1+((vehicleSpec.FollowCurrentIndex+1) % FollowMe.cBreadcrumbsMaxEntries)];
+            local crumbN = leaderSpec.DropperCircularArray[1+((vehicleSpec.FollowCurrentIndex + nextCrumbOffset) % FollowMe.cBreadcrumbsMaxEntries)];
             if nil ~= crumbN then
                 -- Apply offset, to next original target
                 local ntX = crumbN.trans[1] - crumbN.rot[3] * vehicleSpec.FollowXOffset;
@@ -846,37 +847,13 @@ function AIDriveStrategyFollow:getDriveData(dt, vX, vY, vZ)
                 tX,_,tZ = MathUtil.vector3ArrayLerp( {tX,0,tZ}, {ntX,0,ntZ}, pct);
                 maxSpeed = (maxSpeed + crumbN.maxSpeed) / 2;
             end;
-            --
-            local keepBackMeters = FollowMe.getKeepBack(vehicle) --, math.max(0, self.lastSpeed) * 3600);
-            local distCrumbs   = math.floor(keepBackMeters / FollowMe.cMinDistanceBetweenDrops);
-            local distFraction = keepBackMeters - (distCrumbs * FollowMe.cMinDistanceBetweenDrops);
-
-            isAllowedToDrive = isAllowedToDrive and not (crumbIndexDiff < distCrumbs); -- Too far ahead?
-
-            if isAllowedToDrive then
-                if (crumbIndexDiff > distCrumbs) then
-                  distanceToStop = ((crumbIndexDiff - distCrumbs) * FollowMe.cMinDistanceBetweenDrops) + FollowMe.getKeepFront(vehicle)
-                    --local lastSpeedKMH = (vehicle.lastSpeed * 3600)
-                    --if true == vehicle.mrIsMrVehicle and lastSpeedKMH > 5 then
-                    --    -- Don't allow MR vehicle to 'speed up to catch up', as it may fall over when cornering at higher speeds
-                    --    local diffSpeedKMH = (lastSpeedKMH - maxSpeed)
-                    --    if diffSpeedKMH > 1 then
-                    --        -- Apply brake if going faster than allowed
-                    --        --acceleration = MathUtil.lerp(0, -1, math.sin(math.min(diffSpeedKMH-1, math.pi/2)))
-                    --    end
-                    --else
-                        maxSpeed = maxSpeed + maxSpeed * (math.min(5, (crumbIndexDiff - distCrumbs)) / 5)
-                    --end
-                elseif FollowMe.getKeepFront(vehicle) <= 0 then
-                  distanceToStop = math.max(0, tDist - distFraction)
-                --elseif not ((crumbIndexDiff == distCrumbs) and (tDist >= distFraction)) then
-                --    maxSpeed = 0
-                --else
-                --    maxSpeed = maxSpeed * 2
-                end
-            end
-        end;
-    end;
+        end
+        --
+        distanceToStop = distanceToStop + (crumbIndexDiff * FollowMe.cMinDistanceBetweenDrops)
+        if 0 == keepInFrontMeters then
+          isAllowedToDrive = isAllowedToDrive and (distanceToStop > 1)
+        end
+    end
     --
     if crumbIndexDiff <= 0 then
         -- Following leader directly...
@@ -886,8 +863,9 @@ function AIDriveStrategyFollow:getDriveData(dt, vX, vY, vZ)
         local lx,ly,lz      = getWorldTranslation(lNode);
         local lrx,lry,lrz   = localDirectionToWorld(lNode, 0,0,Utils.getNoNil(leader.reverserDirection, 1));
 
+        maxSpeed = math.max(5, leader.lastSpeed * 3600); -- only consider forward movement.
+
         -- leader-target adjust with offset
-        local keepInFrontMeters = FollowMe.getKeepFront(vehicle);
         tX = lx - lrz * vehicleSpec.FollowXOffset + lrx * keepInFrontMeters;
         tY = ly
         tZ = lz + lrx * vehicleSpec.FollowXOffset + lrz * keepInFrontMeters;
@@ -897,10 +875,16 @@ function AIDriveStrategyFollow:getDriveData(dt, vX, vY, vZ)
         local trAngle = math.atan2(lrx,lrz);
         local nz = dx * math.sin(trAngle) + dz * math.cos(trAngle);
 
-        maxSpeed = math.max(5, leader.lastSpeed * 3600); -- only consider forward movement.
-        distanceToStop = MathUtil.vector2Length(dx,dz) - FollowMe.getKeepBack(vehicle);
-        isAllowedToDrive = isAllowedToDrive and (nz > 0) and (distanceToStop > 0)
-    end;
+        distanceToStop = distanceToStop + MathUtil.vector2Length(dx,dz)
+        isAllowedToDrive = isAllowedToDrive and (nz > 0) and (distanceToStop > 1)
+    else
+      distanceToStop = distanceToStop + keepInFrontMeters
+    end
+
+    if isAllowedToDrive then
+      local curSpeed = math.max(1, (vehicle.lastSpeed * 3600))
+      maxSpeed = maxSpeed * (1 + math.min(1, (distanceToStop / curSpeed)))
+    end
 
     if (not isAllowedToDrive) or (maxSpeed < 0.5) then
       maxSpeed = 0
@@ -911,6 +895,8 @@ function AIDriveStrategyFollow:getDriveData(dt, vX, vY, vZ)
     --   log("maxSpeed:",maxSpeed," distToStop:",distanceToStop)
     --   self.lastDistToStop = distanceToStop
     -- end
+
+    distanceToStop = math.max(0, distanceToStop)
 
     local moveForwards = true
     return tX, tZ, moveForwards, maxSpeed, distanceToStop
