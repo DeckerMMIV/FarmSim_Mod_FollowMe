@@ -89,6 +89,13 @@ AIVehicle.startAIVehicle = Utils.overwrittenFunction(AIVehicle.startAIVehicle, f
   superFunc(self, helperIndex, noEventSend, startedFarmId, forcedDrivingStrategyName)
 end)
 
+-- WARNING!
+AIVehicle.stopAIVehicle = Utils.appendedFunction(AIVehicle.stopAIVehicle, function(self, reason)
+  if true ~= self.spec_aiVehicle.isActive then
+    self.spec_aiVehicle.mod_ForcedDrivingStrategyName = nil
+  end
+end)
+
 --
 --
 

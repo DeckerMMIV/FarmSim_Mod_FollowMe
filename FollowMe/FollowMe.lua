@@ -423,50 +423,6 @@ function FollowMe:toggleXOffset(withZero, noSendEvent)
     end
 end
 
---[[
---
-FollowMe.InputEvents = {}
-FollowMe.INPUTEVENT_MILLISECONDS = 500
-FollowMe.INPUTEVENT_NONE    = 0
-FollowMe.INPUTEVENT_SHORT   = 1 -- Key-action was pressed/released quickly
-FollowMe.INPUTEVENT_LONG    = 2 -- Key-action was pressed/hold for longer
-FollowMe.INPUTEVENT_REPEAT  = 3 -- Key-action is still pressed/hold for much longer
-
-function FollowMe.hasEventShortLong(inBinding, repeatIntervalMS)
-    local isPressed = InputBinding.isPressed(inBinding);
-    -- If no previous input-event for this binding...
-    if not FollowMe.InputEvents[inBinding] then
-        -- ...and it is now pressed down, then remember the time of initiation.
-        if isPressed then
-            FollowMe.InputEvents[inBinding] = g_currentMission.time;
-        end
-        return FollowMe.INPUTEVENT_NONE; -- Not pressed or Can not determine.
-    end;
-    -- For how long have this input-event been hold down?
-    local timeDiff = g_currentMission.time - FollowMe.InputEvents[inBinding];
-    if not isPressed then
-        FollowMe.InputEvents[inBinding] = nil;
-        if timeDiff > 0 and timeDiff < FollowMe.INPUTEVENT_MILLISECONDS then
-            return FollowMe.INPUTEVENT_SHORT; -- Short press
-        end
-        return FollowMe.INPUTEVENT_NONE; -- It was probably a long event, which has already been processed.
-    elseif timeDiff > FollowMe.INPUTEVENT_MILLISECONDS then
-        FollowMe.InputEvents[inBinding] = g_currentMission.time + 10000000;
-        if nil ~= repeatIntervalMS then
-            return FollowMe.INPUTEVENT_REPEAT; -- Long-and-repeating press
-        end
-        return FollowMe.INPUTEVENT_LONG; -- Long press
-    elseif timeDiff < 0 then
-        if nil ~= repeatIntervalMS and (timeDiff + 10000000) > repeatIntervalMS then
-            FollowMe.InputEvents[inBinding] = g_currentMission.time + 10000000;
-            return FollowMe.INPUTEVENT_REPEAT; -- Long-and-repeating press
-        end;
-    end;
-    return FollowMe.INPUTEVENT_NONE; -- Not released
-end;
---]]
-
-
 function FollowMe:handleAction(actionName, inputValue, callbackState, isAnalog, isMouse)
     --log("FollowMe:handleAction ",actionName," ",inputValue," ",callbackState," ",isAnalog," ",isMouse)
     local spec = FollowMe.getSpec(self)
@@ -484,7 +440,7 @@ function FollowMe:handleAction(actionName, inputValue, callbackState, isAnalog, 
             end
         end
         ,FollowMeMyPause   = function() FollowMe.waitResumeFollowMe(self, FollowMe.REASON_USER_ACTION); end
-        ,FollowMeMyDist    = function(value) FollowMe.changeDistance(self, 5 * MathUtil.sign(value)); end
+        --,FollowMeMyDist    = function(value) FollowMe.changeDistance(self, 5 * MathUtil.sign(value)); end
         ,FollowMeMyOffs    = function(value) FollowMe.changeXOffset(self, 0.5 * MathUtil.sign(value)); end
         ,FollowMeMyOffsTgl = function() FollowMe.toggleXOffset(self, true); end
 
@@ -494,7 +450,7 @@ function FollowMe:handleAction(actionName, inputValue, callbackState, isAnalog, 
             end
         end
         ,FollowMeFlPause   = function() FollowMe.waitResumeFollowMe(stalker, FollowMe.REASON_USER_ACTION); end
-        ,FollowMeFlDist    = function(value) FollowMe.changeDistance(stalker, 5 * MathUtil.sign(value)); end
+        --,FollowMeFlDist    = function(value) FollowMe.changeDistance(stalker, 5 * MathUtil.sign(value)); end
         ,FollowMeFlOffs    = function(value) FollowMe.changeXOffset(stalker, 0.5 * MathUtil.sign(value)); end
         ,FollowMeFlOffsTgl = function() FollowMe.toggleXOffset(stalker, true); end
     }
@@ -504,6 +460,37 @@ function FollowMe:handleAction(actionName, inputValue, callbackState, isAnalog, 
     -- else
     --   log("Not found action: ",actionName)
     end
+end
+
+function FollowMe:actionChangeDistance(actionName, inputValue, callbackState, isAnalog, isMouse)
+  local spec = FollowMe.getSpec(self)
+
+  if nil == spec.lastInputTime then
+    spec.lastInputValue = inputValue
+    spec.lastInputTime = g_time
+    spec.nextInputTimeout = g_time + 500
+  else
+    local who = self
+    if 1 == callbackState then
+      who = spec.StalkerVehicleObj;
+    end
+
+    if 0 == inputValue then
+      -- Short-tap? Change distance in steps of 5
+      if spec.lastInputTime > g_time - 150 then
+        FollowMe.changeDistance(who, 5 * MathUtil.sign(spec.lastInputValue));
+      end
+      spec.lastInputValue = nil
+      spec.lastInputTime = nil
+      spec.nextInputTimeout = nil
+    else
+      -- Long-hold? Change distance in steps of 1
+      if spec.nextInputTimeout < g_time then
+        FollowMe.changeDistance(who, 1 * MathUtil.sign(spec.lastInputValue));
+        spec.nextInputTimeout = g_time + 250
+      end
+    end
+  end
 end
 
 
@@ -551,10 +538,16 @@ function FollowMe:onRegisterActionEvents(isSelected, isOnActiveVehicle, arg3, ar
           end
           addActionEvents(self, GS_PRIO_VERY_HIGH, {
             { InputAction.FollowMeMyPause,   pauseText },
-            { InputAction.FollowMeMyDist,    g_i18n:getText("FollowMeMyDist") },
+            --{ InputAction.FollowMeMyDist,    g_i18n:getText("FollowMeMyDist") },
             { InputAction.FollowMeMyOffs,    g_i18n:getText("FollowMeMyOffs") },
             { InputAction.FollowMeMyOffsTgl, nil },
           } )
+          --
+          local _,evtId = self:addActionEvent(spec.actionEvents, InputAction.FollowMeMyDist, self, FollowMe.actionChangeDistance, true, false, true, true, 0)
+          g_inputBinding:setActionEventText(evtId, g_i18n:getText("FollowMeMyDist"))
+          g_inputBinding:setActionEventTextPriority(evtId, GS_PRIO_VERY_HIGH)
+          g_inputBinding:setActionEventTextVisibility(evtId, true)
+
         end
       end
       if (activeForInput or isFollowMeActive) and nil ~= spec.StalkerVehicleObj then
@@ -567,24 +560,17 @@ function FollowMe:onRegisterActionEvents(isSelected, isOnActiveVehicle, arg3, ar
         addActionEvents(self, GS_PRIO_HIGH, {
           { InputAction.FollowMeFlStop,    nil },
           { InputAction.FollowMeFlPause,   pauseText },
-          { InputAction.FollowMeFlDist,    g_i18n:getText("FollowMeFlDist") },
+          --{ InputAction.FollowMeFlDist,    g_i18n:getText("FollowMeFlDist") },
           { InputAction.FollowMeFlOffs,    g_i18n:getText("FollowMeFlOffs") },
           { InputAction.FollowMeFlOffsTgl, nil },
         } )
-      end
+        local _,evtId = self:addActionEvent(spec.actionEvents, InputAction.FollowMeFlDist, self, FollowMe.actionChangeDistance, true, false, true, true, 1)
+        g_inputBinding:setActionEventText(evtId, g_i18n:getText("FollowMeFlDist"))
+        g_inputBinding:setActionEventTextPriority(evtId, GS_PRIO_HIGH)
+        g_inputBinding:setActionEventTextVisibility(evtId, true)
+    end
     end
 end
-
--- function FollowMe:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection, isSelected)
---     -- if FollowMe.getIsFollowMeActive(self) then
---     --     -- self.forceIsActive = true;
---     --     -- self.steeringEnabled = false;
---     --     -- self.spec_motorized.stopMotorOnLeave  = false
---     --     -- self.spec_drivable.allowPlayerControl = false
-
---     --     -- self:raiseActive()
---     -- end
--- end;
 
 function FollowMe:onUpdateTick(dt, isActiveForInput, isSelected)
     local spec = FollowMe.getSpec(self)
@@ -808,7 +794,7 @@ function AIDriveStrategyFollow:getDriveData(dt, vX, vY, vZ)
 
         -- Following crumbs...
         local crumbT = leaderSpec.DropperCircularArray[1+(vehicleSpec.FollowCurrentIndex % FollowMe.cBreadcrumbsMaxEntries)];
-        maxSpeed = crumbT.maxSpeed;
+        maxSpeed = math.max(5, crumbT.maxSpeed);
         --turnLightState = crumbT.turnLightState
         --
         local ox,oy,oz = crumbT.trans[1],crumbT.trans[2],crumbT.trans[3];
@@ -845,7 +831,7 @@ function AIDriveStrategyFollow:getDriveData(dt, vX, vY, vZ)
                 local ntZ = crumbN.trans[3] + crumbN.rot[1] * vehicleSpec.FollowXOffset;
                 local pct = math.max(1 - (tDist / FollowMe.cMinDistanceBetweenDrops), 0);
                 tX,_,tZ = MathUtil.vector3ArrayLerp( {tX,0,tZ}, {ntX,0,ntZ}, pct);
-                maxSpeed = (maxSpeed + crumbN.maxSpeed) / 2;
+                maxSpeed = math.max(5, (maxSpeed + crumbN.maxSpeed) / 2)
             end;
         end
         --
@@ -863,7 +849,7 @@ function AIDriveStrategyFollow:getDriveData(dt, vX, vY, vZ)
         local lx,ly,lz      = getWorldTranslation(lNode);
         local lrx,lry,lrz   = localDirectionToWorld(lNode, 0,0,Utils.getNoNil(leader.reverserDirection, 1));
 
-        maxSpeed = math.max(5, leader.lastSpeed * 3600); -- only consider forward movement.
+        maxSpeed = math.max(1, leader.lastSpeed * 3600) -- only consider forward movement.
 
         -- leader-target adjust with offset
         tX = lx - lrz * vehicleSpec.FollowXOffset + lrx * keepInFrontMeters;
@@ -886,11 +872,11 @@ function AIDriveStrategyFollow:getDriveData(dt, vX, vY, vZ)
       maxSpeed = maxSpeed * (1 + math.min(1, (distanceToStop / curSpeed)))
     end
 
-    if (not isAllowedToDrive) or (maxSpeed < 0.5) then
+    if (not isAllowedToDrive) or (maxSpeed < 0.1) then
       maxSpeed = 0
     end
-    distanceToStop = math.floor(distanceToStop)
 
+    -- distanceToStop = math.floor(distanceToStop)
     -- if self.lastDistToStop ~= distanceToStop then
     --   log("maxSpeed:",maxSpeed," distToStop:",distanceToStop)
     --   self.lastDistToStop = distanceToStop
