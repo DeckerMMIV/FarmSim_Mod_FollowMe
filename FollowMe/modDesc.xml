@@ -83,10 +83,6 @@ Con "Follow Me" se puede conseguir.(No funciona con marcha atrás).
     <!-- NO! - DONT ATTEMPT CHANGING THE SETTING! - The FollowMe script is NOT YET multiplayer ready! -->
     <multiplayer supported="false"/>
 
-    <!-- specializations>
-      <specialization name="followMe" className="FollowMe" filename="FollowMe.lua"/>
-    </specializations -->
-
     <extraSourceFiles>
         <sourceFile filename="register.lua" />
     </extraSourceFiles>
@@ -108,8 +104,12 @@ Con "Follow Me" se puede conseguir.(No funciona con marcha atrás).
     </actions>
 
     <inputBinding>
-        <actionBinding action="FollowMeMyToggle" ><binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_f" index="1" /></actionBinding>
-        <actionBinding action="FollowMeMyPause"  ><binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_h" index="1" /></actionBinding>
+        <actionBinding action="FollowMeMyToggle">
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_f" index="1" />
+        </actionBinding>
+        <actionBinding action="FollowMeMyPause">
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_h" index="1" />
+        </actionBinding>
         <actionBinding action="FollowMeMyDist">
           <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_w" axisComponent="-" neutralInput="0" index="1" />
           <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_s" axisComponent="+" neutralInput="0" index="1" />
@@ -118,10 +118,16 @@ Con "Follow Me" se puede conseguir.(No funciona con marcha atrás).
           <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_a" axisComponent="-" neutralInput="0" index="1" />
           <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_d" axisComponent="+" neutralInput="0" index="1" />
         </actionBinding>
-        <actionBinding action="FollowMeMyOffsTgl"><binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_x" index="1" /></actionBinding>
+        <actionBinding action="FollowMeMyOffsTgl">
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_x" index="1" />
+        </actionBinding>
 
-        <actionBinding action="FollowMeFlStop"   ><binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_f" index="1" /></actionBinding>
-        <actionBinding action="FollowMeFlPause"  ><binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_h" index="1" /></actionBinding>
+        <actionBinding action="FollowMeFlStop">
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_f" index="1" />
+        </actionBinding>
+        <actionBinding action="FollowMeFlPause">
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_h" index="1" />
+        </actionBinding>
         <actionBinding action="FollowMeFlDist">
           <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_w" axisComponent="-" neutralInput="0" index="1" />
           <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_s" axisComponent="+" neutralInput="0" index="1" />
@@ -130,6 +136,8 @@ Con "Follow Me" se puede conseguir.(No funciona con marcha atrás).
           <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_a" axisComponent="-" neutralInput="0" index="1" />
           <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_d" axisComponent="+" neutralInput="0" index="1" />
         </actionBinding>
-        <actionBinding action="FollowMeFlOffsTgl"><binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_x" index="1" /></actionBinding>
+        <actionBinding action="FollowMeFlOffsTgl">
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_x" index="1" />
+        </actionBinding>
     </inputBinding>
 </modDesc>

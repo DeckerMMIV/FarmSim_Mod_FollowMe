@@ -47,16 +47,20 @@ FollowMe = {};
 local specTypeName = 'followMe'
 local modSpecTypeName = g_currentModName ..".".. specTypeName
 function FollowMe.getSpec(self)
-  return self["spec_" .. modSpecTypeName] -- Work-around... while waiting for some better published LUADOCs from GIANTS Software...
+  if nil == self then
+    printCallstack()
+    return nil
+  end
+  return self["spec_" .. modSpecTypeName]
 end
 
 --
 --FollowMe.wagePaymentMultiplier = 0.2
 
 --
-FollowMe.cMinDistanceBetweenDrops        =   5;   -- TODO, make configurable
-FollowMe.cBreadcrumbsMaxEntries          = 150;   -- TODO, make configurable
-FollowMe.cMstimeBetweenDrops             =  40;   -- TODO, make configurable
+FollowMe.cMinDistanceBetweenDrops        =   5;
+FollowMe.cBreadcrumbsMaxEntries          = 150;
+--FollowMe.cMstimeBetweenDrops             =  40;
 FollowMe.debugDraw = {}
 
 FollowMe.COMMAND_NONE           = 0
@@ -88,6 +92,7 @@ function FollowMe.prerequisitesPresent(specializations)
       and true  == SpecializationUtil.hasSpecialization(Motorized     ,specializations)
       and true  == SpecializationUtil.hasSpecialization(Enterable     ,specializations)
       and true  == SpecializationUtil.hasSpecialization(AIVehicle     ,specializations)
+      and true  == SpecializationUtil.hasSpecialization(Lights        ,specializations)
       and false == SpecializationUtil.hasSpecialization(ConveyorBelt  ,specializations)
       and false == SpecializationUtil.hasSpecialization(Locomotive    ,specializations)
 end
@@ -99,6 +104,8 @@ function FollowMe.registerFunctions(vehicleType)
   } ) do
     SpecializationUtil.registerFunction(vehicleType, funcName, FollowMe[funcName])
   end
+
+  SpecializationUtil.registerOverwrittenFunction(vehicleType, "getAINeedsTrafficCollisionBox", FollowMe.getAINeedsTrafficCollisionBox)
 end
 
 function FollowMe.registerEventListeners(vehicleType)
@@ -106,48 +113,21 @@ function FollowMe.registerEventListeners(vehicleType)
   for _,funcName in pairs( {
     "onDraw",
     "onLoad",
-    --"onUpdate",
     "onUpdateTick",
     "onRegisterActionEvents",
-    --"onReadStream", "onWriteStream",
-    --"onEnterVehicle",
-    --"onLeaveVehicle",
+    "onAIEnd",
   } ) do
     SpecializationUtil.registerEventListener(vehicleType, funcName, FollowMe)
   end
 end
 
--- function FollowMe.initialize()
---     if FollowMe.isInitialized then
---         return;
---     end;
---     FollowMe.isInitialized = true;
-
---     -- FollowMe.showMouse = false
---     -- FollowMe.cursorXYZ = {0,0,0}
--- end;
-
---
---
---
-
 function FollowMe:onLoad(savegame)
-    --log("FollowMe:onLoad()")
-    --FollowMe.initialize();
+    self.followMeIsStarted = false
 
     local spec = FollowMe.getSpec(self)
     spec.actionEvents = {}
 
-    --
-    --self.getIsFollowMeActive  = FollowMe.getIsFollowMeActive
-    --self.getDeactivateOnLeave = Utils.overwrittenFunction(self.getDeactivateOnLeave, FollowMe.getDeactivateOnLeave);
-
-    self.followMeIsStarted = false
-
-    -- A simple attempt at making a "namespace" for 'Follow Me' variables.
-    --self.modFM = {};  -- TODO: Change to use the 'spec_<modName>.FollowMe' thingy...
-    --
-    spec.IsInstalled = true;  -- TODO. Make 'FollowMe' a buyable add-on! This is expensive equipment ;-)
+    --spec.IsInstalled = true;  -- TODO. Make 'FollowMe' a buyable add-on! This is expensive equipment ;-)
     --
     spec.sumSpeed = 0;
     spec.sumCount = 0;
@@ -158,52 +138,44 @@ function FollowMe:onLoad(savegame)
     spec.FollowState = FollowMe.STATE_NONE;
     spec.FollowVehicleObj = nil;  -- What vehicle is this one following (if any)
     spec.FollowCurrentIndex = -1;
-    spec.FollowKeepBack = 20;
+    spec.FollowKeepBack = 25;
     spec.FollowXOffset = 0;
     spec.ToggleXOffset = 0;
-    --
-    spec.reduceSpeedTime = 0;
-    spec.lastAcceleration  = 0;
-    spec.lastLastSpeedReal = 0;
     --
     spec.ShowWarningText = nil;
     spec.ShowWarningTime = 0;
     --
-    spec.currentHelper = nil
-    spec.startedFarmId = 0
-    --
     spec.isDirty = false;
     spec.delayDirty = nil;
     --
-    if self.isServer then
-      if nil ~= self.spec_aiVehicle then
-        if nil == self.spec_aiVehicle.pricePerMS then
-            -- Copied from AIVehicle
-            self.spec_aiVehicle.pricePerMS = Utils.getNoNil(getXMLFloat(self.xmlFile, "vehicle.ai.pricePerHour"), 2000)/60/60/1000;
-        end
-      end
-    end;
+    -- if self.isServer then
+    --   if nil ~= self.spec_aiVehicle then
+    --     if nil == self.spec_aiVehicle.pricePerMS then
+    --         -- Copied from AIVehicle
+    --         self.spec_aiVehicle.pricePerMS = Utils.getNoNil(getXMLFloat(self.xmlFile, "vehicle.ai.pricePerHour"), 2000)/60/60/1000;
+    --     end
+    --   end
+    -- end;
 
     --
     if nil ~= savegame and not savegame.resetVehicles then
-        local distance = getXMLFloat(savegame.xmlFile, savegame.key .. ".followMe#backDist")
+        local modKey = savegame.key ..".".. modSpecTypeName
+        local distance = getXMLInt(savegame.xmlFile, modKey .. "#distance")
+        local offset = getXMLFloat(savegame.xmlFile, modKey .. "#offset")
         if nil ~= distance then
             FollowMe.changeDistance(self, { distance }, true ); -- Absolute change
         end
-        local offset = getXMLFloat(savegame.xmlFile, savegame.key .. ".followMe#sideOffs")
         if nil ~= offset then
             FollowMe.changeXOffset(self, { offset }, true ); -- Absolute change
         end
     end
 end;
 
-function FollowMe:getSaveAttributesAndNodes(nodeIdent)
+function FollowMe:saveToXMLFile(xmlFile, key, usedModNames)
+  --log("usedModNames=",unpack(usedModNames))
   local spec = FollowMe.getSpec(self)
-  local attributes, nodes
-  if nil ~= spec then
-      nodes = nodeIdent .. ('<followMe backDist="%.0f" sideOffs="%.1f" />'):format(spec.FollowKeepBack, spec.FollowXOffset)
-  end
-  return attributes, nodes;
+  setXMLInt(  xmlFile, key.."#distance", spec.FollowKeepBack)
+  setXMLFloat(xmlFile, key.."#offset",   spec.FollowXOffset)
 end;
 
 function FollowMe:delete()
@@ -241,6 +213,17 @@ end
 function FollowMe:getIsFollowMeWaiting()
   local spec = FollowMe.getSpec(self)
   return spec.FollowState == FollowMe.STATE_WAITING
+end
+
+function FollowMe:getAINeedsTrafficCollisionBox(superFunc)
+  if FollowMe.getIsFollowMeActive(self) then
+    return false
+  end
+  return superFunc(self)
+end
+
+function FollowMe:onAIEnd()
+  self.followMeIsStarted = false
 end
 
 -- function FollowMe:onWriteStream(streamId, connection)
@@ -405,22 +388,16 @@ function FollowMe:changeXOffset(newValue, noSendEvent)
     end
 end;
 
-function FollowMe:toggleXOffset(withZero, noSendEvent)
+function FollowMe:toggleXOffset()
     local spec = FollowMe.getSpec(self)
-    if true == withZero then
-        if 0 == spec.FollowXOffset and 0 ~= spec.ToggleXOffset then
-            spec.FollowXOffset = spec.ToggleXOffset
-            spec.ToggleXOffset = 0;
-        elseif 0 ~= spec.FollowXOffset then
-            spec.ToggleXOffset = spec.FollowXOffset
-            spec.FollowXOffset = 0;
-        end
-        if not noSendEvent then
-            spec.delayDirty = g_currentMission.time + 750;
-        end;
+    if 0 == spec.FollowXOffset and 0 ~= spec.ToggleXOffset then
+      spec.FollowXOffset = -spec.ToggleXOffset
+      spec.ToggleXOffset = 0
     else
-        FollowMe.changeXOffset(self, { -spec.FollowXOffset }, noSendEvent) -- Absolute change
+      spec.ToggleXOffset = spec.FollowXOffset
+      spec.FollowXOffset = 0
     end
+    FollowMe.changeXOffset(self, { spec.FollowXOffset } ) -- Absolute change
 end
 
 function FollowMe:handleAction(actionName, inputValue, callbackState, isAnalog, isMouse)
@@ -431,7 +408,7 @@ function FollowMe:handleAction(actionName, inputValue, callbackState, isAnalog, 
         FollowMeMyToggle = function()
             if FollowMe.getIsFollowMeActive(self) then
                 FollowMe.stopFollowMe(self, FollowMe.REASON_USER_ACTION);
-            elseif g_currentMission:getHasPlayerPermission("hireAI") then
+            elseif g_currentMission:getHasPlayerPermission("hireAssistant") then
               if FollowMe.getCanStartFollowMe(self) then
                 FollowMe.startFollowMe(self, nil, g_currentMission.player.farmId);
               end
@@ -440,19 +417,17 @@ function FollowMe:handleAction(actionName, inputValue, callbackState, isAnalog, 
             end
         end
         ,FollowMeMyPause   = function() FollowMe.waitResumeFollowMe(self, FollowMe.REASON_USER_ACTION); end
-        --,FollowMeMyDist    = function(value) FollowMe.changeDistance(self, 5 * MathUtil.sign(value)); end
         ,FollowMeMyOffs    = function(value) FollowMe.changeXOffset(self, 0.5 * MathUtil.sign(value)); end
-        ,FollowMeMyOffsTgl = function() FollowMe.toggleXOffset(self, true); end
+        ,FollowMeMyOffsTgl = function() FollowMe.toggleXOffset(self); end
 
         ,FollowMeFlStop = function()
-            if FollowMe.getIsFollowMeActive(stalker) then
+            if nil ~= stalker and FollowMe.getIsFollowMeActive(stalker) then
                 FollowMe.stopFollowMe(stalker, FollowMe.REASON_USER_ACTION);
             end
         end
         ,FollowMeFlPause   = function() FollowMe.waitResumeFollowMe(stalker, FollowMe.REASON_USER_ACTION); end
-        --,FollowMeFlDist    = function(value) FollowMe.changeDistance(stalker, 5 * MathUtil.sign(value)); end
         ,FollowMeFlOffs    = function(value) FollowMe.changeXOffset(stalker, 0.5 * MathUtil.sign(value)); end
-        ,FollowMeFlOffsTgl = function() FollowMe.toggleXOffset(stalker, true); end
+        ,FollowMeFlOffsTgl = function() FollowMe.toggleXOffset(stalker); end
     }
     local action = switch[actionName]
     if action then
@@ -475,20 +450,20 @@ function FollowMe:actionChangeDistance(actionName, inputValue, callbackState, is
       who = spec.StalkerVehicleObj;
     end
 
-    if 0 == inputValue then
-      -- Short-tap? Change distance in steps of 5
-      if spec.lastInputTime > g_time - 150 then
-        FollowMe.changeDistance(who, 5 * MathUtil.sign(spec.lastInputValue));
-      end
-      spec.lastInputValue = nil
-      spec.lastInputTime = nil
-      spec.nextInputTimeout = nil
-    else
+    if 0 ~= inputValue and nil ~= who then
       -- Long-hold? Change distance in steps of 1
       if spec.nextInputTimeout < g_time then
         FollowMe.changeDistance(who, 1 * MathUtil.sign(spec.lastInputValue));
         spec.nextInputTimeout = g_time + 250
       end
+    else
+      -- Short-tap? Change distance in steps of 5
+      if spec.lastInputTime > g_time - 150 and nil ~= who then
+        FollowMe.changeDistance(who, 5 * MathUtil.sign(spec.lastInputValue));
+      end
+      spec.lastInputValue = nil
+      spec.lastInputTime = nil
+      spec.nextInputTimeout = nil
     end
   end
 end
@@ -538,7 +513,6 @@ function FollowMe:onRegisterActionEvents(isSelected, isOnActiveVehicle, arg3, ar
           end
           addActionEvents(self, GS_PRIO_VERY_HIGH, {
             { InputAction.FollowMeMyPause,   pauseText },
-            --{ InputAction.FollowMeMyDist,    g_i18n:getText("FollowMeMyDist") },
             { InputAction.FollowMeMyOffs,    g_i18n:getText("FollowMeMyOffs") },
             { InputAction.FollowMeMyOffsTgl, nil },
           } )
@@ -560,10 +534,10 @@ function FollowMe:onRegisterActionEvents(isSelected, isOnActiveVehicle, arg3, ar
         addActionEvents(self, GS_PRIO_HIGH, {
           { InputAction.FollowMeFlStop,    nil },
           { InputAction.FollowMeFlPause,   pauseText },
-          --{ InputAction.FollowMeFlDist,    g_i18n:getText("FollowMeFlDist") },
           { InputAction.FollowMeFlOffs,    g_i18n:getText("FollowMeFlOffs") },
           { InputAction.FollowMeFlOffsTgl, nil },
         } )
+        --
         local _,evtId = self:addActionEvent(spec.actionEvents, InputAction.FollowMeFlDist, self, FollowMe.actionChangeDistance, true, false, true, true, 1)
         g_inputBinding:setActionEventText(evtId, g_i18n:getText("FollowMeFlDist"))
         g_inputBinding:setActionEventTextPriority(evtId, GS_PRIO_HIGH)
@@ -585,6 +559,19 @@ function FollowMe:onUpdateTick(dt, isActiveForInput, isSelected)
             -- else
             --     spec.trailStrength = nil
             -- end
+
+            local leader = spec.FollowVehicleObj;
+            local leaderSpec = FollowMe.getSpec(leader)
+            local crumbIndexDiff = leaderSpec.DropperCurrentIndex - spec.FollowCurrentIndex;
+            if crumbIndexDiff > 0 then
+              local crumb = leaderSpec.DropperCircularArray[1+(spec.FollowCurrentIndex % FollowMe.cBreadcrumbsMaxEntries)];
+              self:setTurnLightState(crumb.turnLightState)
+            else
+              self:setTurnLightState(leader:getTurnLightState())
+            end
+
+            self:setLightsTypesMask(       leader:getLightsTypesMask())
+            self:setBeaconLightsVisibility(leader:getBeaconLightsVisibility())
 
             -- if nil ~= spec.FollowVehicleObj and nil ~= self.spec_lights and nil ~= self.spec_lights.setBeaconLightsVisibility then
             --     -- Simon says: Lights!
@@ -615,8 +602,8 @@ function FollowMe:onUpdateTick(dt, isActiveForInput, isSelected)
               distancePrevDrop = FollowMe.cMinDistanceBetweenDrops
             end
             if distancePrevDrop >= FollowMe.cMinDistanceBetweenDrops then
-                local maxSpeed = math.max(5, (spec.sumSpeed / spec.sumCount) * 3600)
-                FollowMe.addDrop(self, maxSpeed, self.turnLightState, self.reverserDirection);
+                local maxSpeed = math.max(1, (spec.sumSpeed / spec.sumCount) * 3600)
+                FollowMe.addDrop(self, maxSpeed, self:getTurnLightState(), self.reverserDirection);
                 --
                 spec.sumSpeed = 0;
                 spec.sumCount = 0;
@@ -677,7 +664,7 @@ function FollowMe:stopFollowMe(reason)
     else
         -- Server only
         --FollowMe.onStopFollowMe(self, reason);
-        self:stopAIVehicle(nil, nil)
+        self:stopAIVehicle()
     end
 end
 
@@ -712,7 +699,7 @@ function AIDriveStrategyFollow:delete()
     end
     vehicleSpec.FollowVehicleObj = nil
     vehicleSpec.FollowState = FollowMe.STATE_NONE
-    vehicle.followMeIsStarted = false
+    --vehicle.followMeIsStarted = false
 
     vehicle.spec_aiVehicle.mod_CheckSpeedLimitOnlyIfWorking = nil
 
@@ -751,14 +738,13 @@ function AIDriveStrategyFollow:getDriveData(dt, vX, vY, vZ)
 
     local vehicle = self.vehicle
     local vehicleSpec = FollowMe.getSpec(vehicle)
+    local leader = vehicleSpec.FollowVehicleObj;
 
-    if nil == vehicleSpec.FollowVehicleObj then
+    if nil == vehicleSpec.FollowVehicleObj or nil == leader then
       vehicle:stopAIVehicle(AIVehicle.STOP_REASON_UNKOWN);
       return nil,nil,nil,nil,nil
     end
 
-    --
-    local leader = vehicleSpec.FollowVehicleObj;
     local leaderSpec = FollowMe.getSpec(leader)
     -- actual target
     local tX,tY,tZ;
@@ -1645,9 +1631,9 @@ function FollowMe:onDraw(isActiveForInput, isSelected)
             if nil ~= sx then
                 local txt = g_i18n:getText("FollowMeLeader")
                 local leaderSpec = FollowMe.getSpec(spec.FollowVehicleObj)
-                if nil ~= leaderSpec.currentHelper then
-                    txt = txt .. (" '%s'"):format(leaderSpec.currentHelper.name)
-                end
+                -- if nil ~= leaderSpec.currentHelper then
+                --     txt = txt .. (" '%s'"):format(leaderSpec.currentHelper.name)
+                -- end
                 local dist = spec.FollowKeepBack
                 if 0 ~= dist then
                     txt = txt .. "\n" .. (g_i18n:getText((dist > 0) and "FollowMeDistAhead" or "FollowMeDistBehind")):format(math.abs(dist))
@@ -1672,9 +1658,9 @@ function FollowMe:onDraw(isActiveForInput, isSelected)
         local txt = nil
         if showFollowMeFl then
             txt = g_i18n:getText("FollowMeFollower")
-            if nil ~= stalkerSpec.currentHelper then
-                txt = txt .. (" '%s'"):format(stalkerSpec.currentHelper.name)
-            end
+            -- if nil ~= stalkerSpec.currentHelper then
+            --     txt = txt .. (" '%s'"):format(stalkerSpec.currentHelper.name)
+            -- end
             if stalkerSpec.FollowState == FollowMe.STATE_WAITING then
                 txt = txt .. g_i18n:getText("FollowMePaused")
             end
@@ -1778,18 +1764,18 @@ function FollowMe:onDraw(isActiveForInput, isSelected)
     end
 --DEBUG]]
 
-    if FollowMe.showFollowMeFl then
-        local x,y,z = unpack(FollowMe.cursorXYZ)
-        drawDebugLine(x,y,z, 1,1,0, x,y+2,z, 1,1,0, true)
-    end
+    -- if FollowMe.showFollowMeFl then
+    --     local x,y,z = unpack(FollowMe.cursorXYZ)
+    --     drawDebugLine(x,y,z, 1,1,0, x,y+2,z, 1,1,0, true)
+    -- end
 
-    if self.isServer then
-        if showFollowMeMy and nil ~= spec.FollowVehicleObj then
-            FollowMe.debugDrawTrail(self)
-        elseif showFollowMeFl and nil ~= spec.StalkerVehicleObj then
-            FollowMe.debugDrawTrail(spec.StalkerVehicleObj)
-        end
-    end
+    -- if self.isServer then
+    --     if showFollowMeMy and nil ~= spec.FollowVehicleObj then
+    --         FollowMe.debugDrawTrail(self)
+    --     elseif showFollowMeFl and nil ~= spec.StalkerVehicleObj then
+    --         FollowMe.debugDrawTrail(spec.StalkerVehicleObj)
+    --     end
+    -- end
 
     setTextAlignment(RenderText.ALIGN_LEFT);
     setTextBold(false);

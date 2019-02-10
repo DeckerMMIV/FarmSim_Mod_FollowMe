@@ -12,7 +12,8 @@ local function log(...)
       for idx = 1,select("#", ...) do
           txt = txt .. tostring(select(idx, ...))
       end
-      print(string.format("%7ums ", g_time) .. txt);
+      --print(string.format("%7ums ", g_time) .. txt);
+      print(txt)
   end
 end;
 
@@ -91,9 +92,9 @@ end)
 
 -- WARNING!
 AIVehicle.stopAIVehicle = Utils.appendedFunction(AIVehicle.stopAIVehicle, function(self, reason)
-  if true ~= self.spec_aiVehicle.isActive then
+  --if true ~= self.spec_aiVehicle.isActive then
     self.spec_aiVehicle.mod_ForcedDrivingStrategyName = nil
-  end
+  --end
 end)
 
 --
@@ -151,11 +152,12 @@ for vehTypeName,vehTypeObj in pairs( g_vehicleTypeManager.vehicleTypes ) do
   and true  == SpecializationUtil.hasSpecialization(Motorized     ,vehTypeObj.specializations)
   and true  == SpecializationUtil.hasSpecialization(Enterable     ,vehTypeObj.specializations)
   and true  == SpecializationUtil.hasSpecialization(AIVehicle     ,vehTypeObj.specializations)
+  and true  == SpecializationUtil.hasSpecialization(Lights        ,vehTypeObj.specializations)
   and false == SpecializationUtil.hasSpecialization(ConveyorBelt  ,vehTypeObj.specializations)
   and false == SpecializationUtil.hasSpecialization(Locomotive    ,vehTypeObj.specializations)
   then
     g_vehicleTypeManager:addSpecialization(vehTypeName, modSpecTypeName)
-    log("FollowMe added to: ",vehTypeName)
+    log("  FollowMe added to: ",vehTypeName)
   --else
   --  log("FollowMe ignored for: ",vehTypeName)
   end
