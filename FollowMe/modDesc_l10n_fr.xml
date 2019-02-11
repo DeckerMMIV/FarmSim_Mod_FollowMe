@@ -7,9 +7,9 @@
 
     <!-- Add your own name or nickname here, when you contribute to this file's translation, so I know who to put into the credits. -->
     <translationContributors>
-        bbj89
-        Taco29
-        Anonymous
+        (FS17) bbj89
+        (FS17) Taco29
+        (FS17) Anonymous
     </translationContributors>
 
     <!-- Note that 'description' is only here for easier translations. It needs to be manually copied to ModDesc.XML later. -->
@@ -19,47 +19,55 @@ Avec "Follow Me", c'est possible (sauf en marche arrière).
     </description>
 
     <texts>
-        <text name="FollowMeMissingTrafficCollisionTrigger" text="Malheureusement, ce véhicule n'est pas capable d'agir comme un 'suiveur'. Il manque une partie appelée 'aiTrafficCollisionTrigger'." />
-        <text name="FollowMeNotAvailable"    text="Malheureusement, ce véhicule n'est pas capable d'agir comme un 'suiveur'." />
+        <text name="FollowMeAlreadyAI"          text="Un employé utilise déjà ce véhicule" />
+        <text name="FollowMeStartEngine"        text="Démarrer d'abord le moteur." />
 
-        <text name="FollowMeAlreadyAI"       text="Un employé utilise déjà ce véhicule" />
-        <text name="FollowMeStartEngine"     text="Démarrer d'abord le moteur." />
-
-        <text name="FollowMeDropperNotFound" text="Impossible de trouver un meneur.
+        <text name="FollowMeDropperNotFound"    text="Impossible de trouver un meneur.
 Placez le véhicule meneur devant celui-ci." />
 
-        <text name="FollowMeKeysMyself"      text="%s - Actions de contrôle meneur" />
-        <text name="FollowMeKeysBehind"      text="%s - Actions de contrôle suiveur" />
-        <text name="FollowMeMyToggle"        text="FollowMe: Activer / Désactiver" />
+        <!--text name="FollowMeKeysMyself"         text="%s - Actions de contrôle meneur"  /-->
+        <!--text name="FollowMeKeysBehind"         text="%s - Actions de contrôle suiveur" /-->
+        <text name="FollowMeMyTurnOn"           text="FollowMe: Activer"           />
+        <text name="FollowMeMyTurnOff"          text="FollowMe: Désactiver"         />
 
-        <text name="input_FollowMeMyToggle"  text="FollowMe: Activer / Désactiver" />
-        <text name="input_FollowMeMyPause"   text="FollowMe: Meneur Attendre / Redémarrer" />
-        <text name="input_FollowMeMyDistDec" text="FollowMe: Écart meneur -" />
-        <text name="input_FollowMeMyDistInc" text="FollowMe: Écart meneur +" />
-        <text name="input_FollowMeMyOffsDec" text="FollowMe: Décalage meneur gauche" />
-        <text name="input_FollowMeMyOffsInc" text="FollowMe: Décalage meneur droite" />
-        <text name="input_FollowMeMyOffsTgl" text="FollowMe: Invers. correct. traject. meneur" />
+        <text name="FollowMeMyDist"             text="FollowMe: Distance"           />
+        <text name="FollowMeMyOffs"             text="FollowMe: Offset"             />
+        <text name="FollowMeMyWait"             text="FollowMe: Wait"               />
+        <text name="FollowMeMyResume"           text="FollowMe: Resume"             />
 
-        <text name="input_FollowMeFlStop"    text="FollowMe: Stopper le suiveur" />
-        <text name="input_FollowMeFlPause"   text="FollowMe: Suiveur Attendre / Redémarrer" />
-        <text name="input_FollowMeFlDistDec" text="FollowMe: Écart suiveur -" />
-        <text name="input_FollowMeFlDistInc" text="FollowMe: Écart suiveur +" />
-        <text name="input_FollowMeFlOffsDec" text="FollowMe: Décalage suiveur gauche" />
-        <text name="input_FollowMeFlOffsInc" text="FollowMe: Décalage suiveur droite" />
-        <text name="input_FollowMeFlOffsTgl" text="FollowMe: Invers. correct. traject. suiveur" />
+        <text name="FollowMeFlDist"             text="FollowMe: Behind Distance"    />
+        <text name="FollowMeFlOffs"             text="FollowMe: Behind Offset"      />
+        <text name="FollowMeFlWait"             text="FollowMe: Behind Wait"        />
+        <text name="FollowMeFlResume"           text="FollowMe: Behind Resume"      />
 
-        <text name="FollowMeLeader"          text="Meneur" />
-        <text name="FollowMeFollower"        text="Suiveur" />
-        <text name="FollowMePaused"          text=" (En attente)" />
-        <text name="FollowMeOffLft"          text="Décal. gauche %.1f" />
-        <text name="FollowMeOffRgt"          text="Décal. droite %.1f" />
-        <text name="FollowMeDistBehind"      text="Dist. suiveur %.1f" />
-        <text name="FollowMeDistAhead"       text="Dist. meneur %.1f" />
-        <text name="FollowMeTrailStrength"   text="Trail %d%%"           />
+        <text name="input_FollowMeMyToggle"     text="FollowMe: Activer / Désactiver" />
+        <text name="input_FollowMeMyPause"      text="FollowMe: Meneur Attendre / Redémarrer" />
+        <text name="input_FollowMeMyDist_2"     text="FollowMe: Écart meneur -" />
+        <text name="input_FollowMeMyDist_1"     text="FollowMe: Écart meneur +" />
+        <text name="input_FollowMeMyOffs_2"     text="FollowMe: Décalage meneur gauche" />
+        <text name="input_FollowMeMyOffs_1"     text="FollowMe: Décalage meneur droite" />
+        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Invers. correct. traject. meneur" />
 
-        <text name="FollowMeReason1"         text="Suiveur '%s' arrêté (par le joueur)" />
-        <text name="FollowMeReason2"         text="Suiveur '%s' arrêté (pas de trajectoire)" />
-        <text name="FollowMeReason3"         text="Suiveur '%s' arrêté (trop éloigné)" />
-        <text name="FollowMeReason4"         text="Suiveur '%s' arrêté (meneur)" />
+        <text name="input_FollowMeFlStop"       text="FollowMe: Stopper le suiveur" />
+        <text name="input_FollowMeFlPause"      text="FollowMe: Suiveur Attendre / Redémarrer" />
+        <text name="input_FollowMeFlDist_2"     text="FollowMe: Écart suiveur -" />
+        <text name="input_FollowMeFlDist_1"     text="FollowMe: Écart suiveur +" />
+        <text name="input_FollowMeFlOffs_2"     text="FollowMe: Décalage suiveur gauche" />
+        <text name="input_FollowMeFlOffs_1"     text="FollowMe: Décalage suiveur droite" />
+        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Invers. correct. traject. suiveur" />
+
+        <text name="FollowMeLeader"             text="Meneur" />
+        <text name="FollowMeFollower"           text="Suiveur" />
+        <text name="FollowMePaused"             text=" (En attente)" />
+        <text name="FollowMeOffLft"             text="Décal. gauche %.1f" />
+        <text name="FollowMeOffRgt"             text="Décal. droite %.1f" />
+        <text name="FollowMeDistBehind"         text="Dist. suiveur %.1f" />
+        <text name="FollowMeDistAhead"          text="Dist. meneur %.1f" />
+        <!--text name="FollowMeTrailStrength"      text="Trail %d%%" /-->
+
+        <!--text name="FollowMeReason1"         text="Suiveur '%s' arrêté (par le joueur)"      /-->
+        <!--text name="FollowMeReason2"         text="Suiveur '%s' arrêté (pas de trajectoire)" /-->
+        <!--text name="FollowMeReason3"         text="Suiveur '%s' arrêté (trop éloigné)"       /-->
+        <!--text name="FollowMeReason4"         text="Suiveur '%s' arrêté (meneur)"             /-->
     </texts>
 </l10n>

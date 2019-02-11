@@ -17,18 +17,16 @@ With "Follow Me" you can (though not backwards driving).
     </description>
 
     <texts>
-        <text name="FollowMeMissingTrafficCollisionTrigger" text="Unfortunately this vehicle is not able to act as a 'follower'. It is missing a part called 'aiTrafficCollisionTrigger'." />
-        <text name="FollowMeNotAvailable"                   text="Unfortunately this vehicle is not able to act as a 'follower'." />
-
         <text name="FollowMeAlreadyAI"          text="Hired worker is using this vehicle" />
         <text name="FollowMeStartEngine"        text="Start engine first." />
 
         <text name="FollowMeDropperNotFound"    text="Unable to locate a nearby 'trail' within viewing-range to follow.
 Move closer to the leading vehicle, while staying behind it." />
 
-        <text name="FollowMeKeysMyself"         text="%s - Myself control actions"  />
-        <text name="FollowMeKeysBehind"         text="%s - Behind control actions"  />
-        <text name="FollowMeMyToggle"           text="FollowMe: Toggle on/off"      />
+        <!--text name="FollowMeKeysMyself"         text="%s - Myself control actions"  /-->
+        <!--text name="FollowMeKeysBehind"         text="%s - Behind control actions"  /-->
+        <text name="FollowMeMyTurnOn"           text="FollowMe: Activate"           />
+        <text name="FollowMeMyTurnOff"          text="FollowMe: Deactivate"         />
 
         <text name="FollowMeMyDist"             text="FollowMe: Distance"           />
         <text name="FollowMeMyOffs"             text="FollowMe: Offset"             />
@@ -61,13 +59,13 @@ Move closer to the leading vehicle, while staying behind it." />
         <text name="FollowMePaused"             text=" (Waiting)"           />
         <text name="FollowMeOffLft"             text="%.1f Left-offs."      />
         <text name="FollowMeOffRgt"             text="Right-offs. %.1f"     />
-        <text name="FollowMeDistBehind"         text="Behind-dist. %.1f"    />
-        <text name="FollowMeDistAhead"          text="Ahead-dist. %.1f"     />
-        <text name="FollowMeTrailStrength"      text="Trail %d%%"           />
+        <text name="FollowMeDistBehind"         text="Behind-dist. %.0f"    />
+        <text name="FollowMeDistAhead"          text="Ahead-dist. %.0f"     />
+        <!--text name="FollowMeTrailStrength"      text="Trail %d%%"           /-->
 
-        <text name="FollowMeReason1"            text="Follower '%s' stopped (by player)"       />
-        <text name="FollowMeReason2"            text="Follower '%s' stopped (no trail)"        />
-        <text name="FollowMeReason3"            text="Follower '%s' stopped (too far behind)"  />
-        <text name="FollowMeReason4"            text="Follower '%s' stopped (leader vanished)" />
+        <!--text name="FollowMeReason1"            text="Follower '%s' stopped (by player)"       /-->
+        <!--text name="FollowMeReason2"            text="Follower '%s' stopped (no trail)"        /-->
+        <!--text name="FollowMeReason3"            text="Follower '%s' stopped (too far behind)"  /-->
+        <!--text name="FollowMeReason4"            text="Follower '%s' stopped (leader vanished)" /-->
     </texts>
 </l10n>

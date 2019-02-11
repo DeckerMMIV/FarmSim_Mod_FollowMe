@@ -17,8 +17,7 @@ local function log(...)
   end
 end;
 
-
-
+--
 --
 --
 
@@ -57,9 +56,6 @@ AIVehicleSetStartedEvent.run = Utils.overwrittenFunction(AIVehicleSetStartedEven
   superFunc(self, connection)
 end)
 
---
---
-
 -- WARNING!
 AIVehicle.onWriteStream = Utils.overwrittenFunction(AIVehicle.onWriteStream, function(self, superFunc, streamId, connection)
   if nil ~= self.spec_aiVehicle.mod_ForcedDrivingStrategyName
@@ -92,43 +88,8 @@ end)
 
 -- WARNING!
 AIVehicle.stopAIVehicle = Utils.appendedFunction(AIVehicle.stopAIVehicle, function(self, reason)
-  --if true ~= self.spec_aiVehicle.isActive then
-    self.spec_aiVehicle.mod_ForcedDrivingStrategyName = nil
-  --end
+  self.spec_aiVehicle.mod_ForcedDrivingStrategyName = nil
 end)
-
---
---
-
--- WARNING!
-AIVehicle.raiseAIEvent = Utils.overwrittenFunction(AIVehicle.raiseAIEvent, function(self, superFunc, aiEvt1, aiEvt2)
-  if "FollowMe" == self.spec_aiVehicle.mod_ForcedDrivingStrategyName then
-    -- Don't raise the `aiEvt2`.
-    -- This to avoid any attached implements to unfold/start/whatever, when FollowMe is activated via AIVehicle.startAIVehicle()
-    SpecializationUtil.raiseEvent(self, aiEvt1)
-    return
-  end
-  superFunc(self, aiEvt1, aiEvt2)
-end)
-
--- WARNING!
-AIVehicle.getCanAIVehicleContinueWork = Utils.overwrittenFunction(AIVehicle.getCanAIVehicleContinueWork, function(self, superFunc)
-  if FollowMe.getIsFollowMeActive(self) then
-    return true;
-  end
-  return superFunc(self)
-end)
-
--- WARNING!
-AIVehicle.updateAIDriveStrategies = Utils.overwrittenFunction(AIVehicle.updateAIDriveStrategies, function(self, superFunc)
-  if "FollowMe" == self.spec_aiVehicle.mod_ForcedDrivingStrategyName then
-    FollowMe.updateAIDriveStrategies(self)
-    return
-  end
-  -- No forced driving-strategy-id given, so let the original method do what it need to do.
-  superFunc(self)
-end)
-
 
 -- WARNING!
 Vehicle.getSpeedLimit = Utils.overwrittenFunction(Vehicle.getSpeedLimit, function(self, superFunc, onlyIfWorking)
@@ -140,6 +101,39 @@ Vehicle.getSpeedLimit = Utils.overwrittenFunction(Vehicle.getSpeedLimit, functio
   return superFunc(self, onlyIfWorking)
 end)
 
+--
+--
+--
+
+-- The following is only specific for 'FollowMe'...
+
+AIVehicle.raiseAIEvent = Utils.overwrittenFunction(AIVehicle.raiseAIEvent, function(self, superFunc, aiEvt1, aiEvt2)
+  if "FollowMe" == self.spec_aiVehicle.mod_ForcedDrivingStrategyName then
+    -- Don't raise the `aiEvt2`.
+    -- This to avoid any attached implements to unfold/start/whatever, when FollowMe is activated via AIVehicle.startAIVehicle()
+    SpecializationUtil.raiseEvent(self, aiEvt1)
+    return
+  end
+  superFunc(self, aiEvt1, aiEvt2)
+end)
+
+AIVehicle.getCanAIVehicleContinueWork = Utils.overwrittenFunction(AIVehicle.getCanAIVehicleContinueWork, function(self, superFunc)
+  if FollowMe.getIsFollowMeActive(self) then
+    return true;
+  end
+  return superFunc(self)
+end)
+
+AIVehicle.updateAIDriveStrategies = Utils.overwrittenFunction(AIVehicle.updateAIDriveStrategies, function(self, superFunc)
+  if "FollowMe" == self.spec_aiVehicle.mod_ForcedDrivingStrategyName then
+    FollowMe.updateAIDriveStrategies(self)
+    return
+  end
+  -- No forced driving-strategy-id given, so let the original method do what it need to do.
+  superFunc(self)
+end)
+
+--
 --
 --
 

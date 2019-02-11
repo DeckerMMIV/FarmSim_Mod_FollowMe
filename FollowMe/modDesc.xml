@@ -73,12 +73,12 @@ Met "Follow Me" kan dat (alleen niet bij achteruit rijden).
         </nl>
         <es>
 <![CDATA[¿Quieres conseguir que te sigan algunos de tus vehículos alrededor del mapa?
-Con "Follow Me" se puede conseguir.(No funciona con marcha atrás).
+Con "Follow Me" se puede conseguir. (No funciona con marcha atrás).
 ]]>
         </es>
     </description>
 
-    <iconFilename>store_FollowMe.dds</iconFilename>
+    <iconFilename>icon_FollowMe.dds</iconFilename>
 
     <!-- NO! - DONT ATTEMPT CHANGING THE SETTING! - The FollowMe script is NOT YET multiplayer ready! -->
     <multiplayer supported="false"/>
