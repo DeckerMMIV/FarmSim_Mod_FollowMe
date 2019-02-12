@@ -8,7 +8,10 @@
           Only modify the corresponding ModDesc_l10n_*.XML file.
 -->
     <contributors>
-        Rushmead, DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion,
+      (FS19)
+        Rushmead
+      (FS17)
+        DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion,
         pokers, Ziuta, pewemo, Alfredo Prieto, xno, Vanquish081, Paxly, Taco29, Anonymous
     </contributors>
 
@@ -32,47 +35,65 @@
 
     <description>
         <en>
-<![CDATA[Ever wanted to have some vehicles follow you around the map?
+<![CDATA[Currently only for Singleplayer   <-- Attention
+
+Ever wanted to have some vehicles follow you around the map?
 With "Follow Me" you can (though not backwards driving).
 ]]>
         </en>
         <de>
-<![CDATA[Sie wollten schon immer einigen Fahrzeugen über die Karte folgen können?
+<![CDATA[Derzeit nur für Einzelspieler   <-- Achtung
+
+Sie wollten schon immer einigen Fahrzeugen über die Karte folgen können?
 Mit "Follow Me" können Sie das (natürlich nur vorwärtsfahrend).
 ]]>
         </de>
         <pl>
-<![CDATA[Czy kiedykolwiek chciałeś by niektóre pojazdy podążały za tobą po mapie?
+<![CDATA[Obecnie tylko dla Singleplayer   <-- Uwaga
+
+Czy kiedykolwiek chciałeś by niektóre pojazdy podążały za tobą po mapie?
 Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz).
 ]]>
         </pl>
         <fr>
-<![CDATA[Vous avez toujours souhaité que certains véhicules puissent vous suivre ?
+<![CDATA[Actuellement réservé au jeu solo   <-- Attention
+
+Vous avez toujours souhaité que certains véhicules puissent vous suivre ?
 Avec "Follow Me", c'est possible (sauf en marche arrière).
 ]]>
         </fr>
         <ru>
-<![CDATA[Была ли у Вас необходимость в том что-бы какие-либо ТС
+<![CDATA[В настоящее время только для одиночной игры   <-- Внимание
+
+Была ли у Вас необходимость в том что-бы какие-либо ТС
 двигались следом за вами? С "Follow Me" это возможно!
 ]]>
         </ru>
         <it>
-<![CDATA[Hai mai voluto avere alcuni veicoli che ti seguono per la mappa?
+<![CDATA[Attualmente solo per Singleplayer   <- Attenzione
+
+Hai mai voluto avere alcuni veicoli che ti seguono per la mappa?
 Con "Follow Me" è possibile (non ancora con guida in retromarcia).
 ]]>
         </it>
         <hu>
-<![CDATA[Mindig is szeretted volna, hogy a járművek kövessenek bármerre is mész a térképen?
+<![CDATA[Jelenleg csak a Singleplayer   <-- Figyelem
+
+Mindig is szeretted volna, hogy a járművek kövessenek bármerre is mész a térképen?
 A "Follow Me"-vel most megteheted (csak ne tolass).
 ]]>
         </hu>
         <nl>
-<![CDATA[Zou je willen dat sommige voertuigen je volgen over de map?
+<![CDATA[Momenteel alleen voor Singleplayer   <-- Let op
+
+Zou je willen dat sommige voertuigen je volgen over de map?
 Met "Follow Me" kan dat (alleen niet bij achteruit rijden).
 ]]>
         </nl>
         <es>
-<![CDATA[¿Quieres conseguir que te sigan algunos de tus vehículos alrededor del mapa?
+<![CDATA[Actualmente solo para Singleplayer   <-- Atención
+
+¿Quieres conseguir que te sigan algunos de tus vehículos alrededor del mapa?
 Con "Follow Me" se puede conseguir. (No funciona con marcha atrás).
 ]]>
         </es>
@@ -80,7 +101,7 @@ Con "Follow Me" se puede conseguir. (No funciona con marcha atrás).
 
     <iconFilename>icon_FollowMe.dds</iconFilename>
 
-    <!-- NO! - DONT ATTEMPT CHANGING THE SETTING! - The FollowMe script is NOT YET multiplayer ready! -->
+    <!-- NO! - DO NOT ATTEMPT CHANGING THE SETTING! - The FollowMe script is NOT YET multiplayer ready! -->
     <multiplayer supported="false"/>
 
     <extraSourceFiles>

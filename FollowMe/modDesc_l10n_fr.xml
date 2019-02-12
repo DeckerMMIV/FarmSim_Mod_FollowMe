@@ -30,15 +30,15 @@ Placez le véhicule meneur devant celui-ci." />
         <text name="FollowMeMyTurnOn"           text="FollowMe: Activer"           />
         <text name="FollowMeMyTurnOff"          text="FollowMe: Désactiver"         />
 
-        <text name="FollowMeMyDist"             text="FollowMe: Distance"           />
-        <text name="FollowMeMyOffs"             text="FollowMe: Offset"             />
-        <text name="FollowMeMyWait"             text="FollowMe: Wait"               />
-        <text name="FollowMeMyResume"           text="FollowMe: Resume"             />
+        <text name="FollowMeMyDist"             text="FollowMe: Écart"           />
+        <text name="FollowMeMyOffs"             text="FollowMe: Décalage"             />
+        <text name="FollowMeMyWait"             text="FollowMe: Attendre"               />
+        <text name="FollowMeMyResume"           text="FollowMe: Redémarrer"             />
 
-        <text name="FollowMeFlDist"             text="FollowMe: Behind Distance"    />
-        <text name="FollowMeFlOffs"             text="FollowMe: Behind Offset"      />
-        <text name="FollowMeFlWait"             text="FollowMe: Behind Wait"        />
-        <text name="FollowMeFlResume"           text="FollowMe: Behind Resume"      />
+        <text name="FollowMeFlDist"             text="FollowMe: Suiveur Écart"    />
+        <text name="FollowMeFlOffs"             text="FollowMe: Suiveur Décalage"      />
+        <text name="FollowMeFlWait"             text="FollowMe: Suiveur Attendre"        />
+        <text name="FollowMeFlResume"           text="FollowMe: Suiveur Redémarrer"      />
 
         <text name="input_FollowMeMyToggle"     text="FollowMe: Activer / Désactiver" />
         <text name="input_FollowMeMyPause"      text="FollowMe: Meneur Attendre / Redémarrer" />
@@ -46,7 +46,7 @@ Placez le véhicule meneur devant celui-ci." />
         <text name="input_FollowMeMyDist_1"     text="FollowMe: Écart meneur +" />
         <text name="input_FollowMeMyOffs_2"     text="FollowMe: Décalage meneur gauche" />
         <text name="input_FollowMeMyOffs_1"     text="FollowMe: Décalage meneur droite" />
-        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Invers. correct. traject. meneur" />
+        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Décalage <|0|> meneur" />
 
         <text name="input_FollowMeFlStop"       text="FollowMe: Stopper le suiveur" />
         <text name="input_FollowMeFlPause"      text="FollowMe: Suiveur Attendre / Redémarrer" />
@@ -54,15 +54,15 @@ Placez le véhicule meneur devant celui-ci." />
         <text name="input_FollowMeFlDist_1"     text="FollowMe: Écart suiveur +" />
         <text name="input_FollowMeFlOffs_2"     text="FollowMe: Décalage suiveur gauche" />
         <text name="input_FollowMeFlOffs_1"     text="FollowMe: Décalage suiveur droite" />
-        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Invers. correct. traject. suiveur" />
+        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Décalage <|0|> suiveur" />
 
         <text name="FollowMeLeader"             text="Meneur" />
         <text name="FollowMeFollower"           text="Suiveur" />
         <text name="FollowMePaused"             text=" (En attente)" />
-        <text name="FollowMeOffLft"             text="Décal. gauche %.1f" />
+        <text name="FollowMeOffLft"             text="%.1f Décal. gauche" />
         <text name="FollowMeOffRgt"             text="Décal. droite %.1f" />
-        <text name="FollowMeDistBehind"         text="Dist. suiveur %.1f" />
-        <text name="FollowMeDistAhead"          text="Dist. meneur %.1f" />
+        <text name="FollowMeDistBehind"         text="Dist. suiveur %.0f" />
+        <text name="FollowMeDistAhead"          text="Dist. meneur %.0f" />
         <!--text name="FollowMeTrailStrength"      text="Trail %d%%" /-->
 
         <!--text name="FollowMeReason1"         text="Suiveur '%s' arrêté (par le joueur)"      /-->

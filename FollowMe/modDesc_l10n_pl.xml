@@ -30,15 +30,15 @@ Zbliż się do pojazdu prowadzącego." />
         <text name="FollowMeMyTurnOn"           text="FollowMe: Activate"           />
         <text name="FollowMeMyTurnOff"          text="FollowMe: Deactivate"         />
 
-        <text name="FollowMeMyDist"             text="FollowMe: Distance"           />
-        <text name="FollowMeMyOffs"             text="FollowMe: Offset"             />
-        <text name="FollowMeMyWait"             text="FollowMe: Wait"               />
-        <text name="FollowMeMyResume"           text="FollowMe: Resume"             />
+        <text name="FollowMeMyDist"             text="FollowMe: Odstęp"           />
+        <text name="FollowMeMyOffs"             text="FollowMe: Przesunięcie"             />
+        <text name="FollowMeMyWait"             text="FollowMe: Czekaj"               />
+        <text name="FollowMeMyResume"           text="FollowMe: Wznów"             />
 
-        <text name="FollowMeFlDist"             text="FollowMe: Behind Distance"    />
-        <text name="FollowMeFlOffs"             text="FollowMe: Behind Offset"      />
-        <text name="FollowMeFlWait"             text="FollowMe: Behind Wait"        />
-        <text name="FollowMeFlResume"           text="FollowMe: Behind Resume"      />
+        <text name="FollowMeFlDist"             text="FollowMe: Odstęp z tyłu"    />
+        <text name="FollowMeFlOffs"             text="FollowMe: Przesunięcie z tyłu"      />
+        <text name="FollowMeFlWait"             text="FollowMe: Czekaj z tyłu"        />
+        <text name="FollowMeFlResume"           text="FollowMe: Wznów z tyłu"      />
 
         <text name="input_FollowMeMyToggle"     text="FollowMe: Przełączanie wł/wył" />
         <text name="input_FollowMeMyPause"      text="FollowMe: Czekaj/wznów"/>
@@ -46,7 +46,7 @@ Zbliż się do pojazdu prowadzącego." />
         <text name="input_FollowMeMyDist_1"     text="FollowMe: Odstęp aktywnego pojazdu +" />
         <text name="input_FollowMeMyOffs_2"     text="FollowMe: Przesunięcie aktywnego pojazdu w lewo" />
         <text name="input_FollowMeMyOffs_1"     text="FollowMe: Przesunięcie aktywnego pojazdu w prawo" />
-        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Przesunięcie aktywnego pojazdu wył/wznów" />
+        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Przesunięcie aktywnego pojazdu <|0|>" />
 
         <text name="input_FollowMeFlStop"       text="FollowMe: Podążające pojazdy - STOP" />
         <text name="input_FollowMeFlPause"      text="FollowMe: Czekaj z tyłu/wznów"/>
@@ -54,15 +54,15 @@ Zbliż się do pojazdu prowadzącego." />
         <text name="input_FollowMeFlDist_1"     text="FollowMe: Odstęp z tyłu +" />
         <text name="input_FollowMeFlOffs_2"     text="FollowMe: Odstęp z tyłu w lewo" />
         <text name="input_FollowMeFlOffs_1"     text="FollowMe: Odstęp z tyłu w prawo" />
-        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Przesunięcie podążającego pojazdu wył/wznów" />
+        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Przesunięcie podążającego pojazdu <|0|>" />
 
         <text name="FollowMeLeader"             text="Prowadzący" />
         <text name="FollowMeFollower"           text="Podążający" />
         <text name="FollowMePaused"             text=" (Oczekiwanie)" />
-        <text name="FollowMeOffLft"             text="Odstęp w lewo %.1f" />
+        <text name="FollowMeOffLft"             text="%.1f Odstęp w lewo" />
         <text name="FollowMeOffRgt"             text="Odstęp w prawo %.1f" />
-        <text name="FollowMeDistBehind"         text="Dystans za %.1f" />
-        <text name="FollowMeDistAhead"          text="Dystans przed %.1f" />
+        <text name="FollowMeDistBehind"         text="Dystans za %.0f" />
+        <text name="FollowMeDistAhead"          text="Dystans przed %.0f" />
         <!--text name="FollowMeTrailStrength"      text="Trail %d%%"           /-->
 
         <!--text name="FollowMeReason1"            text="Podążający '%s' zatrzymany (przez gracza)"       /-->

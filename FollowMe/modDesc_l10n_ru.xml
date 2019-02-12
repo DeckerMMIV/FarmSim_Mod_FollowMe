@@ -28,15 +28,15 @@
         <text name="FollowMeMyTurnOn"           text="FollowMe: Activate"           />
         <text name="FollowMeMyTurnOff"          text="FollowMe: Deactivate"         />
 
-        <text name="FollowMeMyDist"             text="FollowMe: Distance"           />
-        <text name="FollowMeMyOffs"             text="FollowMe: Offset"             />
-        <text name="FollowMeMyWait"             text="FollowMe: Wait"               />
-        <text name="FollowMeMyResume"           text="FollowMe: Resume"             />
+        <text name="FollowMeMyDist"             text="FollowMe: Собственная дистанция"           />
+        <text name="FollowMeMyOffs"             text="FollowMe: Собственное смещение"             />
+        <text name="FollowMeMyWait"             text="FollowMe: Ожидать"               />
+        <text name="FollowMeMyResume"           text="FollowMe: продолжить"             />
 
-        <text name="FollowMeFlDist"             text="FollowMe: Behind Distance"    />
-        <text name="FollowMeFlOffs"             text="FollowMe: Behind Offset"      />
-        <text name="FollowMeFlWait"             text="FollowMe: Behind Wait"        />
-        <text name="FollowMeFlResume"           text="FollowMe: Behind Resume"      />
+        <text name="FollowMeFlDist"             text="FollowMe: За мной дистанция"    />
+        <text name="FollowMeFlOffs"             text="FollowMe: За мной смещение"      />
+        <text name="FollowMeFlWait"             text="FollowMe: За мной ожидать"        />
+        <text name="FollowMeFlResume"           text="FollowMe: За мной продолжить"      />
 
         <text name="input_FollowMeMyToggle"     text="FollowMe: ВКЛ/ВЫКЛ" />
         <text name="input_FollowMeMyPause"      text="FollowMe: Ожидать/продолжить" />
@@ -44,7 +44,7 @@
         <text name="input_FollowMeMyDist_1"     text="FollowMe: Собственная дистанция +" />
         <text name="input_FollowMeMyOffs_2"     text="FollowMe: Собственное смещение влево" />
         <text name="input_FollowMeMyOffs_1"     text="FollowMe: Собственное смещение вправо" />
-        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Инвертировать собственное смещение" />
+        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Cобственное смещение <|0|>" />
 
         <text name="input_FollowMeFlStop"       text="FollowMe: Остановится за мной" />
         <text name="input_FollowMeFlPause"      text="FollowMe: За мной ожидать/продолжить" />
@@ -52,15 +52,15 @@
         <text name="input_FollowMeFlDist_1"     text="FollowMe: За мной дистанция +" />
         <text name="input_FollowMeFlOffs_2"     text="FollowMe: За мной смещение влево" />
         <text name="input_FollowMeFlOffs_1"     text="FollowMe: За мной смещение вправо" />
-        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Инвертировать смещение за мной"   />
+        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: За мной смещение <|0|>"   />
 
         <text name="FollowMeLeader"             text="Ведущий" />
         <text name="FollowMeFollower"           text="Ведомый" />
         <text name="FollowMePaused"             text=" (Ожидает)" />
         <text name="FollowMeOffLft"             text="%.1f смещение влево" />
         <text name="FollowMeOffRgt"             text="смещение вправо %.1f" />
-        <text name="FollowMeDistBehind"         text="за мной дистанция %.1f" />
-        <text name="FollowMeDistAhead"          text="отставать на %.1f" />
+        <text name="FollowMeDistBehind"         text="за мной дистанция %.0f" />
+        <text name="FollowMeDistAhead"          text="отставать на %.0f" />
         <!--text name="FollowMeTrailStrength"      text="Trail %d%%"           /-->
 
         <!--text name="FollowMeReason1"            text="Ведомый '%s' остановлен игроком"                 /-->
