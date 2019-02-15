@@ -217,6 +217,13 @@ function FollowMe:onAIEnd()
   self.followMeIsStarted = false
 end
 
+function FollowMe:getReverserDirection()
+  if nil ~= self.spec_reverseDriving then
+    return (self.spec_reverseDriving.isReverseDriving and -1) or 1
+  end
+  return 1
+end
+
 -- function FollowMe:onWriteStream(streamId, connection)
 --     local spec = FollowMe.getSpec(self)
 --     streamWriteInt8(streamId, Utils.getNoNil(spec.FollowKeepBack, 0))
@@ -273,7 +280,7 @@ function FollowMe:mouseEvent(posX, posY, isDown, isUp, button)
 
             local cNode         = FollowMe.getFollowNode(self)
             local vX,vY,vZ      = getWorldTranslation(cNode)
-            local vRX,vRY,vRZ   = localDirectionToWorld(cNode, 0,0,Utils.getNoNil(self.reverserDirection, 1))
+            local vRX,vRY,vRZ   = localDirectionToWorld(cNode, 0,0, FollowMe.getReverserDirection(self))
             --print(table.concat({"veh=",vX,",",vY,",",vZ," / rot=",vRX,",",vRY,",",vRZ},""))
 
             local lx = vX - wx
@@ -535,7 +542,9 @@ function FollowMe:onUpdateTick(dt, isActiveForInput, isSelected)
 
             self:setLightsTypesMask(       leader:getLightsTypesMask())
             self:setBeaconLightsVisibility(leader:getBeaconLightsVisibility())
-        elseif (Utils.getNoNil(self.reverserDirection, 1) * self.movingDirection > 0) then  -- Must drive forward to drop crumbs
+        else
+          local direction = FollowMe.getReverserDirection(self)
+          if (direction * self.movingDirection > 0) then  -- Must drive forward to drop crumbs
             spec.sumSpeed = spec.sumSpeed + self.lastSpeed;
             spec.sumCount = spec.sumCount + 1;
             --
@@ -550,11 +559,12 @@ function FollowMe:onUpdateTick(dt, isActiveForInput, isSelected)
             end
             if distancePrevDrop >= FollowMe.cMinDistanceBetweenDrops then
                 local maxSpeed = math.max(1, (spec.sumSpeed / spec.sumCount) * 3600)
-                FollowMe.addDrop(self, maxSpeed, self:getTurnLightState(), self.reverserDirection);
+                FollowMe.addDrop(self, maxSpeed, self:getTurnLightState(), direction);
                 --
                 spec.sumSpeed = 0;
                 spec.sumCount = 0;
             end;
+          end
         end;
     end;
 
@@ -731,8 +741,10 @@ function AIDriveStrategyFollow:canDriveWithAttachedTool()
           if nil ~= tool.object then
               local spec = tool.object.spec_baler
               if  nil  ~= spec
-              and (  true == spec.allowsBaleUnloading
-                  or nil  ~= spec.baleUnloadAnimationName)
+              and --(  true == spec.allowsBaleUnloading
+                  --or
+                     nil  ~= spec.baleUnloadAnimationName
+                  --)
               then
                   spec = tool.object.spec_baleWrapper
                   if nil ~= spec then
@@ -783,6 +795,7 @@ function AIDriveStrategyFollow:getDriveData(dt, vX, vY, vZ)
     local distanceToStop    = -(FollowMe.getKeepBack(vehicle))
     local keepInFrontMeters = FollowMe.getKeepFront(vehicle)
     local maxSpeed = 0
+    local steepTurnAngle = false
     --
     local crumbIndexDiff = leaderSpec.DropperCurrentIndex - vehicleSpec.FollowCurrentIndex;
     --
@@ -796,7 +809,7 @@ function AIDriveStrategyFollow:getDriveData(dt, vX, vY, vZ)
         isAllowedToDrive = false
 
         -- vehicle rotation
-        local vRX,vRY,vRZ   = localDirectionToWorld(vehicle:getAIVehicleSteeringNode(), 0,0,Utils.getNoNil(vehicle.reverserDirection, 1));
+        local vRX,vRY,vRZ   = localDirectionToWorld(vehicle:getAIVehicleSteeringNode(), 0,0,FollowMe.getReverserDirection(vehicle));
 
         -- Set target 2 meters straight ahead of vehicle.
         tX = vX + vRX * 2;
@@ -819,11 +832,11 @@ function AIDriveStrategyFollow:getDriveData(dt, vX, vY, vZ)
         --
         local trAngle = math.atan2(orx,orz);
         local nz = dx * math.sin(trAngle) + dz * math.cos(trAngle);
+        steepTurnAngle = (tDist < 15 and (nz / tDist) < 0.8)
         --
         local nextCrumbOffset = 1
         if (tDist < (FollowMe.cMinDistanceBetweenDrops / 2)) -- close enough to crumb?
         or (nz < 0) -- already in front of crumb?
-        or (tDist < 15 and (nz / tDist) < 0.8 and crumbIndexDiff > 3) -- Too steep an "attack angle"
         then
             FollowMe.copyDrop(vehicle, crumbT, (vehicleSpec.FollowXOffset == 0) and nil or {tX,tY,tZ});
             -- Go to next crumb
@@ -855,7 +868,7 @@ function AIDriveStrategyFollow:getDriveData(dt, vX, vY, vZ)
         -- Following leader directly...
         local lNode         = leader:getAIVehicleSteeringNode()
         local lx,ly,lz      = getWorldTranslation(lNode);
-        local lrx,lry,lrz   = localDirectionToWorld(lNode, 0,0,Utils.getNoNil(leader.reverserDirection, 1));
+        local lrx,lry,lrz   = localDirectionToWorld(lNode, 0,0,FollowMe.getReverserDirection(leader));
 
         maxSpeed = math.max(1, leader.lastSpeed * 3600) -- only consider forward movement.
 
@@ -882,8 +895,12 @@ function AIDriveStrategyFollow:getDriveData(dt, vX, vY, vZ)
     end
 
     if isAllowedToDrive then
-      local curSpeed = math.max(1, (vehicle.lastSpeed * 3600))
-      maxSpeed = maxSpeed * (1 + math.min(1, (distanceToStop / curSpeed)))
+      if steepTurnAngle then
+        maxSpeed = math.min(10, maxSpeed)
+      else
+        local curSpeed = math.max(1, (vehicle.lastSpeed * 3600))
+        maxSpeed = maxSpeed * (1 + math.min(1, (distanceToStop / curSpeed)))
+      end
     end
 
     if (not isAllowedToDrive) or (maxSpeed < 0.1) then
@@ -993,7 +1010,7 @@ function FollowMe:findVehicleInFront()
     --local node      = FollowMe.getFollowNode(self)
     local node      = self:getAIVehicleSteeringNode()
     local wx,wy,wz  = getWorldTranslation(node);
-    local rx,ry,rz  = localDirectionToWorld(node, 0,0, Utils.getNoNil(self.reverserDirection, 1));
+    local rx,ry,rz  = localDirectionToWorld(node, 0,0,FollowMe.getReverserDirection(self));
     local rlength   = MathUtil.vector2Length(rx,rz);
     local rotDeg    = math.deg(math.atan2(rx/rlength,rz/rlength));
     local rotRad    = MathUtil.degToRad(rotDeg-45.0);
@@ -1015,7 +1032,7 @@ function FollowMe:findVehicleInFront()
             local vehicleNode = vehicleObj:getAIVehicleSteeringNode()
             -- Make sure that the other vehicle is actually driving "away from us"
             -- I.e. in the same direction
-            local vrx, vry, vrz = localDirectionToWorld(vehicleNode, 0,0, Utils.getNoNil(vehicleObj.reverserDirection, 1));
+            local vrx, vry, vrz = localDirectionToWorld(vehicleNode, 0,0,FollowMe.getReverserDirection(vehicleObj));
             if MathUtil.dotProduct(rx,0,rz, vrx,0,vrz) > 0.2 then
                 local vx,vy,vz = getWorldTranslation(vehicleNode);
                 local dx,dz = vx-wx, vz-wz;
