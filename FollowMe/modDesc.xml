@@ -105,6 +105,7 @@ Con "Follow Me" se puede conseguir. (No funciona con marcha atrás).
     <multiplayer supported="false"/>
 
     <extraSourceFiles>
+        <sourceFile filename="AIVehicle_Override.lua" />
         <sourceFile filename="register.lua" />
     </extraSourceFiles>
 

@@ -113,6 +113,7 @@ function FollowMe.registerEventListeners(vehicleType)
   for _,funcName in pairs( {
     "onDraw",
     "onLoad",
+    "onDelete",
     "onUpdateTick",
     "onRegisterActionEvents",
     "onAIEnd",
@@ -169,7 +170,7 @@ function FollowMe:saveToXMLFile(xmlFile, key, usedModNames)
   setXMLFloat(xmlFile, key.."#offset",   spec.FollowXOffset)
 end;
 
-function FollowMe:delete()
+function FollowMe:onDelete()
     local spec = FollowMe.getSpec(self)
     if nil ~= spec.StalkerVehicleObj then
         -- Stop the stalker-vehicle
