@@ -47,20 +47,12 @@ FollowMe = {};
 local specTypeName = 'followMe'
 local modSpecTypeName = g_currentModName ..".".. specTypeName
 function FollowMe.getSpec(self)
-  -- if nil == self then
-  --   printCallstack()
-  --   return nil
-  -- end
   return self["spec_" .. modSpecTypeName]
 end
 
 --
---FollowMe.wagePaymentMultiplier = 0.2
-
---
 FollowMe.cMinDistanceBetweenDrops        =   5;
 FollowMe.cBreadcrumbsMaxEntries          = 150;
---FollowMe.cMstimeBetweenDrops             =  40;
 FollowMe.debugDraw = {}
 
 FollowMe.COMMAND_NONE           = 0
@@ -113,9 +105,11 @@ function FollowMe.registerEventListeners(vehicleType)
   for _,funcName in pairs( {
     "onDraw",
     "onLoad",
+    "onPostLoad",
     "onDelete",
     "onUpdateTick",
     "onRegisterActionEvents",
+    "onAIStart",
     "onAIEnd",
   } ) do
     SpecializationUtil.registerEventListener(vehicleType, funcName, FollowMe)
@@ -128,8 +122,6 @@ function FollowMe:onLoad(savegame)
     local spec = FollowMe.getSpec(self)
     spec.actionEvents = {}
 
-    --spec.IsInstalled = true;  -- TODO. Make 'FollowMe' a buyable add-on! This is expensive equipment ;-)
-    --
     spec.sumSpeed = 0;
     spec.sumCount = 0;
     spec.DropperCircularArray = {};
@@ -163,6 +155,11 @@ function FollowMe:onLoad(savegame)
     end
 end;
 
+function FollowMe:onPostLoad(savegame)
+  local spec = FollowMe.getSpec(self)
+  spec.origPricePerMS = self.spec_aiVehicle.pricePerMS
+end
+
 function FollowMe:saveToXMLFile(xmlFile, key, usedModNames)
   --log("usedModNames=",unpack(usedModNames))
   local spec = FollowMe.getSpec(self)
@@ -177,12 +174,7 @@ function FollowMe:onDelete()
         if FollowMe.getIsFollowMeActive(spec.StalkerVehicleObj) then
           FollowMe.stopFollowMe(spec.StalkerVehicleObj, FollowMe.REASON_USER_ACTION);
         end
-        -- FollowMe.onStopFollowMe(spec.StalkerVehicleObj, FollowMe.REASON_LEADER_REMOVED, true);
     end;
-    -- if nil ~= spec.FollowVehicleObj then
-    --     -- Stop ourself
-    --     FollowMe.onStopFollowMe(self, FollowMe.REASON_NONE, true);
-    -- end
 end;
 
 function FollowMe:getCanStartFollowMe()
@@ -214,8 +206,19 @@ function FollowMe:getAINeedsTrafficCollisionBox(superFunc)
   return superFunc(self)
 end
 
+function FollowMe:onAIStart()
+  if FollowMe.getIsFollowMeActive(self) then
+    local spec = FollowMe.getSpec(self)
+    self.spec_aiVehicle.pricePerMS = Utils.getNoNil(spec.origPricePerMS, 1500) * 0.2 -- FollowMe AIs wage is only 20% of base-game's AI.
+  end
+end
+
 function FollowMe:onAIEnd()
-  self.followMeIsStarted = false
+  if FollowMe.getIsFollowMeActive(self) then
+    local spec = FollowMe.getSpec(self)
+    self.spec_aiVehicle.pricePerMS = spec.origPricePerMS -- Restore wage to base-game's value.
+    self.followMeIsStarted = false
+  end
 end
 
 function FollowMe:getReverserDirection()
@@ -557,6 +560,8 @@ function FollowMe:onUpdateTick(dt, isActiveForInput, isSelected)
               distancePrevDrop = MathUtil.vector2LengthSq(oX - vX, oZ - vZ);
             else
               distancePrevDrop = FollowMe.cMinDistanceBetweenDrops
+              spec.sumSpeed = 10 / 3600 -- For first trail-crumb dropped, when vehicle is not moving. This should allow followers to "actually move faster" after a savegame reload.
+              spec.sumCount = 1
             end
             if distancePrevDrop >= FollowMe.cMinDistanceBetweenDrops then
                 local maxSpeed = math.max(1, (spec.sumSpeed / spec.sumCount) * 3600)
@@ -689,9 +694,8 @@ end
 
 
 function AIDriveStrategyFollow:checkBaler(attachedTool)
-  local spec = attachedTool.spec_baler
-
   if attachedTool:getIsTurnedOn() then
+    local spec = attachedTool.spec_baler
     if spec.unloadingState <= Baler.UNLOADING_CLOSED then
       if table.getn(spec.bales) > 0 then
 --        attachedTool:setIsUnloadingBale(true)
@@ -734,21 +738,15 @@ function AIDriveStrategyFollow:checkBalerAndWrapper(attachedTool)
 end
 
 function AIDriveStrategyFollow:canDriveWithAttachedTool()
-    -- Attempt at automatically unloading of round-bales
-    local attachedTool = nil;
     -- Locate supported equipment
     if nil ~= self.vehicle.getAttachedImplements then
+      -- Attempt at automatically unloading of round-bales
+      local attachedTool = nil;
       for _,tool in pairs(self.vehicle:getAttachedImplements()) do
           if nil ~= tool.object then
               local spec = tool.object.spec_baler
-              if  nil  ~= spec
-              and --(  true == spec.allowsBaleUnloading
-                  --or
-                     nil  ~= spec.baleUnloadAnimationName
-                  --)
-              then
-                  spec = tool.object.spec_baleWrapper
-                  if nil ~= spec then
+              if nil ~= spec and nil ~= spec.baleUnloadAnimationName then
+                  if nil ~= tool.object.spec_baleWrapper then
                       attachedTool = { tool.object, AIDriveStrategyFollow.checkBalerAndWrapper };
                       break;
                   end
@@ -757,19 +755,18 @@ function AIDriveStrategyFollow:canDriveWithAttachedTool()
                   break
               end
 
-              spec = tool.object.spec_baleWrapper
-              if nil ~= spec then
+              if nil ~= tool.object.spec_baleWrapper then
                   attachedTool = { tool.object, AIDriveStrategyFollow.checkBaleWrapper };
                   break
               end
           end
       end
-    end
 
-    if nil ~= attachedTool then
+      if nil ~= attachedTool then
         local tool = attachedTool[1]
         local func = attachedTool[2]
         return func(self, tool)
+      end
     end
 
     return true, 1

@@ -30,7 +30,8 @@ AIVehicle.raiseAIEvent = Utils.overwrittenFunction(AIVehicle.raiseAIEvent, funct
     SpecializationUtil.raiseEvent(self, aiEvt1)
     return
   end
-  superFunc(self, aiEvt1, aiEvt2)
+  -- Forced driving-strategy-id was not 'FollowMe', so let the original method do what it need to do.
+    superFunc(self, aiEvt1, aiEvt2)
 end)
 
 AIVehicle.getCanAIVehicleContinueWork = Utils.overwrittenFunction(AIVehicle.getCanAIVehicleContinueWork, function(self, superFunc)
@@ -45,8 +46,8 @@ AIVehicle.updateAIDriveStrategies = Utils.overwrittenFunction(AIVehicle.updateAI
     FollowMe.updateAIDriveStrategies(self)
     return
   end
-  -- No forced driving-strategy-id given, so let the original method do what it need to do.
-  superFunc(self)
+  -- Forced driving-strategy-id was not 'FollowMe', so let the original method do what it need to do.
+    superFunc(self)
 end)
 
 --
