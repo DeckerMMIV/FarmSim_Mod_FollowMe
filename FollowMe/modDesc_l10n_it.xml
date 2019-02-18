@@ -27,8 +27,8 @@ Avvicinati al mezzo che ti precede." />
 
         <!--text name="FollowMeKeysMyself"         text="%s - Comandi capo scia"    /-->
         <!--text name="FollowMeKeysBehind"         text="%s - Comandi inseguitore"  /-->
-        <text name="FollowMeMyTurnOn"           text="FollowMe: Activate"           />
-        <text name="FollowMeMyTurnOff"          text="FollowMe: Deactivate"         />
+        <text name="FollowMeMyTurnOn"           text="FollowMe: Attivare"           />
+        <text name="FollowMeMyTurnOff"          text="FollowMe: Disattivare"         />
 
         <text name="FollowMeMyDist"             text="FollowMe: Distanza"           />
         <text name="FollowMeMyOffs"             text="FollowMe: Distanza laterale"  />
@@ -46,7 +46,7 @@ Avvicinati al mezzo che ti precede." />
         <text name="input_FollowMeMyDist_1"     text="FollowMe: Mia distanza +" />
         <text name="input_FollowMeMyOffs_2"     text="FollowMe: Mia distanza laterale sx" />
         <text name="input_FollowMeMyOffs_1"     text="FollowMe: Mia distanza laterale dx" />
-        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Mia distanza laterale <|0|>" />
+        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Mia distanza laterale ciclo" />
 
         <text name="input_FollowMeFlStop"       text="FollowMe: Ferma l'inseguitore"  />
         <text name="input_FollowMeFlPause"      text="FollowMe: Inseguitore Aspetta/Riparti" />
@@ -54,7 +54,7 @@ Avvicinati al mezzo che ti precede." />
         <text name="input_FollowMeFlDist_1"     text="FollowMe: Distanza dell'inseguitore +" />
         <text name="input_FollowMeFlOffs_2"     text="FollowMe: Distanza dell'inseguitore a sx" />
         <text name="input_FollowMeFlOffs_1"     text="FollowMe: Distanza dell'inseguitore a dx" />
-        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Distanza dell'inseguitore <|0|>" />
+        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Distanza dell'inseguitore ciclo" />
 
         <text name="FollowMeLeader"             text="Leader" />
         <text name="FollowMeFollower"           text="Inseguitore" />

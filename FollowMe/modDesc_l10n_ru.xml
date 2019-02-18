@@ -25,8 +25,8 @@
 
         <!--text name="FollowMeKeysMyself"         text="%s - Управление собственной техникой"  /-->
         <!--text name="FollowMeKeysBehind"         text="%s - Управление техникой за мной"      /-->
-        <text name="FollowMeMyTurnOn"           text="FollowMe: Activate"           />
-        <text name="FollowMeMyTurnOff"          text="FollowMe: Deactivate"         />
+        <text name="FollowMeMyTurnOn"           text="FollowMe: активировать"           />
+        <text name="FollowMeMyTurnOff"          text="FollowMe: дезактивировать"         />
 
         <text name="FollowMeMyDist"             text="FollowMe: Собственная дистанция"           />
         <text name="FollowMeMyOffs"             text="FollowMe: Собственное смещение"             />
@@ -44,7 +44,7 @@
         <text name="input_FollowMeMyDist_1"     text="FollowMe: Собственная дистанция +" />
         <text name="input_FollowMeMyOffs_2"     text="FollowMe: Собственное смещение влево" />
         <text name="input_FollowMeMyOffs_1"     text="FollowMe: Собственное смещение вправо" />
-        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Cобственное смещение <|0|>" />
+        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Cобственное смещение цикл" />
 
         <text name="input_FollowMeFlStop"       text="FollowMe: Остановится за мной" />
         <text name="input_FollowMeFlPause"      text="FollowMe: За мной ожидать/продолжить" />
@@ -52,7 +52,7 @@
         <text name="input_FollowMeFlDist_1"     text="FollowMe: За мной дистанция +" />
         <text name="input_FollowMeFlOffs_2"     text="FollowMe: За мной смещение влево" />
         <text name="input_FollowMeFlOffs_1"     text="FollowMe: За мной смещение вправо" />
-        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: За мной смещение <|0|>"   />
+        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: За мной смещение цикл"   />
 
         <text name="FollowMeLeader"             text="Ведущий" />
         <text name="FollowMeFollower"           text="Ведомый" />

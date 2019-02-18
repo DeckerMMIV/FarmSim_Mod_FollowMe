@@ -27,8 +27,8 @@ Acérquese más a la cabeza tractora." />
 
         <!--text name="FollowMeKeysMyself"         text="%s - Control/Acciones Propias"     /-->
         <!--text name="FollowMeKeysBehind"         text="%s - Control/Acciones Seguidores"  /-->
-        <text name="FollowMeMyTurnOn"           text="FollowMe: Activate"           />
-        <text name="FollowMeMyTurnOff"          text="FollowMe: Deactivate"         />
+        <text name="FollowMeMyTurnOn"           text="FollowMe: Activar"           />
+        <text name="FollowMeMyTurnOff"          text="FollowMe: Desactivar"         />
 
         <text name="FollowMeMyDist"             text="FollowMe: Distancia"           />
         <text name="FollowMeMyOffs"             text="FollowMe: Offset"             />
@@ -46,7 +46,7 @@ Acérquese más a la cabeza tractora." />
         <text name="input_FollowMeMyDist_1"     text="FollowMe: Aumentar distancia Guía" />
         <text name="input_FollowMeMyOffs_2"     text="FollowMe: Offset Izquieda Guía" />
         <text name="input_FollowMeMyOffs_1"     text="FollowMe: Offset Derecha Guía" />
-        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Offset <|0|> Guía"   />
+        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Offset ciclo Guía"   />
 
         <text name="input_FollowMeFlStop"       text="FollowMe: Detener seguidor" />
         <text name="input_FollowMeFlPause"      text="FollowMe: Pausar/reiniciar seguidor" />
@@ -54,7 +54,7 @@ Acérquese más a la cabeza tractora." />
         <text name="input_FollowMeFlDist_1"     text="FollowMe: Distancia seguidor +" />
         <text name="input_FollowMeFlOffs_2"     text="FollowMe: Offset izquierda seguidor" />
         <text name="input_FollowMeFlOffs_1"     text="FollowMe: Offset derecha seguidor" />
-        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Offset <|0|> seguidor"   />
+        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Offset ciclo seguidor"   />
 
         <text name="FollowMeLeader"             text="Guía" />
         <text name="FollowMeFollower"           text="Seguidor" />

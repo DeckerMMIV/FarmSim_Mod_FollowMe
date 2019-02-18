@@ -27,8 +27,8 @@ Zbliż się do pojazdu prowadzącego." />
 
         <!--text name="FollowMeKeysMyself"         text="%s - Sterowanie prowadzącego" /-->
         <!--text name="FollowMeKeysBehind"         text="%s - Sterowanie podążającego" /-->
-        <text name="FollowMeMyTurnOn"           text="FollowMe: Activate"           />
-        <text name="FollowMeMyTurnOff"          text="FollowMe: Deactivate"         />
+        <text name="FollowMeMyTurnOn"           text="FollowMe: Aktywuj"           />
+        <text name="FollowMeMyTurnOff"          text="FollowMe: Dezaktywować"         />
 
         <text name="FollowMeMyDist"             text="FollowMe: Odstęp"           />
         <text name="FollowMeMyOffs"             text="FollowMe: Przesunięcie"             />
@@ -46,7 +46,7 @@ Zbliż się do pojazdu prowadzącego." />
         <text name="input_FollowMeMyDist_1"     text="FollowMe: Odstęp aktywnego pojazdu +" />
         <text name="input_FollowMeMyOffs_2"     text="FollowMe: Przesunięcie aktywnego pojazdu w lewo" />
         <text name="input_FollowMeMyOffs_1"     text="FollowMe: Przesunięcie aktywnego pojazdu w prawo" />
-        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Przesunięcie aktywnego pojazdu <|0|>" />
+        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Przesunięcie aktywnego pojazdu cykl" />
 
         <text name="input_FollowMeFlStop"       text="FollowMe: Podążające pojazdy - STOP" />
         <text name="input_FollowMeFlPause"      text="FollowMe: Czekaj z tyłu/wznów"/>
@@ -54,7 +54,7 @@ Zbliż się do pojazdu prowadzącego." />
         <text name="input_FollowMeFlDist_1"     text="FollowMe: Odstęp z tyłu +" />
         <text name="input_FollowMeFlOffs_2"     text="FollowMe: Odstęp z tyłu w lewo" />
         <text name="input_FollowMeFlOffs_1"     text="FollowMe: Odstęp z tyłu w prawo" />
-        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Przesunięcie podążającego pojazdu <|0|>" />
+        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Przesunięcie podążającego pojazdu cykl" />
 
         <text name="FollowMeLeader"             text="Prowadzący" />
         <text name="FollowMeFollower"           text="Podążający" />

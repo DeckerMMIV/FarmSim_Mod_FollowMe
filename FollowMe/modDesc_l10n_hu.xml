@@ -26,8 +26,8 @@ Menj közelebb a követendő járműhöz." />
 
         <!--text name="FollowMeKeysMyself"         text="%s - Myself ellenőrzési intézkedések"  /-->
         <!--text name="FollowMeKeysBehind"         text="%s - Követő ellenőrzési intézkedések"  /-->
-        <text name="FollowMeMyTurnOn"           text="FollowMe: Activate"           />
-        <text name="FollowMeMyTurnOff"          text="FollowMe: Deactivate"         />
+        <text name="FollowMeMyTurnOn"           text="FollowMe: Aktiválja"           />
+        <text name="FollowMeMyTurnOff"          text="FollowMe: Deaktiválni"         />
 
         <text name="FollowMeMyDist"             text="FollowMe: Távolság"           />
         <text name="FollowMeMyOffs"             text="FollowMe: Eltolás"             />
@@ -45,7 +45,7 @@ Menj közelebb a követendő járműhöz." />
         <text name="input_FollowMeMyDist_1"     text="FollowMe: Követési távolság +"    />
         <text name="input_FollowMeMyOffs_2"     text="FollowMe: Eltolás balra"          />
         <text name="input_FollowMeMyOffs_1"     text="FollowMe: Eltolás jobbra"         />
-        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Eltolás <|0|>"   />
+        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Eltolás ciklus"   />
 
         <text name="input_FollowMeFlStop"       text="FollowMe: Követés kikapcsolása"   />
         <text name="input_FollowMeFlPause"      text="FollowMe: Várjon/Kövessen"        />
@@ -53,7 +53,7 @@ Menj közelebb a követendő járműhöz." />
         <text name="input_FollowMeFlDist_1"     text="FollowMe: Követési távolság +"    />
         <text name="input_FollowMeFlOffs_2"     text="FollowMe: Követő Eltolás balra"          />
         <text name="input_FollowMeFlOffs_1"     text="FollowMe: Követő Eltolás jobbra"         />
-        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Követő Eltolás <|0|>"   />
+        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Követő Eltolás ciklus"   />
 
         <text name="FollowMeLeader"             text="Vezető"               />
         <text name="FollowMeFollower"           text="Követő"               />

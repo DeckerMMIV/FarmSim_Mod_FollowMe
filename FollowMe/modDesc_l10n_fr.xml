@@ -46,7 +46,7 @@ Placez le véhicule meneur devant celui-ci." />
         <text name="input_FollowMeMyDist_1"     text="FollowMe: Écart meneur +" />
         <text name="input_FollowMeMyOffs_2"     text="FollowMe: Décalage meneur gauche" />
         <text name="input_FollowMeMyOffs_1"     text="FollowMe: Décalage meneur droite" />
-        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Décalage <|0|> meneur" />
+        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Décalage cycle meneur" />
 
         <text name="input_FollowMeFlStop"       text="FollowMe: Stopper le suiveur" />
         <text name="input_FollowMeFlPause"      text="FollowMe: Suiveur Attendre / Redémarrer" />
@@ -54,7 +54,7 @@ Placez le véhicule meneur devant celui-ci." />
         <text name="input_FollowMeFlDist_1"     text="FollowMe: Écart suiveur +" />
         <text name="input_FollowMeFlOffs_2"     text="FollowMe: Décalage suiveur gauche" />
         <text name="input_FollowMeFlOffs_1"     text="FollowMe: Décalage suiveur droite" />
-        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Décalage <|0|> suiveur" />
+        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Décalage cycle suiveur" />
 
         <text name="FollowMeLeader"             text="Meneur" />
         <text name="FollowMeFollower"           text="Suiveur" />

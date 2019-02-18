@@ -44,7 +44,7 @@ Move closer to the leading vehicle, while staying behind it." />
         <text name="input_FollowMeMyDist_1"     text="FollowMe: Myself Distance +"   />
         <text name="input_FollowMeMyOffs_2"     text="FollowMe: Myself Offset left"  />
         <text name="input_FollowMeMyOffs_1"     text="FollowMe: Myself Offset right" />
-        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Myself Offset <|0|>" />
+        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Myself Offset cycle" />
 
         <text name="input_FollowMeFlStop"       text="FollowMe: Behind Disengage"    />
         <text name="input_FollowMeFlPause"      text="FollowMe: Behind Wait/Resume"  />
@@ -52,7 +52,7 @@ Move closer to the leading vehicle, while staying behind it." />
         <text name="input_FollowMeFlDist_1"     text="FollowMe: Behind Distance +"   />
         <text name="input_FollowMeFlOffs_2"     text="FollowMe: Behind Offset left"  />
         <text name="input_FollowMeFlOffs_1"     text="FollowMe: Behind Offset right" />
-        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Behind Offset <|0|>" />
+        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Behind Offset cycle" />
 
         <text name="FollowMeLeader"             text="Leader"               />
         <text name="FollowMeFollower"           text="Follower"             />
