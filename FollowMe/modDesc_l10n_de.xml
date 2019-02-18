@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
     <!--
         Please contribute any other translations at
@@ -13,15 +13,15 @@
 
     <!-- Note that 'description' is only here for easier translations. It needs to be manually copied to ModDesc.XML later. -->
     <description>
-Sie wollten schon immer einigen Fahrzeugen über die Karte folgen können?
-Mit "Follow Me" können Sie das (natürlich nur vorwärtsfahrend).
+Sie wollten schon immer Fahrzeuge als Kolonne über die Karte Transportieren?
+Mit "Follow Me" können Sie dies (natürlich nur vorwärtsfahrend).
     </description>
 
     <texts>
-        <text name="FollowMeAlreadyAI"          text="Der gemietete Arbeiter nutzt dieses Fahrzeug" />
-        <text name="FollowMeStartEngine"        text="Motor zuerst anlassen."                />
+        <text name="FollowMeAlreadyAI"          text="Der Lohnarbeiter nutzt dieses Fahrzeug" />
+        <text name="FollowMeStartEngine"        text="Zuerst Motor anlassen."                />
 
-        <text name="FollowMeDropperNotFound"    text="Kann in der Nähe keine Spur finden, der ich folgen könnte.
+        <text name="FollowMeDropperNotFound"    text="Es kann in der Nähe keine Spur gefunden welcher gefolgt werden könnte.
 Nähern sie sich dem führenden Fahrzeug." />
 
         <!--text name="FollowMeKeysMyself"         text="%s - Selbst Steuerungsmaßnahmen"  /-->
@@ -39,13 +39,13 @@ Nähern sie sich dem führenden Fahrzeug." />
         <text name="FollowMeFlWait"             text="FollowMe: Hinter Warten"        />
         <text name="FollowMeFlResume"           text="FollowMe: Hinter Fortsetzen"      />
 
-        <text name="input_FollowMeMyToggle"     text="FollowMe: Umzuschalten on/off" />
+        <text name="input_FollowMeMyToggle"     text="FollowMe: Umschalten an/aus" />
         <text name="input_FollowMeMyPause"      text="FollowMe: Warten / Fortsetzen"  />
-        <text name="input_FollowMeMyDist_2"     text="FollowMe: Selbst Abstand -" />
-        <text name="input_FollowMeMyDist_1"     text="FollowMe: Selbst Abstand +" />
-        <text name="input_FollowMeMyOffs_2"     text="FollowMe: Selbst Versatz links" />
-        <text name="input_FollowMeMyOffs_1"     text="FollowMe: Selbst Versatz rechts" />
-        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Selbst Versatzzyklus"   />
+        <text name="input_FollowMeMyDist_2"     text="FollowMe: Eigener Abstand -" />
+        <text name="input_FollowMeMyDist_1"     text="FollowMe: Eigener Abstand +" />
+        <text name="input_FollowMeMyOffs_2"     text="FollowMe: Eigener Versatz links" />
+        <text name="input_FollowMeMyOffs_1"     text="FollowMe: Eigener Versatz rechts" />
+        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Eigener Versatzzyklus"   />
 
         <text name="input_FollowMeFlStop"       text="FollowMe: Hinter Aufhalten" />
         <text name="input_FollowMeFlPause"      text="FollowMe: Hinter Warten / Fortsetzen" />
@@ -55,12 +55,12 @@ Nähern sie sich dem führenden Fahrzeug." />
         <text name="input_FollowMeFlOffs_1"     text="FollowMe: Hinter Versatz rechts" />
         <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Hinter Versatzzyklus"   />
 
-        <text name="FollowMeLeader"             text="Führer"            />
-        <text name="FollowMeFollower"           text="Nachfolger"        />
+        <text name="FollowMeLeader"             text="Führendes Fahrzeug"            />
+        <text name="FollowMeFollower"           text="Folgendes Fahrzeug"        />
         <text name="FollowMePaused"             text=" (Warten)"        />
         <text name="FollowMeOffLft"             text="%.1f Links-offs."   />
         <text name="FollowMeOffRgt"             text="Recht-offs. %.1f"  />
-        <text name="FollowMeDistBehind"         text="Hinter-abst. %.0f" />
+        <text name="FollowMeDistBehind"         text="Hinterer-abst. %.0f" />
         <text name="FollowMeDistAhead"          text="Voraus-abst. %.0f"  />
         <!--text name="FollowMeTrailStrength"      text="Trail %d%%"           /-->
 
