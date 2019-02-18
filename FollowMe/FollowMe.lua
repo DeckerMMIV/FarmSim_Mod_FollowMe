@@ -208,8 +208,23 @@ end
 
 function FollowMe:onAIStart()
   if FollowMe.getIsFollowMeActive(self) then
-    local spec = FollowMe.getSpec(self)
-    self.spec_aiVehicle.pricePerMS = Utils.getNoNil(spec.origPricePerMS, 1500) * 0.2 -- FollowMe AIs wage is only 20% of base-game's AI.
+    local specFM = FollowMe.getSpec(self)
+    local spec = self.spec_aiVehicle
+    spec.pricePerMS = Utils.getNoNil(specFM.origPricePerMS, 1500) * 0.2 -- FollowMe AIs wage is only 20% of base-game's AI.
+
+    -- In case player is so fast, that after stopping a regular AI, and in less than 200ms he manages to start FollowMe, then ensure the traffic collision is deleted.
+    if spec.aiTrafficCollisionRemoveDelay > 0 then
+      if spec.aiTrafficCollision ~= nil then
+        if entityExists(spec.aiTrafficCollision) then
+          delete(spec.aiTrafficCollision)
+        end
+      end
+      spec.aiTrafficCollisionRemoveDelay = 0
+    end
+
+    -- Bug fix for (1.3.0.0-beta) base-game's script, where it does not set `spec.aiTrafficCollision` to nil after it has been deleted in `AIVehicle:onUpdateTick`.
+    -- If this 'set to nil' is not done, then `AIVehicle:onUpdate` will attempt to translate + rotate it, even when FollowMe is not using such a traffic collision.
+    spec.aiTrafficCollision = nil
   end
 end
 
