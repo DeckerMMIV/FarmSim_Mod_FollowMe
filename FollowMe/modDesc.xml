@@ -1,18 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="34">
-    <author>Decker_MMIV (DCK)</author>
-    <authorContact>fs-uk.com, modcentral.co.uk, forum.farming-simulator.com</authorContact>
-    
+<modDesc descVersion="42">
+    <author>Decker_MMIV</author>
+    <authorContact>fs-uk.com, forum.farming-simulator.com</authorContact>
+
 <!--
     NOTE: For contributing translations, DO NOT edit this ModDesc.XML.
           Only modify the corresponding ModDesc_l10n_*.XML file.
--->    
+-->
     <contributors>
-        DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion, pokers, Ziuta, pewemo, Alfredo Prieto, xno, 
-        Vanquish081, Paxly, Taco29, Anonymous
+      (FS19)
+        Rushmead
+      (FS17)
+        DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion,
+        pokers, Ziuta, pewemo, Alfredo Prieto, xno, Vanquish081, Paxly, Taco29, Anonymous
     </contributors>
 
-    <version>1.2.2.44</version>
+    <version>0.0.0.0</version>
 
     <title>
         <en>Follow Me</en>
@@ -25,214 +28,136 @@
         <nl>Follow Me</nl>
         <es>Follow Me</es>
     </title>
-
     <changeLog><![CDATA[
-1.2.2.44
-- Translations updated by contributors.
-
-1.2.2.43
-- Disallow MoreRealistic vehicles to 'speed up to catch up', as a temporary fix, until a better speed algorithm is found.
-- MoreRealistic vehicles now apply brake if 'going faster than leader-vehicle'.
-
-1.2.1.40
-- Translations updated by contributors.
-- Support for baler-and-wrapper combination; FBP 3135 (Kuhn DLC).
-- Increased starting distance to 20, from 10.
-- Fix for saving/loading distance and offset between savegame-sessions.
 ]]></changeLog>
-    
+
     <description>
         <en>
-<![CDATA[Ever wanted to have some vehicles follow you around the map?
+<![CDATA[Currently only for Singleplayer   <-- Attention
+
+Ever wanted to have some vehicles follow you around the map?
 With "Follow Me" you can (though not backwards driving).
-
-Changelog (1.2.1.40)
-- Translations updated by contributors.
-- Support for baler-and-wrapper combination; FBP 3135 (Kuhn DLC).
-- Increased starting distance to 20, from 10.
-- Fix for saving/loading distance and offset between savegame-sessions.
-
-Default control keys:
-
-'Myself' is the current vehicle
-  RIGHT-CTRL F     = Toggle 'FollowMe' on/off
-  RIGHT-CTRL H     = Wait/Resume
-  RIGHT-CTRL W/S = Distance increase/decrease
-  RIGHT-CTRL A/D = Offset left/right adjust
-  RIGHT-CTRL X     = Offset reset or hold for invert
- 
-'Behind' the followed vehicle  
-  RIGHT-SHIFT F     = Disengage 'FollowMe'
-  RIGHT-SHIFT H     = Wait/Resume
-  RIGHT-SHIFT W/S = Distance increase/decrease
-  RIGHT-SHIFT A/D = Offset left/right adjust
-  RIGHT-SHIFT X     = Offset reset or hold for invert
 ]]>
         </en>
         <de>
-<![CDATA[Sie wollten schon immer einigen Fahrzeugen über die Karte folgen können?
+<![CDATA[Derzeit nur für Einzelspieler   <-- Achtung
+
+Sie wollten schon immer einigen Fahrzeugen über die Karte folgen können?
 Mit "Follow Me" können Sie das (natürlich nur vorwärtsfahrend).
-
-Changelog (1.2.1.40)
-- Translations updated by contributors.
-- Support for baler-and-wrapper combination; FBP 3135 (Kuhn DLC).
-- Increased starting distance to 20, from 10.
-- Fix for saving/loading distance and offset between savegame-sessions.
-
-Standardtastenbelegung:
-
-'Myself' ist das aktuelle Fahrzeug
-  RIGHT-CTRL F     =  FollowMe an/aus schalten
-  RIGHT-CTRL H     = Pausieren / Fortsetzen
-  RIGHT-CTRL W/S = Entfernung erhöhen / verringern
-  RIGHT-CTRL A/D = Versatz links / rechts einstellen
-  RIGHT-CTRL X     = Versatz zurücksetzen oder reset oder halten für invertieren
- 
-'Behind' das folgende Fahrzeug
-  RIGHT-SHIFT F     = FollowMe deaktivieren
-  RIGHT-SHIFT H     = Pausieren / Fortsetzen
-  RIGHT-SHIFT W/S = Entfernung erhöhen / verringern
-  RIGHT-SHIFT A/D =  Versatz links / rechts einstellen
-  RIGHT-SHIFT X     =  Versatz zurücksetzen oder reset oder halten für invertieren.
 ]]>
         </de>
         <pl>
-<![CDATA[Czy kiedykolwiek chciałeś by niektóre pojazdy podążały za tobą po mapie?
-Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz).
+<![CDATA[Obecnie tylko dla Singleplayer   <-- Uwaga
 
-Changelog (1.2.1.40)
-- Translations updated by contributors.
-- Support for baler-and-wrapper combination; FBP 3135 (Kuhn DLC).
-- Increased starting distance to 20, from 10.
-- Fix for saving/loading distance and offset between savegame-sessions.
+Czy kiedykolwiek chciałeś by niektóre pojazdy podążały za tobą po mapie?
+Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz).
 ]]>
         </pl>
-        <fr> 
-<![CDATA[Vous avez toujours souhaité que certains véhicules puissent vous suivre ?
-Avec "Follow Me", c'est possible (sauf en marche arrière).
+        <fr>
+<![CDATA[Actuellement réservé au jeu solo   <-- Attention
 
-Changelog (1.2.1.40)
-- Translations updated by contributors.
-- Support for baler-and-wrapper combination; FBP 3135 (Kuhn DLC).
-- Increased starting distance to 20, from 10.
-- Fix for saving/loading distance and offset between savegame-sessions.
+Vous avez toujours souhaité que certains véhicules puissent vous suivre ?
+Avec "Follow Me", c'est possible (sauf en marche arrière).
 ]]>
         </fr>
         <ru>
-<![CDATA[Была ли у Вас необходимость в том что-бы какие-либо ТС
+<![CDATA[В настоящее время только для одиночной игры   <-- Внимание
+
+Была ли у Вас необходимость в том что-бы какие-либо ТС
 двигались следом за вами? С "Follow Me" это возможно!
-
-Changelog (1.2.1.40)
-- Translations updated by contributors.
-- Support for baler-and-wrapper combination; FBP 3135 (Kuhn DLC).
-- Increased starting distance to 20, from 10.
-- Fix for saving/loading distance and offset between savegame-sessions.
-
-Клавиши управления по умолчанию:
-
-'Собственный' это текущая техника
-  RIGHT-CTRL F     = Переключение 'FollowMe' Вкл/Выкл
-  RIGHT-CTRL H     = Ожидать/Продолжить
-  RIGHT-CTRL W/S   = Дистанцию увеличить/уменьшить
-  RIGHT-CTRL A/D   = Настройка смещения влево/вправо
-  RIGHT-CTRL X     = Сбросить смещение или инвертировать (удерживая)
- 
-'За мной' это техника которая едет следом за ведомым   
-  RIGHT-SHIFT F     = Выключить 'FollowMe'
-  RIGHT-SHIFT H     = Ожидать/Продолжить
-  RIGHT-SHIFT W/S   = Дистанцию увеличить/уменьшить
-  RIGHT-SHIFT A/D   = Настройка смещения влево/вправо
-  RIGHT-SHIFT X     = Сбросить смещение или инвертировать (удерживая) 
 ]]>
         </ru>
         <it>
-<![CDATA[Hai mai voluto avere alcuni veicoli che ti seguono per la mappa?
+<![CDATA[Attualmente solo per Singleplayer   <- Attenzione
+
+Hai mai voluto avere alcuni veicoli che ti seguono per la mappa?
 Con "Follow Me" è possibile (non ancora con guida in retromarcia).
-
-Changelog (1.2.1.40)
-- Translations updated by contributors.
-- Support for baler-and-wrapper combination; FBP 3135 (Kuhn DLC).
-- Increased starting distance to 20, from 10.
-- Fix for saving/loading distance and offset between savegame-sessions.
-
-Comandi predefiniti:
-
-'Capo scia' è il veicolo controllato del giocatore
-  CTRL-DESTRO F     = 'FollowMe' on/off
-  CTRL-DESTRO H     = Aspetta / Riprendi
-  CTRL-DESTRO W/S   = Aumenta / Diminuisci distanza
-  CTRL-DESTRO A/D   = Scostamento laterale +/-
-  CTRL-DESTRO X     = Cancella scostamento o tieni premuto per invertire
- 
-'Inseguitore' è il veicolo che segue  
-  MAIUSC-DESTRO F     = 'FollowMe' on/off
-  MAIUSC-DESTRO H     = Aspetta / Riprendi
-  MAIUSC-DESTRO W/S   = Aumenta / Diminuisci distanza
-  MAIUSC-DESTRO A/D   = Scostamento laterale +/-
-  MAIUSC-DESTRO X     = Cancella scostamento o tieni premuto per invertir
 ]]>
         </it>
         <hu>
-<![CDATA[Mindig is szeretted volna, hogy a járművek kövessenek bármerre is mész a térképen?
-A "Follow Me"-vel most megteheted (csak ne tolass).
+<![CDATA[Jelenleg csak a Singleplayer   <-- Figyelem
 
-Changelog (1.2.1.40)
-- Translations updated by contributors.
-- Support for baler-and-wrapper combination; FBP 3135 (Kuhn DLC).
-- Increased starting distance to 20, from 10.
-- Fix for saving/loading distance and offset between savegame-sessions.
+Mindig is szeretted volna, hogy a járművek kövessenek bármerre is mész a térképen?
+A "Follow Me"-vel most megteheted (csak ne tolass).
 ]]>
         </hu>
         <nl>
-<![CDATA[Zou je willen dat sommige voertuigen je volgen over de map?
-Met "Follow Me" kan dat (alleen niet bij achteruit rijden).
+<![CDATA[Momenteel alleen voor Singleplayer   <-- Let op
 
-Changelog (1.2.1.40)
-- Translations updated by contributors.
-- Support for baler-and-wrapper combination; FBP 3135 (Kuhn DLC).
-- Increased starting distance to 20, from 10.
-- Fix for saving/loading distance and offset between savegame-sessions.
+Zou je willen dat sommige voertuigen je volgen over de map?
+Met "Follow Me" kan dat (alleen niet bij achteruit rijden).
 ]]>
         </nl>
         <es>
-<![CDATA[¿Quieres conseguir que te sigan algunos de tus vehículos alrededor del mapa?
-Con "Follow Me" se puede conseguir.(No funciona con marcha atrás).
+<![CDATA[Actualmente solo para Singleplayer   <-- Atención
 
-Changelog (1.2.1.40)
-- Translations updated by contributors.
-- Support for baler-and-wrapper combination; FBP 3135 (Kuhn DLC).
-- Increased starting distance to 20, from 10.
-- Fix for saving/loading distance and offset between savegame-sessions.
+¿Quieres conseguir que te sigan algunos de tus vehículos alrededor del mapa?
+Con "Follow Me" se puede conseguir. (No funciona con marcha atrás).
 ]]>
         </es>
     </description>
 
-    <iconFilename>store_FollowMe.dds</iconFilename>
-    <multiplayer supported="true"/>
+    <iconFilename>icon_FollowMe.dds</iconFilename>
+
+    <!-- NO! - DO NOT ATTEMPT CHANGING THE SETTING! - The FollowMe script is NOT YET multiplayer ready! -->
+    <multiplayer supported="false"/>
 
     <extraSourceFiles>
+        <sourceFile filename="AIVehicle_Override.lua" />
         <sourceFile filename="register.lua" />
     </extraSourceFiles>
 
     <l10n filenamePrefix="modDesc_l10n" /> <!-- Load the corresponding modDesc_l10n_<language>.XML file, or revert to 'en'/'de'. -->
 
-    <inputBindings>
-        <!-- IMPORTANT! These 'FollowMeMy...' must use the same modifier-key! -->                               
-        <input visible="true" name="FollowMeMyToggle"  category="VEHICLE" key1="KEY_rctrl KEY_f"  />
-        <input visible="true" name="FollowMeMyPause"   category="VEHICLE" key1="KEY_rctrl KEY_h"  />
-        <input visible="true" name="FollowMeMyDistDec" category="VEHICLE" key1="KEY_rctrl KEY_w"  />
-        <input visible="true" name="FollowMeMyDistInc" category="VEHICLE" key1="KEY_rctrl KEY_s"  />
-        <input visible="true" name="FollowMeMyOffsDec" category="VEHICLE" key1="KEY_rctrl KEY_a"  />
-        <input visible="true" name="FollowMeMyOffsInc" category="VEHICLE" key1="KEY_rctrl KEY_d"  />
-        <input visible="true" name="FollowMeMyOffsTgl" category="VEHICLE" key1="KEY_rctrl KEY_x"  />
+    <actions>
+        <action name="FollowMeMyToggle"  category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeMyPause"   category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeMyDist"    category="VEHICLE" axisType="FULL" />
+        <action name="FollowMeMyOffs"    category="VEHICLE" axisType="FULL" />
+        <action name="FollowMeMyOffsTgl" category="VEHICLE" axisType="HALF" />
 
-        <!-- IMPORTANT! These 'FollowMeFl...' must use the same modifier-key! And MUST BE different from the 'FollowMeMy...' set -->
-        <input visible="true" name="FollowMeFlStop"    category="VEHICLE" key1="KEY_rshift KEY_f" />
-        <input visible="true" name="FollowMeFlPause"   category="VEHICLE" key1="KEY_rshift KEY_h" />
-        <input visible="true" name="FollowMeFlDistDec" category="VEHICLE" key1="KEY_rshift KEY_w" />
-        <input visible="true" name="FollowMeFlDistInc" category="VEHICLE" key1="KEY_rshift KEY_s" />
-        <input visible="true" name="FollowMeFlOffsDec" category="VEHICLE" key1="KEY_rshift KEY_a" />
-        <input visible="true" name="FollowMeFlOffsInc" category="VEHICLE" key1="KEY_rshift KEY_d" />
-        <input visible="true" name="FollowMeFlOffsTgl" category="VEHICLE" key1="KEY_rshift KEY_x" />
-    </inputBindings>
+        <action name="FollowMeFlStop"    category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeFlPause"   category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeFlDist"    category="VEHICLE" axisType="FULL" />
+        <action name="FollowMeFlOffs"    category="VEHICLE" axisType="FULL" />
+        <action name="FollowMeFlOffsTgl" category="VEHICLE" axisType="HALF" />
+    </actions>
+
+    <inputBinding>
+        <actionBinding action="FollowMeMyToggle">
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_f" index="1" />
+        </actionBinding>
+        <actionBinding action="FollowMeMyPause">
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_h" index="1" />
+        </actionBinding>
+        <actionBinding action="FollowMeMyDist">
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_w" axisComponent="-" neutralInput="0" index="1" />
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_s" axisComponent="+" neutralInput="0" index="1" />
+        </actionBinding>
+        <actionBinding action="FollowMeMyOffs">
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_a" axisComponent="-" neutralInput="0" index="1" />
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_d" axisComponent="+" neutralInput="0" index="1" />
+        </actionBinding>
+        <actionBinding action="FollowMeMyOffsTgl">
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_x" index="1" />
+        </actionBinding>
+
+        <actionBinding action="FollowMeFlStop">
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_f" index="1" />
+        </actionBinding>
+        <actionBinding action="FollowMeFlPause">
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_h" index="1" />
+        </actionBinding>
+        <actionBinding action="FollowMeFlDist">
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_w" axisComponent="-" neutralInput="0" index="1" />
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_s" axisComponent="+" neutralInput="0" index="1" />
+        </actionBinding>
+        <actionBinding action="FollowMeFlOffs">
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_a" axisComponent="-" neutralInput="0" index="1" />
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_d" axisComponent="+" neutralInput="0" index="1" />
+        </actionBinding>
+        <actionBinding action="FollowMeFlOffsTgl">
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_x" index="1" />
+        </actionBinding>
+    </inputBinding>
 </modDesc>
