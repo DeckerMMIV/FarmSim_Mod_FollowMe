@@ -45,9 +45,12 @@ end
 FollowMe = {};
 
 local specTypeName = 'followMe'
-local modSpecTypeName = g_currentModName ..".".. specTypeName
+--local modSpecTypeName = g_currentModName ..".".. specTypeName
+local modSpecTypeName = specTypeName
+
 function FollowMe.getSpec(self)
-  return self["spec_" .. modSpecTypeName]
+  --return self["spec_" .. modSpecTypeName]
+  return self.spec_followMe
 end
 
 --

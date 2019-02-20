@@ -54,10 +54,16 @@ end)
 --
 --
 
+---- Register this specialization
 local specTypeName = 'followMe'
-g_specializationManager:addSpecialization(specTypeName, 'FollowMe', g_currentModDirectory .. 'FollowMe.lua', "")
 
-local modSpecTypeName = g_currentModName ..".".. specTypeName
+--g_specializationManager:addSpecialization(specTypeName, 'FollowMe', Utils.getFilename('FollowMe.lua', g_currentModDirectory), nil)
+g_specializationManager:addSpecialization(specTypeName, 'FollowMe', Utils.getFilename('FollowMe.lua', g_currentModDirectory), true, nil) -- What does the last two arguments even do?
+
+---- Add the specialization to specific vehicle-types
+--local modSpecTypeName = g_currentModName ..".".. specTypeName
+local modSpecTypeName = specTypeName
+
 for vehTypeName,vehTypeObj in pairs( g_vehicleTypeManager.vehicleTypes ) do
   if  true  == SpecializationUtil.hasSpecialization(Drivable      ,vehTypeObj.specializations)
   and true  == SpecializationUtil.hasSpecialization(Motorized     ,vehTypeObj.specializations)
@@ -72,4 +78,11 @@ for vehTypeName,vehTypeObj in pairs( g_vehicleTypeManager.vehicleTypes ) do
   --else
   --  log("FollowMe ignored for: ",vehTypeName)
   end
+end
+
+---- Copy all mod-environment-l10n-texts into the game-root-l10n-text object.
+-- Sorry GIANTS. This is what we community mod-scripters do as a work-around, when LUADOC documentation is lacking... :-/
+local root_i18n = getfenv(0).g_i18n
+for k,v in pairs(g_i18n.texts) do
+  root_i18n:setText(k,v)
 end
