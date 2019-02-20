@@ -430,7 +430,11 @@ function FollowMe:handleAction(actionName, inputValue, callbackState, isAnalog, 
             end
         end
         ,FollowMeMyPause   = function() FollowMe.waitResumeFollowMe(self, FollowMe.REASON_USER_ACTION); end
-        ,FollowMeMyOffs    = function(value) FollowMe.changeXOffset(self, 0.5 * MathUtil.sign(value)); end
+        ,FollowMeMyOffs    = function(value)
+          if math.abs(value) >= 0.8 then
+            FollowMe.changeXOffset(self, 0.5 * MathUtil.sign(value));
+          end
+        end
         ,FollowMeMyOffsTgl = function() FollowMe.toggleXOffset(self); end
 
         ,FollowMeFlStop = function()
@@ -439,7 +443,11 @@ function FollowMe:handleAction(actionName, inputValue, callbackState, isAnalog, 
             end
         end
         ,FollowMeFlPause   = function() FollowMe.waitResumeFollowMe(stalker, FollowMe.REASON_USER_ACTION); end
-        ,FollowMeFlOffs    = function(value) FollowMe.changeXOffset(stalker, 0.5 * MathUtil.sign(value)); end
+        ,FollowMeFlOffs    = function(value)
+          if math.abs(value) >= 0.8 then
+            FollowMe.changeXOffset(stalker, 0.5 * MathUtil.sign(value));
+          end
+        end
         ,FollowMeFlOffsTgl = function() FollowMe.toggleXOffset(stalker); end
     }
     local action = switch[actionName]
@@ -454,16 +462,19 @@ function FollowMe:actionChangeDistance(actionName, inputValue, callbackState, is
   local spec = FollowMe.getSpec(self)
 
   if nil == spec.lastInputTime then
-    spec.lastInputValue = inputValue
-    spec.lastInputTime = g_time
-    spec.nextInputTimeout = g_time + 500
+    if math.abs(inputValue) >= 0.8 then
+      -- Start of input
+      spec.lastInputValue = inputValue
+      spec.lastInputTime = g_time
+      spec.nextInputTimeout = g_time + 500
+    end
   else
     local who = self
     if 1 == callbackState then
       who = spec.StalkerVehicleObj;
     end
 
-    if 0 ~= inputValue and nil ~= who then
+    if math.abs(inputValue) >= 0.5 and nil ~= who then
       -- Long-hold? Change distance in steps of 1
       if spec.nextInputTimeout < g_time then
         FollowMe.changeDistance(who, 1 * MathUtil.sign(spec.lastInputValue));
