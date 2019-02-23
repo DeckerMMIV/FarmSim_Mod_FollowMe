@@ -39,7 +39,7 @@ Issues
 
     <description>
         <en>
-<![CDATA[Currently only for Singleplayer   <-- Attention
+<![CDATA[Currently only for Singleplayer -- Attention
 
 Ever wanted to have some vehicles follow you around the map?
 With "Follow Me" you can (though not backwards driving).
@@ -54,7 +54,7 @@ Issues
 ]]>
         </en>
         <de>
-<![CDATA[Derzeit nur für Einzelspieler   <-- Achtung
+<![CDATA[Derzeit nur für Einzelspieler -- Achtung
 
 Sie wollten schon immer Fahrzeuge als Kolonne über die Karte Transportieren?
 Mit "Follow Me" können Sie dies (natürlich nur vorwärtsfahrend).
@@ -69,7 +69,7 @@ Issues
 ]]>
         </de>
         <pl>
-<![CDATA[Obecnie tylko dla Singleplayer   <-- Uwaga
+<![CDATA[Obecnie tylko dla Singleplayer -- Uwaga
 
 Czy kiedykolwiek chciałeś by niektóre pojazdy podążały za tobą po mapie?
 Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz).
@@ -84,7 +84,7 @@ Issues
 ]]>
         </pl>
         <fr>
-<![CDATA[Actuellement réservé au jeu solo   <-- Attention
+<![CDATA[Actuellement réservé au jeu solo -- Attention
 
 Vous avez toujours souhaité que certains véhicules puissent vous suivre ?
 Avec "Follow Me", c'est possible (sauf en marche arrière).
@@ -99,7 +99,7 @@ Issues
 ]]>
         </fr>
         <ru>
-<![CDATA[В настоящее время только для одиночной игры   <-- Внимание
+<![CDATA[В настоящее время только для одиночной игры -- Внимание
 
 Была ли у Вас необходимость в том что-бы какие-либо ТС
 двигались следом за вами? С "Follow Me" это возможно!
@@ -129,7 +129,7 @@ Issues
 ]]>
         </it>
         <hu>
-<![CDATA[Jelenleg csak a Singleplayer   <-- Figyelem
+<![CDATA[Jelenleg csak a Singleplayer -- Figyelem
 
 Mindig is szeretted volna, hogy a járművek kövessenek bármerre is mész a térképen?
 A "Follow Me"-vel most megteheted (csak ne tolass).
@@ -144,7 +144,7 @@ Issues
 ]]>
         </hu>
         <nl>
-<![CDATA[Momenteel alleen voor Singleplayer   <-- Let op
+<![CDATA[Momenteel alleen voor Singleplayer -- Let op
 
 Zou je willen dat sommige voertuigen je volgen over de map?
 Met "Follow Me" kan dat (alleen niet bij achteruit rijden).
@@ -159,7 +159,7 @@ Issues
 ]]>
         </nl>
         <es>
-<![CDATA[Actualmente solo para Singleplayer   <-- Atención
+<![CDATA[Actualmente solo para Singleplayer -- Atención
 
 ¿Quieres conseguir que te sigan algunos de tus vehículos alrededor del mapa?
 Con "Follow Me" se puede conseguir. (No funciona con marcha atrás).
