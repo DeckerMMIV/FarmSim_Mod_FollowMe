@@ -15,26 +15,21 @@
         pokers, Ziuta, pewemo, Alfredo Prieto, xno, Vanquish081, Paxly, Taco29, Anonymous
     </contributors>
 
-    <version>1.0.0.0</version>
+    <version>1.0.1.1</version>
 
     <title>
         <en>Follow Me</en>
-        <de>Follow Me</de>
-        <pl>Follow Me</pl>
-        <fr>Follow Me</fr>
-        <ru>Follow Me</ru>
-        <it>Follow Me</it>
-        <hu>Follow Me</hu>
-        <nl>Follow Me</nl>
-        <es>Follow Me</es>
     </title>
+
     <changeLog><![CDATA[
-Changelog 1.0.0.0:
-- Upgraded to FS19
 Issues
 - [KNOWN ISSUE] Multiplayer is not yet supported
+- [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
+Changelog 1.0.1.1:
+- Upgraded to FS19
+- As per ModHub Team certification report request, have reduced to only using 'EN'-title, due to using same title-name for all languages
 ]]></changeLog>
 
     <description>
@@ -45,12 +40,14 @@ Ever wanted to have some vehicles follow you around the map?
 With "Follow Me" you can (though not backwards driving).
 
 
-Changelog 1.0.0.0:
-- Upgraded to FS19
 Issues
 - [KNOWN ISSUE] Multiplayer is not yet supported
+- [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
+Changelog 1.0.1.1:
+- Upgraded to FS19
+- As per ModHub Team certification report request, have reduced to only using 'EN'-title, due to using same title-name for all languages
 ]]>
         </en>
         <de>
@@ -60,12 +57,14 @@ Sie wollten schon immer Fahrzeuge als Kolonne über die Karte Transportieren?
 Mit "Follow Me" können Sie dies (natürlich nur vorwärtsfahrend).
 
 
-Changelog 1.0.0.0:
-- Upgraded to FS19
 Issues
 - [KNOWN ISSUE] Multiplayer is not yet supported
+- [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
+Changelog 1.0.1.1:
+- Upgraded to FS19
+- As per ModHub Team certification report request, have reduced to only using 'EN'-title, due to using same title-name for all languages
 ]]>
         </de>
         <pl>
@@ -75,12 +74,14 @@ Czy kiedykolwiek chciałeś by niektóre pojazdy podążały za tobą po mapie?
 Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz).
 
 
-Changelog 1.0.0.0:
-- Upgraded to FS19
 Issues
 - [KNOWN ISSUE] Multiplayer is not yet supported
+- [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
+Changelog 1.0.1.1:
+- Upgraded to FS19
+- As per ModHub Team certification report request, have reduced to only using 'EN'-title, due to using same title-name for all languages
 ]]>
         </pl>
         <fr>
@@ -90,12 +91,14 @@ Vous avez toujours souhaité que certains véhicules puissent vous suivre ?
 Avec "Follow Me", c'est possible (sauf en marche arrière).
 
 
-Changelog 1.0.0.0:
-- Upgraded to FS19
 Issues
 - [KNOWN ISSUE] Multiplayer is not yet supported
+- [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
+Changelog 1.0.1.1:
+- Upgraded to FS19
+- As per ModHub Team certification report request, have reduced to only using 'EN'-title, due to using same title-name for all languages
 ]]>
         </fr>
         <ru>
@@ -105,27 +108,31 @@ Issues
 двигались следом за вами? С "Follow Me" это возможно!
 
 
-Changelog 1.0.0.0:
-- Upgraded to FS19
 Issues
 - [KNOWN ISSUE] Multiplayer is not yet supported
+- [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
+Changelog 1.0.1.1:
+- Upgraded to FS19
+- As per ModHub Team certification report request, have reduced to only using 'EN'-title, due to using same title-name for all languages
 ]]>
         </ru>
         <it>
-<![CDATA[Attualmente solo per Singleplayer   <- Attenzione
+<![CDATA[Attualmente solo per Singleplayer -- Attenzione
 
 Hai mai voluto avere alcuni veicoli che ti seguono per la mappa?
 Con "Follow Me" è possibile (non ancora con guida in retromarcia).
 
 
-Changelog 1.0.0.0:
-- Upgraded to FS19
 Issues
 - [KNOWN ISSUE] Multiplayer is not yet supported
+- [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
+Changelog 1.0.1.1:
+- Upgraded to FS19
+- As per ModHub Team certification report request, have reduced to only using 'EN'-title, due to using same title-name for all languages
 ]]>
         </it>
         <hu>
@@ -135,12 +142,14 @@ Mindig is szeretted volna, hogy a járművek kövessenek bármerre is mész a t�
 A "Follow Me"-vel most megteheted (csak ne tolass).
 
 
-Changelog 1.0.0.0:
-- Upgraded to FS19
 Issues
 - [KNOWN ISSUE] Multiplayer is not yet supported
+- [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
+Changelog 1.0.1.1:
+- Upgraded to FS19
+- As per ModHub Team certification report request, have reduced to only using 'EN'-title, due to using same title-name for all languages
 ]]>
         </hu>
         <nl>
@@ -150,12 +159,14 @@ Zou je willen dat sommige voertuigen je volgen over de map?
 Met "Follow Me" kan dat (alleen niet bij achteruit rijden).
 
 
-Changelog 1.0.0.0:
-- Upgraded to FS19
 Issues
 - [KNOWN ISSUE] Multiplayer is not yet supported
+- [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
+Changelog 1.0.1.1:
+- Upgraded to FS19
+- As per ModHub Team certification report request, have reduced to only using 'EN'-title, due to using same title-name for all languages
 ]]>
         </nl>
         <es>
@@ -165,12 +176,14 @@ Issues
 Con "Follow Me" se puede conseguir. (No funciona con marcha atrás).
 
 
-Changelog 1.0.0.0:
-- Upgraded to FS19
 Issues
 - [KNOWN ISSUE] Multiplayer is not yet supported
+- [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
+Changelog 1.0.1.1:
+- Upgraded to FS19
+- As per ModHub Team certification report request, have reduced to only using 'EN'-title, due to using same title-name for all languages
 ]]>
         </es>
     </description>
