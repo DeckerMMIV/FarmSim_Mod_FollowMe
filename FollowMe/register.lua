@@ -23,15 +23,15 @@ end;
 
 -- The following is only specific for 'FollowMe'...
 
-AIVehicle.raiseAIEvent = Utils.overwrittenFunction(AIVehicle.raiseAIEvent, function(self, superFunc, aiEvt1, aiEvt2)
+AIVehicle.raiseAIEvent = Utils.overwrittenFunction(AIVehicle.raiseAIEvent, function(self, superFunc, aiEvt1, aiEvt2, ...)
   if "FollowMe" == self.spec_aiVehicle.mod_ForcedDrivingStrategyName then
     -- Don't raise the `aiEvt2`.
     -- This to avoid any attached implements to unfold/start/whatever, when FollowMe is activated via AIVehicle.startAIVehicle()
-    SpecializationUtil.raiseEvent(self, aiEvt1)
+    SpecializationUtil.raiseEvent(self, aiEvt1, ...)
     return
   end
   -- Forced driving-strategy-id was not 'FollowMe', so let the original method do what it need to do.
-    superFunc(self, aiEvt1, aiEvt2)
+  superFunc(self, aiEvt1, aiEvt2, ...)
 end)
 
 AIVehicle.getCanAIVehicleContinueWork = Utils.overwrittenFunction(AIVehicle.getCanAIVehicleContinueWork, function(self, superFunc)
@@ -47,7 +47,7 @@ AIVehicle.updateAIDriveStrategies = Utils.overwrittenFunction(AIVehicle.updateAI
     return
   end
   -- Forced driving-strategy-id was not 'FollowMe', so let the original method do what it need to do.
-    superFunc(self)
+  superFunc(self)
 end)
 
 --
