@@ -30,6 +30,7 @@ Issues
 
 Changelog 1.1.0.2:
 - Fix for causing error: "/specializations/Plow.lua(680) : attempt to compare number with nil"
+
 Changelog 1.0.1.1:
 - Upgraded to FS19
 - As per ModHub Team certification report request, have reduced to only using 'EN'-title, due to using same title-name for all languages
@@ -48,9 +49,8 @@ Issues
 - [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
-Changelog 1.0.1.1:
-- Upgraded to FS19
-- As per ModHub Team certification report request, have reduced to only using 'EN'-title, due to using same title-name for all languages
+Changelog 1.1.0.2:
+- Fix for causing error: "/specializations/Plow.lua(680) : attempt to compare number with nil"
 ]]>
         </en>
         <de>
@@ -65,9 +65,8 @@ Issues
 - [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
-Changelog 1.0.1.1:
-- Upgraded to FS19
-- As per ModHub Team certification report request, have reduced to only using 'EN'-title, due to using same title-name for all languages
+Changelog 1.1.0.2:
+- Fix for causing error: "/specializations/Plow.lua(680) : attempt to compare number with nil"
 ]]>
         </de>
         <pl>
@@ -82,9 +81,8 @@ Issues
 - [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
-Changelog 1.0.1.1:
-- Upgraded to FS19
-- As per ModHub Team certification report request, have reduced to only using 'EN'-title, due to using same title-name for all languages
+Changelog 1.1.0.2:
+- Fix for causing error: "/specializations/Plow.lua(680) : attempt to compare number with nil"
 ]]>
         </pl>
         <fr>
@@ -99,9 +97,8 @@ Issues
 - [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
-Changelog 1.0.1.1:
-- Upgraded to FS19
-- As per ModHub Team certification report request, have reduced to only using 'EN'-title, due to using same title-name for all languages
+Changelog 1.1.0.2:
+- Fix for causing error: "/specializations/Plow.lua(680) : attempt to compare number with nil"
 ]]>
         </fr>
         <ru>
@@ -116,9 +113,8 @@ Issues
 - [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
-Changelog 1.0.1.1:
-- Upgraded to FS19
-- As per ModHub Team certification report request, have reduced to only using 'EN'-title, due to using same title-name for all languages
+Changelog 1.1.0.2:
+- Fix for causing error: "/specializations/Plow.lua(680) : attempt to compare number with nil"
 ]]>
         </ru>
         <it>
@@ -133,9 +129,8 @@ Issues
 - [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
-Changelog 1.0.1.1:
-- Upgraded to FS19
-- As per ModHub Team certification report request, have reduced to only using 'EN'-title, due to using same title-name for all languages
+Changelog 1.1.0.2:
+- Fix for causing error: "/specializations/Plow.lua(680) : attempt to compare number with nil"
 ]]>
         </it>
         <hu>
@@ -150,9 +145,8 @@ Issues
 - [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
-Changelog 1.0.1.1:
-- Upgraded to FS19
-- As per ModHub Team certification report request, have reduced to only using 'EN'-title, due to using same title-name for all languages
+Changelog 1.1.0.2:
+- Fix for causing error: "/specializations/Plow.lua(680) : attempt to compare number with nil"
 ]]>
         </hu>
         <nl>
@@ -167,9 +161,8 @@ Issues
 - [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
-Changelog 1.0.1.1:
-- Upgraded to FS19
-- As per ModHub Team certification report request, have reduced to only using 'EN'-title, due to using same title-name for all languages
+Changelog 1.1.0.2:
+- Fix for causing error: "/specializations/Plow.lua(680) : attempt to compare number with nil"
 ]]>
         </nl>
         <es>
@@ -184,9 +177,8 @@ Issues
 - [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
-Changelog 1.0.1.1:
-- Upgraded to FS19
-- As per ModHub Team certification report request, have reduced to only using 'EN'-title, due to using same title-name for all languages
+Changelog 1.1.0.2:
+- Fix for causing error: "/specializations/Plow.lua(680) : attempt to compare number with nil"
 ]]>
         </es>
     </description>

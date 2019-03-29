@@ -6,6 +6,9 @@ To read more about this mod, find it on;
 
 ## FS19 - Change-log
 
+1.1.0.2:
+- Fix for causing error: "/specializations/Plow.lua(680) : attempt to compare number with nil"
+
 1.0.1.1
 - Upgraded to FS19
 - As per ModHub Team certification report request, have reduced to only using 'EN'-title, due to using same title-name for all languages
