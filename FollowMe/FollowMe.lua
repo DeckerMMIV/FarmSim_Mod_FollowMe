@@ -44,6 +44,8 @@ end
 
 FollowMe = {};
 
+local QuickTapTimeMs = 1000/3 -- '1/3 second'
+
 local specTypeName = 'followMe'
 --local modSpecTypeName = g_currentModName ..".".. specTypeName
 local modSpecTypeName = specTypeName
@@ -466,7 +468,7 @@ function FollowMe:actionChangeDistance(actionName, inputValue, callbackState, is
       -- Start of input
       spec.lastInputValue = inputValue
       spec.lastInputTime = g_time
-      spec.nextInputTimeout = g_time + 500
+      spec.nextInputTimeout = g_time + QuickTapTimeMs
     end
   else
     local who = self
@@ -482,7 +484,7 @@ function FollowMe:actionChangeDistance(actionName, inputValue, callbackState, is
       end
     else
       -- Short-tap? Change distance in steps of 5
-      if spec.lastInputTime > g_time - 150 and nil ~= who then
+      if spec.lastInputTime > g_time - QuickTapTimeMs and nil ~= who then
         FollowMe.changeDistance(who, 5 * MathUtil.sign(spec.lastInputValue));
       end
       spec.lastInputValue = nil
@@ -948,7 +950,78 @@ end
 
 --
 
+---------
+AIDriveStrategyCollisionFollow = {}
+
+AIDriveStrategyCollisionFollow_mt = Class(AIDriveStrategyCollisionFollow, AIDriveStrategyCollision);
+
+function AIDriveStrategyCollisionFollow:new(customMt)
+  if customMt == nil then
+      customMt = AIDriveStrategyCollisionFollow_mt
+  end
+  local self = AIDriveStrategyCollision:new(customMt)
+  return self
+end
+
+function AIDriveStrategyCollisionFollow:onTrafficCollisionTrigger(triggerId, otherId, onEnter, onLeave, onStay, otherShapeId)
+  if onEnter or onLeave then
+
+    -- local otherMask = getCollisionMask(otherId)
+    -- local otherName = getName(otherId)
+    -- local txt = "onEnter"
+    -- if onLeave then txt = "onLeave" end
+    -- log("onTrafficCollisionTrigger:",otherName," ",otherMask," ",txt)
+
+      if g_currentMission.players[otherId] ~= nil then
+          if onEnter then
+              self.numCollidingVehicles[triggerId] = self.numCollidingVehicles[triggerId]+1
+          elseif onLeave then
+              self.numCollidingVehicles[triggerId] = math.max(self.numCollidingVehicles[triggerId]-1, 0)
+          end
+      else
+          local vehicle = g_currentMission.nodeToObject[otherId]
+          if  vehicle ~= nil
+          --vv-- The additional custom code
+          and vehicle.getRootVehicle ~= nil
+          --^^-- The additional custom code
+          then
+              local rootVehicle = vehicle:getRootVehicle()
+              if self.collisionTriggerByVehicle[vehicle] == nil and self.collisionTriggerByVehicle[rootVehicle] == nil then
+                  if onEnter then
+                      self.numCollidingVehicles[triggerId] = self.numCollidingVehicles[triggerId]+1
+                  elseif onLeave then
+                      self.numCollidingVehicles[triggerId] = math.max(self.numCollidingVehicles[triggerId]-1, 0)
+                  end
+              end
+          --vv-- The additional custom code
+          else
+              local otherMask = getCollisionMask(otherId)
+              local otherName = getName(otherId)
+              -- CollisionMask bits - from year 2011: https://gdn.giants-software.com/thread.php?categoryId=16&threadId=677
+              -- 13 = dynamic_objects_machines
+              -- 20 = trigger_player (and trafficBlocker/railroad-crossing-barrier, and beltActivationTrigger, and ...?)
+              -- 21 = trigger_tractors
+              -- 25 = trigger_trafficVehicles (NPCs own detection traffic-collision-box)
+              if  bitAND(otherMask, 2^13 + 2^20 + 2^21) ~= 0
+              and bitAND(otherMask, 2^25) == 0 -- Ignore NPCs traffic-collision-boxes
+              and not string.match(otherName,'[Tt]rigger') -- OMG! 'trafficBlocker' and 'beltActivationTrigger' uses same collision-value (1048576), so this "hack" is to ignore all nodes with "Trigger" in their name
+              then
+                  if onEnter then
+                      self.numCollidingVehicles[triggerId] = self.numCollidingVehicles[triggerId]+1
+                  elseif onLeave then
+                      self.numCollidingVehicles[triggerId] = math.max(self.numCollidingVehicles[triggerId]-1, 0)
+                  end
+              end
+          --^^-- The additional custom code
+        end
+      end
+  end
+end
+---------
+
+
 function FollowMe:updateAIDriveStrategies()
+    -- Copied from `AIVehicle:updateAIDriveStrategies()`
     local spec = self.spec_aiVehicle
     if spec.driveStrategies ~= nil and #spec.driveStrategies > 0 then
         for i=#spec.driveStrategies,1,-1 do
@@ -957,6 +1030,11 @@ function FollowMe:updateAIDriveStrategies()
         end
         spec.driveStrategies = {}
     end
+
+    -- Custom for 'Follow Me'
+    local driveStrategyCollision = AIDriveStrategyCollisionFollow:new()
+    driveStrategyCollision:setAIVehicle(self)
+    table.insert(spec.driveStrategies, driveStrategyCollision)
 
     local driveStrategyFollow = AIDriveStrategyFollow:new()
     driveStrategyFollow:setAIVehicle(self)
