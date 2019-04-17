@@ -67,5 +67,8 @@ Verklein afstand tot leiden voertuig." />
         <!--text name="FollowMeReason2"            text="Volger '%s' gestopt (geen trail)"         /-->
         <!--text name="FollowMeReason3"            text="Volger '%s' gestopt (te ver achter)"      /-->
         <!--text name="FollowMeReason4"            text="Volger '%s' gestopt (leider verdween)"    /-->
+
+        <text name="ingameNotification_aiVehicleFollowMeLeaderVanished" text="Volger '%s' gestopt (leider verdween)" />
+        <text name="ingameNotification_aiVehicleFollowMeTrailLost"      text="Volger '%s' gestopt (geen trail)" />
     </texts>
 </l10n>

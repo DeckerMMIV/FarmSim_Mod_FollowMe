@@ -69,5 +69,8 @@ Zbliż się do pojazdu prowadzącego." />
         <!--text name="FollowMeReason2"            text="Podążający '%s' zatrzymany (brak szlaku)"        /-->
         <!--text name="FollowMeReason3"            text="Podążający '%s' zatrzymany (został w tyle)"      /-->
         <!--text name="FollowMeReason4"            text="Podążający '%s' zatrzymany (prowadzący zniknął)" /-->
+
+        <text name="ingameNotification_aiVehicleFollowMeLeaderVanished" text="Podążający '%s' zatrzymany (prowadzący zniknął)" />
+        <text name="ingameNotification_aiVehicleFollowMeTrailLost"      text="Podążający '%s' zatrzymany (brak szlaku)" />
     </texts>
 </l10n>

@@ -69,5 +69,8 @@ Acérquese más a la cabeza tractora." />
         <!--text name="FollowMeReason2"            text="Follower '%s' ha parado (no hay rastro)"            /-->
         <!--text name="FollowMeReason3"            text="Follower '%s' ha parado (demasiado lejos)"          /-->
         <!--text name="FollowMeReason4"            text="Follower '%s' ha parado (ha perdido la referencia)" /-->
+
+        <text name="ingameNotification_aiVehicleFollowMeLeaderVanished" text="Follower '%s' ha parado (ha perdido la referencia)" />
+        <text name="ingameNotification_aiVehicleFollowMeTrailLost"      text="Follower '%s' ha parado (no hay rastro)" />
     </texts>
 </l10n>

@@ -56,8 +56,10 @@ function FollowMe.getSpec(self)
 end
 
 --
-FollowMe.cMinDistanceBetweenDrops        =   5;
-FollowMe.cBreadcrumbsMaxEntries          = 150;
+FollowMe.cMinDistanceBetweenDrops =   5
+FollowMe.cBreadcrumbsMaxEntries   = 150
+FollowMe.cTextFadeoutBeginMS     = 5000
+
 FollowMe.debugDraw = {}
 
 FollowMe.COMMAND_NONE           = 0
@@ -142,6 +144,7 @@ function FollowMe:onLoad(savegame)
     --
     spec.ShowWarningText = nil;
     spec.ShowWarningTime = 0;
+    spec.textFadeoutBegin = 0
     --
     spec.isDirty = false;
     spec.delayDirty = nil;
@@ -454,6 +457,7 @@ function FollowMe:handleAction(actionName, inputValue, callbackState, isAnalog, 
     }
     local action = switch[actionName]
     if action then
+        spec.textFadeoutBegin = g_time + FollowMe.cTextFadeoutBeginMS
         action(inputValue)
     -- else
     --   log("Not found action: ",actionName)
@@ -462,6 +466,8 @@ end
 
 function FollowMe:actionChangeDistance(actionName, inputValue, callbackState, isAnalog, isMouse)
   local spec = FollowMe.getSpec(self)
+
+  spec.textFadeoutBegin = g_time + FollowMe.cTextFadeoutBeginMS
 
   if nil == spec.lastInputTime then
     if math.abs(inputValue) >= 0.8 then
@@ -812,7 +818,7 @@ function AIDriveStrategyFollow:getDriveData(dt, vX, vY, vZ)
     local leader = vehicleSpec.FollowVehicleObj;
 
     if nil == vehicleSpec.FollowVehicleObj or nil == leader then
-      vehicle:stopAIVehicle(AIVehicle.STOP_REASON_UNKOWN);
+      vehicle:stopAIVehicle(AIVehicle.STOP_REASON_FOLLOWME_LEADER_VANISHED);
       return nil,nil,nil,nil,nil
     end
 
@@ -831,7 +837,7 @@ function AIDriveStrategyFollow:getDriveData(dt, vX, vY, vZ)
     if crumbIndexDiff >= FollowMe.cBreadcrumbsMaxEntries then
         -- circular-array have "circled" once, and this follower did not move fast enough.
         if vehicleSpec.FollowState ~= FollowMe.STATE_STOPPING then
-            vehicle:stopAIVehicle(AIVehicle.STOP_REASON_UNKOWN);  -- FollowMe.REASON_TOO_FAR_BEHIND
+            vehicle:stopAIVehicle(AIVehicle.STOP_REASON_FOLLOWME_TRAIL_LOST);  -- FollowMe.REASON_TOO_FAR_BEHIND
             return nil,nil,nil,nil,nil
         end
 
@@ -1237,12 +1243,12 @@ function FollowMe.getWorldToScreen(nodeId)
     return nil,nil
 end
 
-function FollowMe.renderShadedTextCenter(sx,sy, txt)
+function FollowMe.renderShadedTextCenter(sx,sy, txt, alpha)
     setTextAlignment(RenderText.ALIGN_CENTER);
     setTextBold(true)
-    setTextColor(0,0,0,1);
+    setTextColor(0,0,0,alpha);
     renderText(sx+0.001, sy-0.001, 0.015, txt);
-    setTextColor(1,1,1,1);
+    setTextColor(1,1,1,alpha);
     renderText(sx, sy, 0.015, txt);
 end
 
@@ -1254,20 +1260,23 @@ function FollowMe:onDraw(isActiveForInput, isSelected)
     if spec.ShowWarningTime > g_currentMission.time then
         g_currentMission:showBlinkingWarning(spec.ShowWarningText)
     end;
+
+    -- Enhancement due to issue #34
+    local textOpaqueness = 1 - (math.max(0, g_time - spec.textFadeoutBegin) / 1000)
+    if textOpaqueness <= 0 then
+      return
+    end
+
     --
     local showFollowMeMy = true
     local showFollowMeFl = true
-
-    -- if self.isHired then
-    --     showFollowMeMy = false
-    -- end
     --
     if nil ~= spec.FollowVehicleObj then
         if showFollowMeMy then
             local sx,sy = FollowMe.getWorldToScreen(spec.FollowVehicleObj.rootNode)
             if nil ~= sx then
                 local txt = g_i18n:getText("FollowMeLeader")
-                local leaderSpec = FollowMe.getSpec(spec.FollowVehicleObj)
+                --local leaderSpec = FollowMe.getSpec(spec.FollowVehicleObj)
                 -- if nil ~= leaderSpec.currentHelper then
                 --     txt = txt .. (" '%s'"):format(leaderSpec.currentHelper.name)
                 -- end
@@ -1279,12 +1288,12 @@ function FollowMe:onDraw(isActiveForInput, isSelected)
                 if 0 ~= offs then
                     txt = txt .. "\n" .. (g_i18n:getText((offs > 0) and "FollowMeOffLft" or "FollowMeOffRgt")):format(math.abs(offs))
                 end
-                FollowMe.renderShadedTextCenter(sx,sy, txt)
+                FollowMe.renderShadedTextCenter(sx,sy, txt, textOpaqueness)
             end
             if spec.FollowState == FollowMe.STATE_WAITING then
                 local sx,sy = FollowMe.getWorldToScreen(self.rootNode)
                 if nil ~= sx then
-                    FollowMe.renderShadedTextCenter(sx,sy, g_i18n:getText("FollowMePaused"))
+                    FollowMe.renderShadedTextCenter(sx,sy, g_i18n:getText("FollowMePaused"), textOpaqueness)
                 end
             end
         end
@@ -1321,7 +1330,7 @@ function FollowMe:onDraw(isActiveForInput, isSelected)
         if nil ~= txt then
             local sx,sy = FollowMe.getWorldToScreen(spec.StalkerVehicleObj.rootNode)
             if nil ~= sx then
-                FollowMe.renderShadedTextCenter(sx,sy, txt)
+                FollowMe.renderShadedTextCenter(sx,sy, txt, textOpaqueness)
             end
         end
     end

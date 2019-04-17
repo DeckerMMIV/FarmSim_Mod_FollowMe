@@ -69,5 +69,8 @@ Placez le véhicule meneur devant celui-ci." />
         <!--text name="FollowMeReason2"         text="Suiveur '%s' arrêté (pas de trajectoire)" /-->
         <!--text name="FollowMeReason3"         text="Suiveur '%s' arrêté (trop éloigné)"       /-->
         <!--text name="FollowMeReason4"         text="Suiveur '%s' arrêté (meneur)"             /-->
+
+        <text name="ingameNotification_aiVehicleFollowMeLeaderVanished" text="Suiveur '%s' arrêté (meneur)" />
+        <text name="ingameNotification_aiVehicleFollowMeTrailLost"      text="Suiveur '%s' arrêté (pas de trajectoire)" />
     </texts>
 </l10n>

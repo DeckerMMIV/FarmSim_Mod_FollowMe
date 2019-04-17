@@ -70,5 +70,8 @@ Nähern sie sich dem führenden Fahrzeug." />
         <!--text name="FollowMeReason2"            text="Nachfolger '%s' gestoppt (keine Spur)"          /-->
         <!--text name="FollowMeReason3"            text="Nachfolger '%s' gestoppt (Zu weit hinten)"      /-->
         <!--text name="FollowMeReason4"            text="Nachfolger '%s' gestoppt (Führer verschwunden)" /-->
+
+        <text name="ingameNotification_aiVehicleFollowMeLeaderVanished" text="Nachfolger '%s' gestoppt (Führer verschwunden)" />
+        <text name="ingameNotification_aiVehicleFollowMeTrailLost"      text="Nachfolger '%s' gestoppt (keine Spur)" />
     </texts>
 </l10n>

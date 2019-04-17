@@ -68,9 +68,8 @@ Menj közelebb a követendő járműhöz." />
         <!--text name="FollowMeReason2"            text="Követő '%s' megállt (nincs nyomvonal)"  /-->
         <!--text name="FollowMeReason3"            text="Követő '%s' megállt (túl messze)"       /-->
         <!--text name="FollowMeReason4"            text="Követő '%s' megállt (vezér eltűnt)"     /-->
+
+        <text name="ingameNotification_aiVehicleFollowMeLeaderVanished" text="Követő '%s' megállt (vezér eltűnt)" />
+        <text name="ingameNotification_aiVehicleFollowMeTrailLost"      text="Követő '%s' megállt (nincs nyomvonal)" />
     </texts>
 </l10n>
-
-
-
-

@@ -67,5 +67,8 @@
         <!--text name="FollowMeReason2"            text="Ведомый '%s' остановился (нет следа)"            /-->
         <!--text name="FollowMeReason3"            text="Ведомый '%s' остановился (отстал)"               /-->
         <!--text name="FollowMeReason4"            text="Ведомый '%s' остановился (ведущий далеко уехал)" /-->
+
+        <text name="ingameNotification_aiVehicleFollowMeLeaderVanished" text="Ведомый '%s' остановился (ведущий далеко уехал)" />
+        <text name="ingameNotification_aiVehicleFollowMeTrailLost"      text="Ведомый '%s' остановился (нет следа)" />
     </texts>
 </l10n>

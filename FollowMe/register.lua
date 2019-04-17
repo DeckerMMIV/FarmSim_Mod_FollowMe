@@ -23,6 +23,18 @@ end;
 
 -- The following is only specific for 'FollowMe'...
 
+Cutter.getAllowCutterAIFruitRequirements = Utils.overwrittenFunction(Cutter.getAllowCutterAIFruitRequirements, function(self, superFunc, ...)
+  -- Work-around/fix for issue #33
+  -- Due to `Cutter:onEndWorkAreaProcessing()` getting called, and to avoid it then calling stopAIVehicle().
+  if self.isServer then
+    local rootVehicle = self:getRootVehicle()
+    if nil ~= rootVehicle and FollowMe.getIsFollowMeActive(rootVehicle) then
+      self.spec_cutter.aiNoValidGroundTimer = 0
+    end
+  end
+  return superFunc(self, ...)
+end)
+
 AIVehicle.raiseAIEvent = Utils.overwrittenFunction(AIVehicle.raiseAIEvent, function(self, superFunc, aiEvt1, aiEvt2, ...)
   if "FollowMe" == self.spec_aiVehicle.mod_ForcedDrivingStrategyName then
     -- Don't raise the `aiEvt2`.
@@ -50,6 +62,39 @@ AIVehicle.updateAIDriveStrategies = Utils.overwrittenFunction(AIVehicle.updateAI
   superFunc(self)
 end)
 
+----
+
+-- Additional stop-reasons used by FollowMe
+AIVehicle.STOP_REASON_FOLLOWME_LEADER_VANISHED = AIVehicle.STOP_REASON_UNKNOWN
+AIVehicle.STOP_REASON_FOLLOWME_TRAIL_LOST      = AIVehicle.STOP_REASON_UNKNOWN
+
+if nil ~= AIVehicle.REASON_TEXT_MAPPING then
+  local function tableInsertAndReturnIndex(tbl, value, defaultIdx)
+    table.insert(tbl, value)
+    for idx,v in pairs(tbl) do
+      if value == v then
+        return idx
+      end
+    end
+    return defaultIdx
+  end
+
+  AIVehicle.STOP_REASON_FOLLOWME_LEADER_VANISHED = tableInsertAndReturnIndex(AIVehicle.REASON_TEXT_MAPPING, "ingameNotification_aiVehicleFollowMeLeaderVanished", AIVehicle.STOP_REASON_FOLLOWME_LEADER_VANISHED)
+  AIVehicle.STOP_REASON_FOLLOWME_TRAIL_LOST      = tableInsertAndReturnIndex(AIVehicle.REASON_TEXT_MAPPING, "ingameNotification_aiVehicleFollowMeTrailLost",      AIVehicle.STOP_REASON_FOLLOWME_TRAIL_LOST)
+
+  -- But make sure their indexes are within the allowed AIVehicle.NUM_BITS_REASONS value-range!
+  local function keepBelowMaxValueElseUseOther(currValue, maxValue, otherValue)
+    if currValue < maxValue then
+      return currValue
+    end
+    return otherValue
+  end
+
+  local maxIndexValue = (2 ^ AIVehicle.NUM_BITS_REASONS)
+  AIVehicle.STOP_REASON_FOLLOWME_LEADER_VANISHED = keepBelowMaxValueElseUseOther(AIVehicle.STOP_REASON_FOLLOWME_LEADER_VANISHED, maxIndexValue, AIVehicle.STOP_REASON_UNKNOWN)
+  AIVehicle.STOP_REASON_FOLLOWME_TRAIL_LOST      = keepBelowMaxValueElseUseOther(AIVehicle.STOP_REASON_FOLLOWME_TRAIL_LOST,      maxIndexValue, AIVehicle.STOP_REASON_UNKNOWN)
+end
+
 --
 --
 --
@@ -57,11 +102,9 @@ end)
 ---- Register this specialization
 local specTypeName = 'followMe'
 
---g_specializationManager:addSpecialization(specTypeName, 'FollowMe', Utils.getFilename('FollowMe.lua', g_currentModDirectory), nil)
 g_specializationManager:addSpecialization(specTypeName, 'FollowMe', Utils.getFilename('FollowMe.lua', g_currentModDirectory), true, nil) -- What does the last two arguments even do?
 
 ---- Add the specialization to specific vehicle-types
---local modSpecTypeName = g_currentModName ..".".. specTypeName
 local modSpecTypeName = specTypeName
 
 for vehTypeName,vehTypeObj in pairs( g_vehicleTypeManager.vehicleTypes ) do

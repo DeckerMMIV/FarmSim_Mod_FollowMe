@@ -69,5 +69,8 @@ Avvicinati al mezzo che ti precede." />
         <!--text name="FollowMeReason2"            text="Inseguitore '%s' fermato (nessuna pista)"    /-->
         <!--text name="FollowMeReason3"            text="Inseguitore '%s' fermato (troppo lontano)"   /-->
         <!--text name="FollowMeReason4"            text="Inseguitore '%s' fermato (leader scomparso)" /-->
+
+        <text name="ingameNotification_aiVehicleFollowMeLeaderVanished" text="Inseguitore '%s' fermato (leader scomparso)" />
+        <text name="ingameNotification_aiVehicleFollowMeTrailLost"      text="Inseguitore '%s' fermato (nessuna pista)" />
     </texts>
 </l10n>

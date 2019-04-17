@@ -67,5 +67,8 @@ Move closer to the leading vehicle, while staying behind it." />
         <!--text name="FollowMeReason2"            text="Follower '%s' stopped (no trail)"        /-->
         <!--text name="FollowMeReason3"            text="Follower '%s' stopped (too far behind)"  /-->
         <!--text name="FollowMeReason4"            text="Follower '%s' stopped (leader vanished)" /-->
+
+        <text name="ingameNotification_aiVehicleFollowMeLeaderVanished" text="Follower '%s' stopped (leader vanished)" />
+        <text name="ingameNotification_aiVehicleFollowMeTrailLost"      text="Follower '%s' stopped (trail lost)" />
     </texts>
 </l10n>
