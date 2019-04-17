@@ -6,19 +6,20 @@ To read more about this mod, find it on;
 
 ## FS19 - Change-log
 
-1.3.0.5:
+1.3.0.6:
 - Hiding the HUD-text after 5 seconds. Player must issue another 'Follow Me'-input-action to vehicle for displaying HUD-text again.
 - Fix/work-around for making a follower-combine NOT stop at headlands/turning, due to its cutter detecting 'no more crops' to harvest.
 - Reduced 'is blocked'-notifications, when obstacle/collision is detected.
+- Removed superfluous 'title' and 'description' XML-tags from ModDesc.XML, for languages that are not shown in (the in-game) ModHub anyway.
 
 1.2.0.3:
-- "Quick-tap" keys activation threshold changed to '1/3 second' (was previously '150 ms')
+- "Quick-tap" keys activation threshold changed to '0.3 second' (was previously '150 ms')
 - Attempt at obstacle/collision detection
 
 1.1.0.2:
 - Fix for causing error: "/specializations/Plow.lua(680) : attempt to compare number with nil"
 
-1.0.1.1
+1.0.1.1:
 - Upgraded to FS19
 - As per ModHub Team certification report request, have reduced to only using 'EN'-title, due to using same title-name for all languages
 

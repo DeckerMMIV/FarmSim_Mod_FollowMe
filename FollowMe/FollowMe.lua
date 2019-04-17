@@ -44,8 +44,6 @@ end
 
 FollowMe = {};
 
-local QuickTapTimeMs = 1000/3 -- '1/3 second'
-
 local specTypeName = 'followMe'
 --local modSpecTypeName = g_currentModName ..".".. specTypeName
 local modSpecTypeName = specTypeName
@@ -56,6 +54,7 @@ function FollowMe.getSpec(self)
 end
 
 --
+FollowMe.cQuickTapTimeMs                = 1000/3 -- '0.3 second'
 FollowMe.cMinDistanceBetweenDrops       = 5
 FollowMe.cBreadcrumbsMaxEntries         = 150
 FollowMe.cTextFadeoutBeginMS            = 5000
@@ -475,7 +474,7 @@ function FollowMe:actionChangeDistance(actionName, inputValue, callbackState, is
       -- Start of input
       spec.lastInputValue = inputValue
       spec.lastInputTime = g_time
-      spec.nextInputTimeout = g_time + QuickTapTimeMs
+      spec.nextInputTimeout = g_time + FollowMe.cQuickTapTimeMs
     end
   else
     local who = self
@@ -491,7 +490,7 @@ function FollowMe:actionChangeDistance(actionName, inputValue, callbackState, is
       end
     else
       -- Short-tap? Change distance in steps of 5
-      if spec.lastInputTime > g_time - QuickTapTimeMs and nil ~= who then
+      if spec.lastInputTime > g_time - FollowMe.cQuickTapTimeMs and nil ~= who then
         FollowMe.changeDistance(who, 5 * MathUtil.sign(spec.lastInputValue));
       end
       spec.lastInputValue = nil

@@ -15,7 +15,7 @@
         pokers, Ziuta, pewemo, Alfredo Prieto, xno, Vanquish081, Paxly, Taco29, Anonymous
     </contributors>
 
-    <version>1.3.0.5</version>
+    <version>1.3.0.6</version>
 
     <title>
         <en>Follow Me</en>
@@ -27,13 +27,14 @@ Issues
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
 
-Changelog 1.3.0.5:
+Changelog 1.3.0.6:
 - Hiding the HUD-text after 5 seconds. Player must issue another 'Follow Me'-input-action to vehicle for displaying HUD-text again.
 - Fix/work-around for making a follower-combine NOT stop at headlands/turning, due to its cutter detecting 'no more crops' to harvest.
 - Reduced 'is blocked'-notifications, when obstacle/collision is detected.
+- Removed superfluous 'title' and 'description' XML-tags from ModDesc.XML, for languages that are not shown in (the in-game) ModHub anyway.
 
 Changelog 1.2.0.3:
-- "Quick-tap" keys activation threshold changed to '1/3 second' (was previously '150 ms')
+- "Quick-tap" keys activation threshold changed to '0.3 second' (was previously '150 ms')
 - Attempt at obstacle/collision detection
 
 Changelog 1.1.0.2:
@@ -54,9 +55,19 @@ With "Follow Me" you can (though not backwards driving).
 
 Issues
 - [KNOWN ISSUE] Multiplayer is not yet supported
-- [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
+
+Changelog 1.3.0.6:
+- Hiding the HUD-text after 5 seconds. Player must issue another 'Follow Me'-input-action to vehicle for displaying HUD-text again.
+- Fix/work-around for making a follower-combine NOT stop at headlands/turning, due to its cutter detecting 'no more crops' to harvest.
+- Reduced 'is blocked'-notifications, when obstacle/collision is detected.
+- Removed superfluous 'title' and 'description' XML-tags from ModDesc.XML, for languages that are not shown in (the in-game) ModHub anyway.
+
+Changelog 1.2.0.3:
+- "Quick-tap" keys activation threshold changed to '0.3 second' (was previously '150 ms')
+- Attempt at obstacle/collision detection
+
 Changelog 1.1.0.2:
 - Fix for causing error: "/specializations/Plow.lua(680) : attempt to compare number with nil"
 ]]>
@@ -70,29 +81,23 @@ Mit "Follow Me" können Sie dies (natürlich nur vorwärtsfahrend).
 
 Issues
 - [KNOWN ISSUE] Multiplayer is not yet supported
-- [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
+
+Changelog 1.3.0.6:
+- Hiding the HUD-text after 5 seconds. Player must issue another 'Follow Me'-input-action to vehicle for displaying HUD-text again.
+- Fix/work-around for making a follower-combine NOT stop at headlands/turning, due to its cutter detecting 'no more crops' to harvest.
+- Reduced 'is blocked'-notifications, when obstacle/collision is detected.
+- Removed superfluous 'title' and 'description' XML-tags from ModDesc.XML, for languages that are not shown in (the in-game) ModHub anyway.
+
+Changelog 1.2.0.3:
+- "Quick-tap" keys activation threshold changed to '0.3 second' (was previously '150 ms')
+- Attempt at obstacle/collision detection
+
 Changelog 1.1.0.2:
 - Fix for causing error: "/specializations/Plow.lua(680) : attempt to compare number with nil"
 ]]>
         </de>
-        <pl>
-<![CDATA[Obecnie tylko dla Singleplayer -- Uwaga
-
-Czy kiedykolwiek chciałeś by niektóre pojazdy podążały za tobą po mapie?
-Od teraz możesz to osiągnąć dzięki "Follow Me" (oprócz jazdy wstecz).
-
-
-Issues
-- [KNOWN ISSUE] Multiplayer is not yet supported
-- [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
-- [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
-- Some translations are probably wrong
-Changelog 1.1.0.2:
-- Fix for causing error: "/specializations/Plow.lua(680) : attempt to compare number with nil"
-]]>
-        </pl>
         <fr>
 <![CDATA[Actuellement réservé au jeu solo -- Attention
 
@@ -102,93 +107,23 @@ Avec "Follow Me", c'est possible (sauf en marche arrière).
 
 Issues
 - [KNOWN ISSUE] Multiplayer is not yet supported
-- [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
+
+Changelog 1.3.0.6:
+- Hiding the HUD-text after 5 seconds. Player must issue another 'Follow Me'-input-action to vehicle for displaying HUD-text again.
+- Fix/work-around for making a follower-combine NOT stop at headlands/turning, due to its cutter detecting 'no more crops' to harvest.
+- Reduced 'is blocked'-notifications, when obstacle/collision is detected.
+- Removed superfluous 'title' and 'description' XML-tags from ModDesc.XML, for languages that are not shown in (the in-game) ModHub anyway.
+
+Changelog 1.2.0.3:
+- "Quick-tap" keys activation threshold changed to '0.3 second' (was previously '150 ms')
+- Attempt at obstacle/collision detection
+
 Changelog 1.1.0.2:
 - Fix for causing error: "/specializations/Plow.lua(680) : attempt to compare number with nil"
 ]]>
         </fr>
-        <ru>
-<![CDATA[В настоящее время только для одиночной игры -- Внимание
-
-Была ли у Вас необходимость в том что-бы какие-либо ТС
-двигались следом за вами? С "Follow Me" это возможно!
-
-
-Issues
-- [KNOWN ISSUE] Multiplayer is not yet supported
-- [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
-- [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
-- Some translations are probably wrong
-Changelog 1.1.0.2:
-- Fix for causing error: "/specializations/Plow.lua(680) : attempt to compare number with nil"
-]]>
-        </ru>
-        <it>
-<![CDATA[Attualmente solo per Singleplayer -- Attenzione
-
-Hai mai voluto avere alcuni veicoli che ti seguono per la mappa?
-Con "Follow Me" è possibile (non ancora con guida in retromarcia).
-
-
-Issues
-- [KNOWN ISSUE] Multiplayer is not yet supported
-- [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
-- [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
-- Some translations are probably wrong
-Changelog 1.1.0.2:
-- Fix for causing error: "/specializations/Plow.lua(680) : attempt to compare number with nil"
-]]>
-        </it>
-        <hu>
-<![CDATA[Jelenleg csak a Singleplayer -- Figyelem
-
-Mindig is szeretted volna, hogy a járművek kövessenek bármerre is mész a térképen?
-A "Follow Me"-vel most megteheted (csak ne tolass).
-
-
-Issues
-- [KNOWN ISSUE] Multiplayer is not yet supported
-- [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
-- [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
-- Some translations are probably wrong
-Changelog 1.1.0.2:
-- Fix for causing error: "/specializations/Plow.lua(680) : attempt to compare number with nil"
-]]>
-        </hu>
-        <nl>
-<![CDATA[Momenteel alleen voor Singleplayer -- Let op
-
-Zou je willen dat sommige voertuigen je volgen over de map?
-Met "Follow Me" kan dat (alleen niet bij achteruit rijden).
-
-
-Issues
-- [KNOWN ISSUE] Multiplayer is not yet supported
-- [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
-- [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
-- Some translations are probably wrong
-Changelog 1.1.0.2:
-- Fix for causing error: "/specializations/Plow.lua(680) : attempt to compare number with nil"
-]]>
-        </nl>
-        <es>
-<![CDATA[Actualmente solo para Singleplayer -- Atención
-
-¿Quieres conseguir que te sigan algunos de tus vehículos alrededor del mapa?
-Con "Follow Me" se puede conseguir. (No funciona con marcha atrás).
-
-
-Issues
-- [KNOWN ISSUE] Multiplayer is not yet supported
-- [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
-- [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
-- Some translations are probably wrong
-Changelog 1.1.0.2:
-- Fix for causing error: "/specializations/Plow.lua(680) : attempt to compare number with nil"
-]]>
-        </es>
     </description>
 
     <iconFilename>icon_FollowMe.dds</iconFilename>
