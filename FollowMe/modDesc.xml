@@ -15,7 +15,7 @@
         pokers, Ziuta, pewemo, Alfredo Prieto, xno, Vanquish081, Paxly, Taco29, Anonymous
     </contributors>
 
-    <version>1.3.0.4</version>
+    <version>1.3.0.5</version>
 
     <title>
         <en>Follow Me</en>
@@ -24,13 +24,13 @@
     <changeLog><![CDATA[
 Issues
 - [KNOWN ISSUE] Multiplayer is not yet supported
-- [KNOWN ISSUE] A 'Follow Me'-controlled vehicle cannot yet "see / understand" obstacles in front of it (i.e. other vehicles, equipment, trees etc.) and will therefore crash into them
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
 
-Changelog 1.3.0.4:
+Changelog 1.3.0.5:
 - Hiding the HUD-text after 5 seconds. Player must issue another 'Follow Me'-input-action to vehicle for displaying HUD-text again.
 - Fix/work-around for making a follower-combine NOT stop at headlands/turning, due to its cutter detecting 'no more crops' to harvest.
+- Reduced 'is blocked'-notifications, when obstacle/collision is detected.
 
 Changelog 1.2.0.3:
 - "Quick-tap" keys activation threshold changed to '1/3 second' (was previously '150 ms')

@@ -56,9 +56,10 @@ function FollowMe.getSpec(self)
 end
 
 --
-FollowMe.cMinDistanceBetweenDrops =   5
-FollowMe.cBreadcrumbsMaxEntries   = 150
-FollowMe.cTextFadeoutBeginMS     = 5000
+FollowMe.cMinDistanceBetweenDrops       = 5
+FollowMe.cBreadcrumbsMaxEntries         = 150
+FollowMe.cTextFadeoutBeginMS            = 5000
+FollowMe.cCollisionNotificationDelayMS  = 10000
 
 FollowMe.debugDraw = {}
 
@@ -966,7 +967,35 @@ function AIDriveStrategyCollisionFollow:new(customMt)
       customMt = AIDriveStrategyCollisionFollow_mt
   end
   local self = AIDriveStrategyCollision:new(customMt)
+  self.timeoutCollisionNotification = FollowMe.cCollisionNotificationDelayMS
+  self.isCollidingWithFollowMeLeader = false
   return self
+end
+
+function AIDriveStrategyCollisionFollow:getDriveData(dt, vX,vY,vZ)
+  -- we do not check collisions at the back, at least currently
+  if self.vehicle.movingDirection < 0 and self.vehicle:getLastSpeed(true) > 2 then
+      return nil, nil, nil, nil, nil
+  end
+
+  for _, count in pairs(self.numCollidingVehicles) do
+      if count > 0 then
+          local tX,_,tZ = localToWorld(self.vehicle:getAIVehicleDirectionNode(), 0,0,1)
+          self.vehicle:addAIDebugText(" AIDriveStrategyCollisionFollow :: STOP due to collision ")
+          if not self.isCollidingWithFollowMeLeader then
+            self.timeoutCollisionNotification = self.timeoutCollisionNotification - dt
+            if self.timeoutCollisionNotification < 0 then
+              self:setHasCollision(true)
+            end
+          end
+          return tX, tZ, true, 0, math.huge
+      end
+  end
+
+  self.timeoutCollisionNotification = FollowMe.cCollisionNotificationDelayMS
+  self:setHasCollision(false)
+  self.vehicle:addAIDebugText(" AIDriveStrategyCollisionFollow :: no collision ")
+  return nil, nil, nil, nil, nil
 end
 
 function AIDriveStrategyCollisionFollow:onTrafficCollisionTrigger(triggerId, otherId, onEnter, onLeave, onStay, otherShapeId)
@@ -987,19 +1016,23 @@ function AIDriveStrategyCollisionFollow:onTrafficCollisionTrigger(triggerId, oth
       else
           local vehicle = g_currentMission.nodeToObject[otherId]
           if  vehicle ~= nil
-          --vv-- The additional custom code
           and vehicle.getRootVehicle ~= nil
-          --^^-- The additional custom code
           then
               local rootVehicle = vehicle:getRootVehicle()
               if self.collisionTriggerByVehicle[vehicle] == nil and self.collisionTriggerByVehicle[rootVehicle] == nil then
+                  local leader = FollowMe.getSpec(self.vehicle).FollowVehicleObj;
                   if onEnter then
+                      if leader == rootVehicle then
+                          self.isCollidingWithFollowMeLeader = true
+                      end
                       self.numCollidingVehicles[triggerId] = self.numCollidingVehicles[triggerId]+1
                   elseif onLeave then
+                      if leader == rootVehicle then
+                          self.isCollidingWithFollowMeLeader = false
+                      end
                       self.numCollidingVehicles[triggerId] = math.max(self.numCollidingVehicles[triggerId]-1, 0)
                   end
               end
-          --vv-- The additional custom code
           else
               local otherMask = getCollisionMask(otherId)
               local otherName = getName(otherId)
@@ -1018,7 +1051,6 @@ function AIDriveStrategyCollisionFollow:onTrafficCollisionTrigger(triggerId, oth
                       self.numCollidingVehicles[triggerId] = math.max(self.numCollidingVehicles[triggerId]-1, 0)
                   end
               end
-          --^^-- The additional custom code
         end
       end
   end
