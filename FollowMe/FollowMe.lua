@@ -118,6 +118,9 @@ function FollowMe.registerEventListeners(vehicleType)
     "onRegisterActionEvents",
     "onAIStart",
     "onAIEnd",
+    "onLightsTypesMaskChanged",
+    "onBeaconLightsVisibilityChanged",
+    "onTurnLightStateChanged",
   } ) do
     SpecializationUtil.registerEventListener(vehicleType, funcName, FollowMe)
   end
@@ -566,6 +569,33 @@ function FollowMe:onRegisterActionEvents(isSelected, isOnActiveVehicle, arg3, ar
     end
 end
 
+function FollowMe:onLightsTypesMaskChanged(lightsTypesMask)
+  local spec = FollowMe.getSpec(self)
+  --log("FollowMe:onLightsTypesMaskChanged(",self,",",lightsTypesMask,") stalker=",spec.StalkerVehicleObj)
+  if nil ~= spec.StalkerVehicleObj then
+    spec.StalkerVehicleObj:setLightsTypesMask(lightsTypesMask)
+  end
+end
+
+function FollowMe:onBeaconLightsVisibilityChanged(beaconVisibility)
+  local spec = FollowMe.getSpec(self)
+  if nil ~= spec.StalkerVehicleObj then
+    spec.StalkerVehicleObj:setBeaconLightsVisibility(beaconVisibility)
+  end
+end
+
+function FollowMe:onTurnLightStateChanged(turnLightState)
+  local spec = FollowMe.getSpec(self)
+  if nil ~= spec.StalkerVehicleObj then
+    local leaderSpec  = spec
+    local stalkerSpec = FollowMe.getSpec(spec.StalkerVehicleObj)
+    local crumbIndexDiff = leaderSpec.DropperCurrentIndex - stalkerSpec.FollowCurrentIndex;
+    if crumbIndexDiff <= 0 then
+      spec.StalkerVehicleObj:setTurnLightState(turnLightState)
+    end
+  end
+end
+
 function FollowMe:onUpdateTick(dt, isActiveForInput, isSelected)
     local spec = FollowMe.getSpec(self)
 
@@ -577,12 +607,7 @@ function FollowMe:onUpdateTick(dt, isActiveForInput, isSelected)
             if crumbIndexDiff > 0 then
               local crumb = leaderSpec.DropperCircularArray[1+(spec.FollowCurrentIndex % FollowMe.cBreadcrumbsMaxEntries)];
               self:setTurnLightState(crumb.turnLightState)
-            else
-              self:setTurnLightState(leader:getTurnLightState())
             end
-
-            self:setLightsTypesMask(       leader:getLightsTypesMask())
-            self:setBeaconLightsVisibility(leader:getBeaconLightsVisibility())
         else
           local direction = FollowMe.getReverserDirection(self)
           if (direction * self.movingDirection > 0) then  -- Must drive forward to drop crumbs
@@ -719,6 +744,12 @@ function AIDriveStrategyFollow:setAIVehicle(vehicle)
       vehicle.followMeIsStarted = true
 
       vehicle.spec_aiVehicle.mod_CheckSpeedLimitOnlyIfWorking = true  -- A work-around, for forcing AIVehicle:onUpdateTick() making its call to `self:getSpeedLimit()` into a `self:getSpeedLimit(true)`
+
+      if  nil ~= vehicle.spec_lights
+      and nil ~= closestVehicle.spec_lights then
+        vehicle:setLightsTypesMask(       closestVehicle:getLightsTypesMask())
+        vehicle:setBeaconLightsVisibility(closestVehicle:getBeaconLightsVisibility())
+      end
     else
       vehicleSpec.FollowVehicleObj = nil
       vehicle.followMeIsStarted = false

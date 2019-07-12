@@ -23,6 +23,15 @@ end;
 
 -- The following is only specific for 'FollowMe'...
 
+Lights.updateAILights = Utils.overwrittenFunction(Lights.updateAILights, function(self, superFunc, ...)
+  if FollowMe.getIsFollowMeActive(self) then
+    -- Let 'FollowMe' control the lights, and not the base game's AI.
+    return
+  end
+  -- 'FollowMe' was not active, so let the original method do what it need to do.
+  superFunc(self, ...)
+end)
+
 Cutter.getAllowCutterAIFruitRequirements = Utils.overwrittenFunction(Cutter.getAllowCutterAIFruitRequirements, function(self, superFunc, ...)
   -- Work-around/fix for issue #33
   -- Due to `Cutter:onEndWorkAreaProcessing()` getting called, and to avoid it then calling stopAIVehicle().
