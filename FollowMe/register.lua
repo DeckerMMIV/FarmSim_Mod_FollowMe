@@ -1,7 +1,8 @@
 --
 --  Follow Me
 --
--- @author  Decker_MMIV - fs-uk.com, forum.farming-simulator.com
+-- @author  Decker_MMIV (DCK)
+-- @contact forum.farming-simulator.com
 -- @date    2019-01-xx
 --
 

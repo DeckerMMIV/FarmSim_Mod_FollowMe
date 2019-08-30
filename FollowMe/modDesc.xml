@@ -15,7 +15,7 @@
         pokers, Ziuta, pewemo, Alfredo Prieto, xno, Vanquish081, Paxly, Taco29, Anonymous
     </contributors>
 
-    <version>1.4.0.8</version>
+    <version>1.4.0.9</version>
 
     <title>
         <en>Follow Me</en>
@@ -27,7 +27,7 @@ Issues
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
 
-Changelog 1.4.0.8:
+Changelog 1.4.0.9:
 - Fix for "lights flashing"
 - Misc. code cleanup
 

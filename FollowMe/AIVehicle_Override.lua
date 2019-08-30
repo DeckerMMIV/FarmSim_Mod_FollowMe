@@ -54,7 +54,9 @@ applyOverrides(AIVehicleSetStartedEvent, "mod_AddedForcedDrivingStrategy", funct
   end)
 
   AIVehicleSetStartedEvent.run = Utils.overwrittenFunction(AIVehicleSetStartedEvent.run, function(self, superFunc, connection)
-    self.object.spec_aiVehicle.mod_ForcedDrivingStrategyName = self.mod_ForcedDrivingStrategyName
+    if nil ~= self.object then
+      self.object.spec_aiVehicle.mod_ForcedDrivingStrategyName = self.mod_ForcedDrivingStrategyName
+    end
     superFunc(self, connection)
   end)
 
