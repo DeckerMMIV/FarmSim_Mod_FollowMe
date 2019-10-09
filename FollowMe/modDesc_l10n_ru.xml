@@ -32,11 +32,13 @@
         <text name="FollowMeMyOffs"             text="FollowMe: Собственное смещение"             />
         <text name="FollowMeMyWait"             text="FollowMe: Ожидать"               />
         <text name="FollowMeMyResume"           text="FollowMe: продолжить"             />
+        <text name="FollowMeMySensor"           text="FollowMe: Collision Sensor on/off" />
 
         <text name="FollowMeFlDist"             text="FollowMe: За мной дистанция"    />
         <text name="FollowMeFlOffs"             text="FollowMe: За мной смещение"      />
         <text name="FollowMeFlWait"             text="FollowMe: За мной ожидать"        />
         <text name="FollowMeFlResume"           text="FollowMe: За мной продолжить"      />
+        <text name="FollowMeFlSensor"           text="FollowMe: Behind Coll.Sensor on/off" />
 
         <text name="input_FollowMeMyToggle"     text="FollowMe: ВКЛ/ВЫКЛ" />
         <text name="input_FollowMeMyPause"      text="FollowMe: Ожидать/продолжить" />
@@ -45,6 +47,7 @@
         <text name="input_FollowMeMyOffs_2"     text="FollowMe: Собственное смещение влево" />
         <text name="input_FollowMeMyOffs_1"     text="FollowMe: Собственное смещение вправо" />
         <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Cобственное смещение цикл" />
+        <text name="input_FollowMeMySensorTgl"  text="FollowMe: Myself Coll.Sensor on/off" />
 
         <text name="input_FollowMeFlStop"       text="FollowMe: Остановится за мной" />
         <text name="input_FollowMeFlPause"      text="FollowMe: За мной ожидать/продолжить" />
@@ -53,10 +56,12 @@
         <text name="input_FollowMeFlOffs_2"     text="FollowMe: За мной смещение влево" />
         <text name="input_FollowMeFlOffs_1"     text="FollowMe: За мной смещение вправо" />
         <text name="input_FollowMeFlOffsTgl"    text="FollowMe: За мной смещение цикл"   />
+        <text name="input_FollowMeFlSensorTgl"  text="FollowMe: Behind Coll.Sensor on/off" />
 
         <text name="FollowMeLeader"             text="Ведущий" />
         <text name="FollowMeFollower"           text="Ведомый" />
-        <text name="FollowMePaused"             text=" (Ожидает)" />
+        <text name="FollowMePaused"             text="(Ожидает)" />
+        <text name="FollowMeSensorIgnored"      text="(Collision Sensor: Off)" />
         <text name="FollowMeOffLft"             text="%.1f смещение влево" />
         <text name="FollowMeOffRgt"             text="смещение вправо %.1f" />
         <text name="FollowMeDistBehind"         text="за мной дистанция %.0f" />

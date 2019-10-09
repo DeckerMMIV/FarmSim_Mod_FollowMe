@@ -34,11 +34,13 @@ Avvicinati al mezzo che ti precede." />
         <text name="FollowMeMyOffs"             text="FollowMe: Distanza laterale"  />
         <text name="FollowMeMyWait"             text="FollowMe: Aspetta"               />
         <text name="FollowMeMyResume"           text="FollowMe: Riparti"             />
+        <text name="FollowMeMySensor"           text="FollowMe: Collision Sensor on/off" />
 
         <text name="FollowMeFlDist"             text="FollowMe: Distanza dell'inseguitore"    />
         <text name="FollowMeFlOffs"             text="FollowMe: Distanza laterale dell'inseguitore" />
         <text name="FollowMeFlWait"             text="FollowMe: Inseguitore Aspetta"       />
         <text name="FollowMeFlResume"           text="FollowMe: Inseguitore Riparti"      />
+        <text name="FollowMeFlSensor"           text="FollowMe: Behind Coll.Sensor on/off" />
 
         <text name="input_FollowMeMyToggle"     text="FollowMe: Attiva on/off" />
         <text name="input_FollowMeMyPause"      text="FollowMe: Aspetta/Riparti" />
@@ -47,6 +49,7 @@ Avvicinati al mezzo che ti precede." />
         <text name="input_FollowMeMyOffs_2"     text="FollowMe: Mia distanza laterale sx" />
         <text name="input_FollowMeMyOffs_1"     text="FollowMe: Mia distanza laterale dx" />
         <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Mia distanza laterale ciclo" />
+        <text name="input_FollowMeMySensorTgl"  text="FollowMe: Myself Coll.Sensor on/off" />
 
         <text name="input_FollowMeFlStop"       text="FollowMe: Ferma l'inseguitore"  />
         <text name="input_FollowMeFlPause"      text="FollowMe: Inseguitore Aspetta/Riparti" />
@@ -55,10 +58,12 @@ Avvicinati al mezzo che ti precede." />
         <text name="input_FollowMeFlOffs_2"     text="FollowMe: Distanza dell'inseguitore a sx" />
         <text name="input_FollowMeFlOffs_1"     text="FollowMe: Distanza dell'inseguitore a dx" />
         <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Distanza dell'inseguitore ciclo" />
+        <text name="input_FollowMeFlSensorTgl"  text="FollowMe: Behind Coll.Sensor on/off" />
 
         <text name="FollowMeLeader"             text="Leader" />
         <text name="FollowMeFollower"           text="Inseguitore" />
-        <text name="FollowMePaused"             text=" (In attesa)" />
+        <text name="FollowMePaused"             text="(In attesa)" />
+        <text name="FollowMeSensorIgnored"      text="(Collision Sensor: Off)" />
         <text name="FollowMeOffLft"             text="%.1f Distanza laterale a sx" />
         <text name="FollowMeOffRgt"             text="Distanza laterale a dx %.1f" />
         <text name="FollowMeDistBehind"         text="Distanza dietro %.0f" />

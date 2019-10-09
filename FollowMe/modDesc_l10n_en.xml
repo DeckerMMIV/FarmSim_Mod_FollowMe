@@ -32,11 +32,13 @@ Move closer to the leading vehicle, while staying behind it." />
         <text name="FollowMeMyOffs"             text="FollowMe: Offset"             />
         <text name="FollowMeMyWait"             text="FollowMe: Wait"               />
         <text name="FollowMeMyResume"           text="FollowMe: Resume"             />
+        <text name="FollowMeMySensor"           text="FollowMe: Collision Sensor on/off" />
 
         <text name="FollowMeFlDist"             text="FollowMe: Behind Distance"    />
         <text name="FollowMeFlOffs"             text="FollowMe: Behind Offset"      />
         <text name="FollowMeFlWait"             text="FollowMe: Behind Wait"        />
         <text name="FollowMeFlResume"           text="FollowMe: Behind Resume"      />
+        <text name="FollowMeFlSensor"           text="FollowMe: Behind Coll.Sensor on/off" />
 
         <text name="input_FollowMeMyToggle"     text="FollowMe: Toggle on/off"       />
         <text name="input_FollowMeMyPause"      text="FollowMe: Myself Wait/Resume"  />
@@ -45,6 +47,7 @@ Move closer to the leading vehicle, while staying behind it." />
         <text name="input_FollowMeMyOffs_2"     text="FollowMe: Myself Offset left"  />
         <text name="input_FollowMeMyOffs_1"     text="FollowMe: Myself Offset right" />
         <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Myself Offset cycle" />
+        <text name="input_FollowMeMySensorTgl"  text="FollowMe: Myself Coll.Sensor on/off" />
 
         <text name="input_FollowMeFlStop"       text="FollowMe: Behind Disengage"    />
         <text name="input_FollowMeFlPause"      text="FollowMe: Behind Wait/Resume"  />
@@ -53,10 +56,12 @@ Move closer to the leading vehicle, while staying behind it." />
         <text name="input_FollowMeFlOffs_2"     text="FollowMe: Behind Offset left"  />
         <text name="input_FollowMeFlOffs_1"     text="FollowMe: Behind Offset right" />
         <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Behind Offset cycle" />
+        <text name="input_FollowMeFlSensorTgl"  text="FollowMe: Behind Coll.Sensor on/off" />
 
         <text name="FollowMeLeader"             text="Leader"               />
         <text name="FollowMeFollower"           text="Follower"             />
-        <text name="FollowMePaused"             text=" (Waiting)"           />
+        <text name="FollowMePaused"             text="(Waiting)"            />
+        <text name="FollowMeSensorIgnored"      text="(Collision Sensor: Off)" />
         <text name="FollowMeOffLft"             text="%.1f Left-offs."      />
         <text name="FollowMeOffRgt"             text="Right-offs. %.1f"     />
         <text name="FollowMeDistBehind"         text="Behind-dist. %.0f"    />
