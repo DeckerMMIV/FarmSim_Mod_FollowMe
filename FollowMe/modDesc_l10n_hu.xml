@@ -62,6 +62,7 @@ Menj közelebb a követendő járműhöz." />
         <text name="FollowMeLeader"             text="Vezető"               />
         <text name="FollowMeFollower"           text="Követő"               />
         <text name="FollowMePaused"             text="(Várakozik)"         />
+        <text name="FollowMeColliding"          text="(Sensor colliding)"   />
         <text name="FollowMeSensorIgnored"      text="(Collision Sensor: Off)" />
         <text name="FollowMeOffLft"             text="%.1f Eltolás balra"   />
         <text name="FollowMeOffRgt"             text="Eltolás jobbra %.1f"  />

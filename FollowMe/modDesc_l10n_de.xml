@@ -64,6 +64,7 @@ Nähern sie sich dem führenden Fahrzeug." />
         <text name="FollowMeLeader"             text="Führendes Fahrzeug"            />
         <text name="FollowMeFollower"           text="Folgendes Fahrzeug"        />
         <text name="FollowMePaused"             text="(Warten)"        />
+        <text name="FollowMeColliding"          text="(Sensor colliding)"   />
         <text name="FollowMeSensorIgnored"      text="(Collision Sensor: Off)" />
         <text name="FollowMeOffLft"             text="%.1f Links-offs."   />
         <text name="FollowMeOffRgt"             text="Recht-offs. %.1f"  />

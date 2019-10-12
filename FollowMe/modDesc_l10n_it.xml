@@ -63,6 +63,7 @@ Avvicinati al mezzo che ti precede." />
         <text name="FollowMeLeader"             text="Leader" />
         <text name="FollowMeFollower"           text="Inseguitore" />
         <text name="FollowMePaused"             text="(In attesa)" />
+        <text name="FollowMeColliding"          text="(Sensor colliding)"   />
         <text name="FollowMeSensorIgnored"      text="(Collision Sensor: Off)" />
         <text name="FollowMeOffLft"             text="%.1f Distanza laterale a sx" />
         <text name="FollowMeOffRgt"             text="Distanza laterale a dx %.1f" />

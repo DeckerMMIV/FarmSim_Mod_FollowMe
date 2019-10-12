@@ -61,6 +61,7 @@ Move closer to the leading vehicle, while staying behind it." />
         <text name="FollowMeLeader"             text="Leader"               />
         <text name="FollowMeFollower"           text="Follower"             />
         <text name="FollowMePaused"             text="(Waiting)"            />
+        <text name="FollowMeColliding"          text="(Sensor colliding)"   />
         <text name="FollowMeSensorIgnored"      text="(Collision Sensor: Off)" />
         <text name="FollowMeOffLft"             text="%.1f Left-offs."      />
         <text name="FollowMeOffRgt"             text="Right-offs. %.1f"     />

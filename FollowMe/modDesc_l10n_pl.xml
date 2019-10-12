@@ -63,6 +63,7 @@ Zbliż się do pojazdu prowadzącego." />
         <text name="FollowMeLeader"             text="Prowadzący" />
         <text name="FollowMeFollower"           text="Podążający" />
         <text name="FollowMePaused"             text="(Oczekiwanie)" />
+        <text name="FollowMeColliding"          text="(Sensor colliding)"   />
         <text name="FollowMeSensorIgnored"      text="(Collision Sensor: Off)" />
         <text name="FollowMeOffLft"             text="%.1f Odstęp w lewo" />
         <text name="FollowMeOffRgt"             text="Odstęp w prawo %.1f" />

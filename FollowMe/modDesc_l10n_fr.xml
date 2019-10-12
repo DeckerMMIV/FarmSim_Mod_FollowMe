@@ -63,6 +63,7 @@ Placez le véhicule meneur devant celui-ci." />
         <text name="FollowMeLeader"             text="Meneur" />
         <text name="FollowMeFollower"           text="Suiveur" />
         <text name="FollowMePaused"             text="(En attente)" />
+        <text name="FollowMeColliding"          text="(Sensor colliding)"   />
         <text name="FollowMeSensorIgnored"      text="(Collision Sensor: Off)" />
         <text name="FollowMeOffLft"             text="%.1f Décal. gauche" />
         <text name="FollowMeOffRgt"             text="Décal. droite %.1f" />

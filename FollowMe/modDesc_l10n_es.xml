@@ -63,6 +63,7 @@ Acérquese más a la cabeza tractora." />
         <text name="FollowMeLeader"             text="Guía" />
         <text name="FollowMeFollower"           text="Seguidor" />
         <text name="FollowMePaused"             text="(En espera)" />
+        <text name="FollowMeColliding"          text="(Sensor colliding)"   />
         <text name="FollowMeSensorIgnored"      text="(Collision Sensor: Off)" />
         <text name="FollowMeOffLft"             text="%.1f Izda-offset" />
         <text name="FollowMeOffRgt"             text="Dcha-offset %.1f" />

@@ -64,10 +64,13 @@ FollowMe.COMMAND_TOGGLE_SENSOR  = 4
 FollowMe.NUM_BITS_COMMAND = 3
 
 FollowMe.STATE_NONE             = 0
-FollowMe.STATE_STARTING         = 1
-FollowMe.STATE_FOLLOWING        = 2
+FollowMe.STATE_STOPPING         = 1
+FollowMe.STATE_STARTING         = 2
 FollowMe.STATE_WAITING          = 3
-FollowMe.STATE_STOPPING         = 4
+FollowMe.STATE_UNUSED1          = 4
+FollowMe.STATE_UNUSED2          = 5
+FollowMe.STATE_FOLLOWING        = 6
+FollowMe.STATE_COLLIDING        = 7
 FollowMe.NUM_BITS_STATE   = 3
 
 FollowMe.REASON_NONE            = 0
@@ -125,8 +128,6 @@ function FollowMe.registerEventListeners(vehicleType)
 end
 
 function FollowMe:onLoad(savegame)
-    --self.followMeIsStarted = false
-
     local spec = self.spec_followMe
     spec.actionEvents = {}
 
@@ -135,7 +136,7 @@ function FollowMe:onLoad(savegame)
     spec.DropperCircularArray = {}
     spec.DropperCurrentIndex = -1
     spec.StalkerVehicleObj = nil  -- Needed in case self is being deleted.
-    --
+
     spec.FollowState = FollowMe.STATE_NONE
     spec.FollowVehicleObj = nil  -- What vehicle is this one following (if any)
     spec.FollowCurrentIndex = -1
@@ -143,15 +144,11 @@ function FollowMe:onLoad(savegame)
     spec.offsetLR = 0 -- Offset. left(<0), right(>0)
     spec.prevOffsetLR = 0
     spec.collisionSensorIgnored = false
-    --
+
     spec.ShowWarningText = nil
     spec.ShowWarningTime = 0
     spec.textFadeoutBegin = 0
-    --
-    -- spec.isDirty = false
-    -- spec.delayDirty = nil
 
-    --
     if nil ~= savegame and not savegame.resetVehicles then
         local modKey = savegame.key ..".".. modSpecTypeName
         local distance = getXMLInt(savegame.xmlFile, modKey .. "#distance")
@@ -212,7 +209,6 @@ function FollowMe:getCanStartFollowMe()
 end
 
 function FollowMe:getIsFollowMeActive()
-  --return self.followMeIsStarted
   local specAI = self.spec_aiVehicle
   if nil == specAI then
     return false
@@ -255,7 +251,7 @@ function FollowMe:onAIStart()
     -- If this 'set to nil' is not done, then `AIVehicle:onUpdate` will attempt to translate + rotate it, even when FollowMe is not using such a traffic collision.
     specAI.aiTrafficCollision = nil
 
-    --specFM.isDirty = (nil ~= g_server)
+    --
     self:raiseDirtyFlags(specFM.dirtyFlag)
   end
 end
@@ -268,9 +264,7 @@ function FollowMe:onAIEnd()
 
   if FollowMe.getIsFollowMeActive(self) then
     specAI.pricePerMS = specFM.origPricePerMS -- Restore wage to base-game's value.
-    --self.followMeIsStarted = false
 
-    --specFM.isDirty = (nil ~= g_server)
     self:raiseDirtyFlags(specFM.dirtyFlag)
   end
 end
@@ -352,8 +346,6 @@ function FollowMe:onReadUpdateStream(streamId, timestamp, connection)
       spec.FollowState       = newFollowState
       spec.FollowVehicleObj  = newFollowVehicleObj
       spec.StalkerVehicleObj = newStalkerVehicleObj
-
-      --self.followMeIsStarted = (spec.FollowState > 0)
     end
   end
 end
@@ -467,8 +459,7 @@ function FollowMe:setDistance(newValue, noSendEvent)
       -- Client - Send command to server
       g_client:getServerConnection():sendEvent(FollowMeRequestEvent:new(self, FollowMe.COMMAND_NONE, nil, nil))
     else
-      ---- Server - delay broadcast
-      --spec.delayDirty = g_currentMission.time + 250
+      -- Server - Need to broadcast to clients
       self:raiseDirtyFlags(spec.dirtyFlag)
     end
   end
@@ -486,8 +477,7 @@ function FollowMe:setOffset(newValue, noSendEvent)
       -- Client - Send command to server
       g_client:getServerConnection():sendEvent(FollowMeRequestEvent:new(self, FollowMe.COMMAND_NONE, nil, nil))
     else
-      ---- Server - delay broadcast
-      --spec.delayDirty = g_currentMission.time + 250
+      -- Server - Need to broadcast to clients
       self:raiseDirtyFlags(spec.dirtyFlag)
     end
   end
@@ -517,8 +507,7 @@ function FollowMe:setSensor(newValue, noSendEvent)
       -- Client - Send command to server
       g_client:getServerConnection():sendEvent(FollowMeRequestEvent:new(self, FollowMe.COMMAND_NONE, nil, nil))
     else
-      ---- Server - delay broadcast
-      --spec.delayDirty = g_currentMission.time + 250
+      -- Server - Need to broadcast to clients
       self:raiseDirtyFlags(spec.dirtyFlag)
     end
   end
@@ -744,17 +733,10 @@ function FollowMe:onUpdateTick(dt, isActiveForInput, isSelected)
             spec.sumSpeed = spec.sumSpeed + self.lastSpeed
             spec.sumCount = spec.sumCount + 1
             --
-            local distancePrevDrop
-            --if -1 < spec.DropperCurrentIndex then
-              local node = self:getAIVehicleSteeringNode()
-              local vX,vY,vZ = getWorldTranslation(node)
-              local oX,oY,oZ = unpack(spec.DropperCircularArray[1+(spec.DropperCurrentIndex % FollowMe.cBreadcrumbsMaxEntries)].trans)
-              distancePrevDrop = MathUtil.vector2LengthSq(oX - vX, oZ - vZ)
-            --else
-            --  distancePrevDrop = FollowMe.cMinDistanceBetweenDrops
-            --  spec.sumSpeed = 10 / 3600 -- For first trail-crumb dropped, when vehicle is not moving. This should allow followers to "actually move faster" after a savegame reload.
-            --  spec.sumCount = 1
-            --end
+            local node = self:getAIVehicleSteeringNode()
+            local vX,vY,vZ = getWorldTranslation(node)
+            local oX,oY,oZ = unpack(spec.DropperCircularArray[1+(spec.DropperCurrentIndex % FollowMe.cBreadcrumbsMaxEntries)].trans)
+            local distancePrevDrop = MathUtil.vector2LengthSq(oX - vX, oZ - vZ)
             if distancePrevDrop >= FollowMe.cMinDistanceBetweenDrops then
                 local maxSpeed = math.max(1, (spec.sumSpeed / spec.sumCount) * 3600)
                 FollowMe.addDrop(self, maxSpeed, self:getTurnLightState(), direction)
@@ -764,29 +746,13 @@ function FollowMe:onUpdateTick(dt, isActiveForInput, isSelected)
             end
           end
         end
-
-        --FollowMe.sendUpdate(self)
     end
 
     if true == spec.needActionEventUpdate then
       spec.needActionEventUpdate = nil
---log("Calling self:requestActionEventUpdate()")
       self:requestActionEventUpdate()
     end
 end
-
---function FollowMe.sendUpdate(self)
---    assert(nil ~= g_server)
---
---    local spec = self.spec_followMe
---    if spec.isDirty
---    or (nil ~= spec.delayDirty and spec.delayDirty < g_currentMission.time)
---    then
---        spec.isDirty = false
---        spec.delayDirty = nil
---        g_server:broadcastEvent(FollowMeUpdateEvent:new(self, spec.FollowState, FollowMe.REASON_NONE), nil, nil, self)
---    end
---end
 
 function FollowMe:startFollowMe(connection, startedFarmId)
     if nil == g_server then
@@ -795,15 +761,15 @@ function FollowMe:startFollowMe(connection, startedFarmId)
     else
         -- Server only
         if FollowMe.getIsFollowMeActive(self) or self:getIsAIActive() then
-            FollowMe.showReason(self, connection, FollowMe.REASON_ALREADY_AI)
+            FollowMe.showReason(self, FollowMe.REASON_ALREADY_AI, connection)
         elseif not self.spec_motorized.isMotorStarted then
-            FollowMe.showReason(self, connection, FollowMe.REASON_ENGINE_STOPPED)
+            FollowMe.showReason(self, FollowMe.REASON_ENGINE_STOPPED, connection)
         else
             local closestVehicle = FollowMe.findVehicleInFront(self)
             if nil == closestVehicle then
-                FollowMe.showReason(self, connection, FollowMe.REASON_NO_TRAIL_FOUND)
+                FollowMe.showReason(self, FollowMe.REASON_NO_TRAIL_FOUND, connection)
             else
-                FollowMe.showReason(self, connection, FollowMe.REASON_CLEAR_WARNING)
+                FollowMe.showReason(self, FollowMe.REASON_CLEAR_WARNING, connection)
                 self:raiseDirtyFlags(self.spec_followMe.dirtyFlag)
                 self:startAIVehicle(nil, nil, startedFarmId, "FollowMe")
             end
@@ -879,7 +845,6 @@ function AIDriveStrategyFollow:setAIVehicle(vehicle)
       vehicleSpec.FollowVehicleObj = closestVehicle
       vehicleSpec.FollowCurrentIndex = startIndex
       vehicleSpec.FollowState = FollowMe.STATE_FOLLOWING
-      --vehicle.followMeIsStarted = true
 
       vehicle.spec_aiVehicle.mod_CheckSpeedLimitOnlyIfWorking = true  -- A work-around, for forcing AIVehicle:onUpdateTick() making its call to `self:getSpeedLimit()` into a `self:getSpeedLimit(true)`
 
@@ -890,7 +855,6 @@ function AIDriveStrategyFollow:setAIVehicle(vehicle)
       end
     else
       vehicleSpec.FollowVehicleObj = nil
-      --vehicle.followMeIsStarted = false
     end
 
     vehicle:raiseDirtyFlags(vehicleSpec.dirtyFlag)
@@ -1143,12 +1107,9 @@ function AIDriveStrategyCollisionFollow:new(customMt)
 end
 
 function AIDriveStrategyCollisionFollow:getDriveData(dt, vX,vY,vZ)
-  ---- we do not check collisions at the back, at least currently
-  --if self.vehicle.movingDirection < 0 and self.vehicle:getLastSpeed(true) > 2 then
-  --    return nil, nil, nil, nil, nil
-  --end
+  local spec = self.vehicle.spec_followMe
 
-  if not self.vehicle.spec_followMe.collisionSensorIgnored then
+  if not spec.collisionSensorIgnored then
       for _, count in pairs(self.numCollidingVehicles) do
           if count > 0 then
               local tX,_,tZ = localToWorld(self.vehicle:getAIVehicleDirectionNode(), 0,0,1)
@@ -1157,6 +1118,10 @@ function AIDriveStrategyCollisionFollow:getDriveData(dt, vX,vY,vZ)
                 self.timeoutCollisionNotification = self.timeoutCollisionNotification - dt
                 if self.timeoutCollisionNotification < 0 then
                   self:setHasCollision(true)
+                  if spec.FollowState == FollowMe.STATE_FOLLOWING then
+                    spec.FollowState = FollowMe.STATE_COLLIDING
+                    self.vehicle:raiseDirtyFlags(spec.dirtyFlag)
+                  end
                 end
               end
               return tX, tZ, true, 0, math.huge
@@ -1166,6 +1131,10 @@ function AIDriveStrategyCollisionFollow:getDriveData(dt, vX,vY,vZ)
 
   self.timeoutCollisionNotification = FollowMe.cCollisionNotificationDelayMS
   self:setHasCollision(false)
+  if spec.FollowState == FollowMe.STATE_COLLIDING then
+    spec.FollowState = FollowMe.STATE_FOLLOWING
+    self.vehicle:raiseDirtyFlags(spec.dirtyFlag)
+  end
   self.vehicle:addAIDebugText(" AIDriveStrategyCollisionFollow :: no collision ")
   return nil, nil, nil, nil, nil
 end
@@ -1227,8 +1196,9 @@ function AIDriveStrategyCollisionFollow:onTrafficCollisionTrigger(triggerId, oth
       end
   end
 end
----------
 
+--
+--
 
 function FollowMe:updateAIDriveStrategies()
     -- Copied from `AIVehicle:updateAIDriveStrategies()`
@@ -1259,7 +1229,9 @@ function FollowMe:onWaitResumeFollowMe(reason, noEventSend)
 
     local newState = spec.FollowState
 
-    if spec.FollowState == FollowMe.STATE_FOLLOWING then
+    if spec.FollowState == FollowMe.STATE_FOLLOWING
+    or spec.FollowState == FollowMe.STATE_COLLIDING
+    then
       newState = FollowMe.STATE_WAITING
     elseif spec.FollowState == FollowMe.STATE_WAITING then
       newState = FollowMe.STATE_FOLLOWING
@@ -1278,10 +1250,9 @@ function FollowMe:onWaitResumeFollowMe(reason, noEventSend)
     end
 end
 
-function FollowMe:showReason(connection, reason, currentHelper)
+function FollowMe:showReason(reason, connection)
     if nil ~= connection then
-        local spec = self.spec_followMe
-        connection:sendEvent(FollowMeUpdateEvent:new(self, spec.FollowState, reason), nil, nil, self)
+        connection:sendEvent(FollowMeReasonEvent:new(self, reason), nil, nil, self)
     else
         if reason == FollowMe.REASON_NONE then
             -- No notification needed
@@ -1293,20 +1264,20 @@ function FollowMe:showReason(connection, reason, currentHelper)
             FollowMe.setWarning(self, "FollowMeStartEngine")
         elseif reason == FollowMe.REASON_CLEAR_WARNING then
             FollowMe.setWarning(self, nil)
-        elseif nil ~= reason then
-            local txtId = ("FollowMeReason%d"):format(reason)
-            if g_i18n:hasText(txtId) then
-                local helperName = "?"
-                if nil ~= currentHelper then
-                    helperName = Utils.getNoNil(currentHelper.name, helperName)
-                end
-                local reasonTxt = g_i18n:getText(txtId):format(helperName)
-                local reasonClr = {0.5, 0.5, 1.0, 1.0}
-                if reason == FollowMe.REASON_TOO_FAR_BEHIND then
-                    reasonClr = FSBaseMission.INGAME_NOTIFICATION_CRITICAL
-                end
-                g_currentMission:addIngameNotification(reasonClr, reasonTxt)
-            end
+        --elseif nil ~= reason then
+        --    local txtId = ("FollowMeReason%d"):format(reason)
+        --    if g_i18n:hasText(txtId) then
+        --        local helperName = "?"
+        --        if nil ~= currentHelper then
+        --            helperName = Utils.getNoNil(currentHelper.name, helperName)
+        --        end
+        --        local reasonTxt = g_i18n:getText(txtId):format(helperName)
+        --        local reasonClr = {0.5, 0.5, 1.0, 1.0}
+        --        if reason == FollowMe.REASON_TOO_FAR_BEHIND then
+        --            reasonClr = FSBaseMission.INGAME_NOTIFICATION_CRITICAL
+        --        end
+        --        g_currentMission:addIngameNotification(reasonClr, reasonTxt)
+        --    end
         end
     end
 end
@@ -1330,7 +1301,6 @@ function FollowMe:findVehicleInFront()
     end
     -- Anything below is only server-side
 
-    --local node      = FollowMe.getFollowNode(self)
     local node      = self:getAIVehicleSteeringNode()
     local wx,wy,wz  = getWorldTranslation(node)
     local rx,ry,rz  = localDirectionToWorld(node, 0,0,FollowMe.getReverserDirection(self))
@@ -1434,7 +1404,6 @@ end
 
 --
 --
---
 
 function FollowMe.getWorldToScreen(nodeId)
     if nil ~= nodeId then
@@ -1500,7 +1469,10 @@ function FollowMe:onDraw(isActiveForInput, isSelected)
             end
 
             local txt = nil
-            if spec.FollowState == FollowMe.STATE_WAITING then
+            if spec.FollowState == FollowMe.STATE_COLLIDING then
+              txt = Utils.getNoNil(txt, {})
+              table.insert(txt, g_i18n:getText("FollowMeColliding"))
+            elseif spec.FollowState == FollowMe.STATE_WAITING then
               txt = Utils.getNoNil(txt, {})
               table.insert(txt, g_i18n:getText("FollowMePaused"))
             end
@@ -1526,7 +1498,9 @@ function FollowMe:onDraw(isActiveForInput, isSelected)
             -- if nil ~= stalkerSpec.currentHelper then
             --     txt = txt .. (" '%s'"):format(stalkerSpec.currentHelper.name)
             -- end
-            if stalkerSpec.FollowState == FollowMe.STATE_WAITING then
+            if stalkerSpec.FollowState == FollowMe.STATE_COLLIDING then
+                txt = txt .. " " .. g_i18n:getText("FollowMeColliding")
+            elseif stalkerSpec.FollowState == FollowMe.STATE_WAITING then
                 txt = txt .. " " .. g_i18n:getText("FollowMePaused")
             end
             if stalkerSpec.collisionSensorIgnored then
@@ -1741,85 +1715,39 @@ end
 ---
 ---
 
-FollowMeUpdateEvent = {}
-FollowMeUpdateEvent_mt = Class(FollowMeUpdateEvent, Event)
+FollowMeReasonEvent = {}
+FollowMeReasonEvent_mt = Class(FollowMeReasonEvent, Event)
 
-InitEventClass(FollowMeUpdateEvent, "FollowMeUpdateEvent")
+InitEventClass(FollowMeReasonEvent, "FollowMeReasonEvent")
 
-function FollowMeUpdateEvent:emptyNew()
-    local self = Event:new(FollowMeUpdateEvent_mt)
-    self.className = "FollowMeUpdateEvent"
+function FollowMeReasonEvent:emptyNew()
+    local self = Event:new(FollowMeReasonEvent_mt)
+    self.className = "FollowMeReasonEvent"
     return self
 end
 
-function FollowMeUpdateEvent:new(vehicle, stateId, reason)
-  --log("FollowMeUpdateEvent:new")
-  assert(nil ~= stateId)
-    local self = FollowMeUpdateEvent:emptyNew()
+function FollowMeReasonEvent:new(vehicle, reason)
+--log("FollowMeReasonEvent:new")
+    local self = FollowMeReasonEvent:emptyNew()
     local spec = vehicle.spec_followMe
-    self.vehicle            = vehicle
-    -- self.stateId            = stateId
-    self.reason             = Utils.getNoNil(reason, 0)
-    -- self.distance           = Utils.getNoNil(spec.distanceFB, 0)
-    -- self.offset             = Utils.getNoNil(spec.offsetLR, 0)
-    -- self.sensor             = Utils.getNoNil(spec.collisionSensorIgnored, false)
-    -- self.followVehicleObj   = spec.FollowVehicleObj
-    -- self.stalkerVehicleObj  = spec.StalkerVehicleObj
+    self.vehicle = vehicle
+    self.reason  = Utils.getNoNil(reason, 0)
     return self
 end
 
-function FollowMeUpdateEvent:writeStream(streamId, connection)
---log("FollowMeUpdateEvent:writeStream")
+function FollowMeReasonEvent:writeStream(streamId, connection)
+--log("FollowMeReasonEvent:writeStream")
     NetworkUtil.writeNodeObject(streamId, self.vehicle)
-    --streamWriteUIntN(           streamId, self.stateId,  FollowMe.NUM_BITS_STATE)
     streamWriteUIntN(           streamId, self.reason,   FollowMe.NUM_BITS_REASON)
-    --streamWriteBool(            streamId, self.sensor)
-    --streamWriteInt8(            streamId, self.distance)
-    --streamWriteInt8(            streamId, self.offset * 2)
-    --NetworkUtil.writeNodeObject(streamId, self.followVehicleObj )
-    --NetworkUtil.writeNodeObject(streamId, self.stalkerVehicleObj)
 end
 
-function FollowMeUpdateEvent:readStream(streamId, connection)
---log("FollowMeUpdateEvent:readStream")
-    self.vehicle            = NetworkUtil.readNodeObject(streamId)
-    --self.stateId            = streamReadUIntN(           streamId, FollowMe.NUM_BITS_STATE)
-    self.reason             = streamReadUIntN(           streamId, FollowMe.NUM_BITS_REASON)
-    --self.sensor             = streamReadBool(            streamId)
-    --self.distance           = streamReadInt8(            streamId)
-    --self.offset             = streamReadInt8(            streamId) / 2
-    --self.followVehicleObj   = NetworkUtil.readNodeObject(streamId)
-    --self.stalkerVehicleObj  = NetworkUtil.readNodeObject(streamId)
+function FollowMeReasonEvent:readStream(streamId, connection)
+--log("FollowMeReasonEvent:readStream")
+    self.vehicle = NetworkUtil.readNodeObject(streamId)
+    self.reason  = streamReadUIntN(           streamId, FollowMe.NUM_BITS_REASON)
 
     if nil ~= self.vehicle then
-        local spec = self.vehicle.spec_followMe
-
-        -- local needActionEventUpdate = false
-        --     or (spec.FollowState       ~= self.stateId)
-        --     or (spec.FollowVehicleObj  ~= self.followVehicleObj)
-        --     or (spec.StalkerVehicleObj ~= self.stalkerVehicleObj)
-
-        -- if nil == g_server then
-        --   self.vehicle.followMeIsStarted = (self.stateId > 0)
-        -- end
-
-        -- FollowMe.setDistance(self.vehicle, self.distance ,true)
-        -- FollowMe.setOffset(  self.vehicle, self.offset   ,true)
-        -- FollowMe.setSensor(  self.vehicle, self.sensor   ,true)
-        -- spec.FollowState       = self.stateId
-        -- spec.FollowVehicleObj  = self.followVehicleObj
-        -- spec.StalkerVehicleObj = self.stalkerVehicleObj
-
-        if self.reason ~= 0 then
-            FollowMe.showReason(self.vehicle, nil, self.reason)
-        end
-
-        -- if needActionEventUpdate then
-        --     self.vehicle:requestActionEventUpdate()
-        --     if nil ~= spec.FollowVehicleObj then
-        --         spec.FollowVehicleObj:requestActionEventUpdate()
-        --     end
-        -- end
+        FollowMe.showReason(self.vehicle, self.reason, nil)
     end
 end
 

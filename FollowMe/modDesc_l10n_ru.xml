@@ -61,6 +61,7 @@
         <text name="FollowMeLeader"             text="Ведущий" />
         <text name="FollowMeFollower"           text="Ведомый" />
         <text name="FollowMePaused"             text="(Ожидает)" />
+        <text name="FollowMeColliding"          text="(Sensor colliding)"   />
         <text name="FollowMeSensorIgnored"      text="(Collision Sensor: Off)" />
         <text name="FollowMeOffLft"             text="%.1f смещение влево" />
         <text name="FollowMeOffRgt"             text="смещение вправо %.1f" />
