@@ -55,9 +55,7 @@ Changelog 1.0.1.1:
 
     <description>
         <en>
-<![CDATA[Currently only for Singleplayer -- Attention
-
-Ever wanted to have some vehicles follow you around the map?
+<![CDATA[Ever wanted to have some vehicles follow you around the map?
 With "Follow Me" you can (though not backwards driving).
 
 
@@ -85,9 +83,7 @@ Changelog 1.1.0.2:
 ]]>
         </en>
         <de>
-<![CDATA[Derzeit nur für Einzelspieler -- Achtung
-
-Sie wollten schon immer Fahrzeuge als Kolonne über die Karte Transportieren?
+<![CDATA[Sie wollten schon immer Fahrzeuge als Kolonne über die Karte Transportieren?
 Mit "Follow Me" können Sie dies (natürlich nur vorwärtsfahrend).
 
 
@@ -115,9 +111,7 @@ Changelog 1.1.0.2:
 ]]>
         </de>
         <fr>
-<![CDATA[Actuellement réservé au jeu solo -- Attention
-
-Vous avez toujours souhaité que certains véhicules puissent vous suivre ?
+<![CDATA[Vous avez toujours souhaité que certains véhicules puissent vous suivre ?
 Avec "Follow Me", c'est possible (sauf en marche arrière).
 
 
@@ -148,7 +142,6 @@ Changelog 1.1.0.2:
 
     <iconFilename>icon_FollowMe.dds</iconFilename>
 
-    <!-- NO! - DO NOT ATTEMPT CHANGING THE SETTING! - The FollowMe script is PERHAPS multiplayer ready?!? -->
     <multiplayer supported="true"/>
 
     <extraSourceFiles>
