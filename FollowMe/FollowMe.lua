@@ -107,8 +107,8 @@ end
 
 function FollowMe.registerEventListeners(vehicleType)
   for _,funcName in pairs( {
-    "onLoad",
     "onPostLoad",
+    "onLoadFinished",
     "onDelete",
     "onWriteStream",
     "onReadStream",
@@ -127,7 +127,7 @@ function FollowMe.registerEventListeners(vehicleType)
   end
 end
 
-function FollowMe:onLoad(savegame)
+function FollowMe:onPostLoad(savegame)
     local spec = self.spec_followMe
     spec.actionEvents = {}
 
@@ -164,7 +164,7 @@ function FollowMe:onLoad(savegame)
     spec.dirtyFlag = self:getNextDirtyFlag()
 end
 
-function FollowMe:onPostLoad(savegame)
+function FollowMe:onLoadFinished(savegame)
   local spec = self.spec_followMe
   spec.origPricePerMS = self.spec_aiVehicle.pricePerMS
 
@@ -237,19 +237,25 @@ function FollowMe:onAIStart()
   if FollowMe.getIsFollowMeActive(self) then
     specAI.pricePerMS = Utils.getNoNil(specFM.origPricePerMS, 1500) * 0.2 -- FollowMe AIs wage is only 20% of base-game's AI.
 
-    -- In case player is so fast, that after stopping a regular AI, and in less than 200ms he manages to start FollowMe, then ensure the traffic collision is deleted.
-    if specAI.aiTrafficCollisionRemoveDelay > 0 then
-      if specAI.aiTrafficCollision ~= nil then
-        if entityExists(specAI.aiTrafficCollision) then
-          delete(specAI.aiTrafficCollision)
-        end
-      end
-      specAI.aiTrafficCollisionRemoveDelay = 0
-    end
+--     -- Looks like patch 1.5.1.0 removed the `aiTrafficCollisionRemoveDelay`
+--     if nil ~= specAI.aiTrafficCollisionRemoveDelay then
+--       -- In case player is so fast, that after stopping a regular AI, and in less than 200ms he manages to start FollowMe, then ensure the traffic collision is deleted.
+--       if specAI.aiTrafficCollisionRemoveDelay > 0 then
+--         if specAI.aiTrafficCollision ~= nil then
+--           if entityExists(specAI.aiTrafficCollision) then
+--             delete(specAI.aiTrafficCollision)
+--           end
+--         end
+--         specAI.aiTrafficCollisionRemoveDelay = 0
+--       end
+--     end
 
-    -- Bug fix for (1.3.0.0-beta) base-game's script, where it does not set `spec.aiTrafficCollision` to nil after it has been deleted in `AIVehicle:onUpdateTick`.
-    -- If this 'set to nil' is not done, then `AIVehicle:onUpdate` will attempt to translate + rotate it, even when FollowMe is not using such a traffic collision.
-    specAI.aiTrafficCollision = nil
+--     if nil ~= specAI.aiTrafficCollision then
+-- log("Setting specAI.aiTrafficCollision = nil")
+--       -- Bug fix for (1.3.0.0-beta) base-game's script, where it does not set `spec.aiTrafficCollision` to nil after it has been deleted in `AIVehicle:onUpdateTick`.
+--       -- If this 'set to nil' is not done, then `AIVehicle:onUpdate` will attempt to translate + rotate it, even when FollowMe is not using such a traffic collision.
+--       specAI.aiTrafficCollision = nil
+--     end
 
     --
     self:raiseDirtyFlags(specFM.dirtyFlag)
@@ -298,7 +304,7 @@ function FollowMe:onReadStream(streamId, connection)
     spec.StalkerVehicleObj = NetworkUtil.readNodeObject(streamId)
 
     if streamReadBool(streamId) then
-        local sensor          = streamReadBool(            streamid)
+        local sensor          = streamReadBool(            streamId)
         spec.FollowState      = streamReadUIntN(           streamId, FollowMe.NUM_BITS_STATE)
         spec.FollowVehicleObj = NetworkUtil.readNodeObject(streamId)
 
@@ -1338,7 +1344,7 @@ function FollowMe:findVehicleInFront()
                         closestDistance = dist
                         closestVehicle = vehicleObj
 
-                        --log("closest(",dist,") ",closestVehicle:getName()," Rxyz(",vec2str(vrx,vry,vrz),") Wxyz(",vec2str(vx,vy,vz),")")
+--log("closest(",dist,") ",closestVehicle:getName()," Rxyz(",vec2str(vrx,vry,vrz),") Wxyz(",vec2str(vx,vy,vz),")")
                     end
                 end
             end
@@ -1365,7 +1371,7 @@ function FollowMe:findVehicleInFront()
                     local nx = dx * math.cos(rotRad) - dz * math.sin(rotRad)
                     local nz = dx * math.sin(rotRad) + dz * math.cos(rotRad)
                     if (nx > 0) and (nz > 0) then
-                        --log(string.format("#%d - xz:%f/%f - dxdz:%f/%f - dist:%f - nxnz:%f/%f", i, x,z, dx,dz, dist, nx,nz))
+--log(string.format("#%d - xz:%f/%f - dxdz:%f/%f - dist:%f - nxnz:%f/%f", i, x,z, dx,dz, dist, nx,nz))
                         closestDistance = dist
                         followCurrentIndex = i
                     end

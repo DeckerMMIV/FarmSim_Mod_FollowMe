@@ -15,7 +15,7 @@
         pokers, Ziuta, pewemo, Alfredo Prieto, xno, Vanquish081, Paxly, Taco29, Anonymous
     </contributors>
 
-    <version>1.5.0.25</version>
+    <version>1.6.0.29</version>
 
     <title>
         <en>Follow Me</en>
@@ -25,6 +25,9 @@
 Issues
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
+
+Changelog 1.6.0.29:
+- Fixed minor error in FollowMe, caused by game patch 1.5.1.0
 
 Changelog 1.5.0.25:
 - Multiplayer support is implemented
@@ -63,10 +66,11 @@ Issues
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
 
-Changelog 1.5.0.25:
+Changelog 1.6.0.29:
 - Multiplayer support is implemented
 - Added 'Collision Sensor on/off' toggle
 - Fix for "lights flashing"
+- Fixed minor error in FollowMe, caused by game patch 1.5.1.0
 
 Changelog 1.3.0.6:
 - Hiding the HUD-text after 5 seconds. Player must issue another 'Follow Me'-input-action to vehicle for displaying HUD-text again.
@@ -91,10 +95,11 @@ Issues
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
 
-Changelog 1.5.0.25:
+Changelog 1.6.0.29:
 - Multiplayer support is implemented
 - Added 'Collision Sensor on/off' toggle
 - Fix for "lights flashing"
+- Fixed minor error in FollowMe, caused by game patch 1.5.1.0
 
 Changelog 1.3.0.6:
 - Hiding the HUD-text after 5 seconds. Player must issue another 'Follow Me'-input-action to vehicle for displaying HUD-text again.
@@ -119,10 +124,11 @@ Issues
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
 
-Changelog 1.5.0.25:
+Changelog 1.6.0.29:
 - Multiplayer support is implemented
 - Added 'Collision Sensor on/off' toggle
 - Fix for "lights flashing"
+- Fixed minor error in FollowMe, caused by game patch 1.5.1.0
 
 Changelog 1.3.0.6:
 - Hiding the HUD-text after 5 seconds. Player must issue another 'Follow Me'-input-action to vehicle for displaying HUD-text again.
