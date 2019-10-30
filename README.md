@@ -6,6 +6,15 @@ To read more about this mod, find it on;
 
 ## FS19 - Change-log
 
+Changelog 1.5.0.24:
+- After several iterations of testing and fixing, multiplayer support is implemented
+
+Changelog 1.4.0.10:
+- First attempt at multiplayer support
+- Added 'Collision Sensor on/off' toggle
+- Fix for "lights flashing"
+- Misc. code cleanup
+
 1.3.0.6:
 - Hiding the HUD-text after 5 seconds. Player must issue another 'Follow Me'-input-action to vehicle for displaying HUD-text again.
 - Fix/work-around for making a follower-combine NOT stop at headlands/turning, due to its cutter detecting 'no more crops' to harvest.

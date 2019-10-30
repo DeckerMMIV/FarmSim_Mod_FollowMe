@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="43">
+<modDesc descVersion="45">
     <author>Decker_MMIV</author>
     <authorContact>fs-uk.com, forum.farming-simulator.com</authorContact>
 
@@ -15,7 +15,7 @@
         pokers, Ziuta, pewemo, Alfredo Prieto, xno, Vanquish081, Paxly, Taco29, Anonymous
     </contributors>
 
-    <version>1.3.0.6</version>
+    <version>1.6.0.29</version>
 
     <title>
         <en>Follow Me</en>
@@ -23,9 +23,20 @@
 
     <changeLog><![CDATA[
 Issues
-- [KNOWN ISSUE] Multiplayer is not yet supported
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
+
+Changelog 1.6.0.29:
+- Fixed minor error in FollowMe, caused by game patch 1.5.1.0
+
+Changelog 1.5.0.25:
+- Multiplayer support is implemented
+
+Changelog 1.4.0.10:
+- First attempt at multiplayer support
+- Added 'Collision Sensor on/off' toggle
+- Fix for "lights flashing"
+- Misc. code cleanup
 
 Changelog 1.3.0.6:
 - Hiding the HUD-text after 5 seconds. Player must issue another 'Follow Me'-input-action to vehicle for displaying HUD-text again.
@@ -47,16 +58,19 @@ Changelog 1.0.1.1:
 
     <description>
         <en>
-<![CDATA[Currently only for Singleplayer -- Attention
-
-Ever wanted to have some vehicles follow you around the map?
+<![CDATA[Ever wanted to have some vehicles follow you around the map?
 With "Follow Me" you can (though not backwards driving).
 
 
 Issues
-- [KNOWN ISSUE] Multiplayer is not yet supported
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
+
+Changelog 1.6.0.29:
+- Multiplayer support is implemented
+- Added 'Collision Sensor on/off' toggle
+- Fix for "lights flashing"
+- Fixed minor error in FollowMe, caused by game patch 1.5.1.0
 
 Changelog 1.3.0.6:
 - Hiding the HUD-text after 5 seconds. Player must issue another 'Follow Me'-input-action to vehicle for displaying HUD-text again.
@@ -73,16 +87,19 @@ Changelog 1.1.0.2:
 ]]>
         </en>
         <de>
-<![CDATA[Derzeit nur für Einzelspieler -- Achtung
-
-Sie wollten schon immer Fahrzeuge als Kolonne über die Karte Transportieren?
+<![CDATA[Sie wollten schon immer Fahrzeuge als Kolonne über die Karte Transportieren?
 Mit "Follow Me" können Sie dies (natürlich nur vorwärtsfahrend).
 
 
 Issues
-- [KNOWN ISSUE] Multiplayer is not yet supported
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
+
+Changelog 1.6.0.29:
+- Multiplayer support is implemented
+- Added 'Collision Sensor on/off' toggle
+- Fix for "lights flashing"
+- Fixed minor error in FollowMe, caused by game patch 1.5.1.0
 
 Changelog 1.3.0.6:
 - Hiding the HUD-text after 5 seconds. Player must issue another 'Follow Me'-input-action to vehicle for displaying HUD-text again.
@@ -99,16 +116,19 @@ Changelog 1.1.0.2:
 ]]>
         </de>
         <fr>
-<![CDATA[Actuellement réservé au jeu solo -- Attention
-
-Vous avez toujours souhaité que certains véhicules puissent vous suivre ?
+<![CDATA[Vous avez toujours souhaité que certains véhicules puissent vous suivre ?
 Avec "Follow Me", c'est possible (sauf en marche arrière).
 
 
 Issues
-- [KNOWN ISSUE] Multiplayer is not yet supported
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
+
+Changelog 1.6.0.29:
+- Multiplayer support is implemented
+- Added 'Collision Sensor on/off' toggle
+- Fix for "lights flashing"
+- Fixed minor error in FollowMe, caused by game patch 1.5.1.0
 
 Changelog 1.3.0.6:
 - Hiding the HUD-text after 5 seconds. Player must issue another 'Follow Me'-input-action to vehicle for displaying HUD-text again.
@@ -128,8 +148,7 @@ Changelog 1.1.0.2:
 
     <iconFilename>icon_FollowMe.dds</iconFilename>
 
-    <!-- NO! - DO NOT ATTEMPT CHANGING THE SETTING! - The FollowMe script is NOT YET multiplayer ready! -->
-    <multiplayer supported="false"/>
+    <multiplayer supported="true"/>
 
     <extraSourceFiles>
         <sourceFile filename="AIVehicle_Override.lua" />
@@ -139,17 +158,19 @@ Changelog 1.1.0.2:
     <l10n filenamePrefix="modDesc_l10n" /> <!-- Load the corresponding modDesc_l10n_<language>.XML file, or revert to 'en'/'de'. -->
 
     <actions>
-        <action name="FollowMeMyToggle"  category="VEHICLE" axisType="HALF" />
-        <action name="FollowMeMyPause"   category="VEHICLE" axisType="HALF" />
-        <action name="FollowMeMyDist"    category="VEHICLE" axisType="FULL" />
-        <action name="FollowMeMyOffs"    category="VEHICLE" axisType="FULL" />
-        <action name="FollowMeMyOffsTgl" category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeMyToggle"    category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeMyPause"     category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeMyDist"      category="VEHICLE" axisType="FULL" />
+        <action name="FollowMeMyOffs"      category="VEHICLE" axisType="FULL" />
+        <action name="FollowMeMyOffsTgl"   category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeMySensorTgl" category="VEHICLE" axisType="HALF" />
 
-        <action name="FollowMeFlStop"    category="VEHICLE" axisType="HALF" />
-        <action name="FollowMeFlPause"   category="VEHICLE" axisType="HALF" />
-        <action name="FollowMeFlDist"    category="VEHICLE" axisType="FULL" />
-        <action name="FollowMeFlOffs"    category="VEHICLE" axisType="FULL" />
-        <action name="FollowMeFlOffsTgl" category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeFlStop"      category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeFlPause"     category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeFlDist"      category="VEHICLE" axisType="FULL" />
+        <action name="FollowMeFlOffs"      category="VEHICLE" axisType="FULL" />
+        <action name="FollowMeFlOffsTgl"   category="VEHICLE" axisType="HALF" />
+        <action name="FollowMeFlSensorTgl" category="VEHICLE" axisType="HALF" />
     </actions>
 
     <inputBinding>
@@ -170,6 +191,9 @@ Changelog 1.1.0.2:
         <actionBinding action="FollowMeMyOffsTgl">
           <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_x" index="1" />
         </actionBinding>
+        <actionBinding action="FollowMeMySensorTgl">
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_q" index="1" />
+        </actionBinding>
 
         <actionBinding action="FollowMeFlStop">
           <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_f" index="1" />
@@ -187,6 +211,9 @@ Changelog 1.1.0.2:
         </actionBinding>
         <actionBinding action="FollowMeFlOffsTgl">
           <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_x" index="1" />
+        </actionBinding>
+        <actionBinding action="FollowMeFlSensorTgl">
+          <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_q" index="1" />
         </actionBinding>
     </inputBinding>
 </modDesc>

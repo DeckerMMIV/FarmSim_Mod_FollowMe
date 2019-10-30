@@ -32,11 +32,13 @@ Verklein afstand tot leiden voertuig." />
         <text name="FollowMeMyOffs"             text="FollowMe: Uitlijning"             />
         <text name="FollowMeMyWait"             text="FollowMe: Wacht"               />
         <text name="FollowMeMyResume"           text="FollowMe: Hervat"             />
+        <text name="FollowMeMySensor"           text="FollowMe: Collision Sensor on/off" />
 
         <text name="FollowMeFlDist"             text="FollowMe: Volger afstand"    />
         <text name="FollowMeFlOffs"             text="FollowMe: Volger uitlijning"      />
         <text name="FollowMeFlWait"             text="FollowMe: Volger wacht"        />
         <text name="FollowMeFlResume"           text="FollowMe: Volger hervat"      />
+        <text name="FollowMeFlSensor"           text="FollowMe: Behind Coll.Sensor on/off" />
 
         <text name="input_FollowMeMyToggle"     text="FollowMe: Schakel aan/uit" />
         <text name="input_FollowMeMyPause"      text="FollowMe: Wacht/hervat" />
@@ -45,6 +47,7 @@ Verklein afstand tot leiden voertuig." />
         <text name="input_FollowMeMyOffs_2"     text="FollowMe: Eigen uitlijning links" />
         <text name="input_FollowMeMyOffs_1"     text="FollowMe: Eigen uitlijning rechts" />
         <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Eigen uitlijning cyclus"   />
+        <text name="input_FollowMeMySensorTgl"  text="FollowMe: Myself Coll.Sensor on/off" />
 
         <text name="input_FollowMeFlStop"       text="FollowMe: Volger Stop" />
         <text name="input_FollowMeFlPause"      text="FollowMe: Volger Wacht/hervat" />
@@ -53,10 +56,13 @@ Verklein afstand tot leiden voertuig." />
         <text name="input_FollowMeFlOffs_2"     text="FollowMe: Volger uitlijning links" />
         <text name="input_FollowMeFlOffs_1"     text="FollowMe: Volger uitlijning rechts" />
         <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Volger uitlijning cyclus"   />
+        <text name="input_FollowMeFlSensorTgl"  text="FollowMe: Behind Coll.Sensor on/off" />
 
         <text name="FollowMeLeader"             text="Leider" />
         <text name="FollowMeFollower"           text="Volger" />
-        <text name="FollowMePaused"             text=" (Wacht)" />
+        <text name="FollowMePaused"             text="(Wacht)" />
+        <text name="FollowMeColliding"          text="(Sensor colliding)"   />
+        <text name="FollowMeSensorIgnored"      text="(Collision Sensor: Off)" />
         <text name="FollowMeOffLft"             text="%.1f Links-uitls." />
         <text name="FollowMeOffRgt"             text="Rechts-uitl. %.1f" />
         <text name="FollowMeDistBehind"         text="Achter-afst. %.0f" />

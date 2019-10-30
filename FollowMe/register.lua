@@ -1,7 +1,8 @@
 --
 --  Follow Me
 --
--- @author  Decker_MMIV - fs-uk.com, forum.farming-simulator.com
+-- @author  Decker_MMIV (DCK)
+-- @contact forum.farming-simulator.com
 -- @date    2019-01-xx
 --
 
@@ -22,6 +23,15 @@ end;
 --
 
 -- The following is only specific for 'FollowMe'...
+
+Lights.updateAILights = Utils.overwrittenFunction(Lights.updateAILights, function(self, superFunc, ...)
+  if FollowMe.getIsFollowMeActive(self) then
+    -- Let 'FollowMe' control the lights, and not the base game's AI.
+    return
+  end
+  -- 'FollowMe' was not active, so let the original method do what it need to do.
+  superFunc(self, ...)
+end)
 
 Cutter.getAllowCutterAIFruitRequirements = Utils.overwrittenFunction(Cutter.getAllowCutterAIFruitRequirements, function(self, superFunc, ...)
   -- Work-around/fix for issue #33
