@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
     <!--
         Please contribute any other translations at
@@ -7,7 +7,7 @@
 
     <!-- Add your own name or nickname here, when you contribute to this file's translation, so I know who to put into the credits. -->
     <translationContributors>
-        (FS17) Gonimy-Vetrom
+        Gonimy-Vetrom
     </translationContributors>
 
     <!-- Note that 'description' is only here for easier translations. It needs to be manually copied to ModDesc.XML later. -->
@@ -26,28 +26,28 @@
         <!--text name="FollowMeKeysMyself"         text="%s - Управление собственной техникой"  /-->
         <!--text name="FollowMeKeysBehind"         text="%s - Управление техникой за мной"      /-->
         <text name="FollowMeMyTurnOn"           text="FollowMe: активировать"           />
-        <text name="FollowMeMyTurnOff"          text="FollowMe: дезактивировать"         />
+        <text name="FollowMeMyTurnOff"          text="FollowMe: деактивировать"         />
 
         <text name="FollowMeMyDist"             text="FollowMe: Собственная дистанция"           />
         <text name="FollowMeMyOffs"             text="FollowMe: Собственное смещение"             />
         <text name="FollowMeMyWait"             text="FollowMe: Ожидать"               />
-        <text name="FollowMeMyResume"           text="FollowMe: продолжить"             />
-        <text name="FollowMeMySensor"           text="FollowMe: Collision Sensor on/off" />
+        <text name="FollowMeMyResume"           text="FollowMe: Продолжить"             />
+        <text name="FollowMeMySensor"           text="FollowMe: Определение преград ВКЛ/ВЫКЛ" />
 
         <text name="FollowMeFlDist"             text="FollowMe: За мной дистанция"    />
         <text name="FollowMeFlOffs"             text="FollowMe: За мной смещение"      />
         <text name="FollowMeFlWait"             text="FollowMe: За мной ожидать"        />
         <text name="FollowMeFlResume"           text="FollowMe: За мной продолжить"      />
-        <text name="FollowMeFlSensor"           text="FollowMe: Behind Coll.Sensor on/off" />
+        <text name="FollowMeFlSensor"           text="FollowMe: За мной опред. преград ВКЛ/ВЫКЛ" />
 
         <text name="input_FollowMeMyToggle"     text="FollowMe: ВКЛ/ВЫКЛ" />
-        <text name="input_FollowMeMyPause"      text="FollowMe: Ожидать/продолжить" />
+        <text name="input_FollowMeMyPause"      text="FollowMe: Ожидать/Продолжить" />
         <text name="input_FollowMeMyDist_2"     text="FollowMe: Собственная дистанция -" />
         <text name="input_FollowMeMyDist_1"     text="FollowMe: Собственная дистанция +" />
         <text name="input_FollowMeMyOffs_2"     text="FollowMe: Собственное смещение влево" />
         <text name="input_FollowMeMyOffs_1"     text="FollowMe: Собственное смещение вправо" />
-        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Cобственное смещение цикл" />
-        <text name="input_FollowMeMySensorTgl"  text="FollowMe: Myself Coll.Sensor on/off" />
+        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Собственное смещение циклично сменять" />
+        <text name="input_FollowMeMySensorTgl"  text="FollowMe: Собственное опред. преград ВКЛ/ВЫКЛ" />
 
         <text name="input_FollowMeFlStop"       text="FollowMe: Остановится за мной" />
         <text name="input_FollowMeFlPause"      text="FollowMe: За мной ожидать/продолжить" />
@@ -55,14 +55,14 @@
         <text name="input_FollowMeFlDist_1"     text="FollowMe: За мной дистанция +" />
         <text name="input_FollowMeFlOffs_2"     text="FollowMe: За мной смещение влево" />
         <text name="input_FollowMeFlOffs_1"     text="FollowMe: За мной смещение вправо" />
-        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: За мной смещение цикл"   />
-        <text name="input_FollowMeFlSensorTgl"  text="FollowMe: Behind Coll.Sensor on/off" />
+        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: За мной смещение циклично сменять"   />
+        <text name="input_FollowMeFlSensorTgl"  text="FollowMe: За мной опред. преград ВКЛ/ВЫКЛ" />
 
         <text name="FollowMeLeader"             text="Ведущий" />
         <text name="FollowMeFollower"           text="Ведомый" />
         <text name="FollowMePaused"             text="(Ожидает)" />
-        <text name="FollowMeColliding"          text="(Sensor colliding)"   />
-        <text name="FollowMeSensorIgnored"      text="(Collision Sensor: Off)" />
+        <text name="FollowMeColliding"          text="(Определена преграда)"   />
+        <text name="FollowMeSensorIgnored"      text="(Определение преград: ВЫКЛ)" />
         <text name="FollowMeOffLft"             text="%.1f смещение влево" />
         <text name="FollowMeOffRgt"             text="смещение вправо %.1f" />
         <text name="FollowMeDistBehind"         text="за мной дистанция %.0f" />
