@@ -1,15 +1,25 @@
 # Farming Simulator modification - FollowMe
 
 To read more about this mod, find it on;
-- http://www.farming-simulator.com/mods.php
-- http://fs-uk.com - http://fs-uk.com/mods/list/team/45
+- https://www.farming-simulator.com/mods.php?title=fs2019&org_id=53574
+- https://www.farming-simulator.com/mods.php?title=fs2017&org_id=53574
 
 ## FS19 - Change-log
 
-Changelog 1.5.0.24:
-- After several iterations of testing and fixing, multiplayer support is implemented
+1.8.0.37:
+- Possible fix for manure-barrel with slurry-injector, so these won't get turned on by Follow Me.
 
-Changelog 1.4.0.10:
+1.7.0.30:
+- Russian language updated, by Gonimy_Vetrom
+- Updated descVersion to match game patch
+
+1.6.0.29:
+- Fixed minor error in FollowMe, caused by game patch 1.5.1.0
+
+1.5.0.25:
+- Multiplayer support is implemented
+
+1.4.0.10:
 - First attempt at multiplayer support
 - Added 'Collision Sensor on/off' toggle
 - Fix for "lights flashing"
@@ -34,6 +44,7 @@ Changelog 1.4.0.10:
 
 
 ## FS17 - Change-log
+
 1.2.2.44
 - Translations updated by contributors.
 

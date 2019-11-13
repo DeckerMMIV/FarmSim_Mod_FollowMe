@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="45">
+<modDesc descVersion="47">
     <author>Decker_MMIV</author>
-    <authorContact>fs-uk.com, forum.farming-simulator.com</authorContact>
+    <authorContact>forum.farming-simulator.com</authorContact>
 
 <!--
     NOTE: For contributing translations, DO NOT edit this ModDesc.XML.
@@ -9,13 +9,13 @@
 -->
     <contributors>
       (FS19)
-        Rushmead, MrMarcel5
+        Rushmead, MrMarcel5, Gonimy-Vetrom
       (FS17)
         DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion,
         pokers, Ziuta, pewemo, Alfredo Prieto, xno, Vanquish081, Paxly, Taco29, Anonymous
     </contributors>
 
-    <version>1.6.0.29</version>
+    <version>1.8.0.37</version>
 
     <title>
         <en>Follow Me</en>
@@ -25,6 +25,13 @@
 Issues
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
+
+Changelog 1.8.0.37:
+- Possible fix for manure-barrel with slurry-injector, so these won't get turned on by Follow Me.
+
+Changelog 1.7.0.30:
+- Russian language updated, by Gonimy-Vetrom
+- Updated descVersion to match game patch
 
 Changelog 1.6.0.29:
 - Fixed minor error in FollowMe, caused by game patch 1.5.1.0
