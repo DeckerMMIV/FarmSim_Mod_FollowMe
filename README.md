@@ -6,8 +6,9 @@ To read more about this mod, find it on;
 
 ## FS19 - Change-log
 
-1.8.0.37:
+1.8.1.38:
 - Possible fix for manure-barrel with slurry-injector, so these won't get turned on by Follow Me.
+- French language updated, by Anonymous
 
 1.7.0.30:
 - Russian language updated, by Gonimy_Vetrom
