@@ -27,48 +27,48 @@ Zbliż się do pojazdu prowadzącego." />
 
         <!--text name="FollowMeKeysMyself"         text="%s - Sterowanie prowadzącego" /-->
         <!--text name="FollowMeKeysBehind"         text="%s - Sterowanie podążającego" /-->
-        <text name="FollowMeMyTurnOn"           text="FollowMe: Aktywuj"           />
-        <text name="FollowMeMyTurnOff"          text="FollowMe: Dezaktywować"         />
+        <text name="FollowMeMyTurnOn"           text="FollowMe: Aktywuj" />
+        <text name="FollowMeMyTurnOff"          text="FollowMe: Dezaktywuj" />
 
-        <text name="FollowMeMyDist"             text="FollowMe: Odstęp"           />
-        <text name="FollowMeMyOffs"             text="FollowMe: Przesunięcie"             />
-        <text name="FollowMeMyWait"             text="FollowMe: Czekaj"               />
-        <text name="FollowMeMyResume"           text="FollowMe: Wznów"             />
-        <text name="FollowMeMySensor"           text="FollowMe: Collision Sensor on/off" />
+        <text name="FollowMeMyDist"             text="FollowMe: Odstęp" />
+        <text name="FollowMeMyOffs"             text="FollowMe: Przesunięcie" />
+        <text name="FollowMeMyWait"             text="FollowMe: Czekaj" />
+        <text name="FollowMeMyResume"           text="FollowMe: Wznów" />
+        <text name="FollowMeMySensor"           text="FollowMe: Wł./Wył. sensor kolizji" />
 
-        <text name="FollowMeFlDist"             text="FollowMe: Odstęp z tyłu"    />
-        <text name="FollowMeFlOffs"             text="FollowMe: Przesunięcie z tyłu"      />
-        <text name="FollowMeFlWait"             text="FollowMe: Czekaj z tyłu"        />
-        <text name="FollowMeFlResume"           text="FollowMe: Wznów z tyłu"      />
-        <text name="FollowMeFlSensor"           text="FollowMe: Behind Coll.Sensor on/off" />
+        <text name="FollowMeFlDist"             text="FollowMe: Odstęp (podążający)" />
+        <text name="FollowMeFlOffs"             text="FollowMe: Przesunięcie (podążający)" />
+        <text name="FollowMeFlWait"             text="FollowMe: Czekaj (podążający)" />
+        <text name="FollowMeFlResume"           text="FollowMe: Wznów (podążający)" />
+        <text name="FollowMeFlSensor"           text="FollowMe: Wł./Wył. sensor kolizji (podążający)" />
 
-        <text name="input_FollowMeMyToggle"     text="FollowMe: Przełączanie wł/wył" />
+        <text name="input_FollowMeMyToggle"     text="FollowMe: Włącz/Wyłącz" />
         <text name="input_FollowMeMyPause"      text="FollowMe: Czekaj/wznów"/>
-        <text name="input_FollowMeMyDist_2"     text="FollowMe: Odstęp aktywnego pojazdu -" />
-        <text name="input_FollowMeMyDist_1"     text="FollowMe: Odstęp aktywnego pojazdu +" />
-        <text name="input_FollowMeMyOffs_2"     text="FollowMe: Przesunięcie aktywnego pojazdu w lewo" />
-        <text name="input_FollowMeMyOffs_1"     text="FollowMe: Przesunięcie aktywnego pojazdu w prawo" />
-        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Przesunięcie aktywnego pojazdu cykl" />
-        <text name="input_FollowMeMySensorTgl"  text="FollowMe: Myself Coll.Sensor on/off" />
+        <text name="input_FollowMeMyDist_2"     text="FollowMe: Zmniejsz odstęp pojazdu prowadzącego" />
+        <text name="input_FollowMeMyDist_1"     text="FollowMe: Zwiększ odstęp pojazdu prowadzącego" />
+        <text name="input_FollowMeMyOffs_2"     text="FollowMe: Przesunięcie w lewo pojazdu prowadzącego" />
+        <text name="input_FollowMeMyOffs_1"     text="FollowMe: Przesunięcie w prawo pojazdu prowadzącego" />
+        <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Przesunięcie cyklu pojazdu prowadzącego" />
+        <text name="input_FollowMeMySensorTgl"  text="FollowMe: Wł./Wył. sensor kolizji" />
 
         <text name="input_FollowMeFlStop"       text="FollowMe: Podążające pojazdy - STOP" />
         <text name="input_FollowMeFlPause"      text="FollowMe: Czekaj z tyłu/wznów"/>
-        <text name="input_FollowMeFlDist_2"     text="FollowMe: Odstęp z tyłu -" />
-        <text name="input_FollowMeFlDist_1"     text="FollowMe: Odstęp z tyłu +" />
-        <text name="input_FollowMeFlOffs_2"     text="FollowMe: Odstęp z tyłu w lewo" />
-        <text name="input_FollowMeFlOffs_1"     text="FollowMe: Odstęp z tyłu w prawo" />
-        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Przesunięcie podążającego pojazdu cykl" />
-        <text name="input_FollowMeFlSensorTgl"  text="FollowMe: Behind Coll.Sensor on/off" />
+        <text name="input_FollowMeFlDist_2"     text="FollowMe: Zmniejsz odstęp pojazdu podążającego" />
+        <text name="input_FollowMeFlDist_1"     text="FollowMe: Zwiększ odstęp pojazdu podążającego" />
+        <text name="input_FollowMeFlOffs_2"     text="FollowMe: Przesunięcie w lewo pojazdu podążającego" />
+        <text name="input_FollowMeFlOffs_1"     text="FollowMe: Przesunięcie w prawo pojazdu podążającego" />
+        <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Przesunięcie cyklu pojazdu podążającego" />
+        <text name="input_FollowMeFlSensorTgl"  text="FollowMe: Wł./Wył. sensor kolizji (podążający)" />
 
         <text name="FollowMeLeader"             text="Prowadzący" />
         <text name="FollowMeFollower"           text="Podążający" />
         <text name="FollowMePaused"             text="(Oczekiwanie)" />
-        <text name="FollowMeColliding"          text="(Sensor colliding)"   />
-        <text name="FollowMeSensorIgnored"      text="(Collision Sensor: Off)" />
-        <text name="FollowMeOffLft"             text="%.1f Odstęp w lewo" />
-        <text name="FollowMeOffRgt"             text="Odstęp w prawo %.1f" />
-        <text name="FollowMeDistBehind"         text="Dystans za %.0f" />
-        <text name="FollowMeDistAhead"          text="Dystans przed %.0f" />
+        <text name="FollowMeColliding"          text="(Sensor kolizji)"   />
+        <text name="FollowMeSensorIgnored"      text="(Sensor kolizji: Wyłączony)" />
+        <text name="FollowMeOffLft"             text="Przesunięcie w lewo %.1f" />
+        <text name="FollowMeOffRgt"             text="Przesunięcie w prawo %.1f" />
+        <text name="FollowMeDistBehind"         text="Odstęp od podążającego %.0f" />
+        <text name="FollowMeDistAhead"          text="Odstęp od prowadzącego %.0f" />
         <!--text name="FollowMeTrailStrength"      text="Trail %d%%"           /-->
 
         <!--text name="FollowMeReason1"            text="Podążający '%s' zatrzymany (przez gracza)"       /-->
