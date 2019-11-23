@@ -9,7 +9,7 @@
     <translationContributors>
         (FS17) bbj89
         (FS17) Taco29
-        (FS17) Anonymous
+        (FS19) Anonymous
     </translationContributors>
 
     <!-- Note that 'description' is only here for easier translations. It needs to be manually copied to ModDesc.XML later. -->
@@ -27,44 +27,44 @@ Placez le véhicule meneur devant celui-ci." />
 
         <!--text name="FollowMeKeysMyself"         text="%s - Actions de contrôle meneur"  /-->
         <!--text name="FollowMeKeysBehind"         text="%s - Actions de contrôle suiveur" /-->
-        <text name="FollowMeMyTurnOn"           text="FollowMe: Activer"           />
-        <text name="FollowMeMyTurnOff"          text="FollowMe: Désactiver"         />
+        <text name="FollowMeMyTurnOn"           text="FollowMe: Activer" />
+        <text name="FollowMeMyTurnOff"          text="FollowMe: Désactiver" />
 
-        <text name="FollowMeMyDist"             text="FollowMe: Écart"           />
-        <text name="FollowMeMyOffs"             text="FollowMe: Décalage"             />
-        <text name="FollowMeMyWait"             text="FollowMe: Attendre"               />
-        <text name="FollowMeMyResume"           text="FollowMe: Redémarrer"             />
-        <text name="FollowMeMySensor"           text="FollowMe: Collision Sensor on/off" />
+        <text name="FollowMeMyDist"             text="FollowMe: Écart" />
+        <text name="FollowMeMyOffs"             text="FollowMe: Décalage" />
+        <text name="FollowMeMyWait"             text="FollowMe: Attendre" />
+        <text name="FollowMeMyResume"           text="FollowMe: Redémarrer" />
+        <text name="FollowMeMySensor"           text="FollowMe: Capteur de collision on/off" />
 
-        <text name="FollowMeFlDist"             text="FollowMe: Suiveur Écart"    />
-        <text name="FollowMeFlOffs"             text="FollowMe: Suiveur Décalage"      />
-        <text name="FollowMeFlWait"             text="FollowMe: Suiveur Attendre"        />
-        <text name="FollowMeFlResume"           text="FollowMe: Suiveur Redémarrer"      />
-        <text name="FollowMeFlSensor"           text="FollowMe: Behind Coll.Sensor on/off" />
+        <text name="FollowMeFlDist"             text="FollowMe: Suiveur Écart" />
+        <text name="FollowMeFlOffs"             text="FollowMe: Suiveur Décalage" />
+        <text name="FollowMeFlWait"             text="FollowMe: Suiveur Attendre" />
+        <text name="FollowMeFlResume"           text="FollowMe: Suiveur Redémarrer" />
+        <text name="FollowMeFlSensor"           text="FollowMe: Capteur.Coll suiveur on/off" />
 
-        <text name="input_FollowMeMyToggle"     text="FollowMe: Activer / Désactiver" />
-        <text name="input_FollowMeMyPause"      text="FollowMe: Meneur Attendre / Redémarrer" />
+        <text name="input_FollowMeMyToggle"     text="FollowMe: Activer/Désactiver" />
+        <text name="input_FollowMeMyPause"      text="FollowMe: Meneur Attendre/Redémarrer" />
         <text name="input_FollowMeMyDist_2"     text="FollowMe: Écart meneur -" />
         <text name="input_FollowMeMyDist_1"     text="FollowMe: Écart meneur +" />
         <text name="input_FollowMeMyOffs_2"     text="FollowMe: Décalage meneur gauche" />
         <text name="input_FollowMeMyOffs_1"     text="FollowMe: Décalage meneur droite" />
         <text name="input_FollowMeMyOffsTgl"    text="FollowMe: Décalage cycle meneur" />
-        <text name="input_FollowMeMySensorTgl"  text="FollowMe: Myself Coll.Sensor on/off" />
+        <text name="input_FollowMeMySensorTgl"  text="FollowMe: Mon Capteur.Coll on/off" />
 
         <text name="input_FollowMeFlStop"       text="FollowMe: Stopper le suiveur" />
-        <text name="input_FollowMeFlPause"      text="FollowMe: Suiveur Attendre / Redémarrer" />
+        <text name="input_FollowMeFlPause"      text="FollowMe: Suiveur Attendre/Redémarrer" />
         <text name="input_FollowMeFlDist_2"     text="FollowMe: Écart suiveur -" />
         <text name="input_FollowMeFlDist_1"     text="FollowMe: Écart suiveur +" />
         <text name="input_FollowMeFlOffs_2"     text="FollowMe: Décalage suiveur gauche" />
         <text name="input_FollowMeFlOffs_1"     text="FollowMe: Décalage suiveur droite" />
         <text name="input_FollowMeFlOffsTgl"    text="FollowMe: Décalage cycle suiveur" />
-        <text name="input_FollowMeFlSensorTgl"  text="FollowMe: Behind Coll.Sensor on/off" />
+        <text name="input_FollowMeFlSensorTgl"  text="FollowMe: Coll.Capteur suiveur on/off" />
 
         <text name="FollowMeLeader"             text="Meneur" />
         <text name="FollowMeFollower"           text="Suiveur" />
         <text name="FollowMePaused"             text="(En attente)" />
-        <text name="FollowMeColliding"          text="(Sensor colliding)"   />
-        <text name="FollowMeSensorIgnored"      text="(Collision Sensor: Off)" />
+        <text name="FollowMeColliding"          text="(Collision détectée)" />
+        <text name="FollowMeSensorIgnored"      text="(Capteur de collision: Off)" />
         <text name="FollowMeOffLft"             text="%.1f Décal. gauche" />
         <text name="FollowMeOffRgt"             text="Décal. droite %.1f" />
         <text name="FollowMeDistBehind"         text="Dist. suiveur %.0f" />
