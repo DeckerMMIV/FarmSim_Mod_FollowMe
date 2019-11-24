@@ -9,13 +9,13 @@
 -->
     <contributors>
       (FS19)
-        Rushmead, MrMarcel5, Gonimy-Vetrom, Anonymous
+        Rushmead, MrMarcel5, Gonimy-Vetrom, Anonymous, Ziuta
       (FS17)
         DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion,
         pokers, Ziuta, pewemo, Alfredo Prieto, xno, Vanquish081, Paxly, Taco29, Anonymous
     </contributors>
 
-    <version>1.8.1.38</version>
+    <version>1.8.2.39</version>
 
     <title>
         <en>Follow Me</en>
@@ -26,9 +26,10 @@ Issues
 - [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
 - Some translations are probably wrong
 
-Changelog 1.8.1.38:
+Changelog 1.8.2.39:
 - Possible fix for manure-barrel with slurry-injector, so these won't get turned on by Follow Me.
 - French language updated, by Anonymous
+- Polish language updated, by Ziuta
 
 Changelog 1.7.0.30:
 - Russian language updated, by Gonimy-Vetrom
