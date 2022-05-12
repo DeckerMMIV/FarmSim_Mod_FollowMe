@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<l10n>
+<!--
+    See comment in modDesc.XML about how to make your own local translation file, that must be placed in folder [..]/modSettings/FS22_FollowMe/
+-->
+    <texts>
+        <!-- Input Controls -->
+        <text name="input_FOLLOW_INITIATE"             text="Initier &amp; Choisir" />
+        <text name="input_FOLLOW_DISTANCE_1"           text="Modifier la distance +" />
+        <text name="input_FOLLOW_DISTANCE_2"           text="Modifier la distance -" />
+        <text name="input_FOLLOW_SIDE_OFFSET_1"        text="Modifier le décalage latéral +" />
+        <text name="input_FOLLOW_SIDE_OFFSET_2"        text="Modifier le décalage latéral -" />
+
+        <text name="input_FOLLOW_MARKER_TOGGLE_OFFSET" text="Marqueur pour le décalage latéral de l'interrupteur" />
+
+        <text name="input_FOLLOW_CHASER_CHOOSE"        text="Abonné choisir autre" />
+        <text name="input_FOLLOW_CHASER_DISTANCE_1"    text="Distance de changement de suiveur +" />
+        <text name="input_FOLLOW_CHASER_DISTANCE_2"    text="Distance de changement de suiveur -" />
+        <text name="input_FOLLOW_CHASER_SIDE_OFFSET_1" text="Décalage latéral de changement de suiveur +" />
+        <text name="input_FOLLOW_CHASER_SIDE_OFFSET_2" text="Décalage latéral de changement de suiveur -" />
+
+        <!-- F1-Menu Actions -->
+        <text name="FOLLOW_INITIATE"                   text="Suivre, initier" />
+        <text name="FOLLOW_CHOOSEOTHER"                text="Suivez, choisissez autre" />
+        <text name="FOLLOW_SIDEOFFSET"                 text="Suivre, Décalage latéral" />
+        <text name="FOLLOW_DISTANCE"                   text="Suivre, Distancer" />
+
+        <text name="FOLLOW_CHASER_CHOOSEOTHER"         text="Adepte, choisissez un autre" />
+        <text name="FOLLOW_CHASER_SIDEOFFSET"          text="Suiveur, Décalage latéral" />
+        <text name="FOLLOW_CHASER_DISTANCE"            text="Suiveur, Distance" />
+
+        <text name="FOLLOW_MARKER_OFFSET_NORMAL"       text="Décalage côté suiveurs: Normal" />
+        <text name="FOLLOW_MARKER_OFFSET_DISABLED"     text="Décalage côté suiveurs: désactivé" />
+        <text name="FOLLOW_MARKER_OFFSET_REVERSED"     text="Décalage côté suiveurs: Opposé" />
+
+        <!-- Screen HUD -->
+        <text name="FOLLOW_LEADER_SELECTED"            text="Suivre:" />
+        <text name="FOLLOW_WAITINGCOLLISION"           text="Attente en raison d'une quasi-collision détectée" />
+        <text name="FOLLOW_DISTANCE_OFFSET"            text="Distance: %.0f, Offset: %.1f" />
+
+        <!-- Other -->
+        <text name="FOLLOW_AIERROR_CHASER_STOPPED"     text="Suiveur arrêté" />
+    </texts>
+</l10n>

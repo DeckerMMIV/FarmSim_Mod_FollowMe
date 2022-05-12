@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<l10n>
+<!--
+    See comment in modDesc.XML about how to make your own local translation file, that must be placed in folder [..]/modSettings/FS22_FollowMe/
+-->
+    <texts>
+        <!-- Input Controls -->
+        <text name="input_FOLLOW_INITIATE"             text="Initiieren &amp; Wählen" />
+        <text name="input_FOLLOW_DISTANCE_1"           text="Distanz ändern +" />
+        <text name="input_FOLLOW_DISTANCE_2"           text="Distanz ändern -" />
+        <text name="input_FOLLOW_SIDE_OFFSET_1"        text="Seitenversatz ändern +" />
+        <text name="input_FOLLOW_SIDE_OFFSET_2"        text="Seitenversatz ändern -" />
+
+        <text name="input_FOLLOW_MARKER_TOGGLE_OFFSET" text="Markierung für Switch-Seitenversatz" />
+
+        <text name="input_FOLLOW_CHASER_CHOOSE"        text="Anhänger wählen andere" />
+        <text name="input_FOLLOW_CHASER_DISTANCE_1"    text="Follower-Änderungsabstand +" />
+        <text name="input_FOLLOW_CHASER_DISTANCE_2"    text="Follower-Änderungsabstand -" />
+        <text name="input_FOLLOW_CHASER_SIDE_OFFSET_1" text="Seitenversatz des Mitnehmerwechsels +" />
+        <text name="input_FOLLOW_CHASER_SIDE_OFFSET_2" text="Seitenversatz des Mitnehmerwechsels -" />
+
+        <!-- F1-Menu Actions -->
+        <text name="FOLLOW_INITIATE"                   text="Folgen, einleiten" />
+        <text name="FOLLOW_CHOOSEOTHER"                text="Folgen, andere wählen" />
+        <text name="FOLLOW_SIDEOFFSET"                 text="Folgen, Seitenversatz" />
+        <text name="FOLLOW_DISTANCE"                   text="Folgen, Abstand" />
+
+        <text name="FOLLOW_CHASER_CHOOSEOTHER"         text="Anhänger, wähle andere" />
+        <text name="FOLLOW_CHASER_SIDEOFFSET"          text="Mitnehmer, Seitenversatz" />
+        <text name="FOLLOW_CHASER_DISTANCE"            text="Follower, Distanz" />
+
+        <text name="FOLLOW_MARKER_OFFSET_NORMAL"       text="Versatz der Mitnehmerseite: Normal" />
+        <text name="FOLLOW_MARKER_OFFSET_DISABLED"     text="Versatz der Mitnehmerseite: Aus" />
+        <text name="FOLLOW_MARKER_OFFSET_REVERSED"     text="Versatz der Mitnehmerseite: Gegenteil" />
+
+        <!-- Screen HUD -->
+        <text name="FOLLOW_LEADER_SELECTED"            text="Folgen:" />
+        <text name="FOLLOW_WAITINGCOLLISION"           text="Warten wegen erkannter Beinahe-Kollision" />
+        <text name="FOLLOW_DISTANCE_OFFSET"            text="Distanz: %.0f, Versatz: %.1f" />
+
+        <!-- Other -->
+        <text name="FOLLOW_AIERROR_CHASER_STOPPED"     text="Verfolger blieb stehen" />
+    </texts>
+</l10n>

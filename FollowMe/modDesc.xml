@@ -1,228 +1,152 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="47">
+<modDesc descVersion="65">
     <author>Decker_MMIV</author>
     <authorContact>forum.farming-simulator.com</authorContact>
 
 <!--
-    NOTE: For contributing translations, DO NOT edit this ModDesc.XML.
-          Only modify the corresponding ModDesc_l10n_*.XML file.
--->
-    <contributors>
-      (FS19)
-        Rushmead, MrMarcel5, Gonimy-Vetrom, Anonymous, Ziuta
-      (FS17)
-        DrUptown, spinah, fendtfreek, Gonimy_Vetrom, bbj89, DD ModPassion,
-        pokers, Ziuta, pewemo, Alfredo Prieto, xno, Vanquish081, Paxly, Taco29, Anonymous
-    </contributors>
+    https://github.com/DeckerMMIV/FarmSim_Mod_FollowMe
 
-    <version>1.8.2.39</version>
+    NOTE:
+    Community translations and other languages for this mod, will likely not be included in future versions.
+
+    However there is still possibility to make your own local translation, by placing a l10n.xml (localization.xml) file in
+    the folder [..]/modSettings/FS22_FollowMe/   (you need to create the folder 'FS22_FollowMe', as it won't be created automatically)
+
+    Take a copy of this mod's l10n_en.xml file, and place into the folder [..]/modSettings/FS22_FollowMe/
+
+    Rename the l10n_en.xml file, to use your choice of language code (de,fr,hu,ru,ch,...), or just use generic filename of  l10n.xml  (or localization.xml)
+
+    Now you can edit your own local copy for a localization file for this mod, and when it is error-free, it will be loaded by a script in this mod when a game-session is started.
+-->
+
+    <version>1.0.0.0</version>
 
     <title>
         <en>Follow Me</en>
     </title>
 
-    <changeLog><![CDATA[
-Issues
-- [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
-- Some translations are probably wrong
-
-Changelog 1.8.2.39:
-- Possible fix for manure-barrel with slurry-injector, so these won't get turned on by Follow Me.
-- French language updated, by Anonymous
-- Polish language updated, by Ziuta
-
-Changelog 1.7.0.30:
-- Russian language updated, by Gonimy-Vetrom
-- Updated descVersion to match game patch
-
-Changelog 1.6.0.29:
-- Fixed minor error in FollowMe, caused by game patch 1.5.1.0
-
-Changelog 1.5.0.25:
-- Multiplayer support is implemented
-
-Changelog 1.4.0.10:
-- First attempt at multiplayer support
-- Added 'Collision Sensor on/off' toggle
-- Fix for "lights flashing"
-- Misc. code cleanup
-
-Changelog 1.3.0.6:
-- Hiding the HUD-text after 5 seconds. Player must issue another 'Follow Me'-input-action to vehicle for displaying HUD-text again.
-- Fix/work-around for making a follower-combine NOT stop at headlands/turning, due to its cutter detecting 'no more crops' to harvest.
-- Reduced 'is blocked'-notifications, when obstacle/collision is detected.
-- Removed superfluous 'title' and 'description' XML-tags from ModDesc.XML, for languages that are not shown in (the in-game) ModHub anyway.
-
-Changelog 1.2.0.3:
-- "Quick-tap" keys activation threshold changed to '0.3 second' (was previously '150 ms')
-- Attempt at obstacle/collision detection
-
-Changelog 1.1.0.2:
-- Fix for causing error: "/specializations/Plow.lua(680) : attempt to compare number with nil"
-
-Changelog 1.0.1.1:
-- Upgraded to FS19
-- As per ModHub Team certification report request, have reduced to only using 'EN'-title, due to using same title-name for all languages
-]]></changeLog>
-
     <description>
         <en>
-<![CDATA[Ever wanted to have some vehicles follow you around the map?
-With "Follow Me" you can (though not backwards driving).
+<![CDATA[Singleplayer only! PC/Mac only!
 
+Ever wanted to have some vehicles follow you around the map? With "Follow Me" you can (though not backwards driving).
 
-Issues
-- [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
-- Some translations are probably wrong
+Instructions:
+- Use action 'Initiate / Choose other' (default: RCTRL + F) to select the vehicle to follow, and make sure it is visibly indicated on the screen.
+- For selecting another vehicle to follow, if there are more in the vicinity, press the 'Initiate / Choose other' action again before the 3 seconds timeout.
+- To stop following, press the 'Stop AI Worker' (default: H).
+- When in a vehicle, its own distance and side-offset to a leader, can be modified using actions 'Change distance' (default: RCTRL + W/S) and 'Change side offset' (default: RCTRL + A/D).
 
-Changelog 1.6.0.29:
-- Multiplayer support is implemented
-- Added 'Collision Sensor on/off' toggle
-- Fix for "lights flashing"
-- Fixed minor error in FollowMe, caused by game patch 1.5.1.0
+- When being in a vehicle that has followers, use action 'Follower, Choose other' (default: RSHIFT + RCTRL + F) to specify what follower is selected for instructions about distance and side offset.
+- Use actions 'Follower, Distance' (default: RSHIFT + RCTRL + W/S) and 'Follower, Side offset' (default: RSHIFT + RCTRL + A/D) for changing the selected follower's distance and side offset.
 
-Changelog 1.3.0.6:
-- Hiding the HUD-text after 5 seconds. Player must issue another 'Follow Me'-input-action to vehicle for displaying HUD-text again.
-- Fix/work-around for making a follower-combine NOT stop at headlands/turning, due to its cutter detecting 'no more crops' to harvest.
-- Reduced 'is blocked'-notifications, when obstacle/collision is detected.
-- Removed superfluous 'title' and 'description' XML-tags from ModDesc.XML, for languages that are not shown in (the in-game) ModHub anyway.
+- It is possible to "place a marker on the trail", that instructs followers to ignore their side offset, or use the opposite side offset. For that use the action 'Marker for Switch side offset' (default: RSHIFT + RCTRL + X). Please be aware of, that the current choice of marker is only visible in the F1-menu of actions.
 
-Changelog 1.2.0.3:
-- "Quick-tap" keys activation threshold changed to '0.3 second' (was previously '150 ms')
-- Attempt at obstacle/collision detection
+Known issues:
+- Some vehicles have a collision-box detection that is much larger and wider than what is visible (even when folded), and therefore will not be able to work correctly with "Follow Me". They will often state 'near collision' due to their invisible collision-box's size.
 
-Changelog 1.1.0.2:
-- Fix for causing error: "/specializations/Plow.lua(680) : attempt to compare number with nil"
 ]]>
         </en>
         <de>
-<![CDATA[Sie wollten schon immer Fahrzeuge als Kolonne über die Karte Transportieren?
-Mit "Follow Me" können Sie dies (natürlich nur vorwärtsfahrend).
+<![CDATA[Nur Einzelspieler! Nur PC/Mac!
 
+Sie wollten schon immer Fahrzeuge als Kolonne über die Karte Transportieren? Mit "Follow Me" können Sie dies (natürlich nur vorwärtsfahrend).
 
-Issues
-- [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
-- Some translations are probably wrong
+Anweisungen:
+- Verwenden Sie die Aktion „Initiieren / Andere auswählen“ (Standard: RCTRL + F), um das zu verfolgende Fahrzeug auszuwählen, und stellen Sie sicher, dass es sichtbar auf dem Bildschirm angezeigt wird.
+- Um ein anderes Fahrzeug auszuwählen, dem gefolgt werden soll, drücken Sie, falls sich weitere in der Nähe befinden, die Aktion „Initiieren/Anderes auswählen“ vor dem 3-Sekunden-Timeout erneut.
+- Um das Folgen zu beenden, drücken Sie die „Stop AI Worker“-Taste (Standard: H).
+- Wenn Sie sich in einem Fahrzeug befinden, können der eigene Abstand und der seitliche Versatz zu einem Anführer mithilfe der Aktionen „Abstand ändern“ (Standard: RCTRL + W/S) und „Seitenversatz ändern“ (Standard: RCTRL + A/D) geändert werden. .
 
-Changelog 1.6.0.29:
-- Multiplayer support is implemented
-- Added 'Collision Sensor on/off' toggle
-- Fix for "lights flashing"
-- Fixed minor error in FollowMe, caused by game patch 1.5.1.0
+- Wenn Sie sich in einem Fahrzeug mit Followern befinden, verwenden Sie die Aktion „Follower, Choose other“ (Standard: RSHIFT + RCTRL + F), um anzugeben, welcher Follower für Anweisungen zu Entfernung und Seitenversatz ausgewählt wird.
+- Verwenden Sie die Aktionen „Follower, Distanz“ (Standard: RSHIFT + RCTRL + W/S) und „Follower, Seitenversatz“ (Standard: RSHIFT + RCTRL + A/D), um den Abstand und den Seitenversatz des ausgewählten Followers zu ändern.
 
-Changelog 1.3.0.6:
-- Hiding the HUD-text after 5 seconds. Player must issue another 'Follow Me'-input-action to vehicle for displaying HUD-text again.
-- Fix/work-around for making a follower-combine NOT stop at headlands/turning, due to its cutter detecting 'no more crops' to harvest.
-- Reduced 'is blocked'-notifications, when obstacle/collision is detected.
-- Removed superfluous 'title' and 'description' XML-tags from ModDesc.XML, for languages that are not shown in (the in-game) ModHub anyway.
+- Es ist möglich, „eine Markierung auf der Spur zu platzieren“, die die Follower anweist, ihren Seitenversatz zu ignorieren oder den gegenüberliegenden Seitenversatz zu verwenden. Verwenden Sie dazu die Aktion 'Marker für Seitenversatz wechseln' (Standard: RSHIFT + RCTRL + X). Bitte beachten Sie, dass die aktuelle Markierungsauswahl nur im F1-Aktionsmenü sichtbar ist.
 
-Changelog 1.2.0.3:
-- "Quick-tap" keys activation threshold changed to '0.3 second' (was previously '150 ms')
-- Attempt at obstacle/collision detection
+Bekannte Probleme:
+- Einige Fahrzeuge haben eine Kollisionsbox-Erkennung, die viel größer und breiter ist als sichtbar (auch im zusammengeklappten Zustand) und daher mit "Follow Me" nicht richtig funktionieren können. Aufgrund der Größe ihrer unsichtbaren Kollisionsbox geben sie oft „Beinahe-Kollision“ an.
 
-Changelog 1.1.0.2:
-- Fix for causing error: "/specializations/Plow.lua(680) : attempt to compare number with nil"
 ]]>
         </de>
         <fr>
-<![CDATA[Vous avez toujours souhaité que certains véhicules puissent vous suivre ?
-Avec "Follow Me", c'est possible (sauf en marche arrière).
+<![CDATA[Solo uniquement! PC/Mac uniquement!
 
+Vous avez toujours souhaité que certains véhicules puissent vous suivre? Avec "Follow Me", c'est possible (sauf en marche arrière).
 
-Issues
-- [WONT FIX] When FollowMe is active, it is not possible to control attached equipment
-- Some translations are probably wrong
+Des instructions:
+- Utilisez l'action 'Initier / Choisir autre' (par défaut: RCTRL + F) pour sélectionner le véhicule à suivre, et assurez-vous qu'il est visiblement indiqué à l'écran.
+- Pour sélectionner un autre véhicule à suivre, s'il y en a d'autres à proximité, appuyez à nouveau sur l'action 'Lancer / Choisir autre' avant le délai de 3 secondes.
+- Pour arrêter de suivre, appuyez sur 'Stop AI Worker' (par défaut: H).
+- Lorsqu'il est dans un véhicule, sa propre distance et son décalage latéral par rapport à un leader peuvent être modifiés à l'aide des actions "Modifier la distance" (par défaut: RCTRL + W/S) et "Changer le décalage latéral" (par défaut: RCTRL + A/D).
 
-Changelog 1.6.0.29:
-- Multiplayer support is implemented
-- Added 'Collision Sensor on/off' toggle
-- Fix for "lights flashing"
-- Fixed minor error in FollowMe, caused by game patch 1.5.1.0
+- Lorsque vous êtes dans un véhicule qui a des suiveurs, utilisez l'action « Suiveur, choisissez autre » (par défaut: RSHIFT + RCTRL + F) pour spécifier quel suiveur est sélectionné pour obtenir des instructions sur la distance et le décalage latéral.
+- Utilisez les actions 'Follower, Distance' (par défaut: RSHIFT + RCTRL + W/S) et 'Follower, Side offset' (par défaut: RSHIFT + RCTRL + A/D) pour modifier la distance et le décalage latéral du suiveur sélectionné.
 
-Changelog 1.3.0.6:
-- Hiding the HUD-text after 5 seconds. Player must issue another 'Follow Me'-input-action to vehicle for displaying HUD-text again.
-- Fix/work-around for making a follower-combine NOT stop at headlands/turning, due to its cutter detecting 'no more crops' to harvest.
-- Reduced 'is blocked'-notifications, when obstacle/collision is detected.
-- Removed superfluous 'title' and 'description' XML-tags from ModDesc.XML, for languages that are not shown in (the in-game) ModHub anyway.
+- Il est possible de "placer un marqueur sur la piste", qui demande aux suiveurs d'ignorer leur décalage latéral ou d'utiliser le décalage latéral opposé. Pour cela, utilisez l'action 'Marker for Switch side offset' (par défaut: RSHIFT + RCTRL + X). Veuillez noter que le choix actuel du marqueur n'est visible que dans le menu d'actions F1.
 
-Changelog 1.2.0.3:
-- "Quick-tap" keys activation threshold changed to '0.3 second' (was previously '150 ms')
-- Attempt at obstacle/collision detection
+Problèmes connus:
+- Certains véhicules ont une détection de boîte de collision beaucoup plus grande et plus large que ce qui est visible (même plié), et ne pourront donc pas fonctionner correctement avec "Follow Me". Ils indiqueront souvent "quasi-collision" en raison de la taille de leur boîte de collision invisible.
 
-Changelog 1.1.0.2:
-- Fix for causing error: "/specializations/Plow.lua(680) : attempt to compare number with nil"
 ]]>
         </fr>
     </description>
 
-    <iconFilename>icon_FollowMe.dds</iconFilename>
+    <iconFilename>modIcon.dds</iconFilename>
 
-    <multiplayer supported="true"/>
+    <!-- NO! This is not some 'false/true' switch, that magically can make the mod work in multiplayer. -->
+    <!-- This `multiplayer supported="false"` indicates that this mod's Lua scripts are NOT YET multiplayer ready. -->
+    <multiplayer supported="false"/> <!-- DO NOT CHANGE as it WILL NOT do what you want it to do! -->
+
+    <specializations>
+        <specialization name="followVehicle" className="FollowVehicle" filename="src/FollowVehicle.lua" />
+    </specializations>
 
     <extraSourceFiles>
-        <sourceFile filename="AIVehicle_Override.lua" />
-        <sourceFile filename="register.lua" />
+        <sourceFile filename="src/loadCustomLocalizationClientside.lua" />
+        <sourceFile filename="src/register.lua" />
     </extraSourceFiles>
 
-    <l10n filenamePrefix="modDesc_l10n" /> <!-- Load the corresponding modDesc_l10n_<language>.XML file, or revert to 'en'/'de'. -->
+    <!-- Please see comment at the top in this modDesc.XML, about how to make your own local translation file, that must be placed in folder [..]/modSettings/FS22_FollowMe/ -->
+    <l10n filenamePrefix="translations/l10n" />
 
     <actions>
-        <action name="FollowMeMyToggle"    category="VEHICLE" axisType="HALF" />
-        <action name="FollowMeMyPause"     category="VEHICLE" axisType="HALF" />
-        <action name="FollowMeMyDist"      category="VEHICLE" axisType="FULL" />
-        <action name="FollowMeMyOffs"      category="VEHICLE" axisType="FULL" />
-        <action name="FollowMeMyOffsTgl"   category="VEHICLE" axisType="HALF" />
-        <action name="FollowMeMySensorTgl" category="VEHICLE" axisType="HALF" />
+        <action name="FOLLOW_INITIATE"             category="VEHICLE" />
+        <action name="FOLLOW_DISTANCE"             category="VEHICLE" axisType="FULL" />
+        <action name="FOLLOW_SIDE_OFFSET"          category="VEHICLE" axisType="FULL" />
+        <action name="FOLLOW_MARKER_TOGGLE_OFFSET" category="VEHICLE" />
 
-        <action name="FollowMeFlStop"      category="VEHICLE" axisType="HALF" />
-        <action name="FollowMeFlPause"     category="VEHICLE" axisType="HALF" />
-        <action name="FollowMeFlDist"      category="VEHICLE" axisType="FULL" />
-        <action name="FollowMeFlOffs"      category="VEHICLE" axisType="FULL" />
-        <action name="FollowMeFlOffsTgl"   category="VEHICLE" axisType="HALF" />
-        <action name="FollowMeFlSensorTgl" category="VEHICLE" axisType="HALF" />
+        <action name="FOLLOW_CHASER_CHOOSE"        category="VEHICLE" />
+        <action name="FOLLOW_CHASER_DISTANCE"      category="VEHICLE" axisType="FULL" />
+        <action name="FOLLOW_CHASER_SIDE_OFFSET"   category="VEHICLE" axisType="FULL" />
+
     </actions>
 
     <inputBinding>
-        <actionBinding action="FollowMeMyToggle">
-          <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_f" index="1" />
+        <actionBinding action="FOLLOW_INITIATE">
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_f" index="1" />
         </actionBinding>
-        <actionBinding action="FollowMeMyPause">
-          <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_h" index="1" />
+        <actionBinding action="FOLLOW_DISTANCE">
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_w" axisComponent="-" neutralInput="0" index="1" />
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_s" axisComponent="+" neutralInput="0" index="1" />
         </actionBinding>
-        <actionBinding action="FollowMeMyDist">
-          <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_w" axisComponent="-" neutralInput="0" index="1" />
-          <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_s" axisComponent="+" neutralInput="0" index="1" />
+        <actionBinding action="FOLLOW_SIDE_OFFSET">
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_a" axisComponent="-" neutralInput="0" index="1" />
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_d" axisComponent="+" neutralInput="0" index="1" />
         </actionBinding>
-        <actionBinding action="FollowMeMyOffs">
-          <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_a" axisComponent="-" neutralInput="0" index="1" />
-          <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_d" axisComponent="+" neutralInput="0" index="1" />
-        </actionBinding>
-        <actionBinding action="FollowMeMyOffsTgl">
-          <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_x" index="1" />
-        </actionBinding>
-        <actionBinding action="FollowMeMySensorTgl">
-          <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_q" index="1" />
+        <actionBinding action="FOLLOW_MARKER_TOGGLE_OFFSET">
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_rctrl KEY_x" index="1" />
         </actionBinding>
 
-        <actionBinding action="FollowMeFlStop">
-          <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_f" index="1" />
+        <actionBinding action="FOLLOW_CHASER_CHOOSE">
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_rctrl KEY_f" index="1" />
         </actionBinding>
-        <actionBinding action="FollowMeFlPause">
-          <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_h" index="1" />
+        <actionBinding action="FOLLOW_CHASER_DISTANCE">
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_rctrl KEY_w" axisComponent="-" neutralInput="0" index="1" />
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_rctrl KEY_s" axisComponent="+" neutralInput="0" index="1" />
         </actionBinding>
-        <actionBinding action="FollowMeFlDist">
-          <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_w" axisComponent="-" neutralInput="0" index="1" />
-          <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_s" axisComponent="+" neutralInput="0" index="1" />
-        </actionBinding>
-        <actionBinding action="FollowMeFlOffs">
-          <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_a" axisComponent="-" neutralInput="0" index="1" />
-          <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_d" axisComponent="+" neutralInput="0" index="1" />
-        </actionBinding>
-        <actionBinding action="FollowMeFlOffsTgl">
-          <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_x" index="1" />
-        </actionBinding>
-        <actionBinding action="FollowMeFlSensorTgl">
-          <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_q" index="1" />
+        <actionBinding action="FOLLOW_CHASER_SIDE_OFFSET">
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_rctrl KEY_a" axisComponent="-" neutralInput="0" index="1" />
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_rctrl KEY_d" axisComponent="+" neutralInput="0" index="1" />
         </actionBinding>
     </inputBinding>
 </modDesc>
