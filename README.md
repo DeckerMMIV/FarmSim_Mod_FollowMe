@@ -1,12 +1,15 @@
-# Farming Simulator modification - FollowMe
+# Farming Simulator modification - Follow Me
 
 To read more about this mod, find it on;
+- https://www.farming-simulator.com/mods.php?title=fs2022&org_id=53574
 - https://www.farming-simulator.com/mods.php?title=fs2019&org_id=53574
 - https://www.farming-simulator.com/mods.php?title=fs2017&org_id=53574
 
-## FS22
 
-_(2021-11-26) It will take some time, but eventually it will be upgraded to FS22._
+## FS22 - Change-log
+
+1.0.0.0
+- Follow Me released on Giants Software's ModHub (2022-05-11).
 
 
 ## FS19 - Change-log
