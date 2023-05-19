@@ -38,7 +38,7 @@ end
 
 function FollowVehicle.registerFunctions(vehicleType)
     for _,funcName in pairs( {
-        "adjustDistanceAndSideOffset",
+        "modifyDistanceAndSideOffset",
         "getDropIndexFromCount",
         "getLastTrailDrop",
         "getTrailDrop",
@@ -189,11 +189,11 @@ function FollowVehicle:onRegisterActionEvents(isActiveForInput, isActiveForInput
         if self:getIsActiveForInput(true, true) then
             local _, eventId
             if self:getCanStartFollowVehicle() and g_currentMission:getHasPlayerPermission("hireAssistant") then
-                _, eventId = self:addPoweredActionEvent(spec.actionEvents, InputAction.FOLLOW_INITIATE, self, FollowVehicle.actionEventInitiate, false, true, false, true, nil, nil, nil, true)
+                _, eventId = self:addPoweredActionEvent(spec.actionEvents, InputAction.FOLLOW_INITIATE, self, FollowVehicle.actionEventInitiate, false, true, false, true, nil, nil, true, true)
                 g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_NORMAL)
             end
 
-            _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_MARKER_TOGGLE_OFFSET, self, FollowVehicle.actionEventToggleFollowersOffset, false, true, false, true, nil, nil, nil, true)
+            _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_MARKER_TOGGLE_OFFSET, self, FollowVehicle.actionEventToggleFollowersOffset, false, true, false, true, nil, nil, true, true)
             g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_LOW)
 
             local followVehicleActive = self:getIsFollowVehicleActive()
@@ -201,10 +201,10 @@ function FollowVehicle:onRegisterActionEvents(isActiveForInput, isActiveForInput
             if not otherAIActive then
                 local priority = (followVehicleActive and GS_PRIO_VERY_HIGH) or GS_PRIO_LOW
 
-                _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_DISTANCE,    self, FollowVehicle.actionEventDistance,   false, true, false, true, nil, nil, nil, true)
+                _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_DISTANCE,    self, FollowVehicle.actionEventDistance,   false, true, false, true, nil, nil, true, true)
                 g_inputBinding:setActionEventTextPriority(eventId, priority)
 
-                _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_SIDE_OFFSET, self, FollowVehicle.actionEventSideOffset, false, true, false, true, nil, nil, nil, true)
+                _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_SIDE_OFFSET, self, FollowVehicle.actionEventSideOffset, false, true, false, true, nil, nil, true, true)
                 g_inputBinding:setActionEventTextPriority(eventId, priority)
             end
     
@@ -212,18 +212,18 @@ function FollowVehicle:onRegisterActionEvents(isActiveForInput, isActiveForInput
             self:getAllFollowers(followers)
             if #followers > 0 then
                 --if #followers > 1 then
-                    _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_CHASER_CHOOSE,  self, FollowVehicle.actionEventFollowerSelect,     false, true, false, true, nil, nil, nil, true)
+                    _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_CHASER_CHOOSE,  self, FollowVehicle.actionEventFollowerSelect,     false, true, false, true, nil, nil, true, true)
                     g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_NORMAL)
                     g_inputBinding:setActionEventTextVisibility(eventId, true) --(#followers > 1))
                     g_inputBinding:setActionEventText(eventId, FOLLOW_CHASER_CHOOSEOTHER)
                 --end
 
-                _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_CHASER_DISTANCE,    self, FollowVehicle.actionEventFollowerDistance,   false, true, false, true, nil, nil, nil, true)
+                _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_CHASER_DISTANCE,    self, FollowVehicle.actionEventFollowerDistance,   false, true, false, true, nil, nil, true, true)
                 g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_NORMAL)
                 g_inputBinding:setActionEventTextVisibility(eventId, false)
                 g_inputBinding:setActionEventText(eventId, FOLLOW_CHASER_DISTANCE)
 
-                _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_CHASER_SIDE_OFFSET, self, FollowVehicle.actionEventFollowerSideOffset, false, true, false, true, nil, nil, nil, true)
+                _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_CHASER_SIDE_OFFSET, self, FollowVehicle.actionEventFollowerSideOffset, false, true, false, true, nil, nil, true, true)
                 g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_NORMAL)
                 g_inputBinding:setActionEventTextVisibility(eventId, false)
                 g_inputBinding:setActionEventText(eventId, FOLLOW_CHASER_SIDEOFFSET)
@@ -273,12 +273,12 @@ function FollowVehicle:actionEventInitiate(actionName, inputValue, callbackState
 end
 
 function FollowVehicle:actionEventDistance(actionName, inputValue, callbackState, isAnalog)
-    self:adjustDistanceAndSideOffset(5 * MathUtil.sign(inputValue), 0)
+    self:modifyDistanceAndSideOffset(inputValue, 0)
     FollowVehicle.updateActionEvents(self)
 end
 
 function FollowVehicle:actionEventSideOffset(actionName, inputValue, callbackState, isAnalog)
-    self:adjustDistanceAndSideOffset(0, 0.5 * MathUtil.sign(inputValue))
+    self:modifyDistanceAndSideOffset(0, inputValue)
     FollowVehicle.updateActionEvents(self)
 end
 
@@ -328,17 +328,67 @@ function FollowVehicle:actionEventToggleFollowersOffset(actionName, inputValue, 
 end
 
 function FollowVehicle:actionEventFollowerDistance(actionName, inputValue, callbackState, isAnalog)
-    FollowVehicle.adjustFollowerDistanceAndSideOffset(self, 5 * MathUtil.sign(inputValue), 0)
+    FollowVehicle.adjustFollowerDistanceAndSideOffset(self, inputValue, 0)
 end
 
 function FollowVehicle:actionEventFollowerSideOffset(actionName, inputValue, callbackState, isAnalog)
-    FollowVehicle.adjustFollowerDistanceAndSideOffset(self, 0, 0.5 * MathUtil.sign(inputValue))
+    FollowVehicle.adjustFollowerDistanceAndSideOffset(self, 0, inputValue)
 end
 
-function FollowVehicle:adjustDistanceAndSideOffset(distanceAdjust, sideoffsetAdjust)
+local distanceIntervalChanges = {
+    -- distanceLow, distanceHigh, stepChange
+    {-math.huge,       -20,  5},
+    {       -20,         0,  2},
+    {         0,        30,  5},
+    {        30, math.huge, 10},
+}
+function FollowVehicle:modifyDistanceAndSideOffset(distanceDirection, sideoffsetAdjust)
     local spec = getSpec(self)
-    spec.distanceFB = MathUtil.clamp(spec.distanceFB + distanceAdjust, -50, 200)
-    spec.offsetLR   = MathUtil.clamp(spec.offsetLR   + sideoffsetAdjust, -50, 50)
+
+    local newDistance = spec.distanceFB
+    if distanceDirection ~= 0 then
+        -- Possible "solution" for issue #62
+        distanceDirection = MathUtil.sign(distanceDirection)
+        local distance_step = 5
+        if distanceDirection < 0 then
+            for idx,item in ipairs(distanceIntervalChanges) do
+                if item[1] < spec.distanceFB and spec.distanceFB <= item[2] then
+                    distance_step = item[3]
+                    newDistance = spec.distanceFB + (distance_step * distanceDirection)
+                    if newDistance < item[1] then
+                        newDistance = item[1]
+                        distance_step = distanceIntervalChanges[idx-1][3]
+                    end
+                    break
+                end
+            end
+        elseif distanceDirection > 0 then
+            for idx,item in ipairs(distanceIntervalChanges) do
+                if item[1] <= spec.distanceFB and spec.distanceFB < item[2] then
+                    distance_step = item[3]
+                    newDistance = spec.distanceFB + (distance_step * distanceDirection)
+                    if newDistance > item[2] then
+                        newDistance = item[2]
+                        distance_step = distanceIntervalChanges[idx+1][3]
+                    end
+                    break
+                end
+            end
+        end
+        newDistance = math.floor(newDistance / distance_step) * distance_step
+    end
+
+    local sideOffset_step = 0.5
+    sideoffsetAdjust = sideOffset_step * MathUtil.sign(sideoffsetAdjust)
+    local newOffsetLR = math.floor((spec.offsetLR + sideoffsetAdjust) / sideOffset_step) * sideOffset_step
+
+    FollowVehicle.setDistanceAndSideOffset(self, newDistance, newOffsetLR)
+end
+
+function FollowVehicle:setDistanceAndSideOffset(newDistance, newSideoffset)
+    local spec = getSpec(self)
+    spec.distanceFB = MathUtil.clamp(newDistance, -50, 200)
+    spec.offsetLR   = MathUtil.clamp(newSideoffset, -50, 50)
 end
 
 function FollowVehicle:adjustFollowerDistanceAndSideOffset(distanceAdjust, sideoffsetAdjust)
@@ -360,7 +410,7 @@ function FollowVehicle:adjustFollowerDistanceAndSideOffset(distanceAdjust, sideo
     end
 
     if nil ~= follower then
-        follower:adjustDistanceAndSideOffset(distanceAdjust, sideoffsetAdjust)
+        follower:modifyDistanceAndSideOffset(distanceAdjust, sideoffsetAdjust)
         spec.drawFollowersTimer = 4000
     end
 end
@@ -1162,7 +1212,10 @@ function FollowVehicle:updateAIFollowVehicle_DriveData(dt)
         end
     end
 
-    if tX == nil or allowedMaxSpeed < 0 then
+    if allowedMaxSpeed < 0
+    or tX == nil          or tZ == nil
+    or MathUtil.isNan(tX) or MathUtil.isNan(tZ)
+    then
         spec.aiDriveParams.maxSpeed = 0
         if allowedMaxSpeed < 0 then
             self:stopCurrentAIJob(AIMessageErrorFollowerStopped.new())

@@ -3,7 +3,7 @@
 --
 -- @author  Decker_MMIV (DCK)
 -- @contact forum.farming-simulator.com
--- @date    2021-12-xx
+-- @date    2021-12-xx, 2023-05-xx
 --
 
 -- For debugging
@@ -32,33 +32,54 @@ Lights.updateAILights = Utils.overwrittenFunction(Lights.updateAILights, functio
   -- 'FollowMe' was not active, so let the original method do what it need to do.
   superFunc(self, ...)
 end)
-
-Cutter.getAllowCutterAIFruitRequirements = Utils.overwrittenFunction(Cutter.getAllowCutterAIFruitRequirements, function(self, superFunc, ...)
-  -- Work-around/fix for issue #33
-  -- Due to `Cutter:onEndWorkAreaProcessing()` getting called, and to avoid it then calling stopAIVehicle().
-  if self.isServer then
-    local rootVehicle = self:getRootVehicle()
-    if nil ~= rootVehicle and FollowMe.getIsFollowMeActive(rootVehicle) then
-      self.spec_cutter.aiNoValidGroundTimer = 0
-    end
-  end
-  return superFunc(self, ...)
-end)
 --]]
 
---[[
-Sprayer.registerOverwrittenFunctions = Utils.appendedFunction(Sprayer.registerOverwrittenFunctions, function(vehicleType)
-  -- Having a manureBarrel with a fertilizingCultivator attached, then avoid having the AI automatically turn these on when FollowMe is active.
-  SpecializationUtil.registerOverwrittenFunction(vehicleType, "getIsAIActive", function(self, superFunc)
-      local rootVehicle = self:getRootVehicle()
+
+if Cutter.onEndWorkAreaProcessing ~= nil then
+  -- Due to issue #59 with combines with active FollowMe and harvesting, being stopped by Cutter.LUA
+  -- during turning at end of field, where there are no crops to harvest.
+  Cutter.onEndWorkAreaProcessing = Utils.appendedFunction(Cutter.onEndWorkAreaProcessing, function(self)
+    if self.isServer then
+      local rootVehicle = self.rootVehicle
       if rootVehicle and rootVehicle.getIsFollowVehicleActive and rootVehicle:getIsFollowVehicleActive() then
+        local spec = self.spec_cutter
+        if spec then
+          spec.aiNoValidGroundTimer = 0
+        end
+      end
+    end
+  end)
+end
+
+
+Sprayer.registerOverwrittenFunctions = Utils.appendedFunction(Sprayer.registerOverwrittenFunctions, function(vehicleType)
+  -- Due to issues where Sprayer is activated when getIsAIActive returns true, some of the 
+  -- Sprayer's functions needs be lied to.
+  for _,funcName in pairs({
+    "processSprayerArea",
+    "getIsSprayerExternallyFilled",
+    "getCanBeTurnedOn",
+    "onStartWorkAreaProcessing",
+  }) do
+    SpecializationUtil.registerOverwrittenFunction(vehicleType, funcName, function(self, superFunc, ...)
+      self.modFV_LieAbout_IsAIActive = true
+      res = superFunc(self, ...)
+      self.modFV_LieAbout_IsAIActive = nil
+      return res
+    end)
+  end
+
+  -- Avoid having the AI automatically turn on sprayer when FollowMe is active.
+  SpecializationUtil.registerOverwrittenFunction(vehicleType, "getIsAIActive", function(self, superFunc)
+    local rootVehicle = self.rootVehicle
+    if rootVehicle and rootVehicle.getIsFollowVehicleActive and rootVehicle:getIsFollowVehicleActive() then
+      if self.modFV_LieAbout_IsAIActive then
         return false -- "Hackish" work-around, in attempt at convincing Sprayer.LUA to NOT turn on
       end
-      return superFunc(self)
     end
-  )
+    return superFunc(self)
+  end)
 end)
---]]
 
 --
 --

@@ -14,7 +14,7 @@ function AIDriveStrategyFollowBaler.new(customMt)
 	return self
 end
 
-local getBalerAllowDriveAndMaxSpeed = function(self, baler)
+local getBalerAllowDriveAndMaxSpeed = function(self, baler, dt)
     local spec = baler.spec_baler
     if spec.unloadingState ~= Baler.UNLOADING_CLOSED then
         return false, 0
@@ -28,14 +28,28 @@ local getBalerAllowDriveAndMaxSpeed = function(self, baler)
         if freeFillLevel <= 0 then
             return false, 0
         end
-    
-        return true, 2 + (freeFillLevel / self.slowDownFillLevel) * self.slowDownStartSpeed
+
+        -- Issue #60
+        -- If only tiny amounts are being picked up during 0.5 second interval, then keep the vehicle's speed up.
+        --if spec.workAreaParameters.lastPickedUpLiters <= 10 then
+        --    spec.workAreaParameters.modFV_emptyWorkAreaTimer = Utils.getNoNil(spec.workAreaParameters.modFV_emptyWorkAreaTimer, 500) - dt
+        --    if spec.workAreaParameters.modFV_emptyWorkAreaTimer < 0 then
+        --        return true, math.huge
+        --    end
+        --end
+        --spec.workAreaParameters.modFV_emptyWorkAreaTimer = nil
+
+        -- Issue #60
+        -- Only larger amounts picked up, should slow down vehicle's speed.
+        if spec.workAreaParameters.lastPickedUpLiters > 10 then
+            return true, 2 + (freeFillLevel / self.slowDownFillLevel) * self.slowDownStartSpeed
+        end
     end
 
     return true, math.huge
 end
 
-local getBalerAllowDriveAndMaxSpeed_NonStopBaling = function(self, baler)
+local getBalerAllowDriveAndMaxSpeed_NonStopBaling = function(self, baler, dt)
     local spec = baler.spec_baler
     if spec.platformDropInProgress then
         return true, spec.platformAIDropSpeed
@@ -60,8 +74,6 @@ function AIDriveStrategyFollowBaler:setAIVehicle(vehicle)
                 func = getBalerAllowDriveAndMaxSpeed_NonStopBaling
             end
             table.insert(self.balers, { object=object, func=func })
-        -- elseif SpecializationUtil.hasSpecialization(BaleWrapper, object.specializations) then
-        --     table.insert(self.balers, { object=object, func=noOperation })
         end
     end
 
@@ -87,15 +99,11 @@ end
 function AIDriveStrategyFollowBaler:getDriveData(dt, vX, vY, vZ)
 	local maxSpeed = math.huge
 	for _, baler in pairs(self.balers) do
-        --local func = baler.func
-        --if func then
-        --    local allowedToDrive, maxSpeedTemp = func(self, baler.object)
-            local allowedToDrive, maxSpeedTemp = baler.func(self, baler.object)
-            if not allowedToDrive then
-                return nil, nil, true, 0, 0
-            end
-            maxSpeed = math.min(maxSpeed, maxSpeedTemp)
-        --end
+        local allowedToDrive, maxSpeedTemp = baler.func(self, baler.object, dt)
+        if not allowedToDrive then
+            return nil, nil, true, 0, 0
+        end
+        maxSpeed = math.min(maxSpeed, maxSpeedTemp)
 	end
 
     return nil, nil, true, maxSpeed, math.huge
