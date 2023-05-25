@@ -76,7 +76,6 @@ function AIDriveStrategyFollowVehicle:getDriveData(dt, vX, vY, vZ)
         -- When distance is 5 or less to target, lerp towards next target
         if tDist <= 5 then
             local nextTargetX,_,nextTargetZ = unpack(crumbN.position)
-            --local nextTargetRotX,_,nextTargetRotZ = unpack(crumbN.direction)
             local nextTargetRotX,nextTargetRotZ = leader:getTrailDropDirection(vehicleSpec.followingCurrentCount + 1)
             local sideOffset = vehicleSpec.offsetLR * (crumbN.followersOffsetPct or 1.0)
             local ntX = nextTargetX - nextTargetRotZ * sideOffset
@@ -146,7 +145,7 @@ function AIDriveStrategyFollowVehicle:getDriveData(dt, vX, vY, vZ)
       --   maxSpeed = math.min(10, maxSpeed)
       -- else
         local curSpeed = math.max(1, (vehicle.lastSpeed * 3600))
-        maxSpeed = maxSpeed * (1 + math.min(1, (distanceToStop / curSpeed)))
+        maxSpeed = maxSpeed * (1 + math.min(2, (distanceToStop / curSpeed)))
       -- end
     end
 

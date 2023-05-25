@@ -550,32 +550,34 @@ function FollowVehicle:onUpdateTick(dt, isActiveForInput, isSelected)
     end
 
     if self.isServer then
-        local direction = self:getReverserDirection()
-        if (direction * self.movingDirection > 0) then  -- Must drive forward to drop trail
+        local forceAddDrop = false
+        local moveDirection = self:getReverserDirection() * self.movingDirection
+        if (moveDirection > 0) then  -- Must drive forward to drop trail
             spec.sumSpeed = spec.sumSpeed + self.lastSpeed
             spec.sumCount = spec.sumCount + 1
 
-            local node = self:getAISteeringNode()
-            --local vX,vY,vZ = getWorldTranslation(node)
             local vX,vY,vZ = getWorldTranslation(self.rootNode)
             local lastDrop = self:getLastTrailDrop()
             local oX,oY,oZ = unpack(lastDrop.position)
             local distancePrevDrop = MathUtil.vector2Length(oX - vX, oZ - vZ)
             if distancePrevDrop >= FollowVehicle.MIN_DISTANCE_BETWEEN_DROPS then
-                local forceAddDrop = distancePrevDrop >= FollowVehicle.MAX_DISTANCE_BETWEEN_DROPS
+                forceAddDrop = distancePrevDrop >= FollowVehicle.MAX_DISTANCE_BETWEEN_DROPS
                 if not forceAddDrop then
                     -- If current driving angle, compared to last drop's angle, is too wide, then add a new trail-drop
+                    local node = self:getAISteeringNode()
                     local dirX,_,dirZ = localDirectionToWorld(node, 0,0,1)
                     local dX,dZ = dirX - lastDrop.direction[1], dirZ - lastDrop.direction[3]
                     forceAddDrop = math.abs(dX * dZ) >= 0.000001
                 end
-                if forceAddDrop then
-                    local maxSpeed = math.max(5, (spec.sumSpeed / spec.sumCount) * 3600)
-                    self:addTrailDrop(maxSpeed, self:getTurnLightState())
-                    spec.sumSpeed = 0
-                    spec.sumCount = 0
-                end
             end
+        --elseif (spec.sumCount > 0) and (moveDirection < 0) then -- Begins to drive backwards? Create just one trail-drop (ToDo: mark drop with a "driving backwards" indicator)
+        --    forceAddDrop = true 
+        end
+        if forceAddDrop then
+            local maxSpeed = math.max(5, (spec.sumSpeed / spec.sumCount) * 3600)
+            self:addTrailDrop(maxSpeed, self:getTurnLightState())
+            spec.sumSpeed = 0
+            spec.sumCount = 0
         end
     end
 end
@@ -603,13 +605,15 @@ function FollowVehicle:getTrailDropDirection(count)
         count = spec.dropperCurrentCount
     end
 
+    local currDrop = spec.dropperCircularArray[self:getDropIndexFromCount(count)]
+
     -- Find the "direction" of trail-drop, by taking the previous drop and next drop's positions,
     -- and generate a normalized direction-vector from those.
     local prevPos
     if count > 0 then
         prevPos = spec.dropperCircularArray[self:getDropIndexFromCount(count - 1)].position
     else
-        prevPos = spec.dropperCircularArray[self:getDropIndexFromCount(count)].position
+        prevPos = currDrop.position
     end
 
     local nextPos
@@ -620,8 +624,15 @@ function FollowVehicle:getTrailDropDirection(count)
         nextPos = { getWorldTranslation(self.rootNode) }
     end
 
-    local x,z = nextPos[1] - prevPos[1], nextPos[3] - prevPos[3]
-    return MathUtil.vector2Normalize(x,z)
+    local dX,dZ = MathUtil.vector2Normalize(nextPos[1] - prevPos[1], nextPos[3] - prevPos[3])
+
+    -- ...except if the result is "backwards", then just use the current-drop's direction
+    local dotResult = MathUtil.dotProduct(dX,0,dZ, currDrop.direction[1],0,currDrop.direction[3])
+    if dotResult < 0.25 then
+        dX,dZ = currDrop.direction[1], currDrop.direction[3]
+    end
+
+    return dX,dZ
 end
 
 function FollowVehicle:addTrailDrop(maxSpeed, turnLightState, zOffset)
@@ -629,9 +640,8 @@ function FollowVehicle:addTrailDrop(maxSpeed, turnLightState, zOffset)
 
     local spec = getSpec(self)
     
-    local node = self:getAISteeringNode()
-    --local x,y,z = getWorldTranslation(node)
     local x,y,z = getWorldTranslation(self.rootNode)
+    local node = self:getAISteeringNode()
     local dirX,dirY,dirZ = localDirectionToWorld(node, 0,0,1)
 
     if zOffset ~= nil then
@@ -684,8 +694,6 @@ function FollowVehicle:onDraw()
             local tZ = spec.aiDriveParams.tZ
             local maxSpeed = spec.aiDriveParams.maxSpeed
 
-            --local node = self:getAISteeringNode()
-            --local x1,y1,z1 = getWorldTranslation(node)
             local x1,y1,z1 = getWorldTranslation(self.rootNode)
 
             local yOffset = FollowVehicle.debugTrailYOffset
@@ -766,19 +774,15 @@ function FollowVehicle:drawNearbyVehicles()
     local shadeSize = textSize/10
     local yOffset = 2
 
-    --local node
     local wx,wy,wz
     local sx,sy,sz
 
     for _, nearbyVehicle in ipairs(spec.nearbyVehicles) do
-        --node     = nearbyVehicle.vehicle:getAISteeringNode()
-        --wx,wy,wz = getWorldTranslation(node)
         wx,wy,wz = getWorldTranslation(nearbyVehicle.vehicle.rootNode)
         sx,sy,sz = project(wx, wy+yOffset, wz)
         if sx > 0 and sx < 1 and sy > 0 and sy < 1 and sz <= 1 then
             nearbyVehicle.inViewport = true
             if nearbyVehicle.selected then
-                --local x1,y1,z1 = getWorldTranslation(self:getAISteeringNode())
                 local x1,y1,z1 = getWorldTranslation(self.rootNode)
 
                 local followFromTrailDropCount = nearbyVehicle.followFromTrailDropCount
@@ -794,7 +798,6 @@ function FollowVehicle:drawNearbyVehicles()
                     for i=followFromTrailDropCount, drawUntilCount do
                         drop = leaderVehicle:getTrailDrop(i)
                         x2,y2,z2 = unpack(drop.position)
-                        --targetRotX,targetRotY,targetRotZ = unpack(drop.direction)
                         targetRotX,targetRotZ = leaderVehicle:getTrailDropDirection(i)
                         sideOffset = spec.offsetLR * (drop.followersOffsetPct or 1.0)
                         x2 = x2 - targetRotZ * sideOffset
@@ -896,8 +899,6 @@ function FollowVehicle:drawDebugTrail()
     local dropCount, drop
     local x2,y2,z2
 
-    --local node = self:getAISteeringNode()
-    --local x1,y1,z1 = getWorldTranslation(node)
     local x1,y1,z1 = getWorldTranslation(self.rootNode)
 
     for i=0, FollowVehicle.debugTrailVisibleEntries do
@@ -1197,7 +1198,6 @@ end
 function FollowVehicle:updateAIFollowVehicle_DriveData(dt)
 	local spec = getSpec(self)
 
-    --local vX, vY, vZ = getWorldTranslation(self:getAISteeringNode())
     local vX, vY, vZ = getWorldTranslation(self.rootNode)
     local tX, tZ, moveForwards, strategyMaxSpeed, distanceToStop = nil
     local allowedMaxSpeed = math.huge
@@ -1286,9 +1286,8 @@ end
 function FollowVehicle:findVehiclesNearby()
     local foundVehicles = {}
 
-    local node      = self:getAISteeringNode()
-    --local wx,wy,wz  = getWorldTranslation(node)
     local wx,wy,wz  = getWorldTranslation(self.rootNode)
+    local node      = self:getAISteeringNode()
     local rx,ry,rz  = localDirectionToWorld(node, 0,0,1)
 
     for _,vehicleObj in pairs(g_currentMission.vehicles) do
@@ -1303,8 +1302,7 @@ function FollowVehicle:findVehiclesNearby()
                 or (nil == vehicleObj.getIsTabbable)
                 then
                     local vehicleNode = vehicleObj:getAISteeringNode()
-                    if nil ~= vehicleNode then
-                        --local vx,vy,vz = getWorldTranslation(vehicleNode)
+                    if nil ~= vehicleNode and nil ~= vehicleObj.rootNode then
                         local vx,vy,vz = getWorldTranslation(vehicleObj.rootNode)
                         local dx,dz = vx-wx, vz-wz
                         local dist = MathUtil.vector2Length(dx,dz)
@@ -1336,9 +1334,8 @@ function FollowVehicle:findOptimalClosestTrailDrop(closestVehicle)
         local closestDistance = 200
         local closestSpec = getSpec(closestVehicle)
         if closestSpec then
-            local node      = self:getAISteeringNode()
-            --local wx,wy,wz  = getWorldTranslation(node)
             local wx,wy,wz  = getWorldTranslation(self.rootNode)
+            local node      = self:getAISteeringNode()
             local rx,ry,rz  = localDirectionToWorld(node, 0,0,1)
             local rlength   = MathUtil.vector2Length(rx,rz)
             local rotDeg    = math.deg(math.atan2(rx/rlength,rz/rlength))
