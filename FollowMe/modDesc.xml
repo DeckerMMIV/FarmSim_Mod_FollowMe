@@ -46,11 +46,13 @@ Known issues:
 - Some vehicles have a collision-box detection that is much larger and wider than what is visible (even when folded), and therefore will not be able to work correctly with "Follow Me". They will often state 'near collision' due to their invisible collision-box's size.
 
 Change-log 1.3.0.0
+- Added pause/resume ability (issue #56).
 - Adjustment to balers when nearly full and nothing is picked up, to not slow down (issue #60).
 - Modified distance intervals, so the further away the follower is the larger the change (issue #62).
 - Fix for combine stopping unexpectedly when no crops available to harvest (issue #59).
 - Fix for slurry barrels being turned on when activating FollowMe.
 - Fix for self-proprelled slurry spreaders being unable to deactivate FollowMe.
+- Fix for follower with offset, getting "confused" following a leader driving backwards then forwards for turning.
 
 ]]>
         </en>
@@ -74,11 +76,13 @@ Bekannte Probleme:
 - Einige Fahrzeuge haben eine Kollisionsbox-Erkennung, die viel größer und breiter ist als sichtbar (auch im zusammengeklappten Zustand) und daher mit "Follow Me" nicht richtig funktionieren können. Aufgrund der Größe ihrer unsichtbaren Kollisionsbox geben sie oft „Beinahe-Kollision“ an.
 
 Change-log 1.3.0.0
+- Added pause/resume ability (issue #56).
 - Adjustment to balers when nearly full and nothing is picked up, to not slow down (issue #60).
 - Modified distance intervals, so the further away the follower is the larger the change (issue #62).
 - Fix for combine stopping unexpectedly when no crops available to harvest (issue #59).
 - Fix for slurry barrels being turned on when activating FollowMe.
 - Fix for self-proprelled slurry spreaders being unable to deactivate FollowMe.
+- Fix for follower with offset, getting "confused" following a leader driving backwards then forwards for turning.
 
 ]]>
         </de>
@@ -102,11 +106,13 @@ Problèmes connus:
 - Certains véhicules ont une détection de boîte de collision beaucoup plus grande et plus large que ce qui est visible (même plié), et ne pourront donc pas fonctionner correctement avec "Follow Me". Ils indiqueront souvent "quasi-collision" en raison de la taille de leur boîte de collision invisible.
 
 Change-log 1.3.0.0
+- Added pause/resume ability (issue #56).
 - Adjustment to balers when nearly full and nothing is picked up, to not slow down (issue #60).
 - Modified distance intervals, so the further away the follower is the larger the change (issue #62).
 - Fix for combine stopping unexpectedly when no crops available to harvest (issue #59).
 - Fix for slurry barrels being turned on when activating FollowMe.
 - Fix for self-proprelled slurry spreaders being unable to deactivate FollowMe.
+- Fix for follower with offset, getting "confused" following a leader driving backwards then forwards for turning.
 
 ]]>
         </fr>
