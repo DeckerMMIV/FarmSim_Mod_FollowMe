@@ -10,6 +10,7 @@
         <text name="input_FOLLOW_DISTANCE_2"           text="Change distance -" />
         <text name="input_FOLLOW_SIDE_OFFSET_1"        text="Change side offset +" />
         <text name="input_FOLLOW_SIDE_OFFSET_2"        text="Change side offset -" />
+        <text name="input_FOLLOW_PAUSE_RESUME"         text="Pause/Resume" />
 
         <text name="input_FOLLOW_MARKER_TOGGLE_OFFSET" text="Marker for Switch side offset" />
 
@@ -18,16 +19,21 @@
         <text name="input_FOLLOW_CHASER_DISTANCE_2"    text="Follower change distance -" />
         <text name="input_FOLLOW_CHASER_SIDE_OFFSET_1" text="Follower change side offset +" />
         <text name="input_FOLLOW_CHASER_SIDE_OFFSET_2" text="Follower change side offset -" />
+        <text name="input_FOLLOW_CHASER_PAUSE_RESUME"  text="Follower pause/resume" />
 
         <!-- F1-Menu Actions -->
         <text name="FOLLOW_INITIATE"                   text="Follow, Initiate" />
         <text name="FOLLOW_CHOOSEOTHER"                text="Follow, Choose other" />
         <text name="FOLLOW_SIDEOFFSET"                 text="Follow, Side offset" />
         <text name="FOLLOW_DISTANCE"                   text="Follow, Distance" />
+        <text name="FOLLOW_PAUSE"                      text="Follow, Pause" />
+        <text name="FOLLOW_RESUME"                     text="Follow, Resume" />
 
         <text name="FOLLOW_CHASER_CHOOSEOTHER"         text="Follower, Choose other" />
         <text name="FOLLOW_CHASER_SIDEOFFSET"          text="Follower, Side offset" />
         <text name="FOLLOW_CHASER_DISTANCE"            text="Follower, Distance" />
+        <text name="FOLLOW_CHASER_PAUSE"               text="Follower, Pause" />
+        <text name="FOLLOW_CHASER_RESUME"              text="Follower, Resume" />
 
         <text name="FOLLOW_MARKER_OFFSET_NORMAL"       text="Followers side offset: Normal" />
         <text name="FOLLOW_MARKER_OFFSET_DISABLED"     text="Followers side offset: Off" />
@@ -37,6 +43,7 @@
         <text name="FOLLOW_LEADER_SELECTED"            text="Follow:" />
         <text name="FOLLOW_WAITINGCOLLISION"           text="Waiting due to detected near collision" />
         <text name="FOLLOW_DISTANCE_OFFSET"            text="Distance: %.0f, Offset: %.1f" />
+        <text name="FOLLOW_WAITING"                    text="Waiting / Paused" />
 
         <!-- Other -->
         <text name="FOLLOW_AIERROR_CHASER_STOPPED"     text="Follower stopped" />

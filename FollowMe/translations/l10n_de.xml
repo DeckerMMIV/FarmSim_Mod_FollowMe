@@ -10,6 +10,7 @@
         <text name="input_FOLLOW_DISTANCE_2"           text="Distanz ändern -" />
         <text name="input_FOLLOW_SIDE_OFFSET_1"        text="Seitenversatz ändern +" />
         <text name="input_FOLLOW_SIDE_OFFSET_2"        text="Seitenversatz ändern -" />
+        <text name="input_FOLLOW_PAUSE_RESUME"         text="Pause/Fortsetzen" />
 
         <text name="input_FOLLOW_MARKER_TOGGLE_OFFSET" text="Markierung für Switch-Seitenversatz" />
 
@@ -18,16 +19,21 @@
         <text name="input_FOLLOW_CHASER_DISTANCE_2"    text="Follower-Änderungsabstand -" />
         <text name="input_FOLLOW_CHASER_SIDE_OFFSET_1" text="Seitenversatz des Mitnehmerwechsels +" />
         <text name="input_FOLLOW_CHASER_SIDE_OFFSET_2" text="Seitenversatz des Mitnehmerwechsels -" />
+        <text name="input_FOLLOW_CHASER_PAUSE_RESUME"  text="Follower pausieren/fortsetzen" />
 
         <!-- F1-Menu Actions -->
         <text name="FOLLOW_INITIATE"                   text="Folgen, einleiten" />
         <text name="FOLLOW_CHOOSEOTHER"                text="Folgen, andere wählen" />
         <text name="FOLLOW_SIDEOFFSET"                 text="Folgen, Seitenversatz" />
         <text name="FOLLOW_DISTANCE"                   text="Folgen, Abstand" />
+        <text name="FOLLOW_PAUSE"                      text="Folgen, Pause" />
+        <text name="FOLLOW_RESUME"                     text="Folgen, Fortsetzen" />
 
         <text name="FOLLOW_CHASER_CHOOSEOTHER"         text="Anhänger, wähle andere" />
         <text name="FOLLOW_CHASER_SIDEOFFSET"          text="Mitnehmer, Seitenversatz" />
         <text name="FOLLOW_CHASER_DISTANCE"            text="Follower, Distanz" />
+        <text name="FOLLOW_CHASER_PAUSE"               text="Follower, Pause" />
+        <text name="FOLLOW_CHASER_RESUME"              text="Follower, Fortsetzen" />
 
         <text name="FOLLOW_MARKER_OFFSET_NORMAL"       text="Versatz der Mitnehmerseite: Normal" />
         <text name="FOLLOW_MARKER_OFFSET_DISABLED"     text="Versatz der Mitnehmerseite: Aus" />
@@ -37,6 +43,7 @@
         <text name="FOLLOW_LEADER_SELECTED"            text="Folgen:" />
         <text name="FOLLOW_WAITINGCOLLISION"           text="Warten wegen erkannter Beinahe-Kollision" />
         <text name="FOLLOW_DISTANCE_OFFSET"            text="Distanz: %.0f, Versatz: %.1f" />
+        <text name="FOLLOW_WAITING"                    text="Warten / Paused" />
 
         <!-- Other -->
         <text name="FOLLOW_AIERROR_CHASER_STOPPED"     text="Verfolger blieb stehen" />
