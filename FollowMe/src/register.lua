@@ -56,15 +56,15 @@ Sprayer.registerOverwrittenFunctions = Utils.appendedFunction(Sprayer.registerOv
   -- Due to issues where Sprayer is activated when getIsAIActive returns true, some of the 
   -- Sprayer's functions needs be lied to.
   for _,funcName in pairs({
-    "processSprayerArea",
-    "getIsSprayerExternallyFilled",
     "getCanBeTurnedOn",
+    "getIsSprayerExternallyFilled",
     "onStartWorkAreaProcessing",
+    "processSprayerArea",
   }) do
     SpecializationUtil.registerOverwrittenFunction(vehicleType, funcName, function(self, superFunc, ...)
-      self.modFV_LieAbout_IsAIActive = true
-      res = superFunc(self, ...)
-      self.modFV_LieAbout_IsAIActive = nil
+      self.modFV_LieAboutIt = true
+      local res = superFunc(self, ...)
+      self.modFV_LieAboutIt = nil
       return res
     end)
   end
@@ -73,7 +73,18 @@ Sprayer.registerOverwrittenFunctions = Utils.appendedFunction(Sprayer.registerOv
   SpecializationUtil.registerOverwrittenFunction(vehicleType, "getIsAIActive", function(self, superFunc)
     local rootVehicle = self.rootVehicle
     if rootVehicle and rootVehicle.getIsFollowVehicleActive and rootVehicle:getIsFollowVehicleActive() then
-      if self.modFV_LieAbout_IsAIActive then
+      if self.modFV_LieAboutIt then
+        return false -- "Hackish" work-around, in attempt at convincing Sprayer.LUA to NOT turn on
+      end
+    end
+    return superFunc(self)
+  end)
+
+  -- Avoid having the AI automatically turn on sprayer when FollowMe is active.
+  SpecializationUtil.registerOverwrittenFunction(vehicleType, "getIsPowered", function(self, superFunc)
+    local rootVehicle = self.rootVehicle
+    if rootVehicle and rootVehicle.getIsFollowVehicleActive and rootVehicle:getIsFollowVehicleActive() then
+      if self.modFV_LieAboutIt then
         return false -- "Hackish" work-around, in attempt at convincing Sprayer.LUA to NOT turn on
       end
     end
