@@ -8,6 +8,15 @@ To read more about this mod, find it on;
 
 ## FS22 - Change-log
 
+Change-log 1.3.0.0
+- Added pause/resume ability (issue #56).
+- Adjustment to balers when nearly full and nothing is picked up, to not slow down (issue #60).
+- Modified distance intervals, so the further away the follower is the larger the change (issue #62).
+- Fix for combine stopping unexpectedly when no crops available to harvest (issue #59).
+- Fix for non-empty slurry barrels being turned on when activating 'Follow Me'.
+- Fix for self-proprelled slurry spreaders being unable to deactivate 'Follow Me'.
+- Fix for follower with offset, getting "confused" following a leader driving backwards then forwards for turning.
+
 1.0.0.0
 - Follow Me released on Giants Software's ModHub (2022-05-11).
 
