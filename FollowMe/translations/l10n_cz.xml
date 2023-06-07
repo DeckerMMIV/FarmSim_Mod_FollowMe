@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<l10n>
+<!--
+    Viz komentář v modDesc.XML o tom, jak vytvořit svůj vlastní lokální překladový soubor, který musí být umístěn ve složce [..]/modSettings/FS22_FollowMe/
+-->
+    <texts>
+        <!-- Ovládací prvky vstupu -->
+        <text name="input_FOLLOW_INITIATE" text="Zahájit a vybrat" />
+        <text name="input_FOLLOW_DISTANCE_1" text="Změnit vzdálenost +" />
+        <text name="input_FOLLOW_DISTANCE_2" text="Změnit vzdálenost -" />
+        <text name="input_FOLLOW_SIDE_OFFSET_1" text="Změnit boční odsazení +" />
+        <text name="input_FOLLOW_SIDE_OFFSET_2" text="Změnit boční odsazení -" />
+
+        <text name="input_FOLLOW_MARKER_TOGGLE_OFFSET" text="Značka pro posun bočního odsazení" />
+
+        <text name="input_FOLLOW_CHASER_CHOOSE" text="Následovat, vybrat jiné" />
+        <text name="input_FOLLOW_CHASER_DISTANCE_1" text="Změna vzdálenosti následování +" />
+        <text name="input_FOLLOW_CHASER_DISTANCE_2" text="Změna vzdálenosti následování -" />
+        <text name="input_FOLLOW_CHASER_SIDE_OFFSET_1" text="Změna bočního odsazení +" />
+        <text name="input_FOLLOW_CHASER_SIDE_OFFSET_2" text="Změna bočního odsazení -" />
+
+        <!-- Akce F1-Menu -->
+        <text name="FOLLOW_INITIATE" text="Zahájit následování" />
+        <text name="FOLLOW_CHOOSEOTHER" text="Následovat, vybrat jiné" />
+        <text name="FOLLOW_SIDEOFFSET" text="Následovat, boční odsazení" />
+        <text name="FOLLOW_DISTANCE" text="Následovat, vzdálenost" />
+
+        <text name="FOLLOW_CHASER_CHOOSEOTHER" text="Následovat, vybrat jiné" />
+        <text name="FOLLOW_CHASER_SIDEOFFSET" text="Následovat, boční odsazení" />
+        <text name="FOLLOW_CHASER_DISTANCE" text="Následovat, vzdálenost" />
+
+        <text name="FOLLOW_MARKER_OFFSET_NORMAL" text="Odsazení na straně následovníků: Normální" />
+        <text name="FOLLOW_MARKER_OFFSET_DISABLED" text="Odsazení na straně následovníků: Vypnuto" />
+        <text name="FOLLOW_MARKER_OFFSET_REVERSED" text="Odsazení na straně následovníků: Opačné" />
+
+        <!-- HUD obrazovky -->
+        <text name="FOLLOW_LEADER_SELECTED" text="Následovat:" />
+        <text name="FOLLOW_WAITINGCOLLISION" text="Čekání kvůli zjištění blízké kolize" />
+        <text name="FOLLOW_DISTANCE_OFFSET" text="Vzdálenost: %.0f, Posun: %.1f" />
+
+        <!-- Jiné -->
+        <text name="FOLLOW_AIERROR_CHASER_STOPPED" text="Následovatel zastaven" />
+    </texts>
+</l10n>
