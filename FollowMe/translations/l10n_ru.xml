@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<l10n>
+<!--
+    See comment in modDesc.XML about how to make your own local translation file, that must be placed in folder [..]/modSettings/FS22_FollowMe/
+-->
+    <translationContributors>nagor</translationContributors>
+    <texts>
+        <!-- Input Controls -->
+        <text name="input_FOLLOW_INITIATE"             text="Активировать/Настроить" />
+        <text name="input_FOLLOW_DISTANCE_1"           text="Увеличить дистанцию" />
+        <text name="input_FOLLOW_DISTANCE_2"           text="Уменьшить дистанцию" />
+        <text name="input_FOLLOW_SIDE_OFFSET_1"        text="Увеличить боковое смещение" />
+        <text name="input_FOLLOW_SIDE_OFFSET_2"        text="Уменьшить боковое смещение" />
+        <text name="input_FOLLOW_PAUSE_RESUME"         text="Остановить/Возобновить" />
+
+        <text name="input_FOLLOW_MARKER_TOGGLE_OFFSET" text="Режим смещения Ведомого" />
+
+        <text name="input_FOLLOW_CHASER_CHOOSE"        text="Настраиваемый Ведомый" />
+        <text name="input_FOLLOW_CHASER_DISTANCE_1"    text="Увеличить дистанцию Ведомого" />
+        <text name="input_FOLLOW_CHASER_DISTANCE_2"    text="Уменьшить дистанцию Ведомого" />
+        <text name="input_FOLLOW_CHASER_SIDE_OFFSET_1" text="Увеличить боковое смещение Ведомого" />
+        <text name="input_FOLLOW_CHASER_SIDE_OFFSET_2" text="Уменьшить боковое смещение Ведомого" />
+        <text name="input_FOLLOW_CHASER_PAUSE_RESUME"  text="Остановить/Возобновить движение Ведомого" />
+
+        <!-- F1-Menu Actions -->
+        <text name="FOLLOW_INITIATE"                   text="Активировать Ведомого" />
+        <text name="FOLLOW_CHOOSEOTHER"                text="Настроить Ведомого" />
+        <text name="FOLLOW_SIDEOFFSET"                 text="Боковое смещение от Ведущего" />
+        <text name="FOLLOW_DISTANCE"                   text="Дистанция до Ведущего" />
+        <text name="FOLLOW_PAUSE"                      text="Остановить Ведущего" />
+        <text name="FOLLOW_RESUME"                     text="Возобновить движение Ведущего" />
+
+        <text name="FOLLOW_CHASER_CHOOSEOTHER"         text="Выбрать/Настроить Ведомого" />
+        <text name="FOLLOW_CHASER_SIDEOFFSET"          text="Боковое смещение Ведомого" />
+        <text name="FOLLOW_CHASER_DISTANCE"            text="Дистанция Ведомого" />
+        <text name="FOLLOW_CHASER_PAUSE"               text="Остановить Ведомого" />
+        <text name="FOLLOW_CHASER_RESUME"              text="Возобновить движение Ведомого" />
+
+        <text name="FOLLOW_MARKER_OFFSET_NORMAL"       text="Смещение Ведомого: Как на схеме" />
+        <text name="FOLLOW_MARKER_OFFSET_DISABLED"     text="Смещение Ведомого: Выключено" />
+        <text name="FOLLOW_MARKER_OFFSET_REVERSED"     text="Смещение Ведомого: Противопол." />
+
+        <!-- Screen HUD -->
+        <text name="FOLLOW_LEADER_SELECTED"            text="Ведущий:" />
+        <text name="FOLLOW_WAITINGCOLLISION"           text="Остановился из-за обнаруженного препятствия." />
+        <text name="FOLLOW_DISTANCE_OFFSET"            text="Дистанция: %.0f, Смещение: %.1f" />
+        <text name="FOLLOW_WAITING"                    text="Ожидание/Приостановлен" />
+
+        <!-- Other -->
+        <text name="FOLLOW_AIERROR_CHASER_STOPPED"     text="Ведомый остановился" />
+    </texts>
+</l10n>
