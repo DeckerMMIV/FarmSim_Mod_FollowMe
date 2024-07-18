@@ -158,6 +158,7 @@ source(modDir .. "src/AIJobTypeFollowVehicle.lua")
 source(modDir .. "src/AIVehicleIsWaitingEvent.lua")
 
 source(modDir .. "src/AIDriveStrategyFollowBaler.lua")
+source(modDir .. "src/AIDriveStrategyFollowBaleLoader.lua")
 source(modDir .. "src/AIDriveStrategyFollowStopWhenTurnedOff.lua")
 source(modDir .. "src/AIDriveStrategyFollowVehicleCollision.lua")
 source(modDir .. "src/AIDriveStrategyFollowVehicle.lua")

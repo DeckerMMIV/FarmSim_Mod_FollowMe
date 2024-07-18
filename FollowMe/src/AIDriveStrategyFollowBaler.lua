@@ -57,23 +57,27 @@ local getBalerAllowDriveAndMaxSpeed_NonStopBaling = function(self, baler, dt)
     return true, math.huge
 end
 
-local noOperation = function(self, baler)
-    return true, math.huge
-end
+--local noOperation = function(self, baler)
+--    return true, math.huge
+--end
 
 function AIDriveStrategyFollowBaler:setAIVehicle(vehicle)
 	AIDriveStrategyFollowBaler:superClass().setAIVehicle(self, vehicle)
 
     local addIfHasSpecialization = function(object)
         if SpecializationUtil.hasSpecialization(Baler, object.specializations) then
+            local func = nil
+
             local spec = object.spec_baler
-            local func = noOperation
             if spec and false == spec.nonStopBaling then
                 func = getBalerAllowDriveAndMaxSpeed
             elseif spec and true == spec.nonStopBaling then
                 func = getBalerAllowDriveAndMaxSpeed_NonStopBaling
             end
-            table.insert(self.balers, { object=object, func=func })
+
+            if nil ~= func then
+                table.insert(self.balers, { object=object, func=func })
+            end
         end
     end
 

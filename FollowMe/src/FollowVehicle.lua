@@ -94,11 +94,11 @@ function FollowVehicle.registerEventListeners(vehicleType)
         "onUpdateTick",
         "onDraw",
         "onRegisterActionEvents",
-	    "onLeaveVehicle",
+        "onLeaveVehicle",
 --        "onAIStart",
 --        "onAIEnd",
 --        "onLightsTypesMaskChanged",
---        "onBeaconLightsVisibilityChanged",
+        "onBeaconLightsVisibilityChanged",
 --        "onTurnLightStateChanged",
     } ) do
         SpecializationUtil.registerEventListener(vehicleType, funcName, FollowVehicle)
@@ -127,18 +127,18 @@ function FollowVehicle:onLoadFinished(savegame)
 
     spec.isActive = false
     spec.actionEvents = {}
-    
-	spec.driveStrategies = {}
+
+    spec.driveStrategies = {}
     spec.didNotMoveTimeout = 10000
     spec.didNotMoveTimer = spec.didNotMoveTimeout
 
-	spec.aiDriveParams = {
-		valid = false
-	}
-	spec.aiUpdateLowFrequencyDt = 0
-	spec.aiUpdateDt = 0
+    spec.aiDriveParams = {
+        valid = false
+    }
+    spec.aiUpdateLowFrequencyDt = 0
+    spec.aiUpdateDt = 0
 
-	spec.followJob = g_currentMission.aiJobTypeManager:createJob(AIJobType.MOD_FOLLOW_VEHICLE)
+    spec.followJob = g_currentMission.aiJobTypeManager:createJob(AIJobType.MOD_FOLLOW_VEHICLE)
 
     spec.currentFollowers = {}
     spec.selectedFollower = nil
@@ -204,6 +204,9 @@ function FollowVehicle:onRegisterActionEvents(isActiveForInput, isActiveForInput
             if not otherAIActive then
                 local priority = (followVehicleActive and GS_PRIO_VERY_HIGH) or GS_PRIO_LOW
 
+                _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_BALELOADER,  self, FollowVehicle.actionEventBaleLoader, false, true, false, true, nil, nil, true, true)
+                g_inputBinding:setActionEventTextPriority(eventId, priority)
+
                 _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_DISTANCE,    self, FollowVehicle.actionEventDistance,   false, true, false, true, nil, nil, true, true)
                 g_inputBinding:setActionEventTextPriority(eventId, priority)
 
@@ -213,14 +216,19 @@ function FollowVehicle:onRegisterActionEvents(isActiveForInput, isActiveForInput
                 _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_PAUSE_RESUME,self, FollowVehicle.actionEventPauseResume,false, true, false, true, nil, nil, true, true)
                 g_inputBinding:setActionEventTextPriority(eventId, priority)
             end
-    
+
             local followers = {}
             self:getAllFollowers(followers)
             if #followers > 0 then
-                _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_CHASER_CHOOSE,  self, FollowVehicle.actionEventFollowerSelect,     false, true, false, true, nil, nil, true, true)
+                _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_CHASER_CHOOSE,      self, FollowVehicle.actionEventFollowerSelect,     false, true, false, true, nil, nil, true, true)
                 g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_NORMAL)
                 g_inputBinding:setActionEventTextVisibility(eventId, true)
                 g_inputBinding:setActionEventText(eventId, FOLLOW_CHASER_CHOOSEOTHER)
+
+                _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_CHASER_BALELOADER,  self, FollowVehicle.actionEventFollowerBaleLoader, false, true, false, true, nil, nil, true, true)
+                g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_NORMAL)
+                g_inputBinding:setActionEventTextVisibility(eventId, true)
+                --g_inputBinding:setActionEventText(eventId, FOLLOW_CHASER_BALELOADER)
 
                 _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_CHASER_DISTANCE,    self, FollowVehicle.actionEventFollowerDistance,   false, true, false, true, nil, nil, true, true)
                 g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_NORMAL)
@@ -279,6 +287,30 @@ function FollowVehicle:actionEventInitiate(actionName, inputValue, callbackState
     spec.nearbyVehicles = newNearbyVehicles
 
     FollowVehicle.updateActionEvents(self)
+end
+
+function FollowVehicle:actionEventBaleLoader(actionName, inputValue, callbackState, isAnalog)
+    --log("**** actionEventBaleLoader")
+    FollowVehicle.switchBaleLoaderAction(self)
+    FollowVehicle.updateActionEvents(self)
+end
+
+function FollowVehicle:actionEventFollowerBaleLoader(actionName, inputValue, callbackState, isAnalog)
+    local follower = self:getSelectedFollower()
+    if nil ~= follower then
+        --log("**** actionEventFollowerBaleLoader")
+        FollowVehicle.switchBaleLoaderAction(follower)
+        FollowVehicle.updateActionEvents(self)
+    end
+end
+
+function FollowVehicle:switchBaleLoaderAction()
+    local spec = getSpec(self)
+    if nil ~= spec and nil ~= spec.driveStrategyBaleLoader then
+        local nextActionId = (spec.driveStrategyBaleLoader:getActionWhenFull() % AIDriveStrategyFollowBaleLoader.ACTION_MAXVALUE) + 1
+        --log("**** switchBaleLoaderAction ", nextActionId)
+        spec.driveStrategyBaleLoader:setActionWhenFull(nextActionId)
+    end
 end
 
 function FollowVehicle:actionEventDistance(actionName, inputValue, callbackState, isAnalog)
@@ -360,6 +392,12 @@ local FollowersOffsets = {
     {    0, g_i18n:getText("FOLLOW_MARKER_OFFSET_DISABLED") },
     { -1.0, g_i18n:getText("FOLLOW_MARKER_OFFSET_REVERSED") },
     {    0, g_i18n:getText("FOLLOW_MARKER_OFFSET_DISABLED") },
+}
+
+local BaleLoaderActions = {
+    g_i18n:getText("FOLLOW_BALELOADER_WHENFULL_STOP"),
+    g_i18n:getText("FOLLOW_BALELOADER_WHENFULL_UNLOAD"),
+    g_i18n:getText("FOLLOW_BALELOADER_WHENFULL_CONTINUE"),
 }
 
 function FollowVehicle:getCurrentSideOffsetModifier()
@@ -446,14 +484,17 @@ function FollowVehicle:adjustFollowerDistanceAndSideOffset(distanceAdjust, sideo
     end
 end
 
-local FOLLOW_CHOOSEOTHER    = g_i18n:getText("FOLLOW_CHOOSEOTHER")
-local FOLLOW_INITIATE       = g_i18n:getText("FOLLOW_INITIATE")
-local FOLLOW_SIDEOFFSET     = g_i18n:getText("FOLLOW_SIDEOFFSET")
-local FOLLOW_DISTANCE       = g_i18n:getText("FOLLOW_DISTANCE")
-local FOLLOW_PAUSE          = g_i18n:getText("FOLLOW_PAUSE")
-local FOLLOW_RESUME         = g_i18n:getText("FOLLOW_RESUME")
-local FOLLOW_CHASER_PAUSE   = g_i18n:getText("FOLLOW_CHASER_PAUSE")
-local FOLLOW_CHASER_RESUME  = g_i18n:getText("FOLLOW_CHASER_RESUME")
+local FOLLOW_CHOOSEOTHER        = g_i18n:getText("FOLLOW_CHOOSEOTHER")
+local FOLLOW_INITIATE           = g_i18n:getText("FOLLOW_INITIATE")
+local FOLLOW_SIDEOFFSET         = g_i18n:getText("FOLLOW_SIDEOFFSET")
+local FOLLOW_DISTANCE           = g_i18n:getText("FOLLOW_DISTANCE")
+local FOLLOW_PAUSE              = g_i18n:getText("FOLLOW_PAUSE")
+local FOLLOW_RESUME             = g_i18n:getText("FOLLOW_RESUME")
+local FOLLOW_BALELOADER         = g_i18n:getText("FOLLOW_BALELOADER")
+local FOLLOW_CHASER_PAUSE       = g_i18n:getText("FOLLOW_CHASER_PAUSE")
+local FOLLOW_CHASER_RESUME      = g_i18n:getText("FOLLOW_CHASER_RESUME")
+local FOLLOW_CHASER_BALELOADER  = g_i18n:getText("FOLLOW_CHASER_BALELOADER")
+
 
 function FollowVehicle:updateActionEvents()
     if not self.isClient then
@@ -476,6 +517,17 @@ function FollowVehicle:updateActionEvents()
         elseif not self:getIsAIActive() then
             g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_INITIATE)
             g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_NORMAL)
+            g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, true)
+        else
+            g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, false)
+        end
+    end
+
+    actionEvent = spec.actionEvents[InputAction.FOLLOW_BALELOADER]
+    if nil ~= actionEvent then
+        if followVehicleIsActive and nil ~= spec.driveStrategyBaleLoader then
+            g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_BALELOADER .. BaleLoaderActions[spec.driveStrategyBaleLoader:getActionWhenFull()])
+            g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_HIGH)
             g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, true)
         else
             g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, false)
@@ -529,6 +581,20 @@ function FollowVehicle:updateActionEvents()
         g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, true)
     end
 
+    local follower = self:getSelectedFollower()
+    local followerSpec = (follower and getSpec(follower)) or nil
+
+    actionEvent = spec.actionEvents[InputAction.FOLLOW_CHASER_BALELOADER]
+    if nil ~= actionEvent then
+        if nil ~= follower and followerSpec and followerSpec.driveStrategyBaleLoader then
+            g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_CHASER_BALELOADER .. BaleLoaderActions[followerSpec.driveStrategyBaleLoader:getActionWhenFull()])
+            g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_VERY_HIGH)
+            g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, true)
+        else
+            g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, false)
+        end
+    end
+
     actionEvent = spec.actionEvents[InputAction.FOLLOW_CHASER_DISTANCE]
     if nil ~= actionEvent then
         g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, spec.drawFollowersTimer > 0)
@@ -541,10 +607,9 @@ function FollowVehicle:updateActionEvents()
 
     actionEvent = spec.actionEvents[InputAction.FOLLOW_CHASER_PAUSE_RESUME]
     if nil ~= actionEvent then
-        local follower = self:getSelectedFollower()
         g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, nil ~= follower)
         if nil ~= follower then
-            local followerSpec = getSpec(follower)    
+            --local followerSpec = getSpec(follower)    
             if followerSpec and followerSpec.isWaiting then
                 g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_CHASER_RESUME)
                 g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_VERY_HIGH)
@@ -580,6 +645,18 @@ function FollowVehicle:onLeaveVehicle()
         spec.nearbyVehicles_timeout = 0
         spec.nearbyVehicles = {}
         FollowVehicle.updateActionEvents(self)
+    end
+end
+
+function FollowVehicle:onBeaconLightsVisibilityChanged()
+    -- Only the vehicle that does NOT have 'Follow Me' active, is to react on the change of beacon visibility
+    if not self:getIsFollowVehicleActive() then
+        local beaconLightsVisibility = self:getBeaconLightsVisibility()
+        local followers = {}
+        self:getAllFollowers(followers)
+        for idx,followerVehicle in ipairs(followers) do
+            followerVehicle:setBeaconLightsVisibility(beaconLightsVisibility, nil, true)
+        end
     end
 end
 
@@ -708,7 +785,7 @@ function FollowVehicle:addTrailDrop(maxSpeed, turnLightState, zOffset)
     assert(nil ~= g_server)
 
     local spec = getSpec(self)
-    
+
     local x,y,z = getWorldTranslation(self.rootNode)
     local node = self:getAISteeringNode()
     local dirX,dirY,dirZ = localDirectionToWorld(node, 0,0,1)
@@ -838,8 +915,8 @@ local FOLLOW_LEADER_SELECTED = g_i18n:getText("FOLLOW_LEADER_SELECTED")
 function FollowVehicle:drawNearbyVehicles()
     local spec = getSpec(self)
 
-	setTextDepthTestEnabled(false)
-	setTextVerticalAlignment(RenderText.VERTICAL_ALIGN_BASELINE)
+    setTextDepthTestEnabled(false)
+    setTextVerticalAlignment(RenderText.VERTICAL_ALIGN_BASELINE)
     setTextAlignment(RenderText.ALIGN_CENTER)
     setTextBold(true)
 
@@ -901,7 +978,7 @@ function FollowVehicle:drawNearbyVehicles()
         end
     end
 
-	setTextDepthTestEnabled(true)
+    setTextDepthTestEnabled(true)
     setTextAlignment(RenderText.ALIGN_LEFT)
     setTextColor(1, 1, 1, 1)
 end
@@ -923,7 +1000,7 @@ function FollowVehicle:drawFollowers()
 
     if spec.drawFollowersTimer > 4000 then
         setTextColor(0.7, 0.7, 0.7, 1)
-    
+
         local followers = {}
         self:getAllFollowers(followers)
         for _,followerVehicle in ipairs(followers) do
@@ -1013,7 +1090,7 @@ function FollowVehicle:drawDebugTrail()
 
     setTextAlignment(RenderText.ALIGN_LEFT)
     setTextColor(1, 1, 1, 1)
-end    
+end
 
 function FollowVehicle:drawFollowingTrail()
     local leader = self:getVehicleToFollow()
@@ -1073,9 +1150,10 @@ addConsoleCommand("modFV_TrailVisibility", "modFV_TrailVisibility <numTrailDrops
 -----
 
 local function cleanUpDriveStrategies(spec)
-    if spec.driveStrategies ~= nil and #spec.driveStrategies > 0 then
-        spec.driveStrategyCollision = nil
+    spec.driveStrategyBaleLoader = nil
+    spec.driveStrategyCollision = nil
 
+    if spec.driveStrategies ~= nil and #spec.driveStrategies > 0 then
         for i = #spec.driveStrategies, 1, -1 do
             spec.driveStrategies[i]:delete()
             table.remove(spec.driveStrategies, i)
@@ -1133,22 +1211,22 @@ function FollowVehicle:getAllFollowers(resultArray)
 end
 
 function FollowVehicle:getStartableAIJob(superFunc)
-	local job = superFunc(self)
-	if job == nil then
+    local job = superFunc(self)
+    if job == nil then
         local spec = getSpec(self)
         spec.vehicleToFollow = nil
 
-		if self:getCanStartFollowVehicle() then
-			local followJob = spec.followJob
-			followJob:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true, spec.vehicleToFollow)
-			followJob:setValues()
-			local success = followJob:validate(false)
-			if success then
-				job = followJob
-			end
-		end
-	end
-	return job
+        if self:getCanStartFollowVehicle() then
+            local followJob = spec.followJob
+            followJob:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true, spec.vehicleToFollow)
+            followJob:setValues()
+            local success = followJob:validate(false)
+            if success then
+                job = followJob
+            end
+        end
+    end
+    return job
 end
 
 function FollowVehicle:getHasStartableAIJob(superFunc)
@@ -1233,12 +1311,34 @@ function FollowVehicle:updateAIFollowVehicleDriveStrategies(vehicleToFollow)
 
     cleanUpDriveStrategies(spec)
 
+    --log("**** updateAIFollowVehicleDriveStrategies - nil ~= self.getIsBaleGrabbingAllowed: ", nil ~= self.getIsBaleGrabbingAllowed, " / ", (nil ~= self.getIsBaleGrabbingAllowed and self:getIsBaleGrabbingAllowed()))
+    local foundBaleLoader = SpecializationUtil.hasSpecialization(BaleLoader, spec.specializations) --and nil ~= self.getIsBaleGrabbingAllowed and self:getIsBaleGrabbingAllowed()
+    for _, childVehicle in pairs(self.rootVehicle.childVehicles) do
+        if SpecializationUtil.hasSpecialization(BaleLoader, childVehicle.specializations) then
+            --log("**** child - nil ~= self.getIsBaleGrabbingAllowed: ", nil ~= childVehicle.getIsBaleGrabbingAllowed, " / ", (nil ~= childVehicle.getIsBaleGrabbingAllowed and childVehicle:getIsBaleGrabbingAllowed()))
+            --if nil ~= childVehicle.getIsBaleGrabbingAllowed and childVehicle:getIsBaleGrabbingAllowed() then
+                foundBaleLoader = true
+                break
+            --end
+        end
+    end
+
     local foundBaler = SpecializationUtil.hasSpecialization(Baler, spec.specializations) and self:getIsTurnedOn() and self:getIsLowered()
     for _, childVehicle in pairs(self.rootVehicle.childVehicles) do
         if SpecializationUtil.hasSpecialization(Baler, childVehicle.specializations) then
             if childVehicle:getIsTurnedOn() and childVehicle:getIsLowered() then
                 foundBaler = true
+                break
             end
+        end
+    end
+
+    if foundBaleLoader then
+        local driveStrategyFollowBaleLoader = AIDriveStrategyFollowBaleLoader.new()
+        if false ~= driveStrategyFollowBaleLoader:setAIVehicle(self) then
+            --log("**** updateAIFollowVehicleDriveStrategies - added driveStrategyFollowBaleLoader")
+            table.insert(spec.driveStrategies, driveStrategyFollowBaleLoader)
+            spec.driveStrategyBaleLoader = driveStrategyFollowBaleLoader
         end
     end
 
@@ -1283,20 +1383,30 @@ function FollowVehicle:updateAIFollowVehicle_DriveData(dt)
 	local spec = getSpec(self)
 
     local vX, vY, vZ = getWorldTranslation(self.rootNode)
-    local tX, tZ, moveForwards, strategyMaxSpeed, distanceToStop = nil
+    local tX, tZ, moveForwards, strategyMaxSpeed, minimumDistanceToStop
     local allowedMaxSpeed = math.huge
     if spec.isWaiting then
         allowedMaxSpeed = 0
     end
 
+    minimumDistanceToStop = math.huge
     for i = 1, #spec.driveStrategies do
         local driveStrategy = spec.driveStrategies[i]
         tX, tZ, moveForwards, strategyMaxSpeed, distanceToStop = driveStrategy:getDriveData(dt, vX, vY, vZ)
         allowedMaxSpeed = math.min(strategyMaxSpeed or math.huge, allowedMaxSpeed)
+        minimumDistanceToStop = math.min(distanceToStop or math.huge, minimumDistanceToStop)
 
         if tX ~= nil then
             break
         end
+    end
+
+    -- Decided that when a drive-strategy returns a negative value for 'distance to stop',
+    -- then it indicates that the Follower must get into the state of "pause/wait".
+    if minimumDistanceToStop < 0 then
+        spec.isWaiting = true
+        minimumDistanceToStop = 0
+        allowedMaxSpeed = math.min(allowedMaxSpeed, 0)
     end
 
     if allowedMaxSpeed < 0
@@ -1315,7 +1425,7 @@ function FollowVehicle:updateAIFollowVehicle_DriveData(dt)
     local minimumSpeed = 5
     local lookAheadDistance = 5
 
-    local distSpeed = math.max(minimumSpeed, allowedMaxSpeed * math.min(1, distanceToStop / lookAheadDistance))
+    local distSpeed = math.max(minimumSpeed, allowedMaxSpeed * math.min(1, minimumDistanceToStop / lookAheadDistance))
     local speedLimit, _ = self:getSpeedLimit(true)
     allowedMaxSpeed = math.min(allowedMaxSpeed, distSpeed, speedLimit)
     allowedMaxSpeed = math.min(allowedMaxSpeed, self:getCruiseControlMaxSpeed())
@@ -1342,15 +1452,15 @@ function FollowVehicle:updateAIFollowVehicle_DriveData(dt)
 end
 
 function FollowVehicle:updateAIFollowVehicle_Steering(dt)
-	local spec = getSpec(self)
+    local spec = getSpec(self)
 
-	if spec.aiDriveParams.valid then
-		local moveForwards = spec.aiDriveParams.moveForwards
-		local tX = spec.aiDriveParams.tX
-		local tY = spec.aiDriveParams.tY
-		local tZ = spec.aiDriveParams.tZ
-		local maxSpeed = spec.aiDriveParams.maxSpeed
-		local pX, _, pZ = worldToLocal(self:getAISteeringNode(), tX, tY, tZ)
+    if spec.aiDriveParams.valid then
+        local moveForwards = spec.aiDriveParams.moveForwards
+        local tX = spec.aiDriveParams.tX
+        local tY = spec.aiDriveParams.tY
+        local tZ = spec.aiDriveParams.tZ
+        local maxSpeed = spec.aiDriveParams.maxSpeed
+        local pX, _, pZ = worldToLocal(self:getAISteeringNode(), tX, tY, tZ)
 
         if not moveForwards then
             local aiReverserNode = self:getAIReverserNode()
@@ -1361,11 +1471,11 @@ function FollowVehicle:updateAIFollowVehicle_Steering(dt)
             end
         end
 
-		local acceleration = 1
-		local isAllowedToDrive = maxSpeed ~= 0
+        local acceleration = 1
+        local isAllowedToDrive = maxSpeed ~= 0
 
-		AIVehicleUtil.driveToPoint(self, dt, acceleration, isAllowedToDrive, moveForwards, pX, pZ, maxSpeed)
-	end
+        AIVehicleUtil.driveToPoint(self, dt, acceleration, isAllowedToDrive, moveForwards, pX, pZ, maxSpeed)
+    end
 end
 
 ----

@@ -11,6 +11,7 @@
         <text name="input_FOLLOW_SIDE_OFFSET_1"        text="Modifier le décalage latéral +" />
         <text name="input_FOLLOW_SIDE_OFFSET_2"        text="Modifier le décalage latéral -" />
         <text name="input_FOLLOW_PAUSE_RESUME"         text="Pause/Reprendre" />
+        <text name="input_FOLLOW_BALELOADER"           text="Tool operation" />
 
         <text name="input_FOLLOW_MARKER_TOGGLE_OFFSET" text="Marqueur pour le décalage latéral de l'interrupteur" />
 
@@ -20,6 +21,7 @@
         <text name="input_FOLLOW_CHASER_SIDE_OFFSET_1" text="Décalage latéral de changement de suiveur +" />
         <text name="input_FOLLOW_CHASER_SIDE_OFFSET_2" text="Décalage latéral de changement de suiveur -" />
         <text name="input_FOLLOW_CHASER_PAUSE_RESUME"  text="Pause/reprendre du suiveur" />
+        <text name="input_FOLLOW_CHASER_BALELOADER"    text="Follower, Tool operation" />
 
         <!-- F1-Menu Actions -->
         <text name="FOLLOW_INITIATE"                   text="Suivre, initier" />
@@ -38,6 +40,12 @@
         <text name="FOLLOW_MARKER_OFFSET_NORMAL"       text="Décalage côté suiveurs: Normal" />
         <text name="FOLLOW_MARKER_OFFSET_DISABLED"     text="Décalage côté suiveurs: désactivé" />
         <text name="FOLLOW_MARKER_OFFSET_REVERSED"     text="Décalage côté suiveurs: Opposé" />
+
+        <text name="FOLLOW_BALELOADER"                      text="Suivre, " />
+        <text name="FOLLOW_CHASER_BALELOADER"               text="Follower, " />
+        <text name="FOLLOW_BALELOADER_WHENFULL_STOP"        text="When full: Disengage" />
+        <text name="FOLLOW_BALELOADER_WHENFULL_UNLOAD"      text="When full: Unload" />
+        <text name="FOLLOW_BALELOADER_WHENFULL_CONTINUE"    text="When full: Continue" />
 
         <!-- Screen HUD -->
         <text name="FOLLOW_LEADER_SELECTED"            text="Suivre:" />

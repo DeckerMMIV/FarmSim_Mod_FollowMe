@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="74">
+<modDesc descVersion="80">
     <author>Decker_MMIV</author>
     <authorContact>forum.farming-simulator.com</authorContact>
 
@@ -19,7 +19,7 @@
     Now you can edit your own local copy for a localization file for this mod, and when it is error-free, it will be loaded by a script in this mod when a game-session is started.
 -->
 
-    <version>1.3.0.0</version>
+    <version>1.4.1.0</version>
 
     <title>
         <en>Follow Me</en>
@@ -142,11 +142,13 @@ Change-log 1.3.0.0
         <action name="FOLLOW_SIDE_OFFSET"          category="VEHICLE" axisType="FULL" />
         <action name="FOLLOW_PAUSE_RESUME"         category="VEHICLE" />
         <action name="FOLLOW_MARKER_TOGGLE_OFFSET" category="VEHICLE" />
+        <action name="FOLLOW_BALELOADER"           category="VEHICLE" />
 
         <action name="FOLLOW_CHASER_CHOOSE"        category="VEHICLE" />
         <action name="FOLLOW_CHASER_DISTANCE"      category="VEHICLE" axisType="FULL" />
         <action name="FOLLOW_CHASER_SIDE_OFFSET"   category="VEHICLE" axisType="FULL" />
         <action name="FOLLOW_CHASER_PAUSE_RESUME"  category="VEHICLE" />
+        <action name="FOLLOW_CHASER_BALELOADER"    category="VEHICLE" />
 
     </actions>
 
@@ -165,6 +167,9 @@ Change-log 1.3.0.0
         <actionBinding action="FOLLOW_PAUSE_RESUME">
             <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_h" index="1" />
         </actionBinding>
+        <actionBinding action="FOLLOW_BALELOADER">
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_y" index="1" />
+        </actionBinding>
         <actionBinding action="FOLLOW_MARKER_TOGGLE_OFFSET">
             <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_rctrl KEY_x" index="1" />
         </actionBinding>
@@ -182,6 +187,9 @@ Change-log 1.3.0.0
         </actionBinding>
         <actionBinding action="FOLLOW_CHASER_PAUSE_RESUME">
             <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_rctrl KEY_h" index="1" />
+        </actionBinding>
+        <actionBinding action="FOLLOW_CHASER_BALELOADER">
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_rctrl KEY_y" index="1" />
         </actionBinding>
     </inputBinding>
 </modDesc>
