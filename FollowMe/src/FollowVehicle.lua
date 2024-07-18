@@ -290,7 +290,6 @@ function FollowVehicle:actionEventInitiate(actionName, inputValue, callbackState
 end
 
 function FollowVehicle:actionEventBaleLoader(actionName, inputValue, callbackState, isAnalog)
-    --log("**** actionEventBaleLoader")
     FollowVehicle.switchBaleLoaderAction(self)
     FollowVehicle.updateActionEvents(self)
 end
@@ -298,7 +297,6 @@ end
 function FollowVehicle:actionEventFollowerBaleLoader(actionName, inputValue, callbackState, isAnalog)
     local follower = self:getSelectedFollower()
     if nil ~= follower then
-        --log("**** actionEventFollowerBaleLoader")
         FollowVehicle.switchBaleLoaderAction(follower)
         FollowVehicle.updateActionEvents(self)
     end
@@ -308,7 +306,6 @@ function FollowVehicle:switchBaleLoaderAction()
     local spec = getSpec(self)
     if nil ~= spec and nil ~= spec.driveStrategyBaleLoader then
         local nextActionId = (spec.driveStrategyBaleLoader:getActionWhenFull() % AIDriveStrategyFollowBaleLoader.ACTION_MAXVALUE) + 1
-        --log("**** switchBaleLoaderAction ", nextActionId)
         spec.driveStrategyBaleLoader:setActionWhenFull(nextActionId)
     end
 end
@@ -609,7 +606,6 @@ function FollowVehicle:updateActionEvents()
     if nil ~= actionEvent then
         g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, nil ~= follower)
         if nil ~= follower then
-            --local followerSpec = getSpec(follower)    
             if followerSpec and followerSpec.isWaiting then
                 g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_CHASER_RESUME)
                 g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_VERY_HIGH)
@@ -1311,15 +1307,11 @@ function FollowVehicle:updateAIFollowVehicleDriveStrategies(vehicleToFollow)
 
     cleanUpDriveStrategies(spec)
 
-    --log("**** updateAIFollowVehicleDriveStrategies - nil ~= self.getIsBaleGrabbingAllowed: ", nil ~= self.getIsBaleGrabbingAllowed, " / ", (nil ~= self.getIsBaleGrabbingAllowed and self:getIsBaleGrabbingAllowed()))
     local foundBaleLoader = SpecializationUtil.hasSpecialization(BaleLoader, spec.specializations) --and nil ~= self.getIsBaleGrabbingAllowed and self:getIsBaleGrabbingAllowed()
     for _, childVehicle in pairs(self.rootVehicle.childVehicles) do
         if SpecializationUtil.hasSpecialization(BaleLoader, childVehicle.specializations) then
-            --log("**** child - nil ~= self.getIsBaleGrabbingAllowed: ", nil ~= childVehicle.getIsBaleGrabbingAllowed, " / ", (nil ~= childVehicle.getIsBaleGrabbingAllowed and childVehicle:getIsBaleGrabbingAllowed()))
-            --if nil ~= childVehicle.getIsBaleGrabbingAllowed and childVehicle:getIsBaleGrabbingAllowed() then
-                foundBaleLoader = true
-                break
-            --end
+            foundBaleLoader = true
+            break
         end
     end
 
@@ -1336,7 +1328,6 @@ function FollowVehicle:updateAIFollowVehicleDriveStrategies(vehicleToFollow)
     if foundBaleLoader then
         local driveStrategyFollowBaleLoader = AIDriveStrategyFollowBaleLoader.new()
         if false ~= driveStrategyFollowBaleLoader:setAIVehicle(self) then
-            --log("**** updateAIFollowVehicleDriveStrategies - added driveStrategyFollowBaleLoader")
             table.insert(spec.driveStrategies, driveStrategyFollowBaleLoader)
             spec.driveStrategyBaleLoader = driveStrategyFollowBaleLoader
         end

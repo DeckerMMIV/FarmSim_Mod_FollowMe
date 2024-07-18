@@ -3,7 +3,7 @@ local AIDriveStrategyFollowVehicle_mt = Class(AIDriveStrategyFollowVehicle, AIDr
 
 function AIDriveStrategyFollowVehicle.new(customMt)
     if customMt == nil then
-      customMt = AIDriveStrategyFollowVehicle_mt
+        customMt = AIDriveStrategyFollowVehicle_mt
     end
     local self = AIDriveStrategy.new( customMt )
     self.vehicleToFollow = nil
@@ -141,12 +141,8 @@ function AIDriveStrategyFollowVehicle:getDriveData(dt, vX, vY, vZ)
     isAllowedToDrive = isAllowedToDrive and (distanceToStop > 0)
 
     if isAllowedToDrive then
-      -- if steepTurnAngle then
-      --   maxSpeed = math.min(10, maxSpeed)
-      -- else
         local curSpeed = math.max(1, (vehicle.lastSpeed * 3600))
         maxSpeed = maxSpeed * (1 + math.min(2, (distanceToStop / curSpeed)))
-      -- end
     end
 
     if (not isAllowedToDrive) or (maxSpeed < 0.1) then

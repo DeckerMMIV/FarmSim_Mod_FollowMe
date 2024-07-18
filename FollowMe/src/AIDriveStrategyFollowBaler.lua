@@ -2,16 +2,16 @@ AIDriveStrategyFollowBaler = {}
 local AIDriveStrategyFollowBaler_mt = Class(AIDriveStrategyFollowBaler, AIDriveStrategy)
 
 function AIDriveStrategyFollowBaler.new(customMt)
-	if customMt == nil then
-		customMt = AIDriveStrategyFollowBaler_mt
-	end
+    if customMt == nil then
+        customMt = AIDriveStrategyFollowBaler_mt
+    end
 
-	local self = AIDriveStrategy.new(customMt)
-	self.balers = {}
-	self.slowDownFillLevel = 200
-	self.slowDownStartSpeed = 15
+    local self = AIDriveStrategy.new(customMt)
+    self.balers = {}
+    self.slowDownFillLevel = 200
+    self.slowDownStartSpeed = 15
 
-	return self
+    return self
 end
 
 local getBalerAllowDriveAndMaxSpeed = function(self, baler, dt)
@@ -57,12 +57,8 @@ local getBalerAllowDriveAndMaxSpeed_NonStopBaling = function(self, baler, dt)
     return true, math.huge
 end
 
---local noOperation = function(self, baler)
---    return true, math.huge
---end
-
 function AIDriveStrategyFollowBaler:setAIVehicle(vehicle)
-	AIDriveStrategyFollowBaler:superClass().setAIVehicle(self, vehicle)
+    AIDriveStrategyFollowBaler:superClass().setAIVehicle(self, vehicle)
 
     local addIfHasSpecialization = function(object)
         if SpecializationUtil.hasSpecialization(Baler, object.specializations) then
@@ -101,14 +97,14 @@ function AIDriveStrategyFollowBaler:update(dt)
 end
 
 function AIDriveStrategyFollowBaler:getDriveData(dt, vX, vY, vZ)
-	local maxSpeed = math.huge
-	for _, baler in pairs(self.balers) do
+    local maxSpeed = math.huge
+    for _, baler in pairs(self.balers) do
         local allowedToDrive, maxSpeedTemp = baler.func(self, baler.object, dt)
         if not allowedToDrive then
             return nil, nil, true, 0, 0
         end
         maxSpeed = math.min(maxSpeed, maxSpeedTemp)
-	end
+    end
 
     return nil, nil, true, maxSpeed, math.huge
 end

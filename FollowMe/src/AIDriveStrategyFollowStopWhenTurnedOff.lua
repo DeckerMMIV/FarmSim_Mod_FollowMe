@@ -2,13 +2,13 @@ AIDriveStrategyFollowStopWhenTurnedOff = {}
 local AIDriveStrategyFollowStopWhenTurnedOff_mt = Class(AIDriveStrategyFollowStopWhenTurnedOff, AIDriveStrategy)
 
 function AIDriveStrategyFollowStopWhenTurnedOff.new(customMt)
-	if customMt == nil then
-		customMt = AIDriveStrategyFollowStopWhenTurnedOff_mt
-	end
+    if customMt == nil then
+        customMt = AIDriveStrategyFollowStopWhenTurnedOff_mt
+    end
 
-	local self = AIDriveStrategy.new(customMt)
+    local self = AIDriveStrategy.new(customMt)
     self.activeImplements = {}
-	return self
+    return self
 end
 
 local allowDriveWhenTurnedOnAndLowered = function(self, implement)
@@ -20,7 +20,7 @@ local allowDriveWhenTurnedOn = function(self, implement)
 end
 
 function AIDriveStrategyFollowStopWhenTurnedOff:setAIVehicle(vehicle)
-	AIDriveStrategyFollowStopWhenTurnedOff:superClass().setAIVehicle(self, vehicle)
+    AIDriveStrategyFollowStopWhenTurnedOff:superClass().setAIVehicle(self, vehicle)
 end
 
 function AIDriveStrategyFollowStopWhenTurnedOff:setForSpecializations(...)
@@ -56,17 +56,13 @@ function AIDriveStrategyFollowStopWhenTurnedOff:update(dt)
 end
 
 function AIDriveStrategyFollowStopWhenTurnedOff:getDriveData(dt, vX, vY, vZ)
-	for _, implement in pairs(self.activeImplements) do
-        --local func = implement.func
-        --if func then
-        --    local allowedToDrive = func(self, implement.object)
-            local allowedToDrive = implement.func(self, implement.object)
-            if not allowedToDrive then
-                -- Report a negative maxSpeed back, indicating this strategy wants to stop the vehicle
-                return nil, nil, true, -1, 0
-            end
-        --end
-	end
+    for _, implement in pairs(self.activeImplements) do
+        local allowedToDrive = implement.func(self, implement.object)
+        if not allowedToDrive then
+            -- Report a negative maxSpeed back, indicating this strategy wants to stop the vehicle
+            return nil, nil, true, -1, 0
+        end
+    end
 
     return nil, nil, true, math.huge, math.huge
 end
