@@ -1,6 +1,11 @@
 AIDriveStrategyFollowStopWhenTurnedOff = {}
 local AIDriveStrategyFollowStopWhenTurnedOff_mt = Class(AIDriveStrategyFollowStopWhenTurnedOff, AIDriveStrategy)
 
+AIDriveStrategyFollowStopWhenTurnedOff.ACTION_STOP_FOLLOWING = 1
+AIDriveStrategyFollowStopWhenTurnedOff.ACTION_CONTINUE = 2
+
+AIDriveStrategyFollowStopWhenTurnedOff.ACTION_MAXVALUE = 2
+
 function AIDriveStrategyFollowStopWhenTurnedOff.new(customMt)
     if customMt == nil then
         customMt = AIDriveStrategyFollowStopWhenTurnedOff_mt
@@ -8,14 +13,22 @@ function AIDriveStrategyFollowStopWhenTurnedOff.new(customMt)
 
     local self = AIDriveStrategy.new(customMt)
     self.activeImplements = {}
+    self:setActionWhenFull(AIDriveStrategyFollowStopWhenTurnedOff.ACTION_STOP_FOLLOWING)
+
     return self
 end
 
 local allowDriveWhenTurnedOnAndLowered = function(self, implement)
+    if self.actionWhenFull == AIDriveStrategyFollowStopWhenTurnedOff.ACTION_CONTINUE then
+        return true
+    end
     return implement:getIsTurnedOn() and implement:getIsLowered()
 end
 
 local allowDriveWhenTurnedOn = function(self, implement)
+    if self.actionWhenFull == AIDriveStrategyFollowStopWhenTurnedOff.ACTION_CONTINUE then
+        return true
+    end
     return implement:getIsTurnedOn()
 end
 
@@ -50,6 +63,23 @@ function AIDriveStrategyFollowStopWhenTurnedOff:setForSpecializations(...)
             addIfHasSpecialization(object, specialization)
         end
     end
+
+    return (#self.activeImplements > 0)
+end
+
+function AIDriveStrategyFollowStopWhenTurnedOff:setActionWhenFull(value)
+    -- Wrap around if outside bounds
+    if value < 1 then
+        value = AIDriveStrategyFollowStopWhenTurnedOff.ACTION_MAXVALUE
+    elseif value > AIDriveStrategyFollowStopWhenTurnedOff.ACTION_MAXVALUE then
+        value = 1
+    end
+
+    self.actionWhenFull = value
+end
+
+function AIDriveStrategyFollowStopWhenTurnedOff:getActionWhenFull()
+    return self.actionWhenFull
 end
 
 function AIDriveStrategyFollowStopWhenTurnedOff:update(dt)

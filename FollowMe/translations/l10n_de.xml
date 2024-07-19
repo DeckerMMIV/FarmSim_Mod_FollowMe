@@ -11,7 +11,7 @@
         <text name="input_FOLLOW_SIDE_OFFSET_1"        text="Seitenversatz ändern +" />
         <text name="input_FOLLOW_SIDE_OFFSET_2"        text="Seitenversatz ändern -" />
         <text name="input_FOLLOW_PAUSE_RESUME"         text="Pause/Fortsetzen" />
-        <text name="input_FOLLOW_BALELOADER"           text="Tool operation" />
+        <text name="input_FOLLOW_TOOLACTION"           text="Action when full" />
 
         <text name="input_FOLLOW_MARKER_TOGGLE_OFFSET" text="Markierung für Switch-Seitenversatz" />
 
@@ -21,7 +21,7 @@
         <text name="input_FOLLOW_CHASER_SIDE_OFFSET_1" text="Seitenversatz des Mitnehmerwechsels +" />
         <text name="input_FOLLOW_CHASER_SIDE_OFFSET_2" text="Seitenversatz des Mitnehmerwechsels -" />
         <text name="input_FOLLOW_CHASER_PAUSE_RESUME"  text="Follower pausieren/fortsetzen" />
-        <text name="input_FOLLOW_CHASER_BALELOADER"    text="Follower, Tool operation" />
+        <text name="input_FOLLOW_CHASER_TOOLACTION"    text="Follower, action when full" />
 
         <!-- F1-Menu Actions -->
         <text name="FOLLOW_INITIATE"                   text="Folgen, einleiten" />
@@ -41,11 +41,11 @@
         <text name="FOLLOW_MARKER_OFFSET_DISABLED"     text="Versatz der Mitnehmerseite: Aus" />
         <text name="FOLLOW_MARKER_OFFSET_REVERSED"     text="Versatz der Mitnehmerseite: Gegenteil" />
 
-        <text name="FOLLOW_BALELOADER"                      text="Folgen, " />
-        <text name="FOLLOW_CHASER_BALELOADER"               text="Follower, " />
-        <text name="FOLLOW_BALELOADER_WHENFULL_STOP"        text="When full: Disengage" />
-        <text name="FOLLOW_BALELOADER_WHENFULL_UNLOAD"      text="When full: Unload" />
-        <text name="FOLLOW_BALELOADER_WHENFULL_CONTINUE"    text="When full: Continue" />
+        <text name="FOLLOW_TOOLACTION"                      text="Folgen, " />
+        <text name="FOLLOW_CHASER_TOOLACTION"               text="Follower, " />
+        <text name="FOLLOW_TOOLACTION_WHENFULL_STOP"        text="When full: Stop" />
+        <text name="FOLLOW_TOOLACTION_WHENFULL_CONTINUE"    text="When full: Continue" />
+        <text name="FOLLOW_TOOLACTION_WHENFULL_UNLOAD"      text="When full: Unload" />
 
         <!-- Screen HUD -->
         <text name="FOLLOW_LEADER_SELECTED"            text="Folgen:" />

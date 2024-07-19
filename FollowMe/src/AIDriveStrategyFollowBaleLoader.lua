@@ -2,8 +2,8 @@ AIDriveStrategyFollowBaleLoader = {}
 local AIDriveStrategyFollowBaleLoader_mt = Class(AIDriveStrategyFollowBaleLoader, AIDriveStrategy)
 
 AIDriveStrategyFollowBaleLoader.ACTION_STOP_FOLLOWING = 1
-AIDriveStrategyFollowBaleLoader.ACTION_EMPTY_BALELOADER = 2
-AIDriveStrategyFollowBaleLoader.ACTION_CONTINUE = 3
+AIDriveStrategyFollowBaleLoader.ACTION_CONTINUE = 2
+AIDriveStrategyFollowBaleLoader.ACTION_EMPTY_BALELOADER = 3
 
 AIDriveStrategyFollowBaleLoader.ACTION_MAXVALUE = 3
 
@@ -14,7 +14,7 @@ function AIDriveStrategyFollowBaleLoader.new(customMt)
 
     local self = AIDriveStrategy.new(customMt)
     self.baleLoaders = {}
-    self.actionWhenFull = AIDriveStrategyFollowBaleLoader.ACTION_STOP_FOLLOWING
+    self:setActionWhenFull(AIDriveStrategyFollowBaleLoader.ACTION_STOP_FOLLOWING)
 
     return self
 end
@@ -108,7 +108,7 @@ function AIDriveStrategyFollowBaleLoader:setAIVehicle(vehicle)
                 -- Otherwise instruct it into transport-position, and set the actionWhenFull to continue driving,
                 -- as player likely wants to just follow a leader, without (or can't) picking up bales.
                 object:doStateChange(BaleLoader.CHANGE_MOVE_TO_TRANSPORT)
-                self.actionWhenFull = AIDriveStrategyFollowBaleLoader.ACTION_CONTINUE
+                self:setActionWhenFull(AIDriveStrategyFollowBaleLoader.ACTION_CONTINUE)
             end
         end
         return nil
@@ -133,8 +133,15 @@ function AIDriveStrategyFollowBaleLoader:setAIVehicle(vehicle)
     return (#self.baleLoaders > 0)
 end
 
-function AIDriveStrategyFollowBaleLoader:setActionWhenFull(action)
-    self.actionWhenFull = action
+function AIDriveStrategyFollowBaleLoader:setActionWhenFull(value)
+    -- Wrap around if outside bounds
+    if value < 1 then
+        value = AIDriveStrategyFollowBaleLoader.ACTION_MAXVALUE
+    elseif value > AIDriveStrategyFollowBaleLoader.ACTION_MAXVALUE then
+        value = 1
+    end
+
+    self.actionWhenFull = value
 end
 
 function AIDriveStrategyFollowBaleLoader:getActionWhenFull()

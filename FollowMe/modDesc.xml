@@ -142,13 +142,13 @@ Change-log 1.3.0.0
         <action name="FOLLOW_SIDE_OFFSET"          category="VEHICLE" axisType="FULL" />
         <action name="FOLLOW_PAUSE_RESUME"         category="VEHICLE" />
         <action name="FOLLOW_MARKER_TOGGLE_OFFSET" category="VEHICLE" />
-        <action name="FOLLOW_BALELOADER"           category="VEHICLE" />
+        <action name="FOLLOW_TOOLACTION"           category="VEHICLE" />
 
         <action name="FOLLOW_CHASER_CHOOSE"        category="VEHICLE" />
         <action name="FOLLOW_CHASER_DISTANCE"      category="VEHICLE" axisType="FULL" />
         <action name="FOLLOW_CHASER_SIDE_OFFSET"   category="VEHICLE" axisType="FULL" />
         <action name="FOLLOW_CHASER_PAUSE_RESUME"  category="VEHICLE" />
-        <action name="FOLLOW_CHASER_BALELOADER"    category="VEHICLE" />
+        <action name="FOLLOW_CHASER_TOOLACTION"    category="VEHICLE" />
 
     </actions>
 
@@ -167,7 +167,7 @@ Change-log 1.3.0.0
         <actionBinding action="FOLLOW_PAUSE_RESUME">
             <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_h" index="1" />
         </actionBinding>
-        <actionBinding action="FOLLOW_BALELOADER">
+        <actionBinding action="FOLLOW_TOOLACTION">
             <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_y" index="1" />
         </actionBinding>
         <actionBinding action="FOLLOW_MARKER_TOGGLE_OFFSET">
@@ -188,7 +188,7 @@ Change-log 1.3.0.0
         <actionBinding action="FOLLOW_CHASER_PAUSE_RESUME">
             <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_rctrl KEY_h" index="1" />
         </actionBinding>
-        <actionBinding action="FOLLOW_CHASER_BALELOADER">
+        <actionBinding action="FOLLOW_CHASER_TOOLACTION">
             <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_rctrl KEY_y" index="1" />
         </actionBinding>
     </inputBinding>
