@@ -6,9 +6,19 @@ To read more about this mod, find it on;
 - https://www.farming-simulator.com/mods.php?title=fs2017&org_id=53574
 
 
+## FS25 - Change-log
+
+1.0.0.0
+- Follow Me released on Giants Software's ModHub (2025-02-04).
+- Changed how the F1-help shows action-keys for Follow Me.
+- Added ability for BaleLoader to unload when full.
+- Changes for collision detection and when a follower is told to 'drive in front of vehicle'.
+- Upgraded to FS25.
+
+
 ## FS22 - Change-log
 
-Change-log 1.3.0.0
+1.3.0.0
 - Added pause/resume ability (issue #56).
 - Adjustment to balers when nearly full and nothing is picked up, to not slow down (issue #60).
 - Modified distance intervals, so the further away the follower is the larger the change (issue #62).

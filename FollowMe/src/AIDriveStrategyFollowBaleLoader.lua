@@ -7,12 +7,8 @@ AIDriveStrategyFollowBaleLoader.ACTION_EMPTY_BALELOADER = 3
 
 AIDriveStrategyFollowBaleLoader.ACTION_MAXVALUE = 3
 
-function AIDriveStrategyFollowBaleLoader.new(customMt)
-    if customMt == nil then
-        customMt = AIDriveStrategyFollowBaleLoader_mt
-    end
-
-    local self = AIDriveStrategy.new(customMt)
+function AIDriveStrategyFollowBaleLoader.new(reconstructionData, customMt)
+    local self = AIDriveStrategy.new(reconstructionData, customMt or AIDriveStrategyFollowBaleLoader_mt)
     self.baleLoaders = {}
     self:setActionWhenFull(AIDriveStrategyFollowBaleLoader.ACTION_STOP_FOLLOWING)
 
@@ -39,6 +35,8 @@ local whenFullOperation = function(self, baleLoader, dt)
                     -- No driving while raising/opening bale-loader for unloading
                     return false, 0
                 end
+                -- 
+                spec.transportPositionAfterUnloading = false
                 -- Slow driving, while finishing unloading
                 return true, 2
             end
@@ -52,8 +50,15 @@ local whenFullOperation = function(self, baleLoader, dt)
             baleLoader:doStateChange(BaleLoader.CHANGE_MOVE_TO_WORK)
         end
     else
-        if baleLoader:getFillUnitFreeCapacity(spec.fillUnitIndex) == 0 then
-            if spec.isInWorkPosition then
+        if baleLoader:getFillUnitFreeCapacity(spec.fillUnitIndex) > 0 then
+            self.whenFullTimeout = 0
+        else
+            -- TODO - maybe use getIsBaleLoaderFoldingPlaying ?
+            if self.whenFullTimeout < 5 then
+                self.whenFullTimeout = self.whenFullTimeout + 1
+                return false, 0
+            end
+            if spec.isInWorkPosition and not spec.grabberIsMoving then
                 baleLoader:doStateChange(BaleLoader.CHANGE_MOVE_TO_TRANSPORT)
             end
             if spec.grabberIsMoving then
@@ -78,6 +83,8 @@ function AIDriveStrategyFollowBaleLoader:setAIVehicle(vehicle)
     if nil == BaleLoader.EMPTY_NONE
     or nil == BaleLoader.EMPTY_WAIT_TO_DROP
     or not (BaleLoader.EMPTY_NONE < BaleLoader.EMPTY_WAIT_TO_DROP)
+    or nil == BaleLoader.CHANGE_MOVE_TO_WORK
+    or nil == BaleLoader.CHANGE_MOVE_TO_TRANSPORT
     then
         return false
     end
@@ -92,10 +99,10 @@ function AIDriveStrategyFollowBaleLoader:setAIVehicle(vehicle)
     local funcCheckWhenFull = function(object)
         if SpecializationUtil.hasSpecialization(BaleLoader, object.specializations) then
             local spec = object.spec_baleLoader
-            if spec 
+            if spec
             and spec.isInWorkPosition
             and nil ~= object.getIsAutomaticBaleUnloadingAllowed and nil ~= object.getIsAutomaticBaleUnloadingInProgress and nil ~= object.startAutomaticBaleUnloading
-            and nil ~= object.doStateChange and nil ~= object.getIsBaleGrabbingAllowed 
+            and nil ~= object.doStateChange and nil ~= object.getIsBaleGrabbingAllowed
             and nil ~= object.getFillUnitFreeCapacity
             then
                 -- If FollowMe activated on a BaleLoader that has free capacity and allow bale grabbing,
@@ -125,7 +132,6 @@ function AIDriveStrategyFollowBaleLoader:setAIVehicle(vehicle)
         end
     end
 
-    addIfHasSpecialization(self.vehicle)
     for _, object in pairs(self.vehicle.childVehicles) do
         addIfHasSpecialization(object)
     end
@@ -134,6 +140,8 @@ function AIDriveStrategyFollowBaleLoader:setAIVehicle(vehicle)
 end
 
 function AIDriveStrategyFollowBaleLoader:setActionWhenFull(value)
+    value = value or self.actionWhenFull
+
     -- Wrap around if outside bounds
     if value < 1 then
         value = AIDriveStrategyFollowBaleLoader.ACTION_MAXVALUE
@@ -142,6 +150,7 @@ function AIDriveStrategyFollowBaleLoader:setActionWhenFull(value)
     end
 
     self.actionWhenFull = value
+    self.whenFullTimeout = 0
 end
 
 function AIDriveStrategyFollowBaleLoader:getActionWhenFull()
@@ -156,7 +165,7 @@ function AIDriveStrategyFollowBaleLoader:getDriveData(dt, vX, vY, vZ)
     for _, baleLoader in pairs(self.baleLoaders) do
         local allowedToDrive, maxSpeedTemp = baleLoader.func(self, baleLoader.object, dt)
         if not allowedToDrive then
-            return nil, nil, true, 0, 0
+            return nil, nil, true, maxSpeedTemp, 0
         end
         maxSpeed = math.min(maxSpeed, maxSpeedTemp)
     end

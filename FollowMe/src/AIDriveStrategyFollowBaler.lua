@@ -1,12 +1,8 @@
 AIDriveStrategyFollowBaler = {}
 local AIDriveStrategyFollowBaler_mt = Class(AIDriveStrategyFollowBaler, AIDriveStrategy)
 
-function AIDriveStrategyFollowBaler.new(customMt)
-    if customMt == nil then
-        customMt = AIDriveStrategyFollowBaler_mt
-    end
-
-    local self = AIDriveStrategy.new(customMt)
+function AIDriveStrategyFollowBaler.new(reconstructionData, customMt)
+    local self = AIDriveStrategy.new(reconstructionData, customMt or AIDriveStrategyFollowBaler_mt)
     self.balers = {}
     self.slowDownFillLevel = 200
     self.slowDownStartSpeed = 15
@@ -15,6 +11,13 @@ function AIDriveStrategyFollowBaler.new(customMt)
 end
 
 local getBalerAllowDriveAndMaxSpeed = function(self, baler, dt)
+    if not baler:getConsumableIsAvailable(Baler.CONSUMABLE_TYPE_NAME_ROUND)
+    or not baler:getConsumableIsAvailable(Baler.CONSUMABLE_TYPE_NAME_SQUARE) then
+        -- Abort following when baler is empty of consumables
+        -- Report a negative maxSpeed back, indicating this strategy wants to stop the vehicle
+        return false, -1
+    end
+
     local spec = baler.spec_baler
     if spec.unloadingState ~= Baler.UNLOADING_CLOSED then
         return false, 0
@@ -28,18 +31,6 @@ local getBalerAllowDriveAndMaxSpeed = function(self, baler, dt)
         if freeFillLevel <= 0 then
             return false, 0
         end
-
-        -- Issue #60
-        -- If only tiny amounts are being picked up during 0.5 second interval, then keep the vehicle's speed up.
-        --if spec.workAreaParameters.lastPickedUpLiters <= 10 then
-        --    spec.workAreaParameters.modFV_emptyWorkAreaTimer = Utils.getNoNil(spec.workAreaParameters.modFV_emptyWorkAreaTimer, 500) - dt
-        --    if spec.workAreaParameters.modFV_emptyWorkAreaTimer < 0 then
-        --        return true, math.huge
-        --    end
-        --end
-        --spec.workAreaParameters.modFV_emptyWorkAreaTimer = nil
-
-        -- Issue #60
         -- Only larger amounts picked up, should slow down vehicle's speed.
         if spec.workAreaParameters.lastPickedUpLiters > 10 then
             return true, 2 + (freeFillLevel / self.slowDownFillLevel) * self.slowDownStartSpeed
@@ -50,6 +41,13 @@ local getBalerAllowDriveAndMaxSpeed = function(self, baler, dt)
 end
 
 local getBalerAllowDriveAndMaxSpeed_NonStopBaling = function(self, baler, dt)
+    if not baler:getConsumableIsAvailable(Baler.CONSUMABLE_TYPE_NAME_ROUND)
+    or not baler:getConsumableIsAvailable(Baler.CONSUMABLE_TYPE_NAME_SQUARE) then
+        -- Abort following when baler is empty of consumables
+        -- Report a negative maxSpeed back, indicating this strategy wants to stop the vehicle
+        return false, -1
+    end
+
     local spec = baler.spec_baler
     if spec.platformDropInProgress then
         return true, spec.platformAIDropSpeed
@@ -77,7 +75,6 @@ function AIDriveStrategyFollowBaler:setAIVehicle(vehicle)
         end
     end
 
-    addIfHasSpecialization(self.vehicle)
     for _, object in pairs(self.vehicle.childVehicles) do
         addIfHasSpecialization(object)
     end
@@ -91,6 +88,8 @@ function AIDriveStrategyFollowBaler:setAIVehicle(vehicle)
             object:setBaleWrapperAutomaticDrop(true)
         end
     end
+
+    return (#self.balers > 0)
 end
 
 function AIDriveStrategyFollowBaler:update(dt)
@@ -101,7 +100,7 @@ function AIDriveStrategyFollowBaler:getDriveData(dt, vX, vY, vZ)
     for _, baler in pairs(self.balers) do
         local allowedToDrive, maxSpeedTemp = baler.func(self, baler.object, dt)
         if not allowedToDrive then
-            return nil, nil, true, 0, 0
+            return nil, nil, true, maxSpeedTemp, 0
         end
         maxSpeed = math.min(maxSpeed, maxSpeedTemp)
     end

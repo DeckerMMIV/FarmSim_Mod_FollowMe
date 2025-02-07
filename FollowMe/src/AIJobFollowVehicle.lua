@@ -65,7 +65,7 @@ function AIJobFollowVehicle:setValues()
 end
 
 function AIJobFollowVehicle:validate(farmId)
-	self:setParamterValid(true)
+	self:setParameterValid(true)
 
 	local isVehicleValid, errorMessageVehicle = self.vehicleParameter:validate()
 	if not isVehicleValid then

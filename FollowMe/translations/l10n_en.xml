@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
 <!--
-    See comment in modDesc.XML about how to make your own local translation file, that must be placed in folder [..]/modSettings/FS22_FollowMe/
+    See comment in modDesc.XML about how to make your own local translation file, that must be placed in specific folder under [..]/modSettings/
 -->
     <texts>
         <!-- Input Controls -->
@@ -41,11 +41,21 @@
         <text name="FOLLOW_MARKER_OFFSET_DISABLED"     text="Followers side offset: Off" />
         <text name="FOLLOW_MARKER_OFFSET_REVERSED"     text="Followers side offset: Opposite" />
 
-        <text name="FOLLOW_TOOLACTION"                      text="Follow, " />
-        <text name="FOLLOW_CHASER_TOOLACTION"               text="Follower, " />
-        <text name="FOLLOW_TOOLACTION_WHENFULL_STOP"        text="When full: Stop" />
-        <text name="FOLLOW_TOOLACTION_WHENFULL_CONTINUE"    text="When full: Continue" />
-        <text name="FOLLOW_TOOLACTION_WHENFULL_UNLOAD"      text="When full: Unload" />
+        <text name="FOLLOW_TOOLACTION"                      text="Follow, When full: " />
+        <text name="FOLLOW_CHASER_TOOLACTION"               text="Follower, When full: " />
+        <text name="FOLLOW_TOOLACTION_WHENFULL"             text="When full: " />
+
+        <!-- F1-Menu help extension -->
+        <text name="FOLLOW_SELF_FOLLOWING"     text="Following: " />
+        <text name="FOLLOW_SELF_DISTANCE"      text="Distance: " />
+        <text name="FOLLOW_SELF_SIDEOFFSET"    text="Side-offset: " />
+        <text name="FOLLOW_SELF_WHENFULL"      text="When full: " />
+
+        <text name="FOLLOW_OTHER_SELECTED"     text="Selected Follower: " />
+        <text name="FOLLOW_OTHER_STATE"        text="State: " />
+        <text name="FOLLOW_OTHER_DISTANCE"     text="Distance: " />
+        <text name="FOLLOW_OTHER_SIDEOFFSET"   text="Side-offset: " />
+        <text name="FOLLOW_OTHER_WHENFULL"     text="When full: " />
 
         <!-- Screen HUD -->
         <text name="FOLLOW_LEADER_SELECTED"            text="Follow:" />
@@ -54,6 +64,9 @@
         <text name="FOLLOW_WAITING"                    text="Waiting / Paused" />
 
         <!-- Other -->
-        <text name="FOLLOW_AIERROR_CHASER_STOPPED"     text="Follower stopped" />
+        <text name="FOLLOW_AIERROR_CHASER_STOPPED"          text="Follower stopped" />
+        <text name="FOLLOW_TOOLACTION_WHENFULL_STOP"        text="Stop" />
+        <text name="FOLLOW_TOOLACTION_WHENFULL_CONTINUE"    text="Continue" />
+        <text name="FOLLOW_TOOLACTION_WHENFULL_UNLOAD"      text="Unload" />
     </texts>
 </l10n>

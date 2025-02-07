@@ -1,30 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="80">
+<modDesc descVersion="94">
+    <title>
+        <en>Follow Me</en>
+    </title>
+    <version>1.0.0.0</version>
     <author>Decker_MMIV</author>
-    <authorContact>forum.farming-simulator.com</authorContact>
-
 <!--
     https://github.com/DeckerMMIV/FarmSim_Mod_FollowMe
 
     NOTE:
-    Community translations and other languages for this mod, will likely not be included in future versions.
+    Community translations and other languages for this mod, will not be included in future versions.
 
     However there is still possibility to make your own local translation, by placing a l10n.xml (localization.xml) file in
-    the folder [..]/modSettings/FS22_FollowMe/   (you need to create the folder 'FS22_FollowMe', as it won't be created automatically)
+    the folder [..]/modSettings/FS25_FollowMe/   (you need to create the folder 'FS25_FollowMe', as it won't be created automatically)
 
-    Take a copy of this mod's l10n_en.xml file, and place into the folder [..]/modSettings/FS22_FollowMe/
+    Take a copy of this mod's l10n_en.xml file, and place into the folder [..]/modSettings/FS25_FollowMe/
 
     Rename the l10n_en.xml file, to use your choice of language code (de,fr,hu,ru,ch,...), or just use generic filename of  l10n.xml  (or localization.xml)
 
     Now you can edit your own local copy for a localization file for this mod, and when it is error-free, it will be loaded by a script in this mod when a game-session is started.
 -->
-
-    <version>1.4.1.0</version>
-
-    <title>
-        <en>Follow Me</en>
-    </title>
-
     <description>
         <en>
 <![CDATA[Singleplayer only! PC/Mac only!
@@ -32,96 +27,59 @@
 Ever wanted to have some vehicles follow you around the map? With "Follow Me" you can (though not backwards driving).
 
 Instructions:
-- Use action 'Initiate / Choose other' (default: RCTRL + F) to select the vehicle to follow, and make sure it is visibly indicated on the screen.
+- Use action 'Initiate / Choose other' (default: RIGHT CTRL + F) to select the vehicle to follow, and make sure it is visibly indicated on the screen.
 - For selecting another vehicle to follow, if there are more in the vicinity, press the 'Initiate / Choose other' action again before the 3 seconds timeout.
 - To stop following, press the 'Stop AI Worker' (default: H).
-- When in a vehicle, its own distance and side-offset to a leader, can be modified using actions 'Change distance' (default: RCTRL + W/S) and 'Change side offset' (default: RCTRL + A/D).
+- To temporarily pause following use the ation 'Pause/Resume' (default: RIGHT CTRL + H).
+- When in a vehicle, its own distance and side-offset to a leader can be modified using actions 'Change distance' (default: RIGHT CTRL + W/S) and 'Change side offset' (default: RIGHT CTRL + A/D).
+- If vehicle was started with a turned on and active baleloader, forage wagon, stone picker or combine, there is possibility to specify what should happen when it becomes full, with the action 'When Full: ...' (default: RIGHT CTRL + Y).
 
-- When being in a vehicle that has followers, use action 'Follower, Choose other' (default: RSHIFT + RCTRL + F) to specify what follower is selected for instructions about distance and side offset.
-- Use actions 'Follower, Distance' (default: RSHIFT + RCTRL + W/S) and 'Follower, Side offset' (default: RSHIFT + RCTRL + A/D) for changing the selected follower's distance and side offset.
+- When being in a vehicle that has followers, use action 'Follower, Choose other' (default: RIGHT SHIFT + RIGHT CTRL + F) to specify what follower is selected for further instructions.
+- Use actions 'Follower, Distance' (default: RIGHT SHIFT + RIGHT CTRL + W/S) and 'Follower, Side offset' (default: RIGHT SHIFT + RIGHT CTRL + A/D) for changing the selected follower's distance and side offset.
+- Use actions 'Follower, Pause/Resume' (default: RIGHT SHIFT + RIGHT CTRL + H) or 'Follower, When Full' (default: RIGHT SHIFT + RIGHT CTRL + Y) for changing how the selected follower should react.
 
-- It is possible to "place a marker on the trail", that instructs followers to ignore their side offset, or use the opposite side offset. For that use the action 'Marker for Switch side offset' (default: RSHIFT + RCTRL + X). Please be aware of, that the current choice of marker is only visible in the F1-menu of actions.
+- It is possible to "place a marker on the trail", that instructs followers to ignore their side offset, or use the opposite side offset. For that use the action 'Marker for Switch side offset' (default: RIGHT SHIFT + RIGHT CTRL + X).
 
-Known issues:
-- Some vehicles have a collision-box detection that is much larger and wider than what is visible (even when folded), and therefore will not be able to work correctly with "Follow Me". They will often state 'near collision' due to their invisible collision-box's size.
-
-Change-log 1.3.0.0
-- Added pause/resume ability (issue #56).
-- Adjustment to balers when nearly full and nothing is picked up, to not slow down (issue #60).
-- Modified distance intervals, so the further away the follower is the larger the change (issue #62).
-- Fix for combine stopping unexpectedly when no crops available to harvest (issue #59).
-- Fix for non-empty slurry barrels being turned on when activating 'Follow Me'.
-- Fix for self-proprelled slurry spreaders being unable to deactivate 'Follow Me'.
-- Fix for follower with offset, getting "confused" following a leader driving backwards then forwards for turning.
-
+Notes:
+- When a follower is instructed to drive 'in front of' a vehicle, i.e. the distance is negative, then collision detection is disabled for that follower.
+- When using side-offsets do remember that followers are not able to 'make 90-degree turns' just like that. So do some experimentation and tries to learn how to make turns, depending on which side-offset the follower is set to.
+- Different vehicles have different steering turn radius, so remember to consider the least capable follower when leading vehicle steers left or right.
+- Different vehicles and their equipment have different driving speeds, so consider giving the slowest follower time to catch-up with the leading vehicle.
 ]]>
         </en>
+        <!-- The following have been machine translated to German language. -->
         <de>
 <![CDATA[Nur Einzelspieler! Nur PC/Mac!
 
-Sie wollten schon immer Fahrzeuge als Kolonne über die Karte Transportieren? Mit "Follow Me" können Sie dies (natürlich nur vorwärtsfahrend).
+Wolltest du schon immer mal ein paar Fahrzeuge haben, die dir auf der Karte folgen? Mit "Follow Me" können Sie das (allerdings nicht rückwärts fahren).
 
 Anweisungen:
-- Verwenden Sie die Aktion „Initiieren / Andere auswählen“ (Standard: RCTRL + F), um das zu verfolgende Fahrzeug auszuwählen, und stellen Sie sicher, dass es sichtbar auf dem Bildschirm angezeigt wird.
-- Um ein anderes Fahrzeug auszuwählen, dem gefolgt werden soll, drücken Sie, falls sich weitere in der Nähe befinden, die Aktion „Initiieren/Anderes auswählen“ vor dem 3-Sekunden-Timeout erneut.
-- Um das Folgen zu beenden, drücken Sie die „Stop AI Worker“-Taste (Standard: H).
-- Wenn Sie sich in einem Fahrzeug befinden, können der eigene Abstand und der seitliche Versatz zu einem Anführer mithilfe der Aktionen „Abstand ändern“ (Standard: RCTRL + W/S) und „Seitenversatz ändern“ (Standard: RCTRL + A/D) geändert werden. .
+- Verwenden Sie die Aktion 'Initiieren / Anderes wählen' (Standard: RECHTS STRG + F), um das zu verfolgende Fahrzeug auszuwählen, und vergewissern Sie sich, dass es auf dem Bildschirm sichtbar angezeigt wird.
+- Um ein anderes Fahrzeug auszuwählen, das verfolgt werden soll, drücken Sie die Aktion 'Initiate / Choose other' erneut, bevor die 3 Sekunden abgelaufen sind.
+- Um die Verfolgung zu beenden, drücken Sie die Taste 'Stop AI Worker' (Standard: H).
+- Um die Verfolgung vorübergehend zu unterbrechen, drücke die Taste 'Pause/Fortsetzen' (Standard: RECHTS STRG + H).
+- Wenn man sich in einem Fahrzeug befindet, können der eigene Abstand und der Seitenversatz zu einem Vorreiter mit den Aktionen 'Abstand ändern' (Standard: RECHTS STRG + W/S) und 'Seitenversatz ändern' (Standard: RECHTS STRG + A/D) geändert werden.
+- Wurde das Fahrzeug mit einem eingeschalteten und aktiven Ballenlader, Ladewagen, Steinsammler oder Mähdrescher gestartet, kann mit der Aktion 'Wenn voll: ...' (Standard: RECHTS STRG + Y) festgelegt werden, was passieren soll, wenn der Wagen voll ist.
 
-- Wenn Sie sich in einem Fahrzeug mit Followern befinden, verwenden Sie die Aktion „Follower, Choose other“ (Standard: RSHIFT + RCTRL + F), um anzugeben, welcher Follower für Anweisungen zu Entfernung und Seitenversatz ausgewählt wird.
-- Verwenden Sie die Aktionen „Follower, Distanz“ (Standard: RSHIFT + RCTRL + W/S) und „Follower, Seitenversatz“ (Standard: RSHIFT + RCTRL + A/D), um den Abstand und den Seitenversatz des ausgewählten Followers zu ändern.
+- Wenn Sie sich in einem Fahrzeug mit Verfolgern befinden, verwenden Sie die Aktion 'Verfolger, Anderen wählen' (Standard: RECHTSUMSCHALTUNG + RECHTSSTREIFEN + F), um anzugeben, welcher Verfolger für weitere Anweisungen ausgewählt wird.
+- Verwenden Sie die Aktionen 'Verfolger, Abstand' (Standard: RECHTSUMSCHALTUNG + RECHTSSTREIFEN + W/S) und 'Verfolger, Seitenversatz' (Standard: RECHTSUMSCHALTUNG + RECHTSSTREIFEN + A/D), um den Abstand und den Seitenversatz des ausgewählten Verfolgers zu ändern.
+- Verwenden Sie die Aktionen 'Verfolger, Pause/Fortsetzen' (Standard: RECHTS UMSCHALT + RECHTS STRG + H) oder 'Verfolger, wenn voll' (Standard: RECHTS UMSCHALT + RECHTS STRG + Y), um zu ändern, wie der ausgewählte Verfolger reagieren soll.
 
-- Es ist möglich, „eine Markierung auf der Spur zu platzieren“, die die Follower anweist, ihren Seitenversatz zu ignorieren oder den gegenüberliegenden Seitenversatz zu verwenden. Verwenden Sie dazu die Aktion 'Marker für Seitenversatz wechseln' (Standard: RSHIFT + RCTRL + X). Bitte beachten Sie, dass die aktuelle Markierungsauswahl nur im F1-Aktionsmenü sichtbar ist.
+- Es ist möglich, eine "Markierung auf der Spur" zu setzen, die die Verfolger anweist, ihren Seitenversatz zu ignorieren oder den gegenüberliegenden Seitenversatz zu verwenden. Verwenden Sie dazu die Aktion 'Markierung für Seitenversatz wechseln' (Standard: RECHTSUMSCHALTUNG + RECHTSSTREIFEN + X).
 
-Bekannte Probleme:
-- Einige Fahrzeuge haben eine Kollisionsbox-Erkennung, die viel größer und breiter ist als sichtbar (auch im zusammengeklappten Zustand) und daher mit "Follow Me" nicht richtig funktionieren können. Aufgrund der Größe ihrer unsichtbaren Kollisionsbox geben sie oft „Beinahe-Kollision“ an.
-
-Change-log 1.3.0.0
-- Added pause/resume ability (issue #56).
-- Adjustment to balers when nearly full and nothing is picked up, to not slow down (issue #60).
-- Modified distance intervals, so the further away the follower is the larger the change (issue #62).
-- Fix for combine stopping unexpectedly when no crops available to harvest (issue #59).
-- Fix for non-empty slurry barrels being turned on when activating 'Follow Me'.
-- Fix for self-proprelled slurry spreaders being unable to deactivate 'Follow Me'.
-- Fix for follower with offset, getting "confused" following a leader driving backwards then forwards for turning.
-
+Anmerkungen:
+- Wenn ein Verfolger angewiesen wird, 'vor' einem Fahrzeug zu fahren, d.h. der Abstand negativ ist, dann ist die Kollisionserkennung für diesen Verfolger deaktiviert.
+- Bei der Verwendung von Seitenverschiebungen ist zu beachten, dass Verfolger nicht einfach so 90-Grad-Wendungen machen können. Experimentieren Sie also ein wenig und versuchen Sie zu lernen, wie man Kurven fährt, je nachdem, auf welchen Seitenversatz der Follower eingestellt ist.
+- Verschiedene Fahrzeuge haben einen unterschiedlichen Lenkradius. Denken Sie also daran, den am wenigsten leistungsfähigen Nachfolger zu berücksichtigen, wenn das führende Fahrzeug nach links oder rechts lenkt.
+- Unterschiedliche Fahrzeuge und ihre Ausrüstung haben unterschiedliche Fahrgeschwindigkeiten, daher sollten Sie dem langsamsten Verfolger Zeit geben, das führende Fahrzeug einzuholen.
 ]]>
         </de>
-        <fr>
-<![CDATA[Solo uniquement! PC/Mac uniquement!
-
-Vous avez toujours souhaité que certains véhicules puissent vous suivre? Avec "Follow Me", c'est possible (sauf en marche arrière).
-
-Des instructions:
-- Utilisez l'action 'Initier / Choisir autre' (par défaut: RCTRL + F) pour sélectionner le véhicule à suivre, et assurez-vous qu'il est visiblement indiqué à l'écran.
-- Pour sélectionner un autre véhicule à suivre, s'il y en a d'autres à proximité, appuyez à nouveau sur l'action 'Lancer / Choisir autre' avant le délai de 3 secondes.
-- Pour arrêter de suivre, appuyez sur 'Stop AI Worker' (par défaut: H).
-- Lorsqu'il est dans un véhicule, sa propre distance et son décalage latéral par rapport à un leader peuvent être modifiés à l'aide des actions "Modifier la distance" (par défaut: RCTRL + W/S) et "Changer le décalage latéral" (par défaut: RCTRL + A/D).
-
-- Lorsque vous êtes dans un véhicule qui a des suiveurs, utilisez l'action « Suiveur, choisissez autre » (par défaut: RSHIFT + RCTRL + F) pour spécifier quel suiveur est sélectionné pour obtenir des instructions sur la distance et le décalage latéral.
-- Utilisez les actions 'Follower, Distance' (par défaut: RSHIFT + RCTRL + W/S) et 'Follower, Side offset' (par défaut: RSHIFT + RCTRL + A/D) pour modifier la distance et le décalage latéral du suiveur sélectionné.
-
-- Il est possible de "placer un marqueur sur la piste", qui demande aux suiveurs d'ignorer leur décalage latéral ou d'utiliser le décalage latéral opposé. Pour cela, utilisez l'action 'Marker for Switch side offset' (par défaut: RSHIFT + RCTRL + X). Veuillez noter que le choix actuel du marqueur n'est visible que dans le menu d'actions F1.
-
-Problèmes connus:
-- Certains véhicules ont une détection de boîte de collision beaucoup plus grande et plus large que ce qui est visible (même plié), et ne pourront donc pas fonctionner correctement avec "Follow Me". Ils indiqueront souvent "quasi-collision" en raison de la taille de leur boîte de collision invisible.
-
-Change-log 1.3.0.0
-- Added pause/resume ability (issue #56).
-- Adjustment to balers when nearly full and nothing is picked up, to not slow down (issue #60).
-- Modified distance intervals, so the further away the follower is the larger the change (issue #62).
-- Fix for combine stopping unexpectedly when no crops available to harvest (issue #59).
-- Fix for non-empty slurry barrels being turned on when activating 'Follow Me'.
-- Fix for self-proprelled slurry spreaders being unable to deactivate 'Follow Me'.
-- Fix for follower with offset, getting "confused" following a leader driving backwards then forwards for turning.
-
-]]>
-        </fr>
     </description>
 
     <iconFilename>icon_FollowMe.dds</iconFilename>
 
     <!-- NO! This is not some 'false/true' switch, that magically can make the mod work in multiplayer. -->
-    <!-- This `multiplayer supported="false"` indicates that this mod's Lua scripts are NOT YET multiplayer ready. -->
+    <!-- This `multiplayer supported="false"` indicates that this mod's Lua scripts are NOT multiplayer ready. -->
     <multiplayer supported="false"/> <!-- DO NOT CHANGE as it WILL NOT do what you want it to do! -->
 
     <specializations>
@@ -133,7 +91,7 @@ Change-log 1.3.0.0
         <sourceFile filename="src/register.lua" />
     </extraSourceFiles>
 
-    <!-- Please see comment at the top in this modDesc.XML, about how to make your own local translation file, that must be placed in folder [..]/modSettings/FS22_FollowMe/ -->
+    <!-- Please see comment at the top in this modDesc.XML, about how to make your own local translation file -->
     <l10n filenamePrefix="translations/l10n" />
 
     <actions>
@@ -141,15 +99,15 @@ Change-log 1.3.0.0
         <action name="FOLLOW_DISTANCE"             category="VEHICLE" axisType="FULL" />
         <action name="FOLLOW_SIDE_OFFSET"          category="VEHICLE" axisType="FULL" />
         <action name="FOLLOW_PAUSE_RESUME"         category="VEHICLE" />
-        <action name="FOLLOW_MARKER_TOGGLE_OFFSET" category="VEHICLE" />
         <action name="FOLLOW_TOOLACTION"           category="VEHICLE" />
+
+        <action name="FOLLOW_MARKER_TOGGLE_OFFSET" category="VEHICLE" />
 
         <action name="FOLLOW_CHASER_CHOOSE"        category="VEHICLE" />
         <action name="FOLLOW_CHASER_DISTANCE"      category="VEHICLE" axisType="FULL" />
         <action name="FOLLOW_CHASER_SIDE_OFFSET"   category="VEHICLE" axisType="FULL" />
         <action name="FOLLOW_CHASER_PAUSE_RESUME"  category="VEHICLE" />
         <action name="FOLLOW_CHASER_TOOLACTION"    category="VEHICLE" />
-
     </actions>
 
     <inputBinding>
@@ -170,6 +128,7 @@ Change-log 1.3.0.0
         <actionBinding action="FOLLOW_TOOLACTION">
             <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_y" index="1" />
         </actionBinding>
+
         <actionBinding action="FOLLOW_MARKER_TOGGLE_OFFSET">
             <binding device="KB_MOUSE_DEFAULT" input="KEY_rshift KEY_rctrl KEY_x" index="1" />
         </actionBinding>

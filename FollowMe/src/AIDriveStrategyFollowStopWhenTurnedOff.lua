@@ -6,15 +6,10 @@ AIDriveStrategyFollowStopWhenTurnedOff.ACTION_CONTINUE = 2
 
 AIDriveStrategyFollowStopWhenTurnedOff.ACTION_MAXVALUE = 2
 
-function AIDriveStrategyFollowStopWhenTurnedOff.new(customMt)
-    if customMt == nil then
-        customMt = AIDriveStrategyFollowStopWhenTurnedOff_mt
-    end
-
-    local self = AIDriveStrategy.new(customMt)
+function AIDriveStrategyFollowStopWhenTurnedOff.new(reconstructionData, customMt)
+    local self = AIDriveStrategy.new(reconstructionData, customMt or AIDriveStrategyFollowStopWhenTurnedOff_mt)
     self.activeImplements = {}
     self:setActionWhenFull(AIDriveStrategyFollowStopWhenTurnedOff.ACTION_STOP_FOLLOWING)
-
     return self
 end
 
@@ -34,9 +29,7 @@ end
 
 function AIDriveStrategyFollowStopWhenTurnedOff:setAIVehicle(vehicle)
     AIDriveStrategyFollowStopWhenTurnedOff:superClass().setAIVehicle(self, vehicle)
-end
 
-function AIDriveStrategyFollowStopWhenTurnedOff:setForSpecializations(...)
     local addIfHasSpecialization = function(object, specialization)
         if SpecializationUtil.hasSpecialization(specialization, object.specializations) then
             local func = nil
@@ -57,8 +50,7 @@ function AIDriveStrategyFollowStopWhenTurnedOff:setForSpecializations(...)
         end
     end
 
-    for _,specialization in ipairs({...}) do
-        addIfHasSpecialization(self.vehicle, specialization)
+    for _,specialization in ipairs({Combine, ForageWagon, StonePicker}) do
         for _, object in pairs(self.vehicle.childVehicles) do
             addIfHasSpecialization(object, specialization)
         end
@@ -68,6 +60,8 @@ function AIDriveStrategyFollowStopWhenTurnedOff:setForSpecializations(...)
 end
 
 function AIDriveStrategyFollowStopWhenTurnedOff:setActionWhenFull(value)
+    value = value or self.actionWhenFull
+
     -- Wrap around if outside bounds
     if value < 1 then
         value = AIDriveStrategyFollowStopWhenTurnedOff.ACTION_MAXVALUE

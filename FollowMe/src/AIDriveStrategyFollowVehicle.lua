@@ -1,11 +1,8 @@
 AIDriveStrategyFollowVehicle = {}
 local AIDriveStrategyFollowVehicle_mt = Class(AIDriveStrategyFollowVehicle, AIDriveStrategy)
 
-function AIDriveStrategyFollowVehicle.new(customMt)
-    if customMt == nil then
-        customMt = AIDriveStrategyFollowVehicle_mt
-    end
-    local self = AIDriveStrategy.new( customMt )
+function AIDriveStrategyFollowVehicle.new(reconstructionData, customMt)
+    local self = AIDriveStrategy.new(reconstructionData, customMt or AIDriveStrategyFollowVehicle_mt)
     self.vehicleToFollow = nil
     return self
 end

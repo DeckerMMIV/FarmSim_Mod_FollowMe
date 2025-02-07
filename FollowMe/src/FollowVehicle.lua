@@ -3,7 +3,7 @@
 --
 -- @author  Decker_MMIV (DCK)
 -- @contact forum.farming-simulator.com
--- @date    2021-12-xx
+-- @date    2021-12-xx, 2024-12-xx
 --
 
 -- For debugging
@@ -66,6 +66,10 @@ function FollowVehicle.registerFunctions(vehicleType)
         "initiateFollowVehicle",
         --
         "getCurrentSideOffsetModifier",
+        "getDistance",
+        "getSideOffset",
+        "getCurrentStateText",
+        "getSelectedToolActionText",
     } ) do
         SpecializationUtil.registerFunction(vehicleType, funcName, FollowVehicle[funcName])
     end
@@ -85,7 +89,7 @@ function FollowVehicle.registerEventListeners(vehicleType)
 --        "onPostLoad",
         "onLoadFinished",
         "onPreDelete",
---        "onDelete",
+        "onDelete",
 --        "onWriteStream",
 --        "onReadStream",
 --        "onWriteUpdateStream",
@@ -128,6 +132,9 @@ function FollowVehicle:onLoadFinished(savegame)
     spec.isActive = false
     spec.actionEvents = {}
 
+    spec.hudExtension = nil
+    spec.followerHudExtension = nil
+
     spec.driveStrategies = {}
     spec.didNotMoveTimeout = 10000
     spec.didNotMoveTimer = spec.didNotMoveTimeout
@@ -155,6 +162,7 @@ function FollowVehicle:onLoadFinished(savegame)
     spec.offsetLR = 0
     spec.distanceFB = 25
     spec.isWaiting = false
+    spec.chosenFillableToolActionWhenFull = 1
 
     spec.nearbyVehicles = {}
     spec.nearbyVehicles_timeout = 0
@@ -172,11 +180,23 @@ end
 function FollowVehicle:onPreDelete()
     if self.isServer then
         local spec = getSpec(self)
-        for _,followerVehicle in pairs(spec.currentFollowers) do
-            if followerVehicle and followerVehicle:getIsFollowVehicleActive() then
-                followerVehicle:stopCurrentAIJob(AIMessageErrorVehicleDeleted.new())
+        if nil ~= spec.currentFollowers then
+            for _,followerVehicle in pairs(spec.currentFollowers) do
+                if followerVehicle and followerVehicle:getIsFollowVehicleActive() then
+                    followerVehicle:stopCurrentAIJob(AIMessageErrorVehicleDeleted.new())
+                end
             end
         end
+    end
+end
+
+function FollowVehicle:onDelete()
+    local spec = getSpec(self)
+    if spec.hudExtension ~= nil then
+        spec.hudExtension:delete()
+    end
+    if spec.followerHudExtension ~= nil then
+        spec.followerHudExtension:delete()
     end
 end
 
@@ -202,7 +222,8 @@ function FollowVehicle:onRegisterActionEvents(isActiveForInput, isActiveForInput
             local followVehicleActive = self:getIsFollowVehicleActive()
             local otherAIActive = self:getIsAIActive() and (not followVehicleActive)
             if not otherAIActive then
-                local priority = (followVehicleActive and GS_PRIO_VERY_HIGH) or GS_PRIO_LOW
+                --local priority = (followVehicleActive and GS_PRIO_VERY_HIGH) or GS_PRIO_LOW
+                local priority = GS_PRIO_VERY_LOW
 
                 _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_TOOLACTION,  self, FollowVehicle.actionEventToolAction, false, true, false, true, nil, nil, true, true)
                 g_inputBinding:setActionEventTextPriority(eventId, priority)
@@ -222,12 +243,12 @@ function FollowVehicle:onRegisterActionEvents(isActiveForInput, isActiveForInput
             if #followers > 0 then
                 _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_CHASER_CHOOSE,      self, FollowVehicle.actionEventFollowerSelect,     false, true, false, true, nil, nil, true, true)
                 g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_NORMAL)
-                g_inputBinding:setActionEventTextVisibility(eventId, true)
+                g_inputBinding:setActionEventTextVisibility(eventId, false)
                 g_inputBinding:setActionEventText(eventId, FOLLOW_CHASER_CHOOSEOTHER)
 
                 _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_CHASER_TOOLACTION,  self, FollowVehicle.actionEventFollowerToolAction, false, true, false, true, nil, nil, true, true)
                 g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_NORMAL)
-                g_inputBinding:setActionEventTextVisibility(eventId, true)
+                g_inputBinding:setActionEventTextVisibility(eventId, false)
                 --g_inputBinding:setActionEventText(eventId, FOLLOW_CHASER_TOOLACTION)
 
                 _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_CHASER_DISTANCE,    self, FollowVehicle.actionEventFollowerDistance,   false, true, false, true, nil, nil, true, true)
@@ -242,7 +263,7 @@ function FollowVehicle:onRegisterActionEvents(isActiveForInput, isActiveForInput
 
                 _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_CHASER_PAUSE_RESUME, self, FollowVehicle.actionEventFollowerPauseResume, false, true, false, true, nil, nil, true, true)
                 g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_NORMAL)
-                g_inputBinding:setActionEventTextVisibility(eventId, true)
+                g_inputBinding:setActionEventTextVisibility(eventId, false)
                 --g_inputBinding:setActionEventText(eventId, FOLLOW_CHASER_PAUSE)
             end
 
@@ -363,16 +384,14 @@ function FollowVehicle:getSelectedFollower()
     local followers = {}
     self:getAllFollowers(followers)
 
-    if #followers == 1 then
-        return followers[1]
-    else
-        for _,followerVehicle in ipairs(followers) do
-            if spec.selectedFollower == followerVehicle then
-                return followerVehicle
-            end
+    for _,followerVehicle in ipairs(followers) do
+        if spec.selectedFollower == followerVehicle then
+            return followerVehicle
         end
     end
-
+    if #followers == 1 then
+        return followers[1]
+    end
     return nil
 end
 
@@ -384,17 +403,25 @@ function FollowVehicle:actionEventFollowerPauseResume(actionName, inputValue, ca
     end
 end
 
+local ToolActionTexts = {
+    g_i18n:getText("FOLLOW_TOOLACTION_WHENFULL_STOP"),
+    g_i18n:getText("FOLLOW_TOOLACTION_WHENFULL_CONTINUE"),
+    g_i18n:getText("FOLLOW_TOOLACTION_WHENFULL_UNLOAD"),
+}
+
+function FollowVehicle:getSelectedToolActionText()
+    local spec = getSpec(self)
+    if spec.driveStrategyFillableTool then
+        return ToolActionTexts[spec.driveStrategyFillableTool:getActionWhenFull()]
+    end
+    return nil
+end
+
 local FollowersOffsets = {
     {  1.0, g_i18n:getText("FOLLOW_MARKER_OFFSET_NORMAL") },
     {    0, g_i18n:getText("FOLLOW_MARKER_OFFSET_DISABLED") },
     { -1.0, g_i18n:getText("FOLLOW_MARKER_OFFSET_REVERSED") },
     {    0, g_i18n:getText("FOLLOW_MARKER_OFFSET_DISABLED") },
-}
-
-local ToolActionTexts = {
-    g_i18n:getText("FOLLOW_TOOLACTION_WHENFULL_STOP"),
-    g_i18n:getText("FOLLOW_TOOLACTION_WHENFULL_CONTINUE"),
-    g_i18n:getText("FOLLOW_TOOLACTION_WHENFULL_UNLOAD"),
 }
 
 function FollowVehicle:getCurrentSideOffsetModifier()
@@ -429,7 +456,7 @@ function FollowVehicle:modifyDistanceAndSideOffset(distanceDirection, sideoffset
     local newDistance = spec.distanceFB
     if distanceDirection ~= 0 then
         -- Possible "solution" for issue #62
-        distanceDirection = MathUtil.sign(distanceDirection)
+        distanceDirection = math.sign(distanceDirection)
         local distance_step = 5
         if distanceDirection < 0 then
             for idx,item in ipairs(distanceIntervalChanges) do
@@ -460,7 +487,7 @@ function FollowVehicle:modifyDistanceAndSideOffset(distanceDirection, sideoffset
     end
 
     local sideOffset_step = 0.5
-    sideoffsetAdjust = sideOffset_step * MathUtil.sign(sideoffsetAdjust)
+    sideoffsetAdjust = sideOffset_step * math.sign(sideoffsetAdjust)
     local newOffsetLR = math.floor((spec.offsetLR + sideoffsetAdjust) / sideOffset_step) * sideOffset_step
 
     FollowVehicle.setDistanceAndSideOffset(self, newDistance, newOffsetLR)
@@ -468,8 +495,18 @@ end
 
 function FollowVehicle:setDistanceAndSideOffset(newDistance, newSideoffset)
     local spec = getSpec(self)
-    spec.distanceFB = MathUtil.clamp(newDistance, -50, 200)
-    spec.offsetLR   = MathUtil.clamp(newSideoffset, -50, 50)
+    spec.distanceFB = math.clamp(newDistance, -50, 200)
+    spec.offsetLR   = math.clamp(newSideoffset, -50, 50)
+end
+
+function FollowVehicle:getDistance()
+    local spec = getSpec(self)
+    return spec.distanceFB
+end
+
+function FollowVehicle:getSideOffset()
+    local spec = getSpec(self)
+    return spec.offsetLR
 end
 
 function FollowVehicle:adjustFollowerDistanceAndSideOffset(distanceAdjust, sideoffsetAdjust)
@@ -522,49 +559,52 @@ function FollowVehicle:updateActionEvents()
 
     actionEvent = spec.actionEvents[InputAction.FOLLOW_TOOLACTION]
     if nil ~= actionEvent then
-        if followVehicleIsActive and nil ~= spec.driveStrategyFillableTool then
-            g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_TOOLACTION .. ToolActionTexts[spec.driveStrategyFillableTool:getActionWhenFull()])
-            g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_HIGH)
-            g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, true)
-        else
+        --if followVehicleIsActive and nil ~= spec.driveStrategyFillableTool then
+        --    g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_TOOLACTION .. self:getSelectedToolActionText()) --ToolActionTexts[spec.driveStrategyFillableTool:getActionWhenFull()])
+        --    g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_HIGH)
+        --    g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, true)
+        --else
             g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, false)
-        end
+        --end
     end
 
     actionEvent = spec.actionEvents[InputAction.FOLLOW_SIDE_OFFSET]
     if nil ~= actionEvent then
-        g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_SIDEOFFSET .. (" (%.1f)"):format(spec.offsetLR))
-        if followVehicleIsActive then
-            g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_HIGH)
-            g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, true)
-        else
-            g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_LOW)
-        end
+        --g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_SIDEOFFSET .. (" (%.1f)"):format(spec.offsetLR))
+        --if followVehicleIsActive then
+        --    g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_HIGH)
+        --    g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, true)
+        --else
+        --    g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_LOW)
+        --end
+        g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, false)
     end
 
     actionEvent = spec.actionEvents[InputAction.FOLLOW_DISTANCE]
     if nil ~= actionEvent then
-        g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_DISTANCE .. (" (%.0f)"):format(spec.distanceFB))
-        if followVehicleIsActive then
-            g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_HIGH)
-            g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, true)
-        else
-            g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_LOW)
-        end
+        --g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_DISTANCE .. (" (%.0f)"):format(spec.distanceFB))
+        --if followVehicleIsActive then
+        --    g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_HIGH)
+        --    g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, true)
+        --else
+        --    g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_LOW)
+        --end
+        g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, false)
     end
 
     actionEvent = spec.actionEvents[InputAction.FOLLOW_PAUSE_RESUME]
     if nil ~= actionEvent then
-        g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, followVehicleIsActive)
-        if followVehicleIsActive then
-            if spec.isWaiting then
-                g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_RESUME)
-                g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_VERY_HIGH)
-            else
-                g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_PAUSE)
-                g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_LOW)
-            end
-        end
+        --g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, followVehicleIsActive)
+        --if followVehicleIsActive then
+        --    if spec.isWaiting then
+        --        g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_RESUME)
+        --        g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_VERY_HIGH)
+        --    else
+        --        g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_PAUSE)
+        --        g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_LOW)
+        --    end
+        --end
+        g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, false)
     end
 
     actionEvent = spec.actionEvents[InputAction.FOLLOW_MARKER_TOGGLE_OFFSET]
@@ -583,37 +623,40 @@ function FollowVehicle:updateActionEvents()
 
     actionEvent = spec.actionEvents[InputAction.FOLLOW_CHASER_TOOLACTION]
     if nil ~= actionEvent then
-        if nil ~= follower and followerSpec and followerSpec.driveStrategyFillableTool then
-            g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_CHASER_TOOLACTION .. ToolActionTexts[followerSpec.driveStrategyFillableTool:getActionWhenFull()])
-            g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_VERY_HIGH)
-            g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, true)
-        else
+        --if nil ~= follower and followerSpec and followerSpec.driveStrategyFillableTool then
+        --    g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_CHASER_TOOLACTION .. ToolActionTexts[followerSpec.driveStrategyFillableTool:getActionWhenFull()])
+        --    g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_VERY_HIGH)
+        --    g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, true)
+        --else
             g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, false)
-        end
+        --end
     end
 
     actionEvent = spec.actionEvents[InputAction.FOLLOW_CHASER_DISTANCE]
     if nil ~= actionEvent then
-        g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, spec.drawFollowersTimer > 0)
+        --g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, spec.drawFollowersTimer > 0)
+        g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, false)
     end
 
     actionEvent = spec.actionEvents[InputAction.FOLLOW_CHASER_SIDEOFFSET]
     if nil ~= actionEvent then
-        g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, spec.drawFollowersTimer > 0)
+        --g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, spec.drawFollowersTimer > 0)
+        g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, false)
     end
 
     actionEvent = spec.actionEvents[InputAction.FOLLOW_CHASER_PAUSE_RESUME]
     if nil ~= actionEvent then
-        g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, nil ~= follower)
-        if nil ~= follower then
-            if followerSpec and followerSpec.isWaiting then
-                g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_CHASER_RESUME)
-                g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_VERY_HIGH)
-            else
-                g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_CHASER_PAUSE)
-                g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_LOW)
-            end
-        end
+        --g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, nil ~= follower)
+        --if nil ~= follower then
+        --    if followerSpec and followerSpec.isWaiting then
+        --        g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_CHASER_RESUME)
+        --        g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_VERY_HIGH)
+        --    else
+        --        g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_CHASER_PAUSE)
+        --        g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_LOW)
+        --    end
+        --end
+        g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, false)
     end
 end
 
@@ -627,9 +670,10 @@ function FollowVehicle:initiateFollowVehicle(vehicleToFollow)
     job.followVehicleParameter:setVehicle(vehicleToFollow)
     job:setValues()
 
-    local success, errorMessage = job:validate(g_currentMission.player.farmId)
+    local success, errorMessage = job:validate(g_localPlayer.farmId)
     if success then
-        g_currentMission.aiSystem:startJob(job, g_currentMission.player.farmId)
+        self:setAIModeSelection(AIModeSelection.MODE.WORKER) -- In FS25 there are now multiple different ai modes; 'ai worker' & 'steering assist'
+        g_currentMission.aiSystem:startJob(job, g_localPlayer.farmId)
     end
 end
 
@@ -817,11 +861,31 @@ end
 local FOLLOW_WAITINGCOLLISION = g_i18n:getText("FOLLOW_WAITINGCOLLISION")
 local FOLLOW_WAITING          = g_i18n:getText("FOLLOW_WAITING")
 
-function FollowVehicle:onDraw()
+function FollowVehicle:getCurrentStateText(noNil)
+    local spec = getSpec(self)
+    -- TODO: Figure out a better method, for querying if there is detected a collision, instead of digging into the strategy-object's variable.
+    --if nil ~= spec.driveStrategyCollision and spec.driveStrategyCollision.lastHasCollision then
+    if nil ~= spec.driveStrategyCollision and spec.driveStrategyCollision:isColliding() then
+        return FOLLOW_WAITINGCOLLISION
+    elseif spec.isWaiting then
+        return FOLLOW_WAITING
+    end
+    return (noNil and "Following") or nil
+end
+
+function FollowVehicle:onDraw(isActiveForInput, isActiveForInputIgnoreSelection, isSelected)
     local spec = getSpec(self)
 
+    if spec.hudExtension ~= nil and self:getIsFollowVehicleActive() then
+        g_currentMission.hud:addHelpExtension(spec.hudExtension)
+    end
+
+    if nil ~= spec.followerHudExtension then
+        g_currentMission.hud:addHelpExtension(spec.followerHudExtension)
+    end
+
     if spec.nearbyVehicles_timeout > 0 then
-        self:drawNearbyVehicles()
+        self:drawNearbyVehicles(spec.nearbyVehicles_timeout)
     elseif spec.drawFollowersTimer > 0 then
         self:drawFollowers()
     end
@@ -858,12 +922,7 @@ function FollowVehicle:onDraw()
         local shadeSize = textSize2/10
         local txt = nil
 
-        -- TODO: Figure out a better method, for querying if there is detected a collision, instead of digging into the strategy-object's variable.
-        if nil ~= spec.driveStrategyCollision and spec.driveStrategyCollision.lastHasCollision then
-            txt = FOLLOW_WAITINGCOLLISION
-        elseif spec.isWaiting then
-            txt = FOLLOW_WAITING
-        end
+        txt = self:getCurrentStateText(false)
         if nil ~= txt then
             setTextAlignment(RenderText.ALIGN_CENTER)
             setTextColor(0,0,0,1)
@@ -908,7 +967,7 @@ end
 
 local FOLLOW_LEADER_SELECTED = g_i18n:getText("FOLLOW_LEADER_SELECTED")
 
-function FollowVehicle:drawNearbyVehicles()
+function FollowVehicle:drawNearbyVehicles(chooseTimeRemaining)
     local spec = getSpec(self)
 
     setTextDepthTestEnabled(false)
@@ -955,7 +1014,12 @@ function FollowVehicle:drawNearbyVehicles()
                     end
                 end
 
-                local txt = FOLLOW_LEADER_SELECTED .. "\n" .. nearbyVehicle.vehicle:getFullName()
+                local suffix = ""
+                if chooseTimeRemaining > 0 then
+                    suffix = ("\n(... %.0f)"):format((chooseTimeRemaining / 1000)+1)
+                end
+
+                local txt = FOLLOW_LEADER_SELECTED .. "\n" .. nearbyVehicle.vehicle:getFullName() .. suffix
                 setTextColor(0, 0, 0, 1)
                 renderText(sx+shadeSize,sy+textSize2-shadeSize, textSize2, txt)
                 setTextColor(1, 1, 1, 1)
@@ -1130,7 +1194,7 @@ function FollowVehicle:cmdToggleTrailVisibility(maxEntries,yOffset)
     maxEntries = tonumber(maxEntries)
     FollowVehicle.debugTrailYOffset = tonumber(yOffset) or 4
     if maxEntries ~= nil then
-        maxEntries = MathUtil.clamp(maxEntries, 5, FollowVehicle.MAX_TRAIL_ENTRIES - 1)
+        maxEntries = math.clamp(maxEntries, 5, FollowVehicle.MAX_TRAIL_ENTRIES - 1)
         FollowVehicle.debugTrailVisibleEntries = maxEntries
     else
         if FollowVehicle.debugTrailVisibleEntries <= 0 then
@@ -1173,13 +1237,25 @@ end
 function FollowVehicle:addFollower(vehicle)
     local spec = getSpec(self)
     spec.currentFollowers[vehicle] = vehicle
+
+    spec.selectedFollower = self:getSelectedFollower()
+
+    if nil == spec.followerHudExtension then
+        spec.followerHudExtension = FollowerHUDExtension.new(self)
+    end
 end
 
 function FollowVehicle:removeFollower(vehicle)
     local spec = getSpec(self)
     spec.currentFollowers[vehicle] = nil
-    if spec.selectedFollower == vehicle then
-        spec.selectedFollower = nil
+
+    spec.selectedFollower = self:getSelectedFollower()
+
+    if nil == spec.selectedFollower then
+        if nil ~= spec.followerHudExtension then
+            spec.followerHudExtension:delete()
+            spec.followerHudExtension = nil
+        end
     end
 end
 
@@ -1214,7 +1290,7 @@ function FollowVehicle:getStartableAIJob(superFunc)
 
         if self:getCanStartFollowVehicle() then
             local followJob = spec.followJob
-            followJob:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true, spec.vehicleToFollow)
+            followJob:applyCurrentState(self, g_currentMission, g_localPlayer.farmId, true, spec.vehicleToFollow)
             followJob:setValues()
             local success = followJob:validate(false)
             if success then
@@ -1267,7 +1343,7 @@ function FollowVehicle:startFollowVehicle(vehicleToFollow)
         self:updateAIFollowVehicleDriveStrategies(vehicleToFollow)
     end
 
-    AIFieldWorker.hiredHirables[self] = self
+    spec.hudExtension = FollowVehicleHUDExtension.new(self)
 
     self:raiseAIEvent("onAIFollowVehicleStart")
 end
@@ -1276,12 +1352,16 @@ function FollowVehicle:stopFollowVehicle()
     local spec = getSpec(self)
     spec.isActive = false
     spec.aiDriveParams.valid = false
-    AIFieldWorker.hiredHirables[self] = nil
+
+    if nil ~= spec.hudExtension then
+        spec.hudExtension:delete()
+        spec.hudExtension = nil
+    end
 
     if nil ~= spec.vehicleToFollow then
         spec.vehicleToFollow:removeFollower(self)
         spec.vehicleToFollow = nil
-    end        
+    end
 
     self:setCruiseControlState(Drivable.CRUISECONTROL_STATE_OFF, true)
 
@@ -1306,59 +1386,42 @@ function FollowVehicle:updateAIFollowVehicleDriveStrategies(vehicleToFollow)
     local spec = getSpec(self)
 
     cleanUpDriveStrategies(spec)
+    local empty_ReconstructionData = {}
 
-    local foundBaler = SpecializationUtil.hasSpecialization(Baler, spec.specializations) and self:getIsTurnedOn() and self:getIsLowered()
-    for _, childVehicle in pairs(self.rootVehicle.childVehicles) do
-        if SpecializationUtil.hasSpecialization(Baler, childVehicle.specializations) then
-            if childVehicle:getIsTurnedOn() and childVehicle:getIsLowered() then
-                foundBaler = true
-                break
-            end
-        end
-    end
-
-    if foundBaler then
-        local driveStrategyFollowBaler = AIDriveStrategyFollowBaler.new()
-        driveStrategyFollowBaler:setAIVehicle(self)
+    local driveStrategyFollowBaler = AIDriveStrategyFollowBaler.new(empty_ReconstructionData)
+    if driveStrategyFollowBaler:setAIVehicle(self) then
         table.insert(spec.driveStrategies, driveStrategyFollowBaler)
     end
 
-    local foundBaleLoader = SpecializationUtil.hasSpecialization(BaleLoader, spec.specializations)
-    for _, childVehicle in pairs(self.rootVehicle.childVehicles) do
-        if SpecializationUtil.hasSpecialization(BaleLoader, childVehicle.specializations) then
-            foundBaleLoader = true
-            break
-        end
+    local driveStrategyFollowBaleWrapper = AIDriveStrategyFollowBaleWrapper.new(empty_ReconstructionData)
+    if driveStrategyFollowBaleWrapper:setAIVehicle(self) then
+        table.insert(spec.driveStrategies, driveStrategyFollowBaleWrapper)
     end
 
-    if foundBaleLoader then
-        local driveStrategyFollowBaleLoader = AIDriveStrategyFollowBaleLoader.new()
-        if false ~= driveStrategyFollowBaleLoader:setAIVehicle(self) then
-            table.insert(spec.driveStrategies, driveStrategyFollowBaleLoader)
-            spec.driveStrategyFillableTool = driveStrategyFollowBaleLoader
-            if nil ~= spec.chosenFillableToolActionWhenFull then
-                spec.driveStrategyFillableTool:setActionWhenFull(spec.chosenFillableToolActionWhenFull)
-            end
-        end
-    else
-        local driveStrategyFollowStopWhenTurnedOff = AIDriveStrategyFollowStopWhenTurnedOff.new()
-        driveStrategyFollowStopWhenTurnedOff:setAIVehicle(self)
-        if false ~= driveStrategyFollowStopWhenTurnedOff:setForSpecializations(Combine, ForageWagon, StonePicker) then
+    local foundFillableTool = false
+    local driveStrategyFollowBaleLoader = AIDriveStrategyFollowBaleLoader.new(empty_ReconstructionData)
+    if driveStrategyFollowBaleLoader:setAIVehicle(self) then
+        foundFillableTool = true
+        table.insert(spec.driveStrategies, driveStrategyFollowBaleLoader)
+        spec.driveStrategyFillableTool = driveStrategyFollowBaleLoader
+        spec.driveStrategyFillableTool:setActionWhenFull(spec.chosenFillableToolActionWhenFull)
+    end
+
+    if not foundFillableTool then
+        local driveStrategyFollowStopWhenTurnedOff = AIDriveStrategyFollowStopWhenTurnedOff.new(empty_ReconstructionData)
+        if driveStrategyFollowStopWhenTurnedOff:setAIVehicle(self) then
+            foundFillableTool = true
             table.insert(spec.driveStrategies, driveStrategyFollowStopWhenTurnedOff)
             spec.driveStrategyFillableTool = driveStrategyFollowStopWhenTurnedOff
-            if nil ~= spec.chosenFillableToolActionWhenFull then
-                spec.driveStrategyFillableTool:setActionWhenFull(spec.chosenFillableToolActionWhenFull)
-            end
+            spec.driveStrategyFillableTool:setActionWhenFull(spec.chosenFillableToolActionWhenFull)
         end
     end
 
-    --
-    local driveStrategyFollowVehicle = AIDriveStrategyFollowVehicle.new()
-    spec.driveStrategyCollision = AIDriveStrategyFollowVehicleCollision.new(driveStrategyFollowVehicle)
-
+    spec.driveStrategyCollision = AIDriveStrategyFollowVehicleCollision.new(empty_ReconstructionData)
     spec.driveStrategyCollision:setAIVehicle(self)
     table.insert(spec.driveStrategies, spec.driveStrategyCollision)
 
+    local driveStrategyFollowVehicle = AIDriveStrategyFollowVehicle.new(empty_ReconstructionData)
     driveStrategyFollowVehicle:setAIVehicle(self)
     driveStrategyFollowVehicle:setVehicleToFollow(vehicleToFollow)
     table.insert(spec.driveStrategies, driveStrategyFollowVehicle)
@@ -1382,7 +1445,7 @@ function FollowVehicle:updateAIFollowVehicle_DriveData(dt)
 	local spec = getSpec(self)
 
     local vX, vY, vZ = getWorldTranslation(self.rootNode)
-    local tX, tZ, moveForwards, strategyMaxSpeed, minimumDistanceToStop
+    local tX, tZ, moveForwards, strategyMaxSpeed, minimumDistanceToStop, distanceToStop
     local allowedMaxSpeed = math.huge
     if spec.isWaiting then
         allowedMaxSpeed = 0
@@ -1486,7 +1549,7 @@ function FollowVehicle:findVehiclesNearby()
     local node      = self:getAISteeringNode()
     local rx,ry,rz  = localDirectionToWorld(node, 0,0,1)
 
-    for _,vehicleObj in pairs(g_currentMission.vehicles) do
+    for _,vehicleObj in pairs(g_currentMission.vehicleSystem.enterables) do
         if vehicleObj ~= self then
             local vehicleSpec = getSpec(vehicleObj)
             if  nil ~= vehicleSpec

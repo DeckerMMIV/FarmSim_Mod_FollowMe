@@ -1,51 +1,61 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
 <!--
-    See comment in modDesc.XML about how to make your own local translation file, that must be placed in folder [..]/modSettings/FS22_FollowMe/
+    See comment in modDesc.XML about how to make your own local translation file, that must be placed in specific folder under [..]/modSettings/
 -->
     <texts>
         <!-- Input Controls -->
         <text name="input_FOLLOW_INITIATE"             text="Initiieren &amp; Wählen" />
         <text name="input_FOLLOW_DISTANCE_1"           text="Distanz ändern +" />
         <text name="input_FOLLOW_DISTANCE_2"           text="Distanz ändern -" />
-        <text name="input_FOLLOW_SIDE_OFFSET_1"        text="Seitenversatz ändern +" />
-        <text name="input_FOLLOW_SIDE_OFFSET_2"        text="Seitenversatz ändern -" />
+        <text name="input_FOLLOW_SIDE_OFFSET_1"        text="Mittenversatz ändern +" />
+        <text name="input_FOLLOW_SIDE_OFFSET_2"        text="Mittenversatz ändern -" />
         <text name="input_FOLLOW_PAUSE_RESUME"         text="Pause/Fortsetzen" />
-        <text name="input_FOLLOW_TOOLACTION"           text="Action when full" />
+        <text name="input_FOLLOW_TOOLACTION"           text="Aktion wenn voll" />
 
-        <text name="input_FOLLOW_MARKER_TOGGLE_OFFSET" text="Markierung für Switch-Seitenversatz" />
+        <text name="input_FOLLOW_MARKER_TOGGLE_OFFSET" text="Markierung für Switch-Mittenversatz" />
 
-        <text name="input_FOLLOW_CHASER_CHOOSE"        text="Anhänger wählen andere" />
-        <text name="input_FOLLOW_CHASER_DISTANCE_1"    text="Follower-Änderungsabstand +" />
-        <text name="input_FOLLOW_CHASER_DISTANCE_2"    text="Follower-Änderungsabstand -" />
-        <text name="input_FOLLOW_CHASER_SIDE_OFFSET_1" text="Seitenversatz des Mitnehmerwechsels +" />
-        <text name="input_FOLLOW_CHASER_SIDE_OFFSET_2" text="Seitenversatz des Mitnehmerwechsels -" />
-        <text name="input_FOLLOW_CHASER_PAUSE_RESUME"  text="Follower pausieren/fortsetzen" />
-        <text name="input_FOLLOW_CHASER_TOOLACTION"    text="Follower, action when full" />
+        <text name="input_FOLLOW_CHASER_CHOOSE"        text="Gefolgsmann, wählen andere" />
+        <text name="input_FOLLOW_CHASER_DISTANCE_1"    text="Gefolgsmann, Distanz ändern +" />
+        <text name="input_FOLLOW_CHASER_DISTANCE_2"    text="Gefolgsmann, Distanz ändern -" />
+        <text name="input_FOLLOW_CHASER_SIDE_OFFSET_1" text="Gefolgsmann, Mittenversatz ändern +" />
+        <text name="input_FOLLOW_CHASER_SIDE_OFFSET_2" text="Gefolgsmann, Mittenversatz ändern -" />
+        <text name="input_FOLLOW_CHASER_PAUSE_RESUME"  text="Gefolgsmann, pausieren/fortsetzen" />
+        <text name="input_FOLLOW_CHASER_TOOLACTION"    text="Gefolgsmann, aktion wenn voll" />
 
         <!-- F1-Menu Actions -->
         <text name="FOLLOW_INITIATE"                   text="Folgen, einleiten" />
-        <text name="FOLLOW_CHOOSEOTHER"                text="Folgen, andere wählen" />
-        <text name="FOLLOW_SIDEOFFSET"                 text="Folgen, Seitenversatz" />
-        <text name="FOLLOW_DISTANCE"                   text="Folgen, Abstand" />
+        <text name="FOLLOW_CHOOSEOTHER"                text="Folgen, wählen andere" />
+        <text name="FOLLOW_SIDEOFFSET"                 text="Folgen, Mittenversatz" />
+        <text name="FOLLOW_DISTANCE"                   text="Folgen, Distanz" />
         <text name="FOLLOW_PAUSE"                      text="Folgen, Pause" />
         <text name="FOLLOW_RESUME"                     text="Folgen, Fortsetzen" />
 
-        <text name="FOLLOW_CHASER_CHOOSEOTHER"         text="Anhänger, wähle andere" />
-        <text name="FOLLOW_CHASER_SIDEOFFSET"          text="Mitnehmer, Seitenversatz" />
-        <text name="FOLLOW_CHASER_DISTANCE"            text="Follower, Distanz" />
-        <text name="FOLLOW_CHASER_PAUSE"               text="Follower, Pause" />
-        <text name="FOLLOW_CHASER_RESUME"              text="Follower, Fortsetzen" />
+        <text name="FOLLOW_CHASER_CHOOSEOTHER"         text="Gefolgsmann, wählen andere" />
+        <text name="FOLLOW_CHASER_SIDEOFFSET"          text="Gefolgsmann, Mittenversatz" />
+        <text name="FOLLOW_CHASER_DISTANCE"            text="Gefolgsmann, Distanz" />
+        <text name="FOLLOW_CHASER_PAUSE"               text="Gefolgsmann, Pause" />
+        <text name="FOLLOW_CHASER_RESUME"              text="Gefolgsmann, Fortsetzen" />
 
-        <text name="FOLLOW_MARKER_OFFSET_NORMAL"       text="Versatz der Mitnehmerseite: Normal" />
-        <text name="FOLLOW_MARKER_OFFSET_DISABLED"     text="Versatz der Mitnehmerseite: Aus" />
-        <text name="FOLLOW_MARKER_OFFSET_REVERSED"     text="Versatz der Mitnehmerseite: Gegenteil" />
+        <text name="FOLLOW_MARKER_OFFSET_NORMAL"       text="Versatz der Mittenversatz: Normal" />
+        <text name="FOLLOW_MARKER_OFFSET_DISABLED"     text="Versatz der Mittenversatz: Aus" />
+        <text name="FOLLOW_MARKER_OFFSET_REVERSED"     text="Versatz der Mittenversatz: Gegenteil" />
 
-        <text name="FOLLOW_TOOLACTION"                      text="Folgen, " />
-        <text name="FOLLOW_CHASER_TOOLACTION"               text="Follower, " />
-        <text name="FOLLOW_TOOLACTION_WHENFULL_STOP"        text="When full: Stop" />
-        <text name="FOLLOW_TOOLACTION_WHENFULL_CONTINUE"    text="When full: Continue" />
-        <text name="FOLLOW_TOOLACTION_WHENFULL_UNLOAD"      text="When full: Unload" />
+        <text name="FOLLOW_TOOLACTION"                      text="Folgen, Wenn voll: " />
+        <text name="FOLLOW_CHASER_TOOLACTION"               text="Gefolgsmann, Wenn voll: " />
+        <text name="FOLLOW_TOOLACTION_WHENFULL"             text="Wenn voll: " />
+
+        <!-- F1-Menu help extension -->
+        <text name="FOLLOW_SELF_FOLLOWING"     text="Folgen: " />
+        <text name="FOLLOW_SELF_DISTANCE"      text="Distanz: " />
+        <text name="FOLLOW_SELF_SIDEOFFSET"    text="Mittenversatz: " />
+        <text name="FOLLOW_SELF_WHENFULL"      text="Wenn voll: " />
+
+        <text name="FOLLOW_OTHER_SELECTED"     text="Ausgewählter Gefolgsmann: " />
+        <text name="FOLLOW_OTHER_STATE"        text="State: " />
+        <text name="FOLLOW_OTHER_DISTANCE"     text="Distanz: " />
+        <text name="FOLLOW_OTHER_SIDEOFFSET"   text="Mittenversatz: " />
+        <text name="FOLLOW_OTHER_WHENFULL"     text="Wenn voll: " />
 
         <!-- Screen HUD -->
         <text name="FOLLOW_LEADER_SELECTED"            text="Folgen:" />
@@ -54,6 +64,9 @@
         <text name="FOLLOW_WAITING"                    text="Warten / Paused" />
 
         <!-- Other -->
-        <text name="FOLLOW_AIERROR_CHASER_STOPPED"     text="Verfolger blieb stehen" />
+        <text name="FOLLOW_AIERROR_CHASER_STOPPED"          text="Gefolgsmann blieb stehen" />
+        <text name="FOLLOW_TOOLACTION_WHENFULL_STOP"        text="Stoppen" />
+        <text name="FOLLOW_TOOLACTION_WHENFULL_CONTINUE"    text="Weitermachen" />
+        <text name="FOLLOW_TOOLACTION_WHENFULL_UNLOAD"      text="Entladen" />
     </texts>
 </l10n>

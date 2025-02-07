@@ -3,7 +3,7 @@
 --
 -- @author  Decker_MMIV (DCK)
 -- @contact forum.farming-simulator.com
--- @date    2021-12-xx, 2023-05-xx
+-- @date    2021-12-xx, 2023-05-xx, 2024-12-xx
 --
 
 -- For debugging
@@ -20,20 +20,6 @@ end
 --
 --
 --
-
---[[
--- The following is only specific for 'FollowMe'...
-
-Lights.updateAILights = Utils.overwrittenFunction(Lights.updateAILights, function(self, superFunc, ...)
-  if FollowMe.getIsFollowMeActive(self) then
-    -- Let 'FollowMe' control the lights, and not the base game's AI.
-    return
-  end
-  -- 'FollowMe' was not active, so let the original method do what it need to do.
-  superFunc(self, ...)
-end)
---]]
-
 
 if Cutter.onEndWorkAreaProcessing ~= nil then
   -- Due to issue #59 with combines with active FollowMe and harvesting, being stopped by Cutter.LUA
@@ -86,6 +72,36 @@ Sprayer.registerOverwrittenFunctions = Utils.appendedFunction(Sprayer.registerOv
     if rootVehicle and rootVehicle.getIsFollowVehicleActive and rootVehicle:getIsFollowVehicleActive() then
       if self.modFV_LieAboutIt then
         return false -- "Hackish" work-around, in attempt at convincing Sprayer.LUA to NOT turn on
+      end
+    end
+    return superFunc(self)
+  end)
+end)
+
+--
+
+StonePicker.registerOverwrittenFunctions = Utils.appendedFunction(StonePicker.registerOverwrittenFunctions, function(vehicleType)
+  -- Due to issues where StonePicker won't turn-off when getIsAIActive returns true, some of the 
+  -- StonePicker's functions needs be lied to.
+  for _,funcName in pairs({
+    "getIsWorkAreaActive",
+    "getCanBeTurnedOn",
+    "onFillUnitFillLevelChanged",
+  }) do
+    SpecializationUtil.registerOverwrittenFunction(vehicleType, funcName, function(self, superFunc, ...)
+      self.modFV_LieAboutIt = true
+      local res = superFunc(self, ...)
+      self.modFV_LieAboutIt = nil
+      return res
+    end)
+  end
+
+  -- Avoid having the AI automatically continue having a 100% full stone-picker active when FollowMe is active.
+  SpecializationUtil.registerOverwrittenFunction(vehicleType, "getIsAIActive", function(self, superFunc)
+    local rootVehicle = self.rootVehicle
+    if rootVehicle and rootVehicle.getIsFollowVehicleActive and rootVehicle:getIsFollowVehicleActive() then
+      if self.modFV_LieAboutIt then
+        return false -- "Hackish" work-around, in attempt at convincing StonePicker.LUA to turn-off when full
       end
     end
     return superFunc(self)
@@ -158,7 +174,12 @@ source(modDir .. "src/AIJobTypeFollowVehicle.lua")
 source(modDir .. "src/AIVehicleIsWaitingEvent.lua")
 
 source(modDir .. "src/AIDriveStrategyFollowBaler.lua")
+source(modDir .. "src/AIDriveStrategyFollowBaleWrapper.lua")
 source(modDir .. "src/AIDriveStrategyFollowBaleLoader.lua")
 source(modDir .. "src/AIDriveStrategyFollowStopWhenTurnedOff.lua")
 source(modDir .. "src/AIDriveStrategyFollowVehicleCollision.lua")
 source(modDir .. "src/AIDriveStrategyFollowVehicle.lua")
+
+source(modDir .. "src/CommonHUDExtension.lua")
+source(modDir .. "src/FollowVehicleHUDExtension.lua")
+source(modDir .. "src/FollowerHUDExtension.lua")
