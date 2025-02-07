@@ -9,7 +9,7 @@ To read more about this mod, find it on;
 ## FS25 - Change-log
 
 1.0.0.0
-- Follow Me released on Giants Software's ModHub (2025-02-04).
+- Follow Me released on Giants Software's ModHub (2025-02-05).
 - Changed how the F1-help shows action-keys for Follow Me.
 - Added ability for BaleLoader to unload when full.
 - Changes for collision detection and when a follower is told to 'drive in front of vehicle'.
