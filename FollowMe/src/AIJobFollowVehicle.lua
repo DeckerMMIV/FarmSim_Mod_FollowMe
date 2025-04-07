@@ -45,7 +45,12 @@ function AIJobFollowVehicle:stop(aiMessage)
 end
 
 function AIJobFollowVehicle:getIsAvailableForVehicle(vehicle)
-	return vehicle:getCanStartFollowVehicle()
+	-- Bug-fix for problem reported via GIANTS' ModHub, where this method is called
+	-- with a vehicle-object that does not have the FollowMe specialization.
+	if nil ~= vehicle and nil ~= vehicle.getCanStartFollowVehicle then
+		return vehicle:getCanStartFollowVehicle()
+	end
+	return false
  end
 
 function AIJobFollowVehicle:getTitle()

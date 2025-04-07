@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="94">
+<modDesc descVersion="96">
     <title>
         <en>Follow Me</en>
     </title>
-    <version>1.0.0.0</version>
+    <version>1.1.0.0</version>
     <author>Decker_MMIV</author>
 <!--
     https://github.com/DeckerMMIV/FarmSim_Mod_FollowMe
@@ -45,6 +45,10 @@ Notes:
 - When using side-offsets do remember that followers are not able to 'make 90-degree turns' just like that. So do some experimentation and tries to learn how to make turns, depending on which side-offset the follower is set to.
 - Different vehicles have different steering turn radius, so remember to consider the least capable follower when leading vehicle steers left or right.
 - Different vehicles and their equipment have different driving speeds, so consider giving the slowest follower time to catch-up with the leading vehicle.
+
+Changelog 1.1.0.0:
+- Fixes regarding vehicles being referred to that isn't supposed to be eligible for "Follow Me". There might still be issues with this, due to uncertainty of how to reproduce the problem.
+- Fix for disappearing F1-menu, caused by conflict with other mod(s) which modifies the sequence of how 'InputHelpDisplay:draw()' calls help-/info-hud-extensions' methods.
 ]]>
         </en>
         <!-- The following have been machine translated to German language. -->
@@ -72,6 +76,10 @@ Anmerkungen:
 - Bei der Verwendung von Seitenverschiebungen ist zu beachten, dass Verfolger nicht einfach so 90-Grad-Wendungen machen können. Experimentieren Sie also ein wenig und versuchen Sie zu lernen, wie man Kurven fährt, je nachdem, auf welchen Seitenversatz der Follower eingestellt ist.
 - Verschiedene Fahrzeuge haben einen unterschiedlichen Lenkradius. Denken Sie also daran, den am wenigsten leistungsfähigen Nachfolger zu berücksichtigen, wenn das führende Fahrzeug nach links oder rechts lenkt.
 - Unterschiedliche Fahrzeuge und ihre Ausrüstung haben unterschiedliche Fahrgeschwindigkeiten, daher sollten Sie dem langsamsten Verfolger Zeit geben, das führende Fahrzeug einzuholen.
+
+Changelog 1.1.0.0:
+- Fixes regarding vehicles being referred to that isn't supposed to be eligible for "Follow Me". There might still be issues with this, due to uncertainty of how to reproduce the problem.
+- Fix for disappearing F1-menu, caused by conflict with other mod(s) which modifies the sequence of how 'InputHelpDisplay:draw()' calls help-/info-hud-extensions' methods.
 ]]>
         </de>
     </description>

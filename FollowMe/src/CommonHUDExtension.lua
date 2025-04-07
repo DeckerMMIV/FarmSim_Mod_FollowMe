@@ -35,6 +35,13 @@ function CommonHUDExtension.new(vehicle, customMt)
 
     --self:storeScaledValues()
 
+    -- Issue #70
+    -- Work-around for if/when another mod is overwriting InputHelpDisplay:draw()
+    -- and "forgets" to call the help-/info-extensions' setEventHelpElements() method(s)
+    -- prior to calling the help-/info-extensions' getHeight() method(s).
+    self.lineWidth = 0
+    self.lineHeight = 0
+
     return self
 end
 
@@ -76,11 +83,13 @@ function CommonHUDExtension:buildActionsKeys(textSize)
 end
 
 function CommonHUDExtension:setEventHelpElements(inputHelpDisplay, eventHelpElements)
-    if nil == inputHelpDisplay.lineBg then
+    if nil ~= inputHelpDisplay.lineBg then
+        self.lineWidth, self.lineHeight = inputHelpDisplay.lineBg.width, inputHelpDisplay.lineBg.height
+    end
+    if nil == inputHelpDisplay.lineBg or nil == self.lineWidth or nil == self.lineHeight then
         self.lineWidth, self.lineHeight = 0,0
         return
     end
-    self.lineWidth, self.lineHeight = inputHelpDisplay.lineBg.width, inputHelpDisplay.lineBg.height
 
     if nil == self.actions then
         self.glyphsHeight = inputHelpDisplay.textSize * 1.3
