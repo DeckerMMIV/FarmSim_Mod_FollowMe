@@ -1,6 +1,7 @@
 # Farming Simulator modification - Follow Me
 
 To read more about this mod, find it on;
+- https://www.farming-simulator.com/mods.php?title=fs2025&org_id=53574
 - https://www.farming-simulator.com/mods.php?title=fs2022&org_id=53574
 - https://www.farming-simulator.com/mods.php?title=fs2019&org_id=53574
 - https://www.farming-simulator.com/mods.php?title=fs2017&org_id=53574

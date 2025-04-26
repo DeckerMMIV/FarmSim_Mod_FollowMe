@@ -1263,7 +1263,9 @@ function FollowVehicle:getAllFollowers(resultArray)
     local spec = getSpec(self)
 
     local nonDupes = {}
-    for _, followerVehicle in pairs(spec.currentFollowers) do
+    -- Bug-fix for problem reported via GIANTS' ModHub, with an error indicating that `spec.currentFollowers`
+    -- has a nil value (i.e. have not been initialized). So to avoid that problem, then use an empty table.
+    for _, followerVehicle in pairs(Utils.getNoNil(spec.currentFollowers, {})) do
         -- Make sure follower-vehicle is not in result-array already (else infinite recursion would occur, and we do not want to wait for that (neither the stack overflow error))
         local alreadyAdded = false
         for _,addedVehicle in pairs(resultArray) do
