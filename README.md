@@ -9,6 +9,10 @@ To read more about this mod, find it on;
 
 ## FS25 - Change-log
 
+1.1.0.0
+- Fixes regarding vehicles being referred to that isn't supposed to be eligible for "Follow Me". There might still be issues with this, due to uncertainty of how to reproduce the problem.
+- Fix for disappearing F1-menu, caused by conflict with other mod(s) which modifies the sequence of how 'InputHelpDisplay:draw()' calls help-/info-hud-extensions' methods.
+
 1.0.0.0
 - Follow Me released on Giants Software's ModHub (2025-02-05).
 - Changed how the F1-help shows action-keys for Follow Me.
