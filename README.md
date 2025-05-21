@@ -9,6 +9,10 @@ To read more about this mod, find it on;
 
 ## FS25 - Change-log
 
+1.2.0.0:
+- Correction for action 'Follower, Choose other' being recognized as 'Initiate / Choose other' when vehicle had no followers to control.
+- Fix for truncated rendered multiline-text when initiating/controlling a follower, caused by other mod(s) use of 'setTextLineBounds(...)' without a corresponding reset back to unrestricted text-line bounds.
+
 1.1.0.0
 - Fixes regarding vehicles being referred to that isn't supposed to be eligible for "Follow Me". There might still be issues with this, due to uncertainty of how to reproduce the problem.
 - Fix for disappearing F1-menu, caused by conflict with other mod(s) which modifies the sequence of how 'InputHelpDisplay:draw()' calls help-/info-hud-extensions' methods.

@@ -200,10 +200,6 @@ function FollowVehicle:onDelete()
     end
 end
 
-local FOLLOW_CHASER_CHOOSEOTHER    = g_i18n:getText("FOLLOW_CHASER_CHOOSEOTHER")
-local FOLLOW_CHASER_SIDEOFFSET     = g_i18n:getText("FOLLOW_CHASER_SIDEOFFSET")
-local FOLLOW_CHASER_DISTANCE       = g_i18n:getText("FOLLOW_CHASER_DISTANCE")
-
 function FollowVehicle:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSelection)
     if self.isClient then
         local spec = getSpec(self)
@@ -211,6 +207,7 @@ function FollowVehicle:onRegisterActionEvents(isActiveForInput, isActiveForInput
 
         if self:getIsActiveForInput(true, true) then
             local _, eventId
+
             if self:getCanStartFollowVehicle() and g_currentMission:getHasPlayerPermission("hireAssistant") then
                 _, eventId = self:addPoweredActionEvent(spec.actionEvents, InputAction.FOLLOW_INITIATE, self, FollowVehicle.actionEventInitiate, false, true, false, true, nil, nil, true, true)
                 g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_NORMAL)
@@ -222,49 +219,47 @@ function FollowVehicle:onRegisterActionEvents(isActiveForInput, isActiveForInput
             local followVehicleActive = self:getIsFollowVehicleActive()
             local otherAIActive = self:getIsAIActive() and (not followVehicleActive)
             if not otherAIActive then
-                --local priority = (followVehicleActive and GS_PRIO_VERY_HIGH) or GS_PRIO_LOW
-                local priority = GS_PRIO_VERY_LOW
-
                 _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_TOOLACTION,  self, FollowVehicle.actionEventToolAction, false, true, false, true, nil, nil, true, true)
-                g_inputBinding:setActionEventTextPriority(eventId, priority)
+                g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_VERY_LOW)
+                g_inputBinding:setActionEventTextVisibility(eventId, false)
 
                 _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_DISTANCE,    self, FollowVehicle.actionEventDistance,   false, true, false, true, nil, nil, true, true)
-                g_inputBinding:setActionEventTextPriority(eventId, priority)
+                g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_VERY_LOW)
+                g_inputBinding:setActionEventTextVisibility(eventId, false)
 
                 _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_SIDE_OFFSET, self, FollowVehicle.actionEventSideOffset, false, true, false, true, nil, nil, true, true)
-                g_inputBinding:setActionEventTextPriority(eventId, priority)
+                g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_VERY_LOW)
+                g_inputBinding:setActionEventTextVisibility(eventId, false)
 
                 _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_PAUSE_RESUME,self, FollowVehicle.actionEventPauseResume,false, true, false, true, nil, nil, true, true)
-                g_inputBinding:setActionEventTextPriority(eventId, priority)
+                g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_VERY_LOW)
+                g_inputBinding:setActionEventTextVisibility(eventId, false)
             end
 
-            local followers = {}
-            self:getAllFollowers(followers)
-            if #followers > 0 then
-                _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_CHASER_CHOOSE,      self, FollowVehicle.actionEventFollowerSelect,     false, true, false, true, nil, nil, true, true)
-                g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_NORMAL)
-                g_inputBinding:setActionEventTextVisibility(eventId, false)
-                g_inputBinding:setActionEventText(eventId, FOLLOW_CHASER_CHOOSEOTHER)
+            -- Relocated this action to not be dependend on leader has followers (i.e. moved outside of below `if`-block),
+            -- due to player input issues, where prior when in a vehicle that has no followers and pressing SHIFT+CTRL+F, it was 
+            -- was instead recognized by the game's input-system as only the CTRL+F action (i.e. initiate following) - which was a bit confusing.
+            _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_CHASER_CHOOSE,      self, FollowVehicle.actionEventFollowerSelect,     false, true, false, true, nil, nil, true, true)
+            g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_VERY_LOW)
+            g_inputBinding:setActionEventTextVisibility(eventId, false)
 
+            local hasAtleastOneFollower = (nil ~= next(Utils.getNoNil(spec.currentFollowers, {})))
+            if hasAtleastOneFollower then
                 _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_CHASER_TOOLACTION,  self, FollowVehicle.actionEventFollowerToolAction, false, true, false, true, nil, nil, true, true)
-                g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_NORMAL)
+                g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_VERY_LOW)
                 g_inputBinding:setActionEventTextVisibility(eventId, false)
-                --g_inputBinding:setActionEventText(eventId, FOLLOW_CHASER_TOOLACTION)
 
                 _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_CHASER_DISTANCE,    self, FollowVehicle.actionEventFollowerDistance,   false, true, false, true, nil, nil, true, true)
-                g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_NORMAL)
+                g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_VERY_LOW)
                 g_inputBinding:setActionEventTextVisibility(eventId, false)
-                g_inputBinding:setActionEventText(eventId, FOLLOW_CHASER_DISTANCE)
 
                 _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_CHASER_SIDE_OFFSET, self, FollowVehicle.actionEventFollowerSideOffset, false, true, false, true, nil, nil, true, true)
-                g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_NORMAL)
+                g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_VERY_LOW)
                 g_inputBinding:setActionEventTextVisibility(eventId, false)
-                g_inputBinding:setActionEventText(eventId, FOLLOW_CHASER_SIDEOFFSET)
 
                 _, eventId = self:addActionEvent(spec.actionEvents, InputAction.FOLLOW_CHASER_PAUSE_RESUME, self, FollowVehicle.actionEventFollowerPauseResume, false, true, false, true, nil, nil, true, true)
-                g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_NORMAL)
+                g_inputBinding:setActionEventTextPriority(eventId, GS_PRIO_VERY_LOW)
                 g_inputBinding:setActionEventTextVisibility(eventId, false)
-                --g_inputBinding:setActionEventText(eventId, FOLLOW_CHASER_PAUSE)
             end
 
             FollowVehicle.updateActionEvents(self)
@@ -520,15 +515,6 @@ end
 
 local FOLLOW_CHOOSEOTHER        = g_i18n:getText("FOLLOW_CHOOSEOTHER")
 local FOLLOW_INITIATE           = g_i18n:getText("FOLLOW_INITIATE")
-local FOLLOW_SIDEOFFSET         = g_i18n:getText("FOLLOW_SIDEOFFSET")
-local FOLLOW_DISTANCE           = g_i18n:getText("FOLLOW_DISTANCE")
-local FOLLOW_PAUSE              = g_i18n:getText("FOLLOW_PAUSE")
-local FOLLOW_RESUME             = g_i18n:getText("FOLLOW_RESUME")
-local FOLLOW_TOOLACTION         = g_i18n:getText("FOLLOW_TOOLACTION")
-local FOLLOW_CHASER_PAUSE       = g_i18n:getText("FOLLOW_CHASER_PAUSE")
-local FOLLOW_CHASER_RESUME      = g_i18n:getText("FOLLOW_CHASER_RESUME")
-local FOLLOW_CHASER_TOOLACTION  = g_i18n:getText("FOLLOW_CHASER_TOOLACTION")
-
 
 function FollowVehicle:updateActionEvents()
     if not self.isClient then
@@ -536,8 +522,6 @@ function FollowVehicle:updateActionEvents()
     end
 
     local spec = getSpec(self)
-
-    local followVehicleIsActive = self:getIsFollowVehicleActive()
 
     local actionEvent = spec.actionEvents[InputAction.FOLLOW_INITIATE]
     if nil ~= actionEvent then
@@ -557,56 +541,6 @@ function FollowVehicle:updateActionEvents()
         end
     end
 
-    actionEvent = spec.actionEvents[InputAction.FOLLOW_TOOLACTION]
-    if nil ~= actionEvent then
-        --if followVehicleIsActive and nil ~= spec.driveStrategyFillableTool then
-        --    g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_TOOLACTION .. self:getSelectedToolActionText()) --ToolActionTexts[spec.driveStrategyFillableTool:getActionWhenFull()])
-        --    g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_HIGH)
-        --    g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, true)
-        --else
-            g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, false)
-        --end
-    end
-
-    actionEvent = spec.actionEvents[InputAction.FOLLOW_SIDE_OFFSET]
-    if nil ~= actionEvent then
-        --g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_SIDEOFFSET .. (" (%.1f)"):format(spec.offsetLR))
-        --if followVehicleIsActive then
-        --    g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_HIGH)
-        --    g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, true)
-        --else
-        --    g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_LOW)
-        --end
-        g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, false)
-    end
-
-    actionEvent = spec.actionEvents[InputAction.FOLLOW_DISTANCE]
-    if nil ~= actionEvent then
-        --g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_DISTANCE .. (" (%.0f)"):format(spec.distanceFB))
-        --if followVehicleIsActive then
-        --    g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_HIGH)
-        --    g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, true)
-        --else
-        --    g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_LOW)
-        --end
-        g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, false)
-    end
-
-    actionEvent = spec.actionEvents[InputAction.FOLLOW_PAUSE_RESUME]
-    if nil ~= actionEvent then
-        --g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, followVehicleIsActive)
-        --if followVehicleIsActive then
-        --    if spec.isWaiting then
-        --        g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_RESUME)
-        --        g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_VERY_HIGH)
-        --    else
-        --        g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_PAUSE)
-        --        g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_LOW)
-        --    end
-        --end
-        g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, false)
-    end
-
     actionEvent = spec.actionEvents[InputAction.FOLLOW_MARKER_TOGGLE_OFFSET]
     if nil ~= actionEvent then
         g_inputBinding:setActionEventText(actionEvent.actionEventId, FollowersOffsets[spec.followersOffsetSetting][2])
@@ -614,49 +548,8 @@ function FollowVehicle:updateActionEvents()
             g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_VERY_HIGH)
         else
             g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_LOW)
-        end        
+        end
         g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, true)
-    end
-
-    local follower = self:getSelectedFollower()
-    local followerSpec = (follower and getSpec(follower)) or nil
-
-    actionEvent = spec.actionEvents[InputAction.FOLLOW_CHASER_TOOLACTION]
-    if nil ~= actionEvent then
-        --if nil ~= follower and followerSpec and followerSpec.driveStrategyFillableTool then
-        --    g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_CHASER_TOOLACTION .. ToolActionTexts[followerSpec.driveStrategyFillableTool:getActionWhenFull()])
-        --    g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_VERY_HIGH)
-        --    g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, true)
-        --else
-            g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, false)
-        --end
-    end
-
-    actionEvent = spec.actionEvents[InputAction.FOLLOW_CHASER_DISTANCE]
-    if nil ~= actionEvent then
-        --g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, spec.drawFollowersTimer > 0)
-        g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, false)
-    end
-
-    actionEvent = spec.actionEvents[InputAction.FOLLOW_CHASER_SIDEOFFSET]
-    if nil ~= actionEvent then
-        --g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, spec.drawFollowersTimer > 0)
-        g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, false)
-    end
-
-    actionEvent = spec.actionEvents[InputAction.FOLLOW_CHASER_PAUSE_RESUME]
-    if nil ~= actionEvent then
-        --g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, nil ~= follower)
-        --if nil ~= follower then
-        --    if followerSpec and followerSpec.isWaiting then
-        --        g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_CHASER_RESUME)
-        --        g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_VERY_HIGH)
-        --    else
-        --        g_inputBinding:setActionEventText(actionEvent.actionEventId, FOLLOW_CHASER_PAUSE)
-        --        g_inputBinding:setActionEventTextPriority(actionEvent.actionEventId, GS_PRIO_LOW)
-        --    end
-        --end
-        g_inputBinding:setActionEventTextVisibility(actionEvent.actionEventId, false)
     end
 end
 
@@ -916,6 +809,10 @@ function FollowVehicle:onDraw(isActiveForInput, isActiveForInputIgnoreSelection,
     end
 
     if spec.isActive or spec.nearbyVehicles_timeout > 0 then
+        -- Fix for #71 - caused by other mod(s) calling "setTextLineBounds({maxW},{maxH})" which
+        -- then ain't being reset afterwards with an ending call of "setTextLineBounds(0,0)".
+        setTextLineBounds(0, 0)
+
         setTextBold(true)
 
         local textSize2 = getCorrectTextSize(0.02)
@@ -970,6 +867,7 @@ local FOLLOW_LEADER_SELECTED = g_i18n:getText("FOLLOW_LEADER_SELECTED")
 function FollowVehicle:drawNearbyVehicles(chooseTimeRemaining)
     local spec = getSpec(self)
 
+    setTextLineBounds(0, 0)
     setTextDepthTestEnabled(false)
     setTextVerticalAlignment(RenderText.VERTICAL_ALIGN_BASELINE)
     setTextAlignment(RenderText.ALIGN_CENTER)
@@ -1055,6 +953,7 @@ function FollowVehicle:drawFollowers()
     local wx,wy,wz
     local sx,sy,sz
 
+    setTextLineBounds(0, 0)
     setTextAlignment(RenderText.ALIGN_CENTER)
     setTextBold(false)
 
